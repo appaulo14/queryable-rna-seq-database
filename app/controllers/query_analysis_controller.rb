@@ -1,6 +1,15 @@
 class QueryAnalysisController < ApplicationController
   def upload_main_menu
-      puts "Upload main menu reached"
+      if defined? Rails.debugger and Rails.debugger == 1
+        puts "DEBUGGER"
+        debugger
+      else
+          puts "NOT DEBUGGER"
+      end
+      if request.post? and not params[:data_type].nil?
+          debugger if not Rails.debugger.nil?
+          redirect_to :action => params[:data_type]
+      end
   end
 
   def upload_reference_cuffdiff
@@ -27,3 +36,4 @@ class QueryAnalysisController < ApplicationController
   def query_blast_db
   end
 end
+    

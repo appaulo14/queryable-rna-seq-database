@@ -1,9 +1,10 @@
 <h1>QueryAnalysis#upload_main_menu</h1>
 <p>Find me in app/views/query_analysis/upload_main_menu.html.erb</p>
-
-
+<%= form_tag('/query_analysis/upload_main_menu') do %>
     <h3>What type of data do you have?</h3>
-    <input type="radio" name="data_type" value="reference_cuffdiff" />Reference Cuffdiff<br />
-    <input type="radio" name="data_type" value="de-novo_cuffdiff" />De-novo Cuffdiff<br/>
-    <input type="radio" name="data_type" value="edgeR" />EdgeR<br/>
+    <input type="radio" name="data_type" value="upload_reference_cuffdiff" />Reference Cuffdiff<br />
+    <input type="radio" name="data_type" value="upload_de_novo_cuffdiff" />De-novo Cuffdiff<br/>
+    <input type="radio" name="data_type" value="upload_de_novo_edgeR" />EdgeR<br/>
+    <%= submit_tag("Proceed to next step") %>
+<% end %>
 

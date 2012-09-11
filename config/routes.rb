@@ -1,7 +1,8 @@
 RnaSeqAnalysisPipeline::Application.routes.draw do
   root :to => "query_analysis#upload_main_menu"
     
-  get "query_analysis/upload_main_menu"
+  get  "query_analysis/upload_main_menu"
+  post "query_analysis/upload_main_menu"
 
   get "query_analysis/upload_reference_cuffdiff"
 
