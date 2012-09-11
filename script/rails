@@ -8,27 +8,31 @@ require 'rack'
 require 'webrick'
 require 'webrick/https'
 
-# module Rails
-#     class Server < ::Rack::Server
-#         def default_options
-#             super.merge({
-#                 :Port => 3000,
-#                 :environment => (ENV['RAILS_ENV'] || "development").dup,
-#                 :daemonize => false,
-#                 :debugger => false,
-#                 :pid => File.expand_path("tmp/pids/server.pid"),
-#                 :config => File.expand_path("config.ru"),
-#                 :SSLEnable => true,
-#                 :SSLVerifyClient => OpenSSL::SSL::VERIFY_NONE,
-#                 :SSLPrivateKey => OpenSSL::PKey::RSA.new(
-#                        File.open("./cert/server.key").read),
-#                 :SSLCertificate => OpenSSL::X509::Certificate.new(
-#                        File.open("./cert/server.crt").read),
-#                 :SSLCertName => [["CN", WEBrick::Utils::getservername]]
-#             })
-#         end
-#     end
-# end 
+module Rails
+    class Server < ::Rack::Server
+        def default_options
+            if ENV['RAILS_ENV'].nil? || ENV['RAILS_ENV'] == "development" 
+                ssl_settings = {
+                    :Port => 3000,
+                    :environment => (ENV['RAILS_ENV'] || "development").dup,
+                    :daemonize => false,
+                    :debugger => false,
+                    :pid => File.expand_path("tmp/pids/server.pid"),
+                    :config => File.expand_path("config.ru"),
+                    :SSLEnable => true,
+                    :SSLVerifyClient => OpenSSL::SSL::VERIFY_NONE,
+                    :SSLPrivateKey => OpenSSL::PKey::RSA.new(
+                        File.open("./cert/server.key").read),
+                    :SSLCertificate => OpenSSL::X509::Certificate.new(
+                        File.open("./cert/server.crt").read),
+                    :SSLCertName => [["CN", WEBrick::Utils::getservername]]
+                }
+                super.merge(ssl_settings)
+            end 
+            super
+        end
+    end
+end 
 
 APP_PATH = File.expand_path('../../config/application',  __FILE__)
 require File.expand_path('../../config/boot',  __FILE__)
