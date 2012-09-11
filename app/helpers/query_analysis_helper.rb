@@ -1,0 +1,2 @@
+module QueryAnalysisHelper
+end

@@ -28,8 +28,9 @@ module Rails
                     :SSLCertName => [["CN", WEBrick::Utils::getservername]]
                 }
                 super.merge(ssl_settings)
+            else
+                super
             end 
-            super
         end
     end
 end 

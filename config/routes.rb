@@ -1,4 +1,24 @@
 RnaSeqAnalysisPipeline::Application.routes.draw do
+  root :to => "query_analysis#upload_main_menu"
+    
+  get "query_analysis/upload_main_menu"
+
+  get "query_analysis/upload_reference_cuffdiff"
+
+  get "query_analysis/upload_de_novo_cuffdiff"
+
+  get "query_analysis/upload_de_novo_edgeR"
+
+  get "query_analysis/query_diff_exp_transcripts"
+
+  get "query_analysis/query_diff_exp_genes"
+
+  get "query_analysis/query_transcript_isoforms"
+
+  get "query_analysis/query_gene_isoforms"
+ 
+  get "query_analysis/query_blast_db"
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
