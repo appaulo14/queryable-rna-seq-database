@@ -1,19 +1,77 @@
 <h1>QueryAnalysis#query_diff_exp_transcripts</h1>
 <p>Find me in app/views/query_analysis/query_diff_exp_transcripts.html.erb</p>
-<%= form_tag({:action => :query_diff_exp_transcripts}, :multipart => true) do %>
+<%= form_tag({:action => :query_diff_exp_transcripts}) do %>
   <h2>Please select your differential expression search options</h2>
   <p>
-  <div>
-    <%= label(:fdr_or_pvalue, "Filter By:") %>
-    <%= radio_button_tag(:filter_by, :p_value) %>
-    <%= label_tag(:filter_by_p_value, "P-value") %>
-    <%= radio_button_tag(:filter_by, :fdr) %>
-    <%= label_tag(:filter_by_fdr, "FDR") %>
-  </div>
-  <%= radio_button_tag(:data_type, "upload_reference_cuffdiff") %>
-  <%= label(:go_terms, "GO Terms") %>
-  <%= label(:transcript_length, "Transcript length") %>
-  <%= label(:transcript_name, "Transcript name") %>
+    <%= label(:comparison_data_set, "Comparison of expression:") %>
+    <%= select_tag(:comparison_data_set, options_for_select([['Brain vs Liver', 1], ['Spleen vs Gizzard', 2]])) %>
+  </p>
+  <p>
+    <div>
+        <%= label(:fdr_or_pvalue, "Filter By:") %>
+        <%= radio_button_tag(:filter_by, :p_value, true) %>
+        <%= label(:filter_by_p_value, "P-value") %>
+        <%= radio_button_tag(:filter_by, :fdr) %>
+        <%= label(:filter_by_fdr, "FDR") %>
+    </div>
+    <div>
+        <%= label(:cutoff, "Select cutoff:") %>
+        <%= select_tag(:cutoff, options_for_select([['0.01', 0.01], ['0.005', 0.005],['0.001', 0.001],['0.0001', 0.0001],['0.00001', 0.00001],['Other', 'Other']],'Other')) %>
+        <%= label(:other_cutoff_value, "Enter Value:") %>
+        <%= text_field_tag(:other_cutoff_value) %>
+    </div>
+  </p>
+  <br/>
+  <h2>Limit the search in the data Class</h2>
+  <p>
+    <div>
+        <%= check_box_tag(:go_names) %>
+        <%= label(:go_names, "GO Names (separated by commas)") %>
+        <%= text_field_tag(:go_names) %>
+    </div>
+    <div>
+        <%= check_box_tag(:go_numbers) %>
+        <%= label(:go_numbers, "GO Numbers (separated by commas)") %>
+        <%= text_field_tag(:go_numbers) %>
+    </div>
+    <div>
+        <%= check_box_tag(:transcript_length) %>
+        <%= label(:transcript_length, "Transcript length") %>
+        <%= select_tag(:transcript_length_comparison, options_for_select([['>', '>'],['>=', '>='],['<', '<'],['=<', '=<'],['=', '=']],'>')) %>
+        <%= text_field_tag(:transcript_length_value) %>
+    </div>
+    <div>
+        <%= check_box_tag("transcript_name?") %>
+        <%= label(:transcript_name, "Transcript name:") %>
+        <%= text_field_tag(:transcript_name) %>
+    </div>
   </p>
   <p><%= submit_tag("Search") %></p>
+<% end %>
+
+<% if not @search_results.nil? and not @samples.nil? %>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Transcript</th><th>Transcript description</th><th>GO terms</th><th>P-value</th><th>FDR</th>
+                    <% @samples.each do |sample| %>
+                        <th><%= sample %></th>
+                    <% end %>
+            </tr>
+        </thead>
+        <tbody>
+            <% @search_results.each do |search_result| %>
+                <tr>
+                    <td><%= search_result[:transcript] %></td>
+                    <td><%= search_result[:transcript_description] %></td>
+                    <td><%= search_result[:go_terms] %></td>
+                    <td><%= search_result[:p_value] %></td>
+                    <td><%= search_result[:fdr] %></td>
+                    <td><%= search_result[:sample_1] %></td>
+                    <td><%= search_result[:sample_2] %></td>
+                    <td><%= search_result[:sample_3] %></td>
+                </tr>
+            <% end %>
+        </tbody>
+    </table>
 <% end %>

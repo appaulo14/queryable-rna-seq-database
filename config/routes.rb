@@ -13,6 +13,7 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
   post "query_analysis/upload_de_novo_edgeR"
 
   get "query_analysis/query_diff_exp_transcripts"
+  post "query_analysis/query_diff_exp_transcripts"
 
   get "query_analysis/query_diff_exp_genes"
 
