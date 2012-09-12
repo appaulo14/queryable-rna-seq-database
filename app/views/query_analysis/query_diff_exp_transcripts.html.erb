@@ -1,2 +1,19 @@
 <h1>QueryAnalysis#query_diff_exp_transcripts</h1>
 <p>Find me in app/views/query_analysis/query_diff_exp_transcripts.html.erb</p>
+<%= form_tag({:action => :query_diff_exp_transcripts}, :multipart => true) do %>
+  <h2>Please select your differential expression search options</h2>
+  <p>
+  <div>
+    <%= label(:fdr_or_pvalue, "Filter By:") %>
+    <%= radio_button_tag(:filter_by, :p_value) %>
+    <%= label_tag(:filter_by_p_value, "P-value") %>
+    <%= radio_button_tag(:filter_by, :fdr) %>
+    <%= label_tag(:filter_by_fdr, "FDR") %>
+  </div>
+  <%= radio_button_tag(:data_type, "upload_reference_cuffdiff") %>
+  <%= label(:go_terms, "GO Terms") %>
+  <%= label(:transcript_length, "Transcript length") %>
+  <%= label(:transcript_name, "Transcript name") %>
+  </p>
+  <p><%= submit_tag("Search") %></p>
+<% end %>

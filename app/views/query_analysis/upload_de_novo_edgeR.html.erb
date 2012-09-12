@@ -1,2 +1,33 @@
 <h1>QueryAnalysis#upload_de-novo_edgeR</h1>
 <p>Find me in app/views/query_analysis/upload_de-novo_edgeR.html.erb</p>
+
+<%= form_tag({:action => :upload_de_novo_edgeR}, :multipart => true) do %>
+  <h2>Please upload the Trinity.fasta file for each sample</h2>
+  <p id="sample_fasta_uploads">
+  <%= label(:sample_fasta1, "Sample 1 fasta") %>
+  <%= file_field_tag 'sample_fasta1' %><br/>
+  <%= label(:sample_fasta2, "Sample 2 fasta") %>
+  <%= file_field_tag 'sample_fasta2' %><br/>
+  </p>
+  <p>
+    <button type="button" onclick="add_sample_fasta_upload();">I have more samples than this</button>
+    <%= image_tag("question_mark.png") %>
+  </p>
+  <p><%= submit_tag("Upload files") %></p>
+<% end %>
+
+<script type="text/javascript">
+    function add_sample_fasta_upload(){
+        p = document.getElementById("sample_fasta_uploads");
+        var i = 1;
+        for (i = 1; i < 100; ++i){
+            var uploader = document.getElementById("sample_fasta"+i);
+            if (! uploader){
+                break;
+            }
+        }
+        p.innerHTML += '<label for="sample_fasta' + i + '_Sample ' + i + ' fasta">Sample ' + i + ' fasta</label>';
+        p.innerHTML += '<input id="sample_fasta' + i + '" name="sample_fasta' + i +'" type="file" /><br/>';
+    }
+</script>
+

@@ -1,5 +1,6 @@
 RnaSeqAnalysisPipeline::Application.routes.draw do
-  root :to => "query_analysis#upload_main_menu"
+  #root :to => "query_analysis#upload_main_menu"
+  root :to => "query_analysis#upload_de_novo_edgeR"
     
   get  "query_analysis/upload_main_menu"
   post "query_analysis/upload_main_menu"
@@ -9,6 +10,7 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
   get "query_analysis/upload_de_novo_cuffdiff"
 
   get "query_analysis/upload_de_novo_edgeR"
+  post "query_analysis/upload_de_novo_edgeR"
 
   get "query_analysis/query_diff_exp_transcripts"
 

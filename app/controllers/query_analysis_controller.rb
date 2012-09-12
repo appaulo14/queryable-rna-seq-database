@@ -1,13 +1,7 @@
 class QueryAnalysisController < ApplicationController
   def upload_main_menu
-      if defined? Rails.debugger and Rails.debugger == 1
-        puts "DEBUGGER"
-        debugger
-      else
-          puts "NOT DEBUGGER"
-      end
+      debugger if ENV['RAILS_DEBUG'] == "true"
       if request.post? and not params[:data_type].nil?
-          debugger if not Rails.debugger.nil?
           redirect_to :action => params[:data_type]
       end
   end
@@ -19,6 +13,17 @@ class QueryAnalysisController < ApplicationController
   end
 
   def upload_de_novo_edgeR
+      debugger if ENV['RAILS_DEBUG'] == "true"
+      if (request.post?)
+          params.keys.each do |key|
+            if params[key].kind_of? ActionDispatch::Http::UploadedFile
+                uploaded_file = params[key]
+                File.open(Rails.root.join('file_uploads', uploaded_file.original_filename), 'wb') do |file|
+                    file.write(uploaded_file.read)
+                end
+            end
+          end
+      end
   end
 
   def query_diff_exp_transcripts
