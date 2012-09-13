@@ -32,7 +32,3 @@ database.yml~
 cert
 cert/*
 
-#Ignore file uploads
-file_uploads
-file_uploads/*
-file_uploads/*.*

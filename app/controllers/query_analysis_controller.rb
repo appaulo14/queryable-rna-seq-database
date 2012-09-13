@@ -19,8 +19,10 @@ class QueryAnalysisController < ApplicationController
           params.keys.each do |key|
             if params[key].kind_of? ActionDispatch::Http::UploadedFile
                 uploaded_file = params[key]
-                File.open(Rails.root.join('file_uploads', uploaded_file.original_filename), 'wb') do |file|
+                file_to_write = Rails.root.join('tmp/file_uploads', uploaded_file.original_filename)
+                File.open(file_to_write, 'wb') do |file|
                     file.write(uploaded_file.read)
+                    #TODO: Be sure to delete these files when finished
                 end
             end
           end
