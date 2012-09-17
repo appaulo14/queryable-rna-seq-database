@@ -2,7 +2,7 @@ class QueryAnalysisController < ApplicationController
   def upload_main_menu
       debugger if ENV['RAILS_DEBUG'] == "true"
       if request.post? and not params[:data_type].nil?
-          #Would redirecting like this be a security issue?
+          #Would redirecting like this be a security issue because it uses browser response data?
           redirect_to :action => params[:data_type]
       end
   end

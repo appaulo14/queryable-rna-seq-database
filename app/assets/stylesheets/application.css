@@ -31,8 +31,9 @@ body {
 
 #header_title{
     display:inline;
-    vertical-align:40%;
+    vertical-align:10%;
     padding:5px;
+    font-size: 50pt;
 }
 
 header {

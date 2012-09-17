@@ -1,4 +1,17 @@
 RnaSeqAnalysisPipeline::Application.routes.draw do
+  get "processing_analysis/main_menu"
+  post "processing_analysis/main_menu"
+
+  get "processing_analysis/quality_filtering"
+
+  get "processing_analysis/reference_analysis"
+
+  get "processing_analysis/reference_analysis_isoforms_only"
+
+  get "processing_analysis/de_novo_analysis_edgeR"
+
+  get "processing_analysis/de_novo_analysis_cuffdiff"
+
   #root :to => "query_analysis#upload_main_menu"
   root :to => "query_analysis#upload_de_novo_edgeR"
     

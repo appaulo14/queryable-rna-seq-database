@@ -1,0 +1,11 @@
+<h1><%= @title %></h1>
+<p>Find me in app/views/processing_analysis/main_menu.html.erb</p>
+<h3><%= @title %></h3>
+<%= form_tag(@form_target) do %>
+    <% @choices.each do |choice| %>
+        <%= radio_button_tag(:choice, choice[:id]) %>
+        <%= label_tag('choice' + choice[:id], choice[:text]) %><br/>
+    <% end %>
+    <%= submit_tag(@submit_text) %>
+<% end %>
+ 
