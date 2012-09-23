@@ -13,10 +13,10 @@
         <%= select_tag(:select_program, options_for_select([['Mus musculus 8.10.2012', '72'],['Mus musculus 5.11.2012', '64'],['Rattus norvegicus 18','45']],'72')) %>
     </p>
     <p>
-    <%= label(:fasta_text_area, "Enter sequence below in FASTA format") %><br/>
-    <%= text_area(:fasta_text_area, :sequence, :cols => 80, :rows => 6) %><br/>
-    <%= label(:load_fasta_from_disk, "Or load it from disk") %>
-    <%= file_field_tag :load_fasta_from_disk %><br/>
+        <%= label(:fasta_text_area, "Enter sequence below in FASTA format") %><br/>
+        <%= text_area(:fasta_text_area, :sequence, :cols => 80, :rows => 6) %><br/>
+        <%= label(:load_fasta_from_disk, "Or load it from disk") %>
+        <%= file_field_tag :load_fasta_from_disk %><br/>
     </p>
     <p>
     Set subsequence: 
@@ -31,9 +31,60 @@
         <%= check_box_tag(:mask_for_lookup_table_only,"true",false)%><label for="mask_for_lookup_table_only">Mask for lookup table only</label>
     </p>
     <p>
-        
+        <label for="e_value">Expect (e-value)</label><%= select_tag(:e_evalue, options_for_select([[0.0001, 0.0001],[0.01, 0.01],[1,1],[10,10],[100,100],[1000,1000]],10)) %>
+        <label for="matrix">Matrix</label><%= select_tag(:matrix, options_for_select([['PAM30','PAM30'],['PAM70','PAM70'],['BLOSUM80','BLOSUM80'],['BLOSUM62','BLOSUM62'],['BLOSUM45','BLOSUM45']],'BLOSUM62')) %>
+        <%= check_box_tag(:perform_ungapped_alignment,"true",false)%><label for="perform_ungapped_alignment">Perform ungapped alignment?</label>
     </p>
-    
+    <p>
+        <label for="query_genetic_codes">Query Genetic Codes (blastx only)</label>
+        <%= select_tag(:query_genetic_codes, options_for_select([['Standard (1)',1],['Vertebrate Mitochondrial (2)', 2],['Yeast Mitochondrial (3)',3],['Mold Mitochondrial (4)',4],['Invertebrate Mitochondrial (5)',5],['Ciliate Nuclear (6)',6],['Echinoderm Mitochondrial (9)',9],['Euplotid Nuclear (10)',10],['Bacterial (11)',11],['Alternative Yeast Nuclear (12)',12],['Ascidian Mitochondrial (13)',13],['Flatworm Mitochondrial (14)',14],['Blepharisma Macronuclear (15)',15]],1)) %>
+    </p>
+    <p>
+        <label for="database_genetic_codes">Database Genetic Codes (tblast[nx] only)</label>
+        <%= select_tag(:database_genetic_codes, options_for_select([['Standard (1)',1],['Vertebrate Mitochondrial (2)', 2],['Yeast Mitochondrial (3)',3],['Mold Mitochondrial (4)',4],['Invertebrate Mitochondrial (5)',5],['Ciliate Nuclear (6)',6],['Echinoderm Mitochondrial (9)',9],['Euplotid Nuclear (10)',10],['Bacterial (11)',11],['Alternative Yeast Nuclear (12)',12],['Ascidian Mitochondrial (13)',13],['Flatworm Mitochondrial (14)',14],['Blepharisma Macronuclear (15)',15]],1)) %>
+    </p>
+    <p>
+        <label for="frame_shift_penalty">Frame shift penalty for blastx</label>
+        <%= select_tag(:frame_shift_penalty, options_for_select([[6,6],[7,7],[8,8],[9,9],[10,10],[11,11],[12,12],[13,13],[14,14],[15,15],[16,16],[17,17],[18,18],[19,19],[20,20],[25,25],[30,30],[50,50],[1000,100],['No OOF','No OOF']],'No OOF')) %>
+    </p>
+    <hr/>
+        <div>
+            <label for="cost_to_open_gap">Cost to open a gap [Integer]</label>
+            <%= text_field_tag(:cost_to_open_gap,5) %>
+        </div>
+        <div>
+            <label for="cost_to_extend_gap">Cost to extend a gap [Integer]</label>
+            <%= text_field_tag(:cost_to_extend_gap,2) %>
+        </div>
+        <div>
+            <label for="mismatch_penalty">Penalty for a mismatch in the blast portion of run [Integer]</label>
+            <%= text_field_tag(:mismatch_penalty,-3) %>
+        </div>
+        <div>
+            <label for="match_reward">Reward for a match in the blast portion of run [Integer]</label>
+            <%= text_field_tag(:match_reward,1) %>
+        </div>
+        <div>
+            <label for="e_value_2">Expectation value (E) [Real]</label>
+            <%= text_field_tag(:e_value_2,10.0) %>
+        </div>
+        <div>
+            <label for="word_size">Word size, default is 11 for blastn, 3 for other programs.</label>
+            <%= text_field_tag(:word_size,"3 or 11") %>
+        </div>
+        <div>
+            <label for="number_of_one_line_descriptions">Number of one-line descriptions (V) [Integer]</label>
+            <%= text_field_tag(:number_of_one_line_descriptions,100) %>
+        </div>
+        <div>
+            <label for="number_of_alignments_to_show">Number of alignments to show (B) [Integer]</label>
+            <%= text_field_tag(:number_of_alignments_to_show,100) %>
+        </div>
+    <hr/>
+    <p>
+        <label for="ouput_format">Output Format</label>
+        <%= select_tag(:ouput_format, options_for_select([['Pairwise', 'Pairwise'],['XML Blast Output', 'XML'],['Tabular','Tabular'],['Tabular with Comment Lines','Tabular with Comment Lines'],['Comma-separated values','Comma-separated values']],'Pairwise')) %>
+    </p>
 <% end %>
 
 <script type="text/javascript">
