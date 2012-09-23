@@ -14,6 +14,7 @@ module Rails
             if ENV['RAILS_ENV'].nil? || ENV['RAILS_ENV'] == "development" 
                 ssl_settings = {
                     :Port => 3000,
+                    :DocumentRoot => File.join(Dir.pwd,'..', "public"),
                     :environment => (ENV['RAILS_ENV'] || "development").dup,
                     :daemonize => false,
                     :debugger => false,

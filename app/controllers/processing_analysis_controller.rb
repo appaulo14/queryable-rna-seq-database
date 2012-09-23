@@ -61,7 +61,7 @@ class ProcessingAnalysisController < ApplicationController
   def reference_analysis
       redirect_to '/processing_analysis/de_novo_analysis_cuffdiff'
       sleep 5
-      redirect_to '/processing_analysis/de_novo_analysis_edgeR'
+      #redirect_to '/processing_analysis/de_novo_analysis_edgeR'
 #       if request.post?
 #         case session[:reference_analysis_step]
 #         when 'tophat'
