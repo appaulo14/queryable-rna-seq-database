@@ -34,7 +34,9 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
 
   get "query_analysis/query_gene_isoforms"
  
-  get "query_analysis/query_blast_db"
+  get  "query_analysis/query_blast_db"
+  get  "query_analysis/query_blast_db_2"
+  post "query_analysis/query_blast_db_2"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

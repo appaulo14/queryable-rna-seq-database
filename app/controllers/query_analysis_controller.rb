@@ -60,5 +60,18 @@ class QueryAnalysisController < ApplicationController
 
   def query_blast_db
   end
+  
+  def query_blast_db_2
+      if request.get?
+        @blast_query = Blast_Query.new()
+      elsif request.post?
+        @blast_query = Blast_Query.new(params[:blast_query])
+        if @blast_query.valid?
+          flash[:success] = "Success"
+        else
+          flash[:success]="Failure"
+        end
+      end
+  end
 end
     
