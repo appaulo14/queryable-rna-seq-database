@@ -16,6 +16,9 @@ class Blast_Query
         attributes.each do |name, value|
             send("#{name}=", value)
         end
+        if (self.program.nil?)
+            self.program=:blastn
+        end
     end
     
     def persisted?
@@ -25,19 +28,43 @@ class Blast_Query
     private
     
     #Try BioRuby's seq.illegal_bases.nil? to validate fasta
-    def validate_fasta
-        if (self.fasta_sequence.empty? and self.fasta_file.nil?)
-            errors[:fasta_sequence] << "Please enter a fasta sequence and/or upload a fasta file"
-            errors[:fasta_file] << "Please enter a fasta sequence and/or upload a fasta file"
-        elsif (not self.fasta_sequence.empty?)
+    #FASTA format specification
+    def validate_fasta            
+        #Validate the fasta sequence if there is something in it
+        if (not self.fasta_sequence.empty?)
             #Parse fasta sequence to validate it
             tmp_sequence = self.fasta_sequence
-            tmp_sequence.gsub!(/^([>].+)$/,'');    #remove description lines
-            tmp_sequence.gsub!(/\n/,'');
+            tmp_sequence.gsub!(/^([>].+)$/,'')    #remove description lines
+            tmp_sequence.gsub!(/\n|\r/,'') #remove the newlines
+            #Validate that the sequence contains data besides description lines
             if (tmp_sequence.empty?)
-                errors[:fasta_sequence] << "Please enter some sequence letters, not just comments."
+                errors[:fasta_sequence] << "Please enter some sequence letters, not just fasta definition lines"
+                return
             end
+            #Validate that sequence is a protein sequence if that is what
+            #   the blast program expects
+            if (self.program == :blastp or self.program == :tblastn)     
+            #Validate that the sequence is a nucleotide sequence if that is what
+            #   the blast program expects
+            else
+                if ( not (tmp_sequence =~/\A[ATGCX\-]+\z/i))
+                    illegal_characters = tmp_sequence.scan(/([^ATGCX\-])/i).uniq.flatten
+                    illegal_characters_string=""
+                    illegal_characters.each do |i|
+                        illegal_characters_string+=i
+                    end
+                    errors[:fasta_sequence] << "Your fasta sequence seems to " +
+                        "have thhe following invalid characters in it: " +
+                        "#{illegal_characters_string}. If you want to do a " +
+                        "protein query, please select the blastp or tblastn program. " +
+                        "Otherwise, see the fasta format specification."
+                end
+            end
+        #Validat the uploaded fasta file if one was uploaded
         elsif (not self.fasta_file.nil?)
+        else
+            errors[:fasta_sequence] << "Please enter a fasta sequence and/or upload a fasta file"
+            errors[:fasta_file] << "Please enter a fasta sequence and/or upload a fasta file"
         end
     end
  

@@ -7,22 +7,22 @@
 <%= form_for(@blast_query,{:url => "query_blast_db_2"}) do |bq| %>
 <%= render 'shared/error_messages', :object => bq.object %>
 <h2>Choose program to use and database to search:</h2>
+    <!--Select Program and Database-->
     <p>
-        <%= label(:select_program, "Program:") %>
-        <%= select_tag(:select_program, options_for_select([['blastn', 'blastn'],['blastp','blastp'],['blastx','blastx'],['tblastn','tblastn'],['tblastx','tblastx']],'blastn')) %>
+        <%= bq.label :program, "Program:" %>
+        <!--<%= bq.select :program, options_for_select([['blastn', 'blastn'],['blastp','blastp'],['blastx','blastx'],['tblastn','tblastn'],['tblastx','tblastx']], @blast_query.program) %>-->
+        <%= bq.select :program, options_for_select([:blastn,:blastp,:blastx,:tblastn,:tblastx], @blast_query.program) %>
         <%= label(:select_dataset, "Dataset:") %>
         <%= select_tag(:select_program, options_for_select([['Mus musculus 8.10.2012', '72'],['Mus musculus 5.11.2012', '64'],['Rattus norvegicus 18','45']],'72')) %>
     </p>
-    <p id="fasta_block">
-        <!--<%= label(:fasta_text_area, "Enter sequence below in FASTA format") %><br/>
-        <%= text_area(:fasta_text_area, :sequence, :cols => 80, :rows => 6) %><br/>-->
+    <!--Enter or upload fasta sequence-->
+    <p>
         <%= bq.label :fasta_sequence, "Enter sequence below in FASTA format" %><br/>
         <%= bq.text_area :fasta_sequence, {:cols=>80, :rows => 6} %><br/>
-        <!--<%= label(:load_fasta_from_disk, "Or load it from disk") %>
-        <%= file_field_tag :load_fasta_from_disk %><br/>-->
         <%= bq.label :fasta_file, "Or load it from disk" %>
         <%= bq.file_field :fasta_file %><br/>
     </p>
+    <!--Select a subsequence of the fasta to use-->
     <p>
     Set subsequence: 
     <label for="subsequence_from">From</label><%= text_field_tag(:subsequence_from) %>
