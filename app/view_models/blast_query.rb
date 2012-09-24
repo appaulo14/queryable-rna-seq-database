@@ -26,8 +26,18 @@ class Blast_Query
     
     #Try BioRuby's seq.illegal_bases.nil? to validate fasta
     def validate_fasta
-        if (self.fasta_sequence.nil? and self.fasta_file.nil?)
-            errors[:fasta_block] << "Please enter a fasta sequence and/or upload a fasta file"
+        if (self.fasta_sequence.empty? and self.fasta_file.nil?)
+            errors[:fasta_sequence] << "Please enter a fasta sequence and/or upload a fasta file"
+            errors[:fasta_file] << "Please enter a fasta sequence and/or upload a fasta file"
+        elsif (not self.fasta_sequence.empty?)
+            #Parse fasta sequence to validate it
+            tmp_sequence = self.fasta_sequence
+            tmp_sequence.gsub!(/^([>].+)$/,'');    #remove description lines
+            tmp_sequence.gsub!(/\n/,'');
+            if (tmp_sequence.empty?)
+                errors[:fasta_sequence] << "Please enter some sequence letters, not just comments."
+            end
+        elsif (not self.fasta_file.nil?)
         end
     end
  

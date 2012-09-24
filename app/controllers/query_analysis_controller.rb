@@ -65,6 +65,7 @@ class QueryAnalysisController < ApplicationController
       if request.get?
         @blast_query = Blast_Query.new()
       elsif request.post?
+        debugger if ENV['RAILS_DEBUG'] == "true"
         @blast_query = Blast_Query.new(params[:blast_query])
         if @blast_query.valid?
           flash[:success] = "Success"

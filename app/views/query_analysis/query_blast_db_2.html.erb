@@ -17,9 +17,11 @@
         <!--<%= label(:fasta_text_area, "Enter sequence below in FASTA format") %><br/>
         <%= text_area(:fasta_text_area, :sequence, :cols => 80, :rows => 6) %><br/>-->
         <%= bq.label :fasta_sequence, "Enter sequence below in FASTA format" %><br/>
-        <%= bq.text_area :fasta_sequence, {:cols=>80, :rows => 6} %>
+        <%= bq.text_area :fasta_sequence, {:cols=>80, :rows => 6} %><br/>
         <!--<%= label(:load_fasta_from_disk, "Or load it from disk") %>
         <%= file_field_tag :load_fasta_from_disk %><br/>-->
+        <%= bq.label :fasta_file, "Or load it from disk" %>
+        <%= bq.file_field :fasta_file %><br/>
     </p>
     <p>
     Set subsequence: 
@@ -92,7 +94,7 @@
 
 <script type="text/javascript">
     function clear_sequence(){
-        var fasta_text_area = document.getElementById("fasta_text_area_sequence");
+        var fasta_text_area = document.getElementById("blast_query_fasta_sequence");
         var subsequence_from = document.getElementById("subsequence_from");
         var subsequence_to = document.getElementById("subsequence_to");
         fasta_text_area.value='';
