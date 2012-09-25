@@ -15,10 +15,15 @@ class Blast_Query
     #validates :subsequence_from, :numericality => { :greater_than => 0.0 }#, :less_than_or_equal_to => :subsequence_to }
     #validates :subsequence_to, :numericality => { :greater_than => 0.0 }
     
+    @@nucl_fasta_line_regex = Regexp.new("^([>].*)$|^([ATGCX\-]+)$|^$","i")
+    @@prot_fasta_line_regex = Regexp.new("^(>.+)$|^([ABCDEFGHIKLMNPQRSTUVWYZX*\-]+)$|^$","i")
+    
     def initialize(attributes = {})
+        #Load in any values from the form
         attributes.each do |name, value|
             send("#{name}=", value)
         end
+        #Set the default values if they were not filled in by form data
         if (self.program.nil?)
             self.program=:blastn
         end
@@ -104,8 +109,10 @@ class Blast_Query
                         "than the length of the fasta sequence (" + tmp_sequence.length.to_s + ")"
                 end
             end
-        #Validat the uploaded fasta file if one was uploaded
+        #Validate the uploaded fasta file if one was uploaded
         elsif (not self.fasta_file.nil?)
+            
+        #If neither a file was uploaded nor a fasta sequence entered,create errors messages    
         else
             errors[:fasta_sequence] << "Please enter a fasta sequence and/or upload a fasta file"
             errors[:fasta_file] << "Please enter a fasta sequence and/or upload a fasta file"
