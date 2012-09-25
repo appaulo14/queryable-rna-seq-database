@@ -25,8 +25,8 @@
     <!--Select a subsequence of the fasta to use-->
     <p>
     Set subsequence: 
-    <label for="subsequence_from">From</label><%= text_field_tag(:subsequence_from) %>
-     <label for="subsequence_to">To</label><%= text_field_tag(:subsequence_to) %>
+     <%= bq.label :subsequence_from, "From" %><%= bq.text_field :subsequence_from %>
+     <%= bq.label :subsequence_to, "To" %><%= bq.text_field :subsequence_to %>
     </p>
     <p><%= button_tag("Clear Sequence", :onclick=>"clear_sequence();", :type=>"button") %> <%= submit_tag("Search") %></p>
     <hr/>

@@ -12,12 +12,21 @@ class Blast_Query
     
     validate :validate_fasta
     
+    validates :subsequence_from, :numericality => { :greater_than => 0.0 }#, :less_than_or_equal_to => :subsequence_to }
+    #validates :subsequence_to, :numericality => { :greater_than => 0.0 }
+    
     def initialize(attributes = {})
         attributes.each do |name, value|
             send("#{name}=", value)
         end
         if (self.program.nil?)
             self.program=:blastn
+        end
+        if (self.subsequence_from.nil?)
+            self.subsequence_from = 1
+        end
+        if (self.fasta_sequence.nil?)
+            self.fasta_sequence = ""
         end
     end
     
@@ -29,8 +38,9 @@ class Blast_Query
     
     #Try BioRuby's seq.illegal_bases.nil? to validate fasta
     #FASTA format specification
-    def validate_fasta            
+    def validate_fasta       
         #Validate the fasta sequence if there is something in it
+        self.fasta_sequence.strip! #remove white space and tabs from the ends
         if (not self.fasta_sequence.empty?)
             #Parse fasta sequence to validate it
             tmp_sequence = self.fasta_sequence
@@ -43,7 +53,18 @@ class Blast_Query
             end
             #Validate that sequence is a protein sequence if that is what
             #   the blast program expects
-            if (self.program == :blastp or self.program == :tblastn)     
+            if (self.program == :blastp or self.program == :tblastn)
+                if ( not (tmp_sequence =~/\A[ABCDEFGHIKLMNPQRSTUVWYZX*\-]+\z/i))
+                    illegal_characters = tmp_sequence.scan(/([^ABCDEFGHIKLMNPQRSTUVWYZX*\-])/i).uniq.flatten
+                    illegal_characters_string=""
+                    illegal_characters.each do |i|
+                        illegal_characters_string+=i
+                    end
+                    errors[:fasta_sequence] << "Your fasta sequence seems to " +
+                        "have the following invalid characters in it: " +
+                        "#{illegal_characters_string}. Please see the fasta format" +
+                        "specification."
+                end
             #Validate that the sequence is a nucleotide sequence if that is what
             #   the blast program expects
             else
@@ -54,11 +75,16 @@ class Blast_Query
                         illegal_characters_string+=i
                     end
                     errors[:fasta_sequence] << "Your fasta sequence seems to " +
-                        "have thhe following invalid characters in it: " +
+                        "have the following invalid characters in it: " +
                         "#{illegal_characters_string}. If you want to do a " +
                         "protein query, please select the blastp or tblastn program. " +
                         "Otherwise, see the fasta format specification."
                 end
+            end
+            #Validate that the subsequence range is within the range of the actual sequence
+            if tmp_sequence.length <self.subsequence_to.to_i
+                errors[:subsequence] << "The subsequence upper bound cannot be greater " +
+                    "than the length of the fasta sequence (" + tmp_sequence.length.to_s + ")"
             end
         #Validat the uploaded fasta file if one was uploaded
         elsif (not self.fasta_file.nil?)
@@ -67,8 +93,4 @@ class Blast_Query
             errors[:fasta_file] << "Please enter a fasta sequence and/or upload a fasta file"
         end
     end
- 
-    #validates_presence_of :name
-    #validates_format_of :email, :with => /^[-a-z0-9_+\.]+\@([-a-z0-9]+\.)+[a-z0-9]{2,4}$/i
-    #validates_length_of :content, :maximum => 500
 end 
