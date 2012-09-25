@@ -10,9 +10,9 @@ class Blast_Query
         :blastn_word_size,:non_blastn_word_size,:number_of_one_line_descriptions,
         :number_of_alignments_to_show,:ouput_format
     
-    validate :validate_fasta
+    validate :validate_fasta_and_subsequences
     
-    validates :subsequence_from, :numericality => { :greater_than => 0.0 }#, :less_than_or_equal_to => :subsequence_to }
+    #validates :subsequence_from, :numericality => { :greater_than => 0.0 }#, :less_than_or_equal_to => :subsequence_to }
     #validates :subsequence_to, :numericality => { :greater_than => 0.0 }
     
     def initialize(attributes = {})
@@ -22,11 +22,11 @@ class Blast_Query
         if (self.program.nil?)
             self.program=:blastn
         end
-        if (self.subsequence_from.nil?)
-            self.subsequence_from = 1
-        end
         if (self.fasta_sequence.nil?)
             self.fasta_sequence = ""
+        end
+        if (self.subsequence_from.nil? or self.subsequence_from.empty?)
+            self.subsequence_from = 1
         end
     end
     
@@ -36,9 +36,25 @@ class Blast_Query
     
     private
     
-    #Try BioRuby's seq.illegal_bases.nil? to validate fasta
-    #FASTA format specification
-    def validate_fasta       
+    def validate_fasta_and_subsequences
+        #Validate that subsequences are above 0 if there are filled in
+        if (not self.subsequence_from.empty?)
+            if (self.subsequence_from.to_i < 1)
+                errors[:subsequence_from] << "Must be greater than 1"
+            end
+        end
+        if (not self.subsequence_to.empty?)
+            if (self.subsequence_to.to_i < 1)
+                errors[:subsequence_to] << "Must be greater than 1"
+            end
+        end
+        #Validate the subsequence_to is greater than subsequence_from if they both exist
+        if (not self.subsequence_from.empty? and not self.subsequence_to.empty?)
+            if (self.subsequence_from > self.subsequence_to)
+                errors[:subsequence_from] << "Must be less than subsequence to"
+                errors[:subsequence_to] << "Must be greater than subsequence from"
+            end
+        end
         #Validate the fasta sequence if there is something in it
         self.fasta_sequence.strip! #remove white space and tabs from the ends
         if (not self.fasta_sequence.empty?)
@@ -82,9 +98,11 @@ class Blast_Query
                 end
             end
             #Validate that the subsequence range is within the range of the actual sequence
-            if tmp_sequence.length <self.subsequence_to.to_i
-                errors[:subsequence] << "The subsequence upper bound cannot be greater " +
-                    "than the length of the fasta sequence (" + tmp_sequence.length.to_s + ")"
+            if not self.subsequence_to.empty?
+                if tmp_sequence.length <self.subsequence_to.to_i
+                    errors[:subsequence] << "The subsequence upper bound cannot be greater " +
+                        "than the length of the fasta sequence (" + tmp_sequence.length.to_s + ")"
+                end
             end
         #Validat the uploaded fasta file if one was uploaded
         elsif (not self.fasta_file.nil?)
