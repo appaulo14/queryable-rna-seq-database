@@ -15,9 +15,6 @@ class Blast_Query
     #validates :subsequence_from, :numericality => { :greater_than => 0.0 }#, :less_than_or_equal_to => :subsequence_to }
     #validates :subsequence_to, :numericality => { :greater_than => 0.0 }
     
-    @@nucl_fasta_line_regex = Regexp.new("^([>].*)$|^([ATGCX\-]+)$|^$","i") #^([>].*)\n([ATGCX\-]+\n)+$\n? 
-    @@prot_fasta_line_regex = Regexp.new("^(>.+)$|^([ABCDEFGHIKLMNPQRSTUVWYZX*\-]+)$|^$","i")
-    
     def initialize(attributes = {})
         QueryAnalysisHelper.goat()
         #Load in any values from the form
@@ -43,6 +40,146 @@ class Blast_Query
     private
     
     def validate_fasta_and_subsequences
+        validate_subsequences()
+        #Validate the fasta sequence if there is something in it
+        self.fasta_sequence.strip! #remove white space and tabs from the ends
+        if (not self.fasta_sequence.empty?)
+            validate_fasta_sequence()
+        #Validate the uploaded fasta file if one was uploaded
+        elsif (not self.fasta_file.nil?)
+            validate_fasta_file()
+        #If neither a file was uploaded nor a fasta sequence entered,create errors messages    
+        else
+            errors[:fasta_sequence] << "Please enter a fasta sequence and/or upload a fasta file"
+            errors[:fasta_file] << "Please enter a fasta sequence and/or upload a fasta file"
+        end
+    end
+    
+    def validate_fasta_sequence
+        #Parse fasta sequence to validate it
+        tmp_sequence = self.fasta_sequence
+        tmp_sequence.gsub!(/^([>].+)$/,'')    #remove description lines
+        tmp_sequence.gsub!(/\n|\r/,'') #remove the newlines
+        #Validate that the sequence contains data besides description lines
+        if (tmp_sequence.empty?)
+            errors[:fasta_sequence] << "Please enter some sequence letters, not just fasta definition lines"
+            return
+        end
+        #Validate that sequence is a protein sequence if that is what
+        #   the blast program expects
+        if (self.program == :blastp or self.program == :tblastn)
+            if ( not (tmp_sequence =~/\A[ABCDEFGHIKLMNPQRSTUVWYZX*\-]+\z/i))
+                illegal_characters_string = find_illegal_characters(tmp_sequence,:protein)
+                errors[:fasta_sequence] << "Your fasta sequence seems to " +
+                    "have the following invalid characters in it: " +
+                    "#{illegal_characters_string}. Please see the fasta format" +
+                    "specification."
+            end
+        #Validate that the sequence is a nucleotide sequence if that is what
+        #   the blast program expects
+        else
+            if ( not (tmp_sequence =~/\A[ATGCX\-]+\z/i))
+                illegal_characters_string = find_illegal_characters(tmp_sequence,:nucleotide)
+                errors[:fasta_sequence] << "Your fasta sequence seems to " +
+                    "have the following invalid characters in it: " +
+                    "#{illegal_characters_string}. If you want to do a " +
+                    "protein query, please select the blastp or tblastn program. " +
+                    "Otherwise, see the fasta format specification."
+            end
+        end
+        #Validate that the subsequence range is within the range of the actual sequence
+        if not self.subsequence_to.empty?
+            if tmp_sequence.length <self.subsequence_to.to_i
+                errors[:subsequence_to] << "The subsequence upper bound cannot be greater " +
+                    "than the length of the fasta sequence (" + tmp_sequence.length.to_s + ")"
+            end
+        end            
+    end
+    
+    def validate_fasta_file
+        #Declare some variables
+        sequence_length = 0
+        #sequence_type
+        generic_error_message = "Parsing stopped at Line %d: Your fasta file seems to have the " +
+            "following invalid characters in it: %s. Please see the fasta " + 
+            "format specification and ensure that you have the right program selected." 
+        #Declare some regular expressions
+        description_line_regexp = Regexp.new('^([>].*)$','i')
+        blank_line_regexp = Regexp.new('^$')
+        sequence_line_regexpes = {}
+        sequence_line_regexpes[:protein] = Regexp.new('^([ABCDEFGHIKLMNPQRSTUVWYZX*\-]+)$','i')
+        sequence_line_regexpes[:nucleotide] = Regexp.new('^([ATGCX\-]+)$','i')
+        #Determine whether to validate for a protein or nucleotide sequence 
+        #    based on the program that the user selected
+        if (self.program == :blastp or self.program == :tblastn)
+            sequence_type = :protein
+        else
+            sequence_type = :nucleotide
+        end
+        #Declare some more variables
+        line_count = 0
+        previous_line = nil
+        #Loop through the file, validating it and stopping if any errors are found
+        while (not self.fasta_file.tempfile.eof?)
+            line = self.fasta_file.tempfile.readline
+            line_count+=1
+            if (previous_line.nil?  or previous_line == :blank_line or previous_line == :sequence_line)
+                if (line =~ description_line_regexp)
+                    previous_line = :description_line
+                elsif (line =~ blank_line_regexp)
+                    previous_line = :blank_line
+                elsif (line =~ sequence_line_regexpes[sequence_type])
+                    previous_line = :sequence_line
+                    sequequence_length+=line.length
+                else
+                    illegal_characters_string = find_illegal_characters(line,:protein)
+                    errors[:fasta_file] << generic_error_message % [line_count, illegal_characters_string]
+                    return
+                end
+            elsif (previous_line == :description_line)
+                if (line =~ description_line_regexp)
+                    errors[:fasta_file] << "Cannot have two description lines in a row"
+                    return
+                elsif (line =~ blank_line_regexp)
+                    errors[:fasta_file] << "Parsing stopped at line #{line_count}: Cannot have a blank line after a description line. " + 
+                        "Have a sequence line instead."
+                    return
+                elsif (line =~ sequence_line_regexp)
+                    previous_line = :sequence_line
+                    sequequence_length+=line.length
+                else    #something is invalid
+                    illegal_characters_string = find_illegal_characters(line,:protein)
+                    errors[:fasta_file] << generic_error_message % [line_count, illegal_characters_string]
+                    return
+                end
+            end
+        end 
+        #Validate that the subsequence range is within the range of the actual sequence
+        if not self.subsequence_to.empty?
+            if (self.subsequence_to > sequence_length)
+                errors[:subsequence_to] << "The subsequence upper bound cannot be greater " +
+                    "than the length of the fasta sequence (" + sequence_length + ")"
+            end
+        end
+    end
+    
+    #find illegal characters in fasta sequence
+    def find_illegal_characters(sequence,sequence_type)
+        if (sequence_type == :nucleotide)
+            regexp = Regexp.new("([^ATGCX\-])","i")
+        #Protein
+        else
+            regexp= Regexp.new("([^ABCDEFGHIKLMNPQRSTUVWYZX*\-])","i")
+        end
+        illegal_characters = sequence.scan(regexp).uniq.flatten
+        illegal_characters_string=""
+        illegal_characters.each do |i|
+            illegal_characters_string+=i
+        end
+        return illegal_characters_string
+    end
+    
+    def validate_subsequences
         #Validate that subsequences are above 0 if there are filled in
         if (not self.subsequence_from.empty?)
             if (self.subsequence_from.to_i < 1)
@@ -60,259 +197,6 @@ class Blast_Query
                 errors[:subsequence_from] << "Must be less than subsequence to"
                 errors[:subsequence_to] << "Must be greater than subsequence from"
             end
-        end
-        #Validate the fasta sequence if there is something in it
-        self.fasta_sequence.strip! #remove white space and tabs from the ends
-        if (not self.fasta_sequence.empty?)
-            #Parse fasta sequence to validate it
-            tmp_sequence = self.fasta_sequence
-            tmp_sequence.gsub!(/^([>].+)$/,'')    #remove description lines
-            tmp_sequence.gsub!(/\n|\r/,'') #remove the newlines
-            #Validate that the sequence contains data besides description lines
-            if (tmp_sequence.empty?)
-                errors[:fasta_sequence] << "Please enter some sequence letters, not just fasta definition lines"
-                return
-            end
-            #Validate that sequence is a protein sequence if that is what
-            #   the blast program expects
-            if (self.program == :blastp or self.program == :tblastn)
-                if ( not (tmp_sequence =~/\A[ABCDEFGHIKLMNPQRSTUVWYZX*\-]+\z/i))
-                    illegal_characters = tmp_sequence.scan(/([^ABCDEFGHIKLMNPQRSTUVWYZX*\-])/i).uniq.flatten
-                    illegal_characters_string=""
-                    illegal_characters.each do |i|
-                        illegal_characters_string+=i
-                    end
-                    errors[:fasta_sequence] << "Your fasta sequence seems to " +
-                        "have the following invalid characters in it: " +
-                        "#{illegal_characters_string}. Please see the fasta format" +
-                        "specification."
-                end
-            #Validate that the sequence is a nucleotide sequence if that is what
-            #   the blast program expects
-            else
-                if ( not (tmp_sequence =~/\A[ATGCX\-]+\z/i))
-                    illegal_characters = tmp_sequence.scan(/([^ATGCX\-])/i).uniq.flatten
-                    illegal_characters_string=""
-                    illegal_characters.each do |i|
-                        illegal_characters_string+=i
-                    end
-                    errors[:fasta_sequence] << "Your fasta sequence seems to " +
-                        "have the following invalid characters in it: " +
-                        "#{illegal_characters_string}. If you want to do a " +
-                        "protein query, please select the blastp or tblastn program. " +
-                        "Otherwise, see the fasta format specification."
-                end
-            end
-            #Validate that the subsequence range is within the range of the actual sequence
-            if not self.subsequence_to.empty?
-                if tmp_sequence.length <self.subsequence_to.to_i
-                    errors[:subsequence_to] << "The subsequence upper bound cannot be greater " +
-                        "than the length of the fasta sequence (" + tmp_sequence.length.to_s + ")"
-                end
-            end
-        #Validate the uploaded fasta file if one was uploaded
-        elsif (not self.fasta_file.nil?)
-            #Validate that sequence is a protein sequence if that is what
-            #   the blast program expects
-            sequence_length = 0
-            if (self.program == :blastp or self.program == :tblastn)
-                line_count = 0
-                previous_line = nil
-                while (not self.fasta_file.tempfile.eof?)
-                    line = self.fasta_file.tempfile.readline
-                    line_count+=1
-                    if (previous_line.nil?)
-                        if (line =~ description_line_regexp)
-                            previous_line = :description_line
-                        elsif (line =~ blank_line_regexp)
-                            previous_line = :blank_line
-                        elsif (line =~ sequence_line_regexp)
-                            previous_line = :sequence_line
-                            sequequence_length+=line.length
-                        else
-                            illegal_characters = line.scan(/([^ABCDEFGHIKLMNPQRSTUVWYZX*\-])/i).uniq.flatten
-                            illegal_characters_string=""
-                            illegal_characters.each do |i|
-                                illegal_characters_string+=i
-                            end
-                            errors[:fasta_file] << "Line #{line_count}: Your fasta file seems to " +
-                                "have the following invalid characters in it: " +
-                                "#{illegal_characters_string}. Maybe the '>' is missing? Please see the fasta format" +
-                                "specification."
-                            return
-                        end
-                    elsif (previous_line == :blank_line)
-                        if (line =~ description_line_regexp)
-                            previous_line = :description_line
-                        elsif (line =~ blank_line_regexp)
-                            previous_line = :blank_line
-                        elsif (line =~ sequence_line_regexp)
-                            previous_line = :sequence_line
-                            sequequence_length+=line.length
-                        else
-                            illegal_characters = line.scan(/([^ABCDEFGHIKLMNPQRSTUVWYZX*\-])/i).uniq.flatten
-                            illegal_characters_string=""
-                            illegal_characters.each do |i|
-                                illegal_characters_string+=i
-                            end
-                            errors[:fasta_file] << "Line #{line_count}: Your fasta file seems to " +
-                                "have the following invalid characters in it: " +
-                                "#{illegal_characters_string}. Please see the fasta format" +
-                                "specification."
-                            return
-                        end
-                    elsif (previous_line == :sequence_line)
-                        if (line =~ description_line_regexp)
-                            previous_line = :description_line
-                        elsif (line =~ blank_line_regexp)
-                            previous_line = :blank_line
-                        elsif (line =~ sequence_line_regexp)
-                            previous_line = :sequence_line
-                            sequequence_length+=line.length
-                        else
-                            illegal_characters = line.scan(/([^ABCDEFGHIKLMNPQRSTUVWYZX*\-])/i).uniq.flatten
-                            illegal_characters_string=""
-                            illegal_characters.each do |i|
-                                illegal_characters_string+=i
-                            end
-                            errors[:fasta_file] << "Line #{line_count}: Your fasta file seems to " +
-                                "have the following invalid characters in it: " +
-                                "#{illegal_characters_string}. Please see the fasta format" +
-                                "specification."
-                            return
-                        end
-                    elsif (previous_line == :description_line)
-                        if (line =~ description_line_regexp)
-                            errors[:fasta_file] << "Cannot have two description lines in a row"
-                            return
-                        elsif (line =~ blank_line_regexp)
-                            errors[:fasta_file] << "Line #{line_count}: Cannot have a blank line after a description line. " + 
-                                "Have a sequence line instead."
-                            return
-                        elsif (line =~ sequence_line_regexp)
-                            previous_line = :sequence_line
-                            sequequence_length+=line.length
-                        else    #something is invalid
-                            illegal_characters = line.scan(/([^ABCDEFGHIKLMNPQRSTUVWYZX*\-])/i).uniq.flatten
-                            illegal_characters_string=""
-                            illegal_characters.each do |i|
-                                illegal_characters_string+=i
-                            end
-                            errors[:fasta_file] << "Line #{line_count}: Your fasta file seems to " +
-                                "have the following invalid characters in it: " +
-                                "#{illegal_characters_string}. Please see the fasta format" +
-                                "specification."
-                            return
-                            end
-                        end
-                    end
-                end
-            #Validate that the sequence is a nucleotide sequence if that is what
-            #   the blast program expects
-            else
-                line_count = 0
-                previous_line = nil
-                while (not self.fasta_file.tempfile.eof?)
-                    line = self.fasta_file.tempfile.readline
-                    line_count+=1
-                    if (previous_line.nil?)
-                        if (line =~ description_line_regexp)
-                            previous_line = :description_line
-                        elsif (line =~ blank_line_regexp)
-                            previous_line = :blank_line
-                        elsif (line =~ sequence_line_regexp)
-                            previous_line = :sequence_line
-                            sequequence_length+=line.length
-                        else
-                            illegal_characters = tmp_sequence.scan(/([^ATGCX\-])/i).uniq.flatten
-                            illegal_characters_string=""
-                            illegal_characters.each do |i|
-                                illegal_characters_string+=i
-                            end
-                            errors[:fasta_file] << "Line #{line_count}: Your fasta file seems to " +
-                                "have the following invalid characters in it: " +
-                                "#{illegal_characters_string}. Maybe the '>' is missing? Please see the fasta format" +
-                                "specification."
-                            return
-                        end
-                    elsif (previous_line == :blank_line)
-                        if (line =~ description_line_regexp)
-                            previous_line = :description_line
-                        elsif (line =~ blank_line_regexp)
-                            previous_line = :blank_line
-                        elsif (line =~ sequence_line_regexp)
-                            previous_line = :sequence_line
-                            sequequence_length+=line.length
-                        else
-                            illegal_characters = tmp_sequence.scan(/([^ATGCX\-])/i).uniq.flatten
-                            illegal_characters_string=""
-                            illegal_characters.each do |i|
-                                illegal_characters_string+=i
-                            end
-                            errors[:fasta_file] << "Line #{line_count}: Your fasta file seems to " +
-                                "have the following invalid characters in it: " +
-                                "#{illegal_characters_string}. Please see the fasta format" +
-                                "specification."
-                            return
-                        end
-                    elsif (previous_line == :sequence_line)
-                        if (line =~ description_line_regexp)
-                            previous_line = :description_line
-                        elsif (line =~ blank_line_regexp)
-                            previous_line = :blank_line
-                        elsif (line =~ sequence_line_regexp)
-                            previous_line = :sequence_line
-                            sequequence_length+=line.length
-                        else
-                            illegal_characters = tmp_sequence.scan(/([^ATGCX\-])/i).uniq.flatten
-                            illegal_characters_string=""
-                            illegal_characters.each do |i|
-                                illegal_characters_string+=i
-                            end
-                            errors[:fasta_file] << "Line #{line_count}: Your fasta file seems to " +
-                                "have the following invalid characters in it: " +
-                                "#{illegal_characters_string}. Please see the fasta format" +
-                                "specification."
-                            return
-                        end
-                    elsif (previous_line == :description_line)
-                        if (line =~ description_line_regexp)
-                            errors[:fasta_file] << "Cannot have two description lines in a row"
-                            return
-                        elsif (line =~ blank_line_regexp)
-                            errors[:fasta_file] << "Line #{line_count}: Cannot have a blank line after a description line. " + 
-                                "Have a sequence line instead."
-                            return
-                        elsif (line =~ sequence_line_regexp)
-                            previous_line = :sequence_line
-                            sequequence_length+=line.length
-                        else    #something is invalid
-                            illegal_characters = tmp_sequence.scan(/([^ATGCX\-])/i).uniq.flatten
-                            illegal_characters_string=""
-                            illegal_characters.each do |i|
-                                illegal_characters_string+=i
-                            end
-                            errors[:fasta_file] << "Line #{line_count}: Your fasta file seems to " +
-                                "have the following invalid characters in it: " +
-                                "#{illegal_characters_string}. Please see the fasta format" +
-                                "specification."
-                            return
-                            end
-                        end
-                    end
-                end
-            end
-            #Validate that the subsequence range is within the range of the actual sequence
-            if not self.subsequence_to.empty?
-               if (self.subsequence_to > sequence_length)
-                    errors[:subsequence_to] << "The subsequence upper bound cannot be greater " +
-                        "than the length of the fasta sequence (" + sequence_length + ")"
-               end
-            end
-        #If neither a file was uploaded nor a fasta sequence entered,create errors messages    
-        else
-            errors[:fasta_sequence] << "Please enter a fasta sequence and/or upload a fasta file"
-            errors[:fasta_file] << "Please enter a fasta sequence and/or upload a fasta file"
         end
     end
 end 
