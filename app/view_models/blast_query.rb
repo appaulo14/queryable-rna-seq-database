@@ -4,7 +4,7 @@ class Blast_Query
     extend ActiveModel::Naming
     
     attr_accessor :program, :dataset, :fasta_sequence,:fasta_file, :subsequence_from,:subsequence_to,
-        :filter_for_low_complexity,:mask_for_lookup_table_only, :e_value,:matrix,#:perform_ungapped_alignment,
+        :filter_for_low_complexity,:mask_for_lookup_table_only, :e_value,:matrix,:perform_ungapped_alignment,
         :query_genetic_codes,:database_genetic_codes,:frame_shift_penalty,
         :gap_open_penalty,:gap_extension_penalty,:mismatch_penalty,:match_reward,
         :blastn_word_size,:non_blastn_word_size,:number_of_one_line_descriptions,
@@ -16,6 +16,8 @@ class Blast_Query
     validates :mask_for_lookup_table_only, :inclusion => {:in => ['1', '0']}
     validates :e_value, :numericality => {:only_double => true}
     validates :matrix, :inclusion => {:in => ['PAM30','PAM70','BLOSUM80','BLOSUM62','BLOSUM45']}
+    validates :number_of_one_line_descriptions, :numericality => {:only_integer => true}
+    validates :number_of_alignments_to_show, :numericality => {:only_integer => true}
     
     #validates :subsequence_from, :numericality => { :greater_than => 0.0 }#, :less_than_or_equal_to => :subsequence_to }
     #validates :subsequence_to, :numericality => { :greater_than => 0.0 }
@@ -26,7 +28,7 @@ class Blast_Query
         attributes.each do |name, value|
             send("#{name}=", value)
         end
-        #Set the default values if they were not filled in by form data
+        #Set the default values
         if (self.program.nil?)
             self.program=:blastn
         end
@@ -47,6 +49,12 @@ class Blast_Query
         end
         if (self.e_value.nil?)
             self.e_value = 10.0
+        end
+        if (self.number_of_one_line_descri.nil?)
+            self.number_of_one_line_descriptions = 500
+        end
+        if (self.number_of_alignments_to_show.nil?)
+            self.number_of_alignments_to_show = 250
         end
     end
     
