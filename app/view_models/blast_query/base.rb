@@ -1,13 +1,13 @@
-class Blast_Query
+module Blast_Query
+class Base
     include ActiveModel::Validations
     include ActiveModel::Conversion
     extend ActiveModel::Naming
     
-    attr_accessor :program, :dataset, :fasta_sequence,:fasta_file, :subsequence_from,:subsequence_to,
+    attr_accessor :dataset, :fasta_sequence,:fasta_file, :subsequence_from,:subsequence_to,
         :filter_for_low_complexity,:mask_for_lookup_table_only, :e_value,:matrix,:perform_ungapped_alignment,
-        :query_genetic_codes,:database_genetic_codes,:frame_shift_penalty,
         :gap_open_penalty,:gap_extension_penalty,:mismatch_penalty,:match_reward,
-        :blastn_word_size,:non_blastn_word_size,:number_of_one_line_descriptions,
+        :word_size,:number_of_one_line_descriptions,
         :number_of_alignments_to_show,:ouput_format
     
     #TODO: Add database validation
@@ -23,39 +23,38 @@ class Blast_Query
     #validates :subsequence_to, :numericality => { :greater_than => 0.0 }
     
     def initialize(attributes = {})
-        QueryAnalysisHelper.goat()
         #Load in any values from the form
         attributes.each do |name, value|
             send("#{name}=", value)
         end
         #Set the default values
-        if (self.program.nil?)
-            self.program=:blastn
-        end
-        if (self.fasta_sequence.nil?)
-            self.fasta_sequence = ""
-        end
-#         if (self.subsequence_from.nil? or self.subsequence_from.empty?)
-#             self.subsequence_from = 1
+#         if (self.program.nil?)
+#             self.program=:blastn
 #         end
-        if (self.filter_for_low_complexity.nil?)
-            self.filter_for_low_complexity = '1'
-        end
-        if (self.mask_for_lookup_table_only.nil?)
-            self.mask_for_lookup_table_only = '1'
-        end
-        if (self.matrix.nil?)
-            self.matrix = 'BLOSUM62'
-        end
-        if (self.e_value.nil?)
-            self.e_value = 10.0
-        end
-        if (self.number_of_one_line_descri.nil?)
-            self.number_of_one_line_descriptions = 500
-        end
-        if (self.number_of_alignments_to_show.nil?)
-            self.number_of_alignments_to_show = 250
-        end
+#         if (self.fasta_sequence.nil?)
+#             self.fasta_sequence = ""
+#         end
+# #         if (self.subsequence_from.nil? or self.subsequence_from.empty?)
+# #             self.subsequence_from = 1
+# #         end
+#         if (self.filter_for_low_complexity.nil?)
+#             self.filter_for_low_complexity = '1'
+#         end
+#         if (self.mask_for_lookup_table_only.nil?)
+#             self.mask_for_lookup_table_only = '1'
+#         end
+#         if (self.matrix.nil?)
+#             self.matrix = 'BLOSUM62'
+#         end
+#         if (self.e_value.nil?)
+#             self.e_value = 10.0
+#         end
+#         if (self.number_of_one_line_descri.nil?)
+#             self.number_of_one_line_descriptions = 500
+#         end
+#         if (self.number_of_alignments_to_show.nil?)
+#             self.number_of_alignments_to_show = 250
+#         end
     end
     
     def persisted?
@@ -221,4 +220,5 @@ class Blast_Query
             end
         end
     end
-end 
+end
+end

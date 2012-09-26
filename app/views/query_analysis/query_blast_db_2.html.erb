@@ -9,8 +9,8 @@
 <h2>Choose a query, aprogram to use, and database to search:</h2>
     <!--Select Program and Database-->
     <p>
-        <%= bq.label :program, "Program:" %>
-        <%= bq.select :program, options_for_select([:blastn,:blastp,:blastx,:tblastn,:tblastx], @blast_query.program) %>
+        <!--<%= bq.label :program, "Program:" %>
+        <%= bq.select :program, options_for_select([:blastn,:blastp,:blastx,:tblastn,:tblastx], @blast_query.program) %>-->
         <%= label(:select_dataset, "Dataset:") %>
         <%= select_tag(:select_program, options_for_select([['Mus musculus 8.10.2012', '72'],['Mus musculus 5.11.2012', '64'],['Rattus norvegicus 18','45']],'72')) %>
     </p>

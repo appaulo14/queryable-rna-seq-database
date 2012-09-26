@@ -1,4 +1,5 @@
 class QueryAnalysisController < ApplicationController
+    include Blast_Query
   def upload_main_menu
       debugger if ENV['RAILS_DEBUG'] == "true"
       if request.post? and not params[:data_type].nil?
@@ -63,11 +64,39 @@ class QueryAnalysisController < ApplicationController
   
   def query_blast_db_2
       if request.get?
-        @blast_query = Blast_Query.new()
+        @blast_query = Blast_Query::Base.new()
       elsif request.post?
-        @blast_query = Blast_Query.new(params[:blast_query])
+        @blast_query = Blast_Query::Base.new(params[:blast_query])
         debugger if ENV['RAILS_DEBUG'] == "true"
         if @blast_query.valid?
+          flash[:success] = "Success"
+        else
+          flash[:success]="Failure"
+        end
+      end
+  end
+  
+  def blastn
+      if request.get?
+        @blastn_query = Blast_Query::Blastn_Query.new()
+      elsif request.post?
+        @blastn_query = Blast_Query::Blastn_Query.new(params[:blastn_query])
+        debugger if ENV['RAILS_DEBUG'] == "true"
+        if @blastn_query.valid?
+          flash[:success] = "Success"
+        else
+          flash[:success]="Failure"
+        end
+      end
+  end
+  
+  def tblastn
+      if request.get?
+        @tblastn_query = Blast_Query::Tblastn_Query.new()
+      elsif request.post?
+        @tblastn_query = Blast_Query::Tblastn_Query.new(params[:tblastn_query])
+        debugger if ENV['RAILS_DEBUG'] == "true"
+        if @tblastn_query.valid?
           flash[:success] = "Success"
         else
           flash[:success]="Failure"

@@ -37,6 +37,12 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
   get  "query_analysis/query_blast_db"
   get  "query_analysis/query_blast_db_2"
   post "query_analysis/query_blast_db_2"
+  
+  get  "query_analysis/blastn"
+  post "query_analysis/blastn"
+  
+  get  "query_analysis/tblastn"
+  post "query_analysis/tblastn"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
