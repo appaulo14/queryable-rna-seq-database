@@ -3,7 +3,7 @@ class Blast_Query
     include ActiveModel::Conversion
     extend ActiveModel::Naming
     
-    attr_accessor :program, :dataset, :fasta_sequence,:fasta_file, #:subsequence_from,:subsequence_to,
+    attr_accessor :program, :dataset, :fasta_sequence,:fasta_file, :subsequence_from,:subsequence_to,
         :filter_for_low_complexity,:mask_for_lookup_table_only, :e_value,:matrix,#:perform_ungapped_alignment,
         :query_genetic_codes,:database_genetic_codes,:frame_shift_penalty,
         :gap_open_penalty,:gap_extension_penalty,:mismatch_penalty,:match_reward,
@@ -12,8 +12,10 @@ class Blast_Query
     
     #TODO: Add database validation
     validate :validate_fasta_and_subsequences
-    validates :filter_for_low_complexity, :inclusion => {:in => [true, false]}
-    validates :mask_for_lookup_table_only, :inclusion => {:in => [true, false]}
+    validates :filter_for_low_complexity,  :inclusion => {:in => ['1', '0']}
+    validates :mask_for_lookup_table_only, :inclusion => {:in => ['1', '0']}
+    validates :e_value, :numericality => {:only_double => true}
+    validates :matrix, :inclusion => {:in => ['PAM30','PAM70','BLOSUM80','BLOSUM62','BLOSUM45']}
     
     #validates :subsequence_from, :numericality => { :greater_than => 0.0 }#, :less_than_or_equal_to => :subsequence_to }
     #validates :subsequence_to, :numericality => { :greater_than => 0.0 }
@@ -35,10 +37,16 @@ class Blast_Query
 #             self.subsequence_from = 1
 #         end
         if (self.filter_for_low_complexity.nil?)
-            self.filter_for_low_complexity = true
+            self.filter_for_low_complexity = '1'
         end
         if (self.mask_for_lookup_table_only.nil?)
-            self.mask_for_lookup_table_only = true
+            self.mask_for_lookup_table_only = '1'
+        end
+        if (self.matrix.nil?)
+            self.matrix = 'BLOSUM62'
+        end
+        if (self.e_value.nil?)
+            self.e_value = 10.0
         end
     end
     
@@ -97,7 +105,7 @@ class Blast_Query
             end
         end
         #Validate that the subsequence range is within the range of the actual sequence
-        if not self.subsequence_to.empty?
+        if not self.subsequence_to.nil? and not self.subsequence_to.empty?
             if tmp_sequence.length <self.subsequence_to.to_i
                 errors[:subsequence_to] << "The subsequence upper bound cannot be greater " +
                     "than the length of the fasta sequence (" + tmp_sequence.length.to_s + ")"
@@ -107,8 +115,6 @@ class Blast_Query
     
     def validate_fasta_file
         #Declare some variables
-        sequence_length = 0
-        #sequence_type
         generic_error_message = "Parsing stopped at Line %d: Your fasta file seems to have the " +
             "following invalid characters in it: %s. Please see the fasta " + 
             "format specification and ensure that you have the right program selected." 
@@ -139,7 +145,7 @@ class Blast_Query
                     previous_line = :blank_line
                 elsif (line =~ sequence_line_regexpes[sequence_type])
                     previous_line = :sequence_line
-                    sequequence_length+=line.length
+                    #sequequence_length+=line.length
                 else
                     illegal_characters_string = find_illegal_characters(line,:protein)
                     errors[:fasta_file] << generic_error_message % [line_count, illegal_characters_string]
@@ -153,9 +159,8 @@ class Blast_Query
                     errors[:fasta_file] << "Parsing stopped at line #{line_count}: Cannot have a blank line after a description line. " + 
                         "Have a sequence line instead."
                     return
-                elsif (line =~ sequence_line_regexp)
+                elsif (line =~ sequence_line_regexpes[sequence_type])
                     previous_line = :sequence_line
-                    sequequence_length+=line.length
                 else    #something is invalid
                     illegal_characters_string = find_illegal_characters(line,:protein)
                     errors[:fasta_file] << generic_error_message % [line_count, illegal_characters_string]
@@ -163,13 +168,13 @@ class Blast_Query
                 end
             end
         end 
-        #Validate that the subsequence range is within the range of the actual sequence
-        if not self.subsequence_to.empty?
-            if (self.subsequence_to > sequence_length)
-                errors[:subsequence_to] << "The subsequence upper bound cannot be greater " +
-                    "than the length of the fasta sequence (" + sequence_length + ")"
-            end
-        end
+#         #Validate that the subsequence range is within the range of the actual sequence
+#         if not self.subsequence_to.empty?
+#             if (self.subsequence_to > sequence_length)
+#                 errors[:subsequence_to] << "The subsequence upper bound cannot be greater " +
+#                     "than the length of the fasta sequence (" +                                       ngth + ")"
+#             end
+#         end
     end
     
     #find illegal characters in fasta sequence
@@ -190,18 +195,18 @@ class Blast_Query
     
     def validate_subsequences
         #Validate that subsequences are above 0 if there are filled in
-        if (not self.subsequence_from.empty?)
+        if (not self.subsequence_from.nil? and not self.subsequence_from.empty?)
             if (self.subsequence_from.to_i < 1)
                 errors[:subsequence_from] << "Must be greater than 1"
             end
         end
-        if (not self.subsequence_to.empty?)
+        if (not self.subsequence_to.nil? and not self.subsequence_to.empty?)
             if (self.subsequence_to.to_i < 1)
                 errors[:subsequence_to] << "Must be greater than 1"
             end
         end
         #Validate the subsequence_to is greater than subsequence_from if they both exist
-        if (not self.subsequence_from.empty? and not self.subsequence_to.empty?)
+        if (not self.subsequence_from.nil? and not self.subsequence_from.empty? and not self.subsequence_to.nil? and not self.subsequence_to.empty?)
             if (self.subsequence_from > self.subsequence_to)
                 errors[:subsequence_from] << "Must be less than subsequence to"
                 errors[:subsequence_to] << "Must be greater than subsequence from"

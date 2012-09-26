@@ -10,7 +10,6 @@
     <!--Select Program and Database-->
     <p>
         <%= bq.label :program, "Program:" %>
-        <!--<%= bq.select :program, options_for_select([['blastn', 'blastn'],['blastp','blastp'],['blastx','blastx'],['tblastn','tblastn'],['tblastx','tblastx']], @blast_query.program) %>-->
         <%= bq.select :program, options_for_select([:blastn,:blastp,:blastx,:tblastn,:tblastx], @blast_query.program) %>
         <%= label(:select_dataset, "Dataset:") %>
         <%= select_tag(:select_program, options_for_select([['Mus musculus 8.10.2012', '72'],['Mus musculus 5.11.2012', '64'],['Rattus norvegicus 18','45']],'72')) %>
@@ -37,8 +36,10 @@
         <%= bq.check_box :mask_for_lookup_table_only %> <%= bq.label :mask_for_lookup_table_only, "Mask for lookup table only" %>
     </p>
     <p>
-        <label for="e_value">Expect (e-value)</label><%= select_tag(:e_evalue, options_for_select([[0.0001, 0.0001],[0.01, 0.01],[1,1],[10,10],[100,100],[1000,1000]],10)) %>
-        <label for="matrix">Matrix</label><%= select_tag(:matrix, options_for_select([['PAM30','PAM30'],['PAM70','PAM70'],['BLOSUM80','BLOSUM80'],['BLOSUM62','BLOSUM62'],['BLOSUM45','BLOSUM45']],'BLOSUM62')) %>
+        <!--<label for="e_value">Expect (e-value)</label><%= select_tag(:e_evalue, options_for_select([[0.0001, 0.0001],[0.01, 0.01],[1,1],[10,10],[100,100],[1000,1000]],10)) %>-->
+       <%= bq.label :e_value, "Expect threshold (e-value)" %><%= bq.text_field :e_value %>
+       <!-- <label for="matrix">Matrix</label><%= select_tag(:matrix, options_for_select([:PAM30,:PAM70,:BLOSUM80,:BLOSUM62,:BLOSUM45],@blast_query.matrix)) %>-->
+       <%= bq.label :matrix, "Matrix" %><%= bq.select :matrix, options_for_select(['PAM30','PAM70','BLOSUM80','BLOSUM62','BLOSUM45'], @blast_query.matrix) %>
        <!-- <%= check_box_tag(:perform_ungapped_alignment,"true",false)%><label for="perform_ungapped_alignment">Perform ungapped alignment?</label>-->
     </p>
     <p>
@@ -87,6 +88,7 @@
             <%= text_field_tag(:number_of_alignments_to_show,100) %>
         </div>
     <hr/>
+    <h3>Program specific options</h3>
     <p>
         <label for="ouput_format">Output Format</label>
         <%= select_tag(:ouput_format, options_for_select([['Pairwise', 'Pairwise'],['XML Blast Output', 'XML'],['Tabular','Tabular'],['Tabular with Comment Lines','Tabular with Comment Lines'],['Comma-separated values','Comma-separated values']],'Pairwise')) %>
