@@ -75,21 +75,6 @@
         <label for="number_of_alignments_to_show">Number of alignments to show (B) [Integer]</label>
         <%= text_field_tag(:number_of_alignments_to_show,100) %>
     </div>
-    <hr/>
-        <h2>Program specific options</h2>
-        <p>
-            <label for="query_genetic_codes">Query Genetic Codes (blastx only)</label>
-            <%= select_tag(:query_genetic_codes, options_for_select([['Standard (1)',1],['Vertebrate Mitochondrial (2)', 2],['Yeast Mitochondrial (3)',3],['Mold Mitochondrial (4)',4],['Invertebrate Mitochondrial (5)',5],['Ciliate Nuclear (6)',6],['Echinoderm Mitochondrial (9)',9],['Euplotid Nuclear (10)',10],['Bacterial (11)',11],['Alternative Yeast Nuclear (12)',12],['Ascidian Mitochondrial (13)',13],['Flatworm Mitochondrial (14)',14],['Blepharisma Macronuclear (15)',15]],1)) %>
-        </p>
-        <p>
-            <label for="frame_shift_penalty">Frame shift penalty (blastx only)</label>
-            <%= select_tag(:frame_shift_penalty, options_for_select([[6,6],[7,7],[8,8],[9,9],[10,10],[11,11],[12,12],[13,13],[14,14],[15,15],[16,16],[17,17],[18,18],[19,19],[20,20],[25,25],[30,30],[50,50],[1000,100],['No OOF','No OOF']],'No OOF')) %>
-        </p>
-        <p>
-            <label for="database_genetic_codes">Database Genetic Codes (tblast[nx] only)</label>
-            <%= select_tag(:database_genetic_codes, options_for_select([['Standard (1)',1],['Vertebrate Mitochondrial (2)', 2],['Yeast Mitochondrial (3)',3],['Mold Mitochondrial (4)',4],['Invertebrate Mitochondrial (5)',5],['Ciliate Nuclear (6)',6],['Echinoderm Mitochondrial (9)',9],['Euplotid Nuclear (10)',10],['Bacterial (11)',11],['Alternative Yeast Nuclear (12)',12],['Ascidian Mitochondrial (13)',13],['Flatworm Mitochondrial (14)',14],['Blepharisma Macronuclear (15)',15]],1)) %>
-        </p>
-    <hr/>
     <p>
         <h2>Output Format</h2>
         <label for="ouput_format">Output Format</label>

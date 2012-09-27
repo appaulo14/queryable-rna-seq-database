@@ -8,7 +8,7 @@ class Base
         :filter_for_low_complexity,:mask_for_lookup_table_only, :e_value,:matrix,:perform_ungapped_alignment,
         :gap_open_penalty,:gap_extension_penalty,:mismatch_penalty,:match_reward,
         :word_size,:number_of_one_line_descriptions,
-        :number_of_alignments_to_show,:ouput_format
+        :number_of_alignments_to_show,:output_format
     
     #TODO: Add database validation
     validate :validate_fasta_and_subsequences
@@ -27,34 +27,23 @@ class Base
         attributes.each do |name, value|
             send("#{name}=", value)
         end
-        #Set the default values
-#         if (self.program.nil?)
-#             self.program=:blastn
-#         end
-#         if (self.fasta_sequence.nil?)
-#             self.fasta_sequence = ""
-#         end
-# #         if (self.subsequence_from.nil? or self.subsequence_from.empty?)
-# #             self.subsequence_from = 1
-# #         end
-#         if (self.filter_for_low_complexity.nil?)
-#             self.filter_for_low_complexity = '1'
-#         end
-#         if (self.mask_for_lookup_table_only.nil?)
-#             self.mask_for_lookup_table_only = '1'
-#         end
-#         if (self.matrix.nil?)
-#             self.matrix = 'BLOSUM62'
-#         end
-#         if (self.e_value.nil?)
-#             self.e_value = 10.0
-#         end
-#         if (self.number_of_one_line_descri.nil?)
-#             self.number_of_one_line_descriptions = 500
-#         end
-#         if (self.number_of_alignments_to_show.nil?)
-#             self.number_of_alignments_to_show = 250
-#         end
+        #Set default values
+        #Defaults taken from http://www.ncbi.nlm.nih.gov/books/NBK1763/#CmdLineAppsManual.Appendix_C_Options_for
+        if (self.e_value.nil?)
+            self.e_value = 10.0
+        end
+        if (self.number_of_one_line_descriptions.nil?)
+            self.number_of_one_line_descriptions = 500
+        end
+        if (self.number_of_alignments_to_show.nil?)
+            self.number_of_alignments_to_show = 250
+        end
+        if (self.output_format.nil?)
+            self.output_format = 0
+        end
+    end
+    
+    def query()
     end
     
     def persisted?

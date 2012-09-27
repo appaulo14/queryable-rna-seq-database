@@ -34,41 +34,55 @@ Set subsequence:
     <%= bq.check_box :perform_ungapped_alignment %><%= bq.label :perform_ungapped_alignment, "Perform ungapped alignment?" %>
 </p>
 <div>
-    <label for="cost_to_open_gap">Cost to open a gap [Integer]</label>
-    <%= text_field_tag(:cost_to_open_gap,5) %>
+    <!--<label for="cost_to_open_gap">Cost to open a gap [Integer]</label>
+    <%= text_field_tag(:cost_to_open_gap,5) %>-->
+    <%= bq.label :gap_open_penalty, "Cost to open a gap [Integer]" %>
+    <%= bq.text_field :gap_open_penalty %>
 </div>
 <div>
-    <label for="cost_to_extend_gap">Cost to extend a gap [Integer]</label>
-    <%= text_field_tag(:cost_to_extend_gap,2) %>
+    <!--<label for="cost_to_extend_gap">Cost to extend a gap [Integer]</label>
+    <%= text_field_tag(:cost_to_extend_gap,2) %>-->
+    <%= bq.label :gap_extension_penalty, "Cost to extend a gap [Integer]" %>
+    <%= bq.text_field :gap_extension_penalty %>
 </div>
 <div>
-    <label for="mismatch_penalty">Penalty for a mismatch in the blast portion of run [Integer]</label>
-    <%= text_field_tag(:mismatch_penalty,-3) %>
+    <!--<label for="mismatch_penalty">Penalty for a mismatch in the blast portion of run [Integer]</label>
+    <%= text_field_tag(:mismatch_penalty,-3) %>-->
+    <%= bq.label :mismatch_penalty, "Penalty for a mismatch in the blast portion of run [Integer]" %>
+    <%= bq.text_field :mismatch_penalty %>
 </div>
 <div>
-    <label for="match_reward">Reward for a match in the blast portion of run [Integer]</label>
-    <%= text_field_tag(:match_reward,1) %>
+    <!--<label for="match_reward">Reward for a match in the blast portion of run [Integer]</label>
+    <%= text_field_tag(:match_reward,1) %>-->
+    <%= bq.label :match_reward, "Reward for a match in the blast portion of run [Integer]" %>
+    <%= bq.text_field :match_reward %>
 </div>
 <div>
-    <label for="e_value_2">Expectation value (E) [Real]</label>
-    <%= text_field_tag(:e_value_2,10.0) %>
+    <!--<label for="word_size">Word size, default is 11 for blastn, 3 for other programs.</label>
+    <%= text_field_tag(:word_size,"3 or 11") %>-->
+    <%= bq.label :word_size, "Word size [Integer]" %>
+    <%= bq.text_field :word_size %>
 </div>
 <div>
-    <label for="word_size">Word size, default is 11 for blastn, 3 for other programs.</label>
-    <%= text_field_tag(:word_size,"3 or 11") %>
+    <!--<label for="number_of_one_line_descriptions">Number of one-line descriptions (V) [Integer]</label>
+    <%= text_field_tag(:number_of_one_line_descriptions,100) %>-->
+    <%= bq.label :number_of_one_line_descriptions, "Descriptions" %>>
+    <%= bq.select :number_of_one_line_descriptions, options_for_select([0,10,50,100,250,500],
+        bq.object.number_of_one_line_descriptions) %>
 </div>
 <div>
-    <label for="number_of_one_line_descriptions">Number of one-line descriptions (V) [Integer]</label>
-    <%= text_field_tag(:number_of_one_line_descriptions,100) %>
-</div>
-<div>
-    <label for="number_of_alignments_to_show">Number of alignments to show (B) [Integer]</label>
-    <%= text_field_tag(:number_of_alignments_to_show,100) %>
+    <!--<label for="number_of_alignments_to_show">Number of alignments to show (B) [Integer]</label>
+    <%= text_field_tag(:number_of_alignments_to_show,100) %>-->
+    <%= bq.label :number_of_alignments_to_show, "Number of alignments to show" %>
+    <%= bq.select :number_of_alignments_to_show, options_for_select([0,10,50,100,250,500],
+        bq.object.number_of_alignments_to_show) %>
 </div>
 <p>
     <h2>Output Format</h2>
-    <label for="ouput_format">Output Format</label>
-    <%= select_tag(:ouput_format, options_for_select([['Pairwise', 'Pairwise'],['XML Blast Output', 'XML'],['Tabular','Tabular'],['Tabular with Comment Lines','Tabular with Comment Lines'],['Comma-separated values','Comma-separated values']],'Pairwise')) %>
+    <!--<label for="ouput_format">Output Format</label>
+    <%= select_tag(:ouput_format, options_for_select([['Pairwise', 0],['XML Blast Output', 5],['Tabular',6],['Tabular with Comment Lines',7],['Comma-separated values',10]],bq.object.output_format)) %>-->
+    <%= bq.label :output_format, "Output Format" %>
+    <%= bq.select :output_format, options_for_select([['Pairwise', 0],['XML Blast Output', 5],['Tabular',6],['Tabular with Comment Lines',7],['Comma-separated values',10]],bq.object.output_format) %>
 </p>
 
 <script type="text/javascript">
