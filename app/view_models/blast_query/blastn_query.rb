@@ -23,5 +23,11 @@ class Blastn_Query < Blast_Query::Base
             self.match_reward = 2
         end
     end
+    
+    def query()
+        #Filter by low complexity and soft masking map to soft masking due to
+        #       http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.blastn_application_o/?report=objectonly
+        #       and http://www.ncbi.nlm.nih.gov/BLAST/blastcgihelp.shtml#filter
+    end
 end
 end

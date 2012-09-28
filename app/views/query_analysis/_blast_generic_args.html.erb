@@ -24,7 +24,7 @@ Set subsequence:
     The query sequence is filtered for low complexity regions by default.<br/>
     Filter
     <%= bq.check_box :filter_for_low_complexity %><%= bq.label :filter_for_low_complexity, "Low complexity" %>
-    <%= bq.check_box :mask_for_lookup_table_only %> <%= bq.label :mask_for_lookup_table_only, "Mask for lookup table only" %>
+    <%= bq.check_box :soft_masking %> <%= bq.label :soft_masking, "Mask for lookup table only" %>
 </p>
 <p>
     <!--<label for="e_value">Expect (e-value)</label><%= select_tag(:e_evalue, options_for_select([[0.0001, 0.0001],[0.01, 0.01],[1,1],[10,10],[100,100],[1000,1000]],10)) %>-->

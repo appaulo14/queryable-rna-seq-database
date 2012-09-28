@@ -43,6 +43,13 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
   
   get  "query_analysis/tblastn"
   post "query_analysis/tblastn"
+  
+  SequenceServer::App.init
+  mount SequenceServer::App, :at => "sequenceserver"
+  SequenceServer::App.routes do
+    get "get_sequence"# => "sequenceserver/get_sequence"
+  end
+  
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

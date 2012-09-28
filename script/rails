@@ -2,6 +2,7 @@
 # This command will automatically be run when you run "rails" with Rails 3 gems installed from the root of your application.
 
 #SSL support: From http://www.nearinfinity.com/blogs/chris_rohr/configuring_webrick_to_use_ssl.html
+#SSL support for thin server?: http://stackoverflow.com/questions/8753566/thin-with-ssl-support-and-ruby-debug
 require 'rubygems'
 require 'rails/commands/server'
 require 'rack'

@@ -5,7 +5,7 @@ class Base
     extend ActiveModel::Naming
     
     attr_accessor :dataset, :fasta_sequence,:fasta_file, :subsequence_from,:subsequence_to,
-        :filter_for_low_complexity,:mask_for_lookup_table_only, :e_value,:matrix,:perform_ungapped_alignment,
+        :filter_for_low_complexity,:soft_masking, :e_value,:matrix,:perform_ungapped_alignment,
         :gap_open_penalty,:gap_extension_penalty,:mismatch_penalty,:match_reward,
         :word_size,:number_of_one_line_descriptions,
         :number_of_alignments_to_show,:output_format
@@ -13,7 +13,7 @@ class Base
     #TODO: Add database validation
     validate :validate_fasta_and_subsequences
     validates :filter_for_low_complexity,  :inclusion => {:in => ['1', '0']}
-    validates :mask_for_lookup_table_only, :inclusion => {:in => ['1', '0']}
+    validates :soft_masking, :inclusion => {:in => ['1', '0']}
     validates :e_value, :numericality => {:only_double => true}
     validates :matrix, :inclusion => {:in => ['PAM30','PAM70','BLOSUM80','BLOSUM62','BLOSUM45']}
     validates :number_of_one_line_descriptions, :numericality => {:only_integer => true}
