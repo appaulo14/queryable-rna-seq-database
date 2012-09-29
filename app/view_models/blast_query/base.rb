@@ -5,7 +5,7 @@ class Base
     extend ActiveModel::Naming
     
     attr_accessor :dataset, :fasta_sequence,:fasta_file, :subsequence_from,:subsequence_to,
-        :filter_for_low_complexity,:soft_masking, :e_value,:matrix,:perform_ungapped_alignment,
+        :filter_for_low_complexity,:soft_masking, :e_value,:perform_ungapped_alignment,
         :gap_open_penalty,:gap_extension_penalty,:mismatch_penalty,:match_reward,
         :word_size,:number_of_one_line_descriptions,
         :number_of_alignments_to_show,:output_format
@@ -44,6 +44,7 @@ class Base
     end
     
     def query()
+        raise NotImplementedError.new("This must be implemented in derrived classes")
     end
     
     def persisted?

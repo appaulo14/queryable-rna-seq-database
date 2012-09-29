@@ -1,5 +1,7 @@
 module Blast_Query
 class Blastn_Query < Blast_Query::Base
+    attr_accessor :program
+    
     def initialize(attributes = {})
         #Load in any values from the form
         attributes.each do |name, value|
@@ -21,6 +23,10 @@ class Blastn_Query < Blast_Query::Base
         end
         if self.match_reward.nil?
             self.match_reward = 2
+        end
+        
+        if (self.soft_masking.nil?)
+            self.soft_masking = true
         end
     end
     

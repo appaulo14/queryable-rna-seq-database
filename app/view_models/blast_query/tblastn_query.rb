@@ -1,6 +1,6 @@
 module Blast_Query
 class Tblastn_Query < Blast_Query::Base
-    attr_accessor :database_genetic_codes
+    attr_accessor :database_genetic_codes,:matrix
     
     def initialize(attributes = {})
         #Load in any values from the form

@@ -2,6 +2,8 @@
 <%= form_for(@tblastn_query,{:url => "tblastn"}) do |bq| %>
     <%= render 'blast_generic_args', :bq => bq %>
     <h2>TBlastn-specific settings</h2>
+    <%= bq.label :matrix, "Matrix" %><%= bq.select :matrix, options_for_select(['PAM30','PAM70','BLOSUM80','BLOSUM62','BLOSUM45'],
+        bq.object.matrix) %>
     <%= bq.label :database_genetic_codes, "Database genetic codes" %>
     <%= bq.select :database_genetic_codes, options_for_select([['Standard (1)',1],['Vertebrate Mitochondrial (2)', 2],['Yeast Mitochondrial (3)',3],['Mold Mitochondrial (4)',4],['Invertebrate Mitochondrial (5)',5],['Ciliate Nuclear (6)',6],['Echinoderm Mitochondrial (9)',9],['Euplotid Nuclear (10)',10],['Bacterial (11)',11],['Alternative Yeast Nuclear (12)',12],['Ascidian Mitochondrial (13)',13],['Flatworm Mitochondrial (14)',14],['Blepharisma Macronuclear (15)',15]],bq.object.database_genetic_codes) %>
     <p><%= button_tag("Clear Sequence", :onclick=>"clear_sequence();", :type=>"button") %> <%= submit_tag("Search") %></p>

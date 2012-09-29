@@ -1,14 +1,14 @@
 #!/usr/bin/env ruby1.9.1
 # This command will automatically be run when you run "rails" with Rails 3 gems installed from the root of your application.
 
-#SSL support: From http://www.nearinfinity.com/blogs/chris_rohr/configuring_webrick_to_use_ssl.html
-#SSL support for thin server?: http://stackoverflow.com/questions/8753566/thin-with-ssl-support-and-ruby-debug
 require 'rubygems'
 require 'rails/commands/server'
 require 'rack'
+#require 'thin'
 require 'webrick'
 require 'webrick/https'
 
+# #SSL support for webrick: From http://www.nearinfinity.com/blogs/chris_rohr/configuring_webrick_to_use_ssl.html
 module Rails
     class Server < ::Rack::Server
         def default_options
@@ -36,6 +36,30 @@ module Rails
         end
     end
 end 
+
+#SSL support for thin server?: http://stackoverflow.com/questions/8753566/thin-with-ssl-support-and-ruby-debug
+# module Thin
+#   module Backends
+#     TcpServer.class_eval do
+#       def initialize_with_SSL(host, port)
+#         if Rails.env.development?
+#           Rails.logger.info "Loading SSL certs from file path"
+#           @ssl = true
+#           @ssl_options = {
+#             :private_key_file => File.expand_path("./cert/server.key", __FILE__),
+#             :cert_chain_file  => File.expand_path("./cert/server.crt", __FILE__),
+#             :verify_peer => nil
+#           }
+#         end
+# 
+#         initialize_without_SSL(host, port)
+#       end
+# 
+#       alias_method :initialize_without_SSL, :initialize
+#       alias_method :initialize, :initialize_with_SSL      
+#     end
+#   end
+# end
 
 APP_PATH = File.expand_path('../../config/application',  __FILE__)
 require File.expand_path('../../config/boot',  __FILE__)
