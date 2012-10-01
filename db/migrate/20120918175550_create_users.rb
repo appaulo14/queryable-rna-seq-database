@@ -4,13 +4,15 @@ class CreateUsers < ActiveRecord::Migration
     #   migation exception
   
   def up
-    create_table(:users, :primary_key => "eID") do |t|
+    create_table(:users, :id => false) do |t|
+      t.string :eid, :null => false
       t.string :email, :null => false
 
       t.timestamps
     end
-    change_column :users, :eID, :string
-    add_index :users, :email, :unique => true
+    #change_column :users, :eID, :string
+    execute('ALTER TABLE users ADD PRIMARY KEY (eid);')
+    #add_index :users, :email, :unique => true
   end
   
   def down
