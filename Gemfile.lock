@@ -54,8 +54,6 @@ GEM
     excon (0.16.2)
     execjs (1.4.0)
       multi_json (~> 1.0)
-    foreigner (1.2.1)
-      activerecord (>= 3.0.0)
     goruby (0.2.0)
       array_pair
       bio
@@ -165,7 +163,6 @@ DEPENDENCIES
   bio (= 1.4.2)
   coffee-rails (~> 3.2.1)
   debugger
-  foreigner
   goruby
   heroku
   jquery-rails

@@ -35,7 +35,9 @@ group :bioinformatics do
     gem 'goruby'
 end
 
-gem 'foreigner'
+#For foreigner key constraints. 
+#       Unfortunately, it doesn't have cascading updates from what I can ascertain.
+#gem 'foreigner'
 
 
 # To use ActiveModel has_secure_password

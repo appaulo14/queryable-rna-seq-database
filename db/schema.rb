@@ -11,7 +11,37 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120918175550) do
+ActiveRecord::Schema.define(:version => 20121001200119) do
+
+  create_table "job_statuses", :id => false, :force => true do |t|
+    t.string   "name",        :null => false
+    t.string   "description", :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  create_table "jobs", :force => true do |t|
+    t.string   "job_status",             :null => false
+    t.string   "current_program",        :null => false
+    t.string   "current_program_status", :null => false
+    t.string   "eid_of_owner",           :null => false
+    t.datetime "created_at",             :null => false
+    t.datetime "updated_at",             :null => false
+  end
+
+  create_table "program_statuses", :id => false, :force => true do |t|
+    t.string   "name",        :null => false
+    t.string   "description", :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  create_table "programs", :id => false, :force => true do |t|
+    t.string   "name",        :null => false
+    t.string   "description", :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
 
   create_table "users", :id => false, :force => true do |t|
     t.string   "eid",        :null => false
@@ -19,5 +49,10 @@ ActiveRecord::Schema.define(:version => 20120918175550) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  add_foreign_key "jobs", "job_statuses", :name => "job_statuses_fk", :column => "job_status", :primary_key => "name", :dependent => :restrict
+  add_foreign_key "jobs", "program_statuses", :name => "program_statuses_fk", :column => "current_program_status", :primary_key => "name", :dependent => :restrict
+  add_foreign_key "jobs", "programs", :name => "programs_fk", :column => "current_program", :primary_key => "name", :dependent => :restrict
+  add_foreign_key "jobs", "users", :name => "users_fk", :column => "eid_of_owner", :primary_key => "eid", :dependent => :restrict
 
 end
