@@ -12,7 +12,6 @@ class CreateUsers < ActiveRecord::Migration
     end
     #change_column :users, :eID, :string
     execute('ALTER TABLE users ADD PRIMARY KEY (eid);')
-    #add_index :users, :email, :unique => true
   end
   
   def down
