@@ -6,7 +6,9 @@ gem 'rails', '3.2.8'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'pg'
-
+# gem 'thin'
+gem 'sinatra'
+gem 'sequenceserver'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -27,6 +29,9 @@ gem 'heroku'
 group :development, :test do
   gem 'rspec-rails'
 end
+
+gem 'bio', :git => "git://github.com/bioruby/bioruby.git" #'1.4.2'
+gem 'goruby'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

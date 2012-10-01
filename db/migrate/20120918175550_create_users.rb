@@ -5,12 +5,16 @@ class CreateUsers < ActiveRecord::Migration
   
   def up
     create_table(:users, :primary_key => "eID") do |t|
-      t.string :email, :null => false
+      t.string :email, :limit => 45, :null => false
 
       t.timestamps
     end
     change_column :users, :eID, :string
     add_index :users, :email, :unique => true
+  end
+  
+  def down
+      drop_table :users
   end
   
   def down

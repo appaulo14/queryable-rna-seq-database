@@ -1,0 +1,5 @@
+<%= render 'shared/error_messages', :object => @blastn_query %>
+<%= form_for(@blastn_query,{:url => "blastn"}) do |bq| %>
+    <%= render 'blast_generic_args', :bq => bq %>
+    <p><%= button_tag("Clear Sequence", :onclick=>"clear_sequence();", :type=>"button") %> <%= submit_tag("Search") %></p>
+<% end %>
