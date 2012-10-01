@@ -50,9 +50,4 @@ ActiveRecord::Schema.define(:version => 20121001200119) do
     t.datetime "updated_at", :null => false
   end
 
-  add_foreign_key "jobs", "job_statuses", :name => "job_statuses_fk", :column => "job_status", :primary_key => "name", :dependent => :restrict
-  add_foreign_key "jobs", "program_statuses", :name => "program_statuses_fk", :column => "current_program_status", :primary_key => "name", :dependent => :restrict
-  add_foreign_key "jobs", "programs", :name => "programs_fk", :column => "current_program", :primary_key => "name", :dependent => :restrict
-  add_foreign_key "jobs", "users", :name => "users_fk", :column => "eid_of_owner", :primary_key => "eid", :dependent => :restrict
-
 end
