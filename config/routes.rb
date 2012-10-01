@@ -6,8 +6,9 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
 
   get "processing_analysis/reference_analysis"
 
-  get "processing_analysis/reference_analysis_isoforms_only"
-
+  get  "processing_analysis/reference_analysis_isoforms_only"
+  post "processing_analysis/reference_analysis_isoforms_only"
+  
   get "processing_analysis/de_novo_analysis_edgeR"
 
   get "processing_analysis/de_novo_analysis_cuffdiff"

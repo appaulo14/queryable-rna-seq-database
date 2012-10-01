@@ -77,6 +77,27 @@ class ProcessingAnalysisController < ApplicationController
   end
 
   def reference_analysis_isoforms_only
+      if (request.get?)
+          job_id = params[:job_id]
+          return if job_id.nil?
+          job = Job.find_by_id(job_id)
+          if (job.status == "complete")
+              @message = "job complete"
+          else
+              @message = "Incomplete"
+          end
+      elsif (request.post?)
+        job = Job.new()
+        job.status = "incomplete"
+        job.save()
+        child_pid = fork do
+            sleep 30
+            job.status = "complete"
+            job.save()
+            exit
+        end
+        Process.detach(child_pid)
+     end
   end
 
   def de_novo_analysis_edgeR
