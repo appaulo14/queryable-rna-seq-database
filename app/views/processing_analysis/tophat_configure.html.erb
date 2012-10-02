@@ -1,4 +1,9 @@
 <h1>Tophat configure</h1>
-<%= form_tag('/processing_analysis/tophat_configure') do %>
+<!--<%= form_tag('/processing_analysis/tophat_configure') do %>
     <%= submit_tag("Submit") %>
+<% end %>-->
+<%= form_for(@jobs,{:url => "tophat_configure"}) do |jobs| %>
+    <%= jobs.text_field :eid_of_owner %>
+    <%= jobs.text_field :eid_of_owner %>
+    <p><%= submit_tag("Search") %></p>
 <% end %>

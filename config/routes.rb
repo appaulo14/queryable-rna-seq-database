@@ -28,6 +28,21 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
   get "processing_analysis/de_novo_analysis_edgeR"
 
   get "processing_analysis/de_novo_analysis_cuffdiff"
+  
+  get  "processing_analysis/tophat_configure"
+  post "processing_analysis/tophat_configure"
+  get  "processing_analysis/tophat_in_progress"
+  get  "processing_analysis/tophat_success"
+  
+  get  "processing_analysis/cufflinks_configure"
+  post "processing_analysis/cufflinks_configure"
+  get  "processing_analysis/cufflinks_in_progress"
+  get  "processing_analysis/cufflinks_success"
+  
+  get  "processing_analysis/cuffcompare_configure"
+  post "processing_analysis/cuffcompare_configure"
+  get  "processing_analysis/cuffcompare_in_progress"
+  get  "processing_analysis/cuffcompare_success"
 
   #root :to => "query_analysis#upload_main_menu"
   root :to => "query_analysis#upload_de_novo_edgeR"
@@ -60,21 +75,6 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
   
   get  "query_analysis/tblastn"
   post "query_analysis/tblastn"
-  
-  get  "query_analysis/tophat_configure"
-  post "query_analysis/tophat_configure"
-  get  "query_analysis/tophat_in_progress"
-  get  "query_analysis/tophat_success"
-  
-  get  "query_analysis/cufflinks_configure"
-  post "query_analysis/cufflinks_configure"
-  get  "query_analysis/cufflinks_in_progress"
-  get  "query_analysis/cufflinks_success"
-  
-  get  "query_analysis/cuffcompare_configure"
-  post "query_analysis/cuffcompare_configure"
-  get  "query_analysis/cuffcompare_in_progress"
-  get  "query_analysis/cuffcompare_success"
   
   SequenceServer::App.init
   #match "/sequenceserver" => SequenceServer::App, :anchor => false

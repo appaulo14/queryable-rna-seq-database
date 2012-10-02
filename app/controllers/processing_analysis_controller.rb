@@ -131,6 +131,18 @@ class ProcessingAnalysisController < ApplicationController
     end
     
     def tophat_configure
+        debugger if ENV['RAILS_DEBUG'] == "true"
+        job1 = Job.new()
+        job1.eid_of_owner = "pawl"
+        job1.job_status = "in-progess"
+        job1.current_program = "tophat"
+        job1.current_program_status = "in-progress"
+        job2 = Job.new()
+        job2.eid_of_owner = "pawl2"
+        job2.job_status = "in-progess"
+        job2.current_program = "tophat"
+        job2.current_program_status = "in-progress"
+        @jobs = [job1,job2]
     end
     
     def tophat_in_progress
