@@ -61,6 +61,21 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
   get  "query_analysis/tblastn"
   post "query_analysis/tblastn"
   
+  get  "query_analysis/tophat_configure"
+  post "query_analysis/tophat_configure"
+  get  "query_analysis/tophat_in_progress"
+  get  "query_analysis/tophat_success"
+  
+  get  "query_analysis/cufflinks_configure"
+  post "query_analysis/cufflinks_configure"
+  get  "query_analysis/cufflinks_in_progress"
+  get  "query_analysis/cufflinks_success"
+  
+  get  "query_analysis/cuffcompare_configure"
+  post "query_analysis/cuffcompare_configure"
+  get  "query_analysis/cuffcompare_in_progress"
+  get  "query_analysis/cuffcompare_success"
+  
   SequenceServer::App.init
   #match "/sequenceserver" => SequenceServer::App, :anchor => false
   #match "/sequenceserver(/*other_params)" => SequenceServer::App, :anchor => false

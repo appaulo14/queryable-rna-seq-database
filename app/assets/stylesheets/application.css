@@ -16,6 +16,11 @@
   width: 710px;
 }
 
+.busy_indicator {
+    width:  75px;
+    height: 75px;
+}
+
 body {
   background: rgb(155,86,211);
 }

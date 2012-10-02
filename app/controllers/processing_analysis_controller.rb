@@ -129,6 +129,15 @@ class ProcessingAnalysisController < ApplicationController
             redirect_to :action => :reference_analysis_isoforms_only, :job_id => job.id
         end
     end
+    
+    def tophat_configure
+    end
+    
+    def tophat_in_progress
+    end
+    
+    def tophat_complete
+    end
 
     def de_novo_analysis_edgeR
     end
