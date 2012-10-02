@@ -75,7 +75,7 @@ class ProcessingAnalysisController < ApplicationController
         debugger if ENV['RAILS_DEBUG'] == "true"
         job_id = params[:job_id]
         if (request.get?)
-            if (not job_id.nil?)
+            if (not job_id.nil? and not job_id.empty?)
                 job = Job.find_by_id(job_id)
                 @job_status = "Status for job #{job.id} is #{job.job_status}."
                 @current_program_status = "#{job.current_program} is #{job.current_program_status}"
@@ -83,7 +83,8 @@ class ProcessingAnalysisController < ApplicationController
             end
         elsif (request.post?)
             sleep_interval = 15
-            if (not job_id.nil?)
+            if (not job_id.nil? and not job_id.empty?)
+                job = Job.find_by_id(job_id)
                 if (job.current_program_status == "complete")
                     if (job.current_program == "tophat")
                         job.current_program = "cufflinks"
@@ -102,6 +103,9 @@ class ProcessingAnalysisController < ApplicationController
                     child_pid = fork do
                         sleep sleep_interval
                         job.current_program_status = "complete"
+                        if (job.current_program == "cuffcompare")
+                            job.job_status = "complete"
+                        end
                         job.save!
                         exit
                     end
@@ -113,8 +117,7 @@ class ProcessingAnalysisController < ApplicationController
                 job.job_status = "in-progess"
                 job.current_program = "tophat"
                 job.current_program_status = "in-progress"
-                job.save()
-                redirect_to :action => :reference_analysis_isoforms_only, :job_id => job.id
+                job.save!()
                 child_pid = fork do
                     sleep sleep_interval
                     job.current_program_status = "complete"
@@ -123,6 +126,7 @@ class ProcessingAnalysisController < ApplicationController
                 end
                 Process.detach(child_pid)
             end
+            redirect_to :action => :reference_analysis_isoforms_only, :job_id => job.id
         end
     end
 
