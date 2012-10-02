@@ -1,4 +1,4 @@
-# == Schema Information
+ #== Schema Information
 #
 # Table name: jobs
 #
@@ -13,4 +13,5 @@
 
 class Job < ActiveRecord::Base
   # attr_accessible :title, :body
+    belongs_to :job_status
 end

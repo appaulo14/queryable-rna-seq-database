@@ -26,6 +26,8 @@ gem 'jquery-rails'
 
 gem 'heroku'
 
+gem 'activerecord-tableless', '>= 1.0.1'
+
 group :development, :test do
   gem 'rspec-rails'
 end

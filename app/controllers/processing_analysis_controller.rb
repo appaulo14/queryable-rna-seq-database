@@ -132,17 +132,19 @@ class ProcessingAnalysisController < ApplicationController
     
     def tophat_configure
         debugger if ENV['RAILS_DEBUG'] == "true"
-        job1 = Job.new()
-        job1.eid_of_owner = "pawl"
-        job1.job_status = "in-progess"
-        job1.current_program = "tophat"
-        job1.current_program_status = "in-progress"
-        job2 = Job.new()
-        job2.eid_of_owner = "pawl2"
-        job2.job_status = "in-progess"
-        job2.current_program = "tophat"
-        job2.current_program_status = "in-progress"
-        @jobs = [job1,job2]
+        @execution_group = Processing_Analysis::Execution_Group.new()
+        3.times { @execution_group.tophat_executions.build }
+    end
+    
+    def params_foo
+        debugger if ENV['RAILS_DEBUG'] == "true"
+        t1 = Processing_Analysis::Execution_Group.new()
+        t1.name = "tophat1"
+        t2 = Processing_Analysis::Execution_Group.new()
+        t2.name = "tophat2"
+        @execution_group = Processing_Analysis::Execution_Group.new()
+        @execution_group.name = "Execution Group Name"
+        @execution_group.executions = [t1,t2]
     end
     
     def tophat_in_progress

@@ -43,6 +43,9 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
   post "processing_analysis/cuffcompare_configure"
   get  "processing_analysis/cuffcompare_in_progress"
   get  "processing_analysis/cuffcompare_success"
+  
+  get  "processing_analysis/params_foo"
+  post "processing_analysis/params_foo"
 
   #root :to => "query_analysis#upload_main_menu"
   root :to => "query_analysis#upload_de_novo_edgeR"
