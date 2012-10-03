@@ -1,23 +1,26 @@
 module Processing_Analysis
     class Tophat_Execution #< ActiveRecord::Base
-        #has_no_table
-        #column :name, :string
+#          has_no_table   #See activerecord-tableless gem
         include ActiveModel::Validations
         include ActiveModel::Conversion
         extend ActiveModel::Naming
+         
+        # column :name, :string
+    
+        attr_accessor :name, :executions
         
-        attr_accessor :name,:index
-        #belongs_to :execution_group
-    end
+        #has_many :tophat_executions, :dependent => :destroy
+        #accepts_nested_attributes_for :tophat_executions
     
-    def initialize(attributes = {})
-        #Load in any values from the form
-        attributes.each do |name, value|
-            send("#{name}=", value)
+        def initialize(attributes = {})
+            #Load in any values from the form
+            attributes.each do |name, value|
+                send("#{name}=", value)
+            end
         end
-    end
-    
-    def persisted?
-        return false
+        
+        def persisted?
+            return false
+        end
     end
 end

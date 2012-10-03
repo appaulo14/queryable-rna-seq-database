@@ -1,5 +1,8 @@
 class ProcessingAnalysisController < ApplicationController
-
+    require 'processing_analysis/execution_group.rb'
+    require 'processing_analysis/tophat_execution.rb'
+    include Processing_Analysis
+    
     def main_menu
         #Do we need the main_menu form?
         @choices = []
@@ -132,19 +135,22 @@ class ProcessingAnalysisController < ApplicationController
     
     def tophat_configure
         debugger if ENV['RAILS_DEBUG'] == "true"
-        @execution_group = Processing_Analysis::Execution_Group.new()
+        @execution_group = Execution_Group.new()
         3.times { @execution_group.tophat_executions.build }
     end
     
     def params_foo
         debugger if ENV['RAILS_DEBUG'] == "true"
-        t1 = Processing_Analysis::Execution_Group.new()
-        t1.name = "tophat1"
-        t2 = Processing_Analysis::Execution_Group.new()
-        t2.name = "tophat2"
-        @execution_group = Processing_Analysis::Execution_Group.new()
-        @execution_group.name = "Execution Group Name"
-        @execution_group.executions = [t1,t2]
+        if (request.get?)
+            t1 = Tophat_Execution.new()
+            t1.name = "tophat1"
+            t2 = Tophat_Execution.new()
+            t2.name = "tophat2"
+            @execution_group = Execution_Group.new()
+            @execution_group.name = "Execution Group Name"
+            @execution_group.executions = [t1,t2]
+        elsif (request.post?)
+        end
     end
     
     def tophat_in_progress
