@@ -32,10 +32,10 @@ group :development, :test do
   gem 'rspec-rails'
 end
 
-group :bioinformatics do
-    gem 'bio', '1.4.2'
-    gem 'goruby'
-end
+# group :bioinformatics do
+#     gem 'bio', '1.4.2'
+#     gem 'goruby'
+# end
 
 #For foreigner key constraints. 
 #       Unfortunately, it doesn't have cascading updates from what I can ascertain.

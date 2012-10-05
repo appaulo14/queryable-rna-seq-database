@@ -32,9 +32,6 @@ GEM
       multi_json (~> 1.0)
     addressable (2.3.2)
     arel (3.0.2)
-    array_pair (0.2.0)
-      rsruby
-    bio (1.4.2)
     builder (3.0.3)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
@@ -56,10 +53,6 @@ GEM
     excon (0.16.2)
     execjs (1.4.0)
       multi_json (~> 1.0)
-    goruby (0.2.0)
-      array_pair
-      bio
-      rsruby
     heroku (2.31.2)
       heroku-api (~> 0.3.4)
       launchy (>= 0.3.2)
@@ -129,7 +122,6 @@ GEM
       activesupport (>= 3.0)
       railties (>= 3.0)
       rspec (~> 2.11.0)
-    rsruby (0.5.1.1)
     rubyzip (0.9.9)
     sass (3.2.1)
     sass-rails (3.2.5)
@@ -163,10 +155,8 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-tableless (>= 1.0.1)
-  bio (= 1.4.2)
   coffee-rails (~> 3.2.1)
   debugger
-  goruby
   heroku
   jquery-rails
   pg
