@@ -1,6 +1,6 @@
 <!-- Modified from http://www.stephenchu.com/2008/03/boost-your-controller-paramsfu.html -->
 <%= form_for(@execution_group,{:url => "params_foo"}) do |f| %>
-    <%= debug f.methods %>
+    <!--<%= debug f.methods %>-->
     <%= f.text_field :name %><br/>
     <%= f.fields_for :executions  do |e| %>
         <%= e.text_field :namee %><br/>
@@ -11,6 +11,9 @@
         <% end %>
   <% end %>-->
 <!--   <%= render :partial => "execution", :collection=>@execution_group.executions %> -->
-  <input type="text" id="goat" value="goat"/>
+<!--<%= button_tag(:type => 'button', :onclick=>"$('body').append('');") do
+  content_tag(:strong, 'Ask me!')
+end %>-->
+  <input type="button" id="goat" value="goat" onclick="$('body').append('<%= render('execution', :execution => @execution_group.executions[0]) %>');"/>
   <%= f.submit 'Save' %>
 <% end %>
