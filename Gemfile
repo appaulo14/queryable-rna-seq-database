@@ -30,8 +30,8 @@ group :development, :test do
   gem 'rspec-rails'
 end
 
-gem 'bio', :git => "git://github.com/bioruby/bioruby.git" #'1.4.2'
-gem 'goruby'
+# gem 'bio', :git => "git://github.com/bioruby/bioruby.git" #'1.4.2'
+# gem 'goruby'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
