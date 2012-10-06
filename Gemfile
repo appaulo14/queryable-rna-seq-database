@@ -22,7 +22,7 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
-gem 'jquery-rails'
+gem 'jquery-rails', '>=2.1.3'
 
 gem 'heroku'
 
@@ -32,10 +32,10 @@ group :development, :test do
   gem 'rspec-rails'
 end
 
-# group :bioinformatics do
-#     gem 'bio', '1.4.2'
-#     gem 'goruby'
-# end
+group :bioinformatics do
+    gem 'bio', '1.4.2'
+    gem 'goruby'
+end
 
 #For foreigner key constraints. 
 #       Unfortunately, it doesn't have cascading updates from what I can ascertain.
