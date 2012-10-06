@@ -135,8 +135,26 @@ class ProcessingAnalysisController < ApplicationController
     
     def tophat_configure
         debugger if ENV['RAILS_DEBUG'] == "true"
-        @execution_group = Execution_Group.new()
-        3.times { @execution_group.tophat_executions.build }
+        if (request.get?)
+#             @execution_group = Execution_Group.new()
+#             3.times { @execution_group.tophat_executions.build }
+            @tophat_executions = []
+            number_of_samples = params[:number_of_samples]
+            (1..number_of_samples.to_i).each do |i|
+                @tophat_executions.push(Tophat_Execution.new(:id=>i))
+            end
+        elsif (request.post?)
+            @tophat_executions = []
+            (1..params[:processing_analysis_tophat_execution].length).each do |i| 
+                @tophat_executions << Tophat_Execution.new(params[:processing_analysis_tophat_execution][i.to_s])
+                @tophat_executions[i-1].id = i
+                if @tophat_executions[i-1].valid?
+                    flash[:success] = "Success"
+                else
+                    flash[:success]="Failure"
+                end
+            end
+        end
     end
     
     def params_foo

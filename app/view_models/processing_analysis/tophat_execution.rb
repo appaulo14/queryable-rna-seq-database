@@ -7,7 +7,11 @@ module Processing_Analysis
          
         # column :name, :string
     
-        attr_accessor :name, :executions
+        attr_accessor :id, :field1, :field2, :field3
+        
+        validates :field1, :presence => true
+        validates :field2, :presence => true
+        validates :field3, :presence => true
         
         #has_many :tophat_executions, :dependent => :destroy
         #accepts_nested_attributes_for :tophat_executions
@@ -16,6 +20,15 @@ module Processing_Analysis
             #Load in any values from the form
             attributes.each do |name, value|
                 send("#{name}=", value)
+            end
+            if (self.field1.nil?)
+                self.field1 = "field1_#{self.id}"
+            end
+            if (self.field2.nil?)
+                self.field2 = "field2_#{self.id}"
+            end
+            if (self.field3.nil?)
+                self.field3 = "field3_#{self.id}"
             end
         end
         

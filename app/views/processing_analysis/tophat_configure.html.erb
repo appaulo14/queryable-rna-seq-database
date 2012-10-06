@@ -1,15 +1,21 @@
 <h1>Tophat configure</h1>
-<% form_for @execution_group do |f| %>
-  <%= f.error_messages %>
-  <p>
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </p>
-  <% f.fields_for :tophat_execution do |builder| %>
-  <p>
-    <%= builder.label :goat, "Question" %><br />
-    <%= builder.text_area :goat, :rows => 3 %>
-  </p>
-  <% end %>
-  <p><%= f.submit "Submit" %></p>
+<%= form_tag(:action=>"tophat_configure") do %>
+    debug<%= debug @tophat_executions %>
+    <% @tophat_executions.each do |tophat_execution| %>
+        <hr/>
+        <%= render 'shared/error_messages', :object => tophat_execution %>
+        <h3>Sample <%= tophat_execution.id %></h3>
+        <%= fields_for tophat_execution do |te| %>
+            <!--<%= te.label :id, :index => tophat_execution.id %>
+            <%= te.text_field :id, :index => tophat_execution.id %><br/>-->
+            <%= te.label :field1, :index => tophat_execution.id %>
+            <%= te.text_field :field1, :index => tophat_execution.id %><br/>
+            <%= te.label :field2, :index => tophat_execution.id %>
+            <%= te.text_field :field2, :index => tophat_execution.id %><br/>
+            <%= te.label :field3, :index => tophat_execution.id %>
+            <%= te.text_field :field3, :index => tophat_execution.id %><br/>
+        <% end %>
+        <br/>
+    <% end %>
+    <p><%= button_tag "Submit", :disable_with => "Please wait..." %></p>
 <% end %>
