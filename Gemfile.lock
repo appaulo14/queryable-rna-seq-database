@@ -168,7 +168,7 @@ DEPENDENCIES
   debugger
   goruby
   heroku
-  jquery-rails
+  jquery-rails (= 2.1.3)
   pg
   rails (= 3.2.8)
   rspec-rails

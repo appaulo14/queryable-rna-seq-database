@@ -1,6 +1,6 @@
 <h1>Tophat configure</h1>
 <%= form_tag(:action=>"tophat_configure") do %>
-    debug<%= debug @tophat_executions %>
+<!--     debug<%= debug @tophat_executions %> -->
     <% @tophat_executions.each do |tophat_execution| %>
         <hr/>
         <%= render 'shared/error_messages', :object => tophat_execution %>

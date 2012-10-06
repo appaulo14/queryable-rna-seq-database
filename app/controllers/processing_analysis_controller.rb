@@ -139,7 +139,7 @@ class ProcessingAnalysisController < ApplicationController
 #             @execution_group = Execution_Group.new()
 #             3.times { @execution_group.tophat_executions.build }
             @tophat_executions = []
-            number_of_samples = params[:number_of_samples]
+            number_of_samples = (not params[:number_of_samples].blank?) ? params[:number_of_samples] : 1
             (1..number_of_samples.to_i).each do |i|
                 @tophat_executions.push(Tophat_Execution.new(:id=>i))
             end
@@ -149,7 +149,20 @@ class ProcessingAnalysisController < ApplicationController
                 @tophat_executions << Tophat_Execution.new(params[:processing_analysis_tophat_execution][i.to_s])
                 @tophat_executions[i-1].id = i
                 if @tophat_executions[i-1].valid?
-                    flash[:success] = "Success"
+                    job = Job.new()
+                    job.eid_of_owner = "pawl"
+                    job.current_program = "tophat"
+                    job.current_program_status = "in-progess"
+                    job.job_status="in-progess"
+                    job.save!
+                    child_pid = fork do
+                        sleep 15
+                        job.current_program_status = "complete"
+                        job.save!
+                        exit
+                    end
+                    Process.detach(child_pid)
+                    redirect_to :action => :tophat_in_progress, :job_id => job.id
                 else
                     flash[:success]="Failure"
                 end
@@ -172,6 +185,10 @@ class ProcessingAnalysisController < ApplicationController
     end
     
     def tophat_in_progress
+        job = Job.find_by_id(params[:job_id])
+        if (job.current_program != "tophat")
+            
+        end
     end
     
     def tophat_complete
@@ -182,4 +199,20 @@ class ProcessingAnalysisController < ApplicationController
 
     def de_novo_analysis_cuffdiff
     end
+    
+    private
+        def redirect_to_next_page_of_workflow
+            job = Job.find_by_id(params[:job_id])
+            if (job.job_status == "complete")
+            elsif (job.job_status == "in-progress")
+                if (job.current_program == "tophat")
+                    if (job.current_program_status == "not started")
+                    elsif (job.current_program_status == "in-progress")
+                    elsif (job.current_program_status == "complete")
+                    end
+                elsif (job.current_program == "cufflinks")
+                end
+            elsif (job.job_status == "not started")
+            end
+        end
 end

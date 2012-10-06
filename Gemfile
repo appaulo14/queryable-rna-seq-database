@@ -22,7 +22,9 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
-gem 'jquery-rails'
+#You may need to update the CDN for jquery in views/application.html.erb
+#    to the lastest version when updating this
+gem 'jquery-rails', '2.1.3'
 
 gem 'heroku'
 
