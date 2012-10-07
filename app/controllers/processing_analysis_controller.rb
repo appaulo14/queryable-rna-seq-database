@@ -81,11 +81,12 @@ class ProcessingAnalysisController < ApplicationController
     def reference_analysis_isoforms_only
         workflow = Workflow.find_by_id(1)
         workflow_step = Workflow_Step.where(:workflow_id => workflow.id, :step => 1)[0]
-        job = Job.new(:job_status => Job_Status.find_by_name("not yet started"), 
+        job = Job.new(:current_job_status => Job_Status.find_by_name("not yet started"), 
                       :current_program_status => "configuring",
                       :eid_of_owner => "nietz111",
                       :workflow_step_id => workflow_step.id)
-        @next_step_url = workflow_step.program_internal_name
+        job.save!
+        @next_step_url = workflow_step.program_internal_name + "_" + job.current_program_status
 #         debugger if ENV['RAILS_DEBUG'] == "true"
 #         job_id = params[:job_id]
 #         if (request.get?)
@@ -144,7 +145,7 @@ class ProcessingAnalysisController < ApplicationController
 #         end
     end
     
-    def tophat_configure
+    def tophat_configuring
         debugger if ENV['RAILS_DEBUG'] == "true"
         if (request.get?)
 #             @execution_group = Execution_Group.new()

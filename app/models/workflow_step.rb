@@ -13,7 +13,7 @@
 class Workflow_Step < ActiveRecord::Base
   attr_accessible :program_internal_name, :step, :workflow_id
   
-  has_one :program
-  has_one :workflow
+  has_one :program, :foreign_key => "program_internal_name"
+  has_one :workflow, :foreign_key => "workflow_id"
   has_many :jobs
 end

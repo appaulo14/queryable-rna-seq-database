@@ -46,7 +46,7 @@ CREATE TABLE job_statuses (
 
 CREATE TABLE jobs (
     id bigint NOT NULL,
-    job_status character varying(255) NOT NULL,
+    current_job_status character varying(255) NOT NULL,
     current_program_status character varying(255) NOT NULL,
     eid_of_owner character varying(255) NOT NULL,
     workflow_step_id integer NOT NULL,
@@ -272,7 +272,7 @@ CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (v
 --
 
 ALTER TABLE ONLY jobs
-    ADD CONSTRAINT job_statuses_fk FOREIGN KEY (job_status) REFERENCES job_statuses(name) ON UPDATE CASCADE ON DELETE RESTRICT;
+    ADD CONSTRAINT job_statuses_fk FOREIGN KEY (current_job_status) REFERENCES job_statuses(name) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --

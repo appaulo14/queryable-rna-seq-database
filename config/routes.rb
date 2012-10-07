@@ -33,8 +33,8 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
 
   get "processing_analysis/de_novo_analysis_cuffdiff"
   
-  get  "processing_analysis/tophat_configure"
-  post "processing_analysis/tophat_configure"
+  get  "processing_analysis/tophat_configuring"
+  post "processing_analysis/tophat_configuring"
   get  "processing_analysis/tophat_in_progress"
   get  "processing_analysis/tophat_success"
   
