@@ -79,8 +79,8 @@ ALTER SEQUENCE jobs_id_seq OWNED BY jobs.id;
 --
 
 CREATE TABLE program_statuses (
-    name character varying(255) NOT NULL,
-    description character varying(255) NOT NULL,
+    internal_name character varying(255) NOT NULL,
+    display_name character varying(255) NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -225,7 +225,7 @@ ALTER TABLE ONLY jobs
 --
 
 ALTER TABLE ONLY program_statuses
-    ADD CONSTRAINT program_statuses_pkey PRIMARY KEY (name);
+    ADD CONSTRAINT program_statuses_pkey PRIMARY KEY (internal_name);
 
 
 --
@@ -280,7 +280,7 @@ ALTER TABLE ONLY jobs
 --
 
 ALTER TABLE ONLY jobs
-    ADD CONSTRAINT program_statuses_fk FOREIGN KEY (current_program_status) REFERENCES program_statuses(name) ON UPDATE CASCADE ON DELETE RESTRICT;
+    ADD CONSTRAINT program_statuses_fk FOREIGN KEY (current_program_status) REFERENCES program_statuses(internal_name) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --

@@ -3,7 +3,7 @@
 # Table name: jobs
 #
 #  id                     :integer          not null, primary key
-#  job_status             :string(255)      not null
+#  current_job_status     :string(255)      not null
 #  current_program_status :string(255)      not null
 #  eid_of_owner           :string(255)      not null
 #  workflow_step_id       :integer          not null

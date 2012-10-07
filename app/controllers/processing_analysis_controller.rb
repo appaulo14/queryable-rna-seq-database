@@ -86,7 +86,7 @@ class ProcessingAnalysisController < ApplicationController
                       :eid_of_owner => "nietz111",
                       :workflow_step_id => workflow_step.id)
         job.save!
-        @next_step_url = workflow_step.program_internal_name + "_" + job.current_program_status
+        @next_step_url = workflow_step.program_internal_name.to_s + "_" + job.current_program_status.to_s + "?job_id=" + job.id.to_s
 #         debugger if ENV['RAILS_DEBUG'] == "true"
 #         job_id = params[:job_id]
 #         if (request.get?)
@@ -147,6 +147,14 @@ class ProcessingAnalysisController < ApplicationController
     
     def tophat_configuring
         debugger if ENV['RAILS_DEBUG'] == "true"
+        #This part would be done on submit most likely
+        job = Job.find_by_id(params[:job_id])
+        job.current_program_status = "in_progress"
+        job.save!
+        workflow_step = Workflow_Step.find_by_id(job.workflow_step_id)
+        @next_step_url = workflow_step.program_internal_name.to_s + "_" + job.current_program_status.to_s + "?job_id=" + job.id.to_s
+        
+        
         if (request.get?)
 #             @execution_group = Execution_Group.new()
 #             3.times { @execution_group.tophat_executions.build }
@@ -197,14 +205,26 @@ class ProcessingAnalysisController < ApplicationController
     end
     
     def tophat_in_progress
+        #This part would be done on submit most likely
         job = Job.find_by_id(params[:job_id])
-        if (job.current_program != "tophat")
-            
-        end
+        job.current_program_status = "success"
+        job.save!
+        workflow_step = Workflow_Step.find_by_id(job.workflow_step_id)
+        @next_step_url = workflow_step.program_internal_name.to_s + "_" + job.current_program_status.to_s + "?job_id=" + job.id.to_s
     end
     
     def tophat_success
-        #render ('de_novo_analysis_edgeR')
+        job = Job.find_by_id(params[:job_id])
+        workflow_step = Workflow_Step.find_by_id(job.workflow_step_id)
+        next_workflow_step = Workflow_Step.where(:workflow_id => workflow_step.workflow_id, :step => workflow_step.step + 1)[0]
+        if (next_workflow_step.blank?)
+            #Redirect to main menu for now if this is no step after this
+            redirect_to :action => :main_menu
+        end
+        job.current_program_status = "configuring"
+        job.workflow_step_id = next_workflow_step
+        job.save!
+        @next_step_url = next_workflow_step.program_internal_name.to_s + "_" + job.current_program_status.to_s + "?job_id=" + job.id.to_s
     end
 
     def de_novo_analysis_edgeR

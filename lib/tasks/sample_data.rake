@@ -24,14 +24,10 @@ def make_programs
 end
 
 def make_program_statuses
-    Program_Status.create!(:name => "configuring", 
-                           :description => "Configuring the settings for the program prior to running it")
-    Program_Status.create!(:name => "in-progress", 
-                           :description => "The program is currently running")
-    Program_Status.create!(:name => "succeeded", 
-                           :description => "The program run completed successfully")
-    Program_Status.create!(:name => "failed", 
-                           :description => "The program run ended with failure")
+    Program_Status.create!(:internal_name => "configuring", :display_name => "Configuring parameters")
+    Program_Status.create!(:internal_name => "in_progress", :display_name => "Execution in progress")
+    Program_Status.create!(:internal_name=> "success", :display_name => "Execution successful")
+    Program_Status.create!(:internal_name => "failure", :display_name => "Execution successful")
 end
 
 def make_job_statuses

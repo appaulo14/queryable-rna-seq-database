@@ -12,6 +12,6 @@ class CreateJobStatuses < ActiveRecord::Migration
     end
 
     def down
-        drop_table :name
+        drop_table :job_statuses
     end
 end
