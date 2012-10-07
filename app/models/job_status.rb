@@ -8,8 +8,10 @@
 #  updated_at  :datetime         not null
 #
 
-class JobStatus < ActiveRecord::Base
-  attr_accessible :description, :name
+class Job_Status < ActiveRecord::Base
+  attr_accessible :name,:description
+  
+  self.primary_key = :name
   
   has_many :jobs
 end

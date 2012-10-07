@@ -34,7 +34,6 @@ class CreateJobs < ActiveRecord::Migration
         #Add foreign keys. The SQL is the same for both postgresql and mysql
         execute("ALTER TABLE jobs ADD CONSTRAINT users_fk FOREIGN KEY (eid_of_owner) REFERENCES users (eid) ON UPDATE CASCADE ON DELETE RESTRICT;")
         execute("ALTER TABLE jobs ADD CONSTRAINT job_statuses_fk FOREIGN KEY (job_status) REFERENCES job_statuses (name) ON UPDATE CASCADE ON DELETE RESTRICT;")
-        execute("ALTER TABLE jobs ADD CONSTRAINT programs_fk FOREIGN KEY (current_program) REFERENCES programs (name) ON UPDATE CASCADE ON DELETE RESTRICT;")
         execute("ALTER TABLE jobs ADD CONSTRAINT program_statuses_fk FOREIGN KEY (current_program_status) REFERENCES program_statuses (name) ON UPDATE CASCADE ON DELETE RESTRICT;")
         execute("ALTER TABLE jobs ADD CONSTRAINT workflow_steps_fk FOREIGN KEY (workflow_steps_id) REFERENCES workflow_steps (id) ON UPDATE CASCADE ON DELETE RESTRICT;")
     end

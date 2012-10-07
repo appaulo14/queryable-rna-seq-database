@@ -65,5 +65,8 @@ module RnaSeqAnalysisPipeline
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.8'
+    
+    #Use numbered migrations instead of timestamped migrations
+    config.active_record.timestamped_migrations = false
   end
 end
