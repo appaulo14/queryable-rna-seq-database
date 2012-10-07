@@ -15,7 +15,7 @@ class CreateJobs < ActiveRecord::Migration
             t.string :job_status, :null => false
             t.string :current_program_status, :null => false
             t.string :eid_of_owner, :null => false
-            t.integer :workflow_steps_id, :null => false
+            t.integer :workflow_step_id, :null => false
 
             t.timestamps
         end
@@ -35,7 +35,7 @@ class CreateJobs < ActiveRecord::Migration
         execute("ALTER TABLE jobs ADD CONSTRAINT users_fk FOREIGN KEY (eid_of_owner) REFERENCES users (eid) ON UPDATE CASCADE ON DELETE RESTRICT;")
         execute("ALTER TABLE jobs ADD CONSTRAINT job_statuses_fk FOREIGN KEY (job_status) REFERENCES job_statuses (name) ON UPDATE CASCADE ON DELETE RESTRICT;")
         execute("ALTER TABLE jobs ADD CONSTRAINT program_statuses_fk FOREIGN KEY (current_program_status) REFERENCES program_statuses (name) ON UPDATE CASCADE ON DELETE RESTRICT;")
-        execute("ALTER TABLE jobs ADD CONSTRAINT workflow_steps_fk FOREIGN KEY (workflow_steps_id) REFERENCES workflow_steps (id) ON UPDATE CASCADE ON DELETE RESTRICT;")
+        execute("ALTER TABLE jobs ADD CONSTRAINT workflow_steps_fk FOREIGN KEY (workflow_step_id) REFERENCES workflow_steps (id) ON UPDATE CASCADE ON DELETE RESTRICT;")
     end
 
     def down

@@ -18,7 +18,11 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
   get "processing_analysis/main_menu"
   post "processing_analysis/main_menu"
 
-  get "processing_analysis/quality_filtering"
+  get  "processing_analysis/quality_filtering"
+  post "processing_analysis/quality_filtering"
+  
+  get  "processing_analysis/upload_files"
+  post "processing_analysis/upload_files"
 
   get "processing_analysis/reference_analysis"
 
