@@ -191,7 +191,8 @@ class ProcessingAnalysisController < ApplicationController
         end
     end
     
-    def tophat_complete
+    def tophat_success
+        render ('de_novo_analysis_edgeR')
     end
 
     def de_novo_analysis_edgeR
@@ -211,6 +212,18 @@ class ProcessingAnalysisController < ApplicationController
                     elsif (job.current_program_status == "complete")
                     end
                 elsif (job.current_program == "cufflinks")
+                end
+            elsif (job.job_status == "not started")
+            end
+        end
+        
+        def redirect_to_next_page_of_workflow2
+            job = Job.find_by_id(params[:job_id])
+            if (job.job_status == "complete")
+            elsif (job.job_status == "in-progress")
+                if (job.current_program_status == "not started")
+                elsif (job.current_program_status == "in-progress")
+                elsif (job.current_program_status == "complete")
                 end
             elsif (job.job_status == "not started")
             end

@@ -11,43 +11,6 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121001200119) do
-
-  create_table "job_statuses", :id => false, :force => true do |t|
-    t.string   "name",        :null => false
-    t.string   "description", :null => false
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
-  end
-
-  create_table "jobs", :force => true do |t|
-    t.string   "job_status",             :null => false
-    t.string   "current_program",        :null => false
-    t.string   "current_program_status", :null => false
-    t.string   "eid_of_owner",           :null => false
-    t.datetime "created_at",             :null => false
-    t.datetime "updated_at",             :null => false
-  end
-
-  create_table "program_statuses", :id => false, :force => true do |t|
-    t.string   "name",        :null => false
-    t.string   "description", :null => false
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
-  end
-
-  create_table "programs", :id => false, :force => true do |t|
-    t.string   "name",        :null => false
-    t.string   "description", :null => false
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
-  end
-
-  create_table "users", :id => false, :force => true do |t|
-    t.string   "eid",        :null => false
-    t.string   "email",      :null => false
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
+ActiveRecord::Schema.define(:version => 0) do
 
 end
