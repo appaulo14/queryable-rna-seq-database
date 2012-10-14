@@ -161,7 +161,7 @@ class ProcessingAnalysisController < ApplicationController
             @tophat_executions = []
             number_of_samples = (not params[:number_of_samples].blank?) ? params[:number_of_samples] : 1
             (1..number_of_samples.to_i).each do |i|
-                @tophat_executions.push(Tophat_Execution.new(:id=>i))
+                @tophat_executions.push(Tophat_Execution.new(:sample_id=>i))
             end
         elsif (request.post?)
             @tophat_executions = []
