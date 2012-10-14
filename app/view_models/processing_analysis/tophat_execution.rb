@@ -7,7 +7,12 @@ module Processing_Analysis
          
         # column :name, :string
     
-        attr_accessor :id, :field1, :field2, :field3
+        attr_accessor :ebwt_base, :reads_file, :read_mismatches, 
+            :read_gap_length, :read_edit_dist, :read_realign_edit_dist,
+            :bowtie1, #colorspace issues?
+            :mate_inner_distance, :mate_std_dev, :min_anchor_length,
+            :splice_mismatches, :min_intron_length, :max_intron_length,
+            :max_insertion_length, :max_deletion_length #Add the rest
         
         validates :field1, :presence => true
         validates :field2, :presence => true
