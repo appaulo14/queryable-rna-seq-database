@@ -2,9 +2,7 @@ module Processing_Analysis
     class Cufflinks_Execution < Processing_Analysis::Execution
     
         #Attributes taken from http://cufflinks.cbcb.umd.edu/manual.html for cufflinks 2.0.2
-        attr_accessor 
-            #Identifier for rails
-            :sample_id,
+        attr_accessor :sample_id, #Identifies this unique sample, not a cufflinks argument
             #Arugments
             :aligned_reads,
             #General options

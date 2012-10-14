@@ -1,6 +1,9 @@
 class ProcessingAnalysisController < ApplicationController
     require 'processing_analysis/execution_group.rb'
     require 'processing_analysis/tophat_execution.rb'
+    require 'processing_analysis/cufflinks_execution.rb'
+    require 'processing_analysis/cuffcompare_execution.rb'
+    require 'processing_analysis/cuffdiff_execution.rb'
     include Processing_Analysis
 
     def main_menu
@@ -188,6 +191,15 @@ class ProcessingAnalysisController < ApplicationController
                 end
             end
         end
+    end
+    
+    def cuffcompare_configuring
+        @next_step_url = "#"
+        @cuffcompare_executions = []
+            number_of_samples = (not params[:number_of_samples].blank?) ? params[:number_of_samples] : 1
+            (1..number_of_samples.to_i).each do |i|
+                @cuffcompare_executions.push(Cuffcompare_Execution.new(:sample_id=>i))
+            end
     end
 
     def params_foo

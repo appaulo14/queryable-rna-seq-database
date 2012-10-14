@@ -1,12 +1,15 @@
 module Processing_Analysis
     class Cuffcompare_Execution < Processing_Analysis::Execution
     
-        #Attributes taken from http://cufflinks.cbcb.umd.edu/manual.html for cufflinks 2.0.2
-        attr_accessor 
-            #Identifier for rails
-            :sample_id,
+        #Attributes taken from theeeeeee "Usage" output displayed when 
+        #       running cuffcompare with no arguments or options
+        attr_accessor \
+            #Identifies this unique sample, not a cuffcompare argument
+            :sample_id, 
             #Arugments
-            
+            :input_gtfs,
+            #Options
+            :r, :r_gtf, :R, :M, :N, :s, :d, :p, :C, :G
            
     
         def initialize(attributes = {})

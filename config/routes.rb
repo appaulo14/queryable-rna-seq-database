@@ -51,15 +51,20 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
     get  "processing_analysis/tophat_in_progress"
     get  "processing_analysis/tophat_success"
 
-    get  "processing_analysis/cufflinks_configure"
-    post "processing_analysis/cufflinks_configure"
+    get  "processing_analysis/cufflinks_configuring"
+    post "processing_analysis/cufflinks_configuring"
     get  "processing_analysis/cufflinks_in_progress"
     get  "processing_analysis/cufflinks_success"
 
-    get  "processing_analysis/cuffcompare_configure"
-    post "processing_analysis/cuffcompare_configure"
+    get  "processing_analysis/cuffcompare_configuring"
+    post "processing_analysis/cuffcompare_configuring"
     get  "processing_analysis/cuffcompare_in_progress"
     get  "processing_analysis/cuffcompare_success"
+    
+    get  "processing_analysis/cuffdiff_configuring"
+    post "processing_analysis/cuffdiff_configuring"
+    get  "processing_analysis/cuffdiff_in_progress"
+    get  "processing_analysis/cuffdiff_success"
 
     get  "processing_analysis/params_foo"
     post "processing_analysis/params_foo"

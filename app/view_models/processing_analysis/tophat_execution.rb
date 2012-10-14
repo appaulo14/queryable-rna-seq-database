@@ -2,9 +2,7 @@ module Processing_Analysis
     class Tophat_Execution < Processing_Analysis::Execution
     
         #Attributes taken from http://tophat.cbcb.umd.edu/manual.html for Tophat 2.0.5
-        attr_accessor 
-            #Identifier for rails
-            :sample_id,
+        attr_accessor :sample_id, #Identifies this unique sample, not a tophat argument
             #Arugments
             :ebwt_base, :reads_file, 
             #Options
@@ -38,27 +36,10 @@ module Processing_Analysis
             :transcriptomes_only, :transcriptome_max_hits, :prefilter_multihits,
             #Supplying your own insertions/deletions
             :insertions, :deletions, :no_novel_indels
-            
-        
-        validates :field1, :presence => true
-        validates :field2, :presence => true
-        validates :field3, :presence => true
-        
-        #has_many :tophat_executions, :dependent => :destroy
-        #accepts_nested_attributes_for :tophat_executions
     
         def initialize(attributes = {})
             #Load in any values from the form
             super(attributes)
-#             if (self.field1.nil?)
-#                 self.field1 = "field1_#{self.id}"
-#             end
-#             if (self.field2.nil?)
-#                 self.field2 = "field2_#{self.id}"
-#             end
-#             if (self.field3.nil?)
-#                 self.field3 = "field3_#{self.id}"
-#             end
         end
     end
 end
