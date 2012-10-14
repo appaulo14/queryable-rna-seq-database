@@ -152,6 +152,10 @@ nav ul li a:hover {
 
 /* User show page */
 
+td {
+    vertical-align:top
+}
+
 table.profile {
   width: 100%;
   margin-bottom: 0;
