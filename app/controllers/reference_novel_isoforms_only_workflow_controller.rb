@@ -7,14 +7,15 @@ class ReferenceNovelIsoformsOnlyWorkflowController < ApplicationController
     include Processing_Analysis
 
     def tophat_configure
+        debugger if ENV['RAILS_DEBUG'] == 'true'
+        @next_step_url = "#"
         if (request.post?)
         else
-            debugger if ENV['RAILS_DEBUG'] == 'true'
-            @next_step_url = "#"
             @tophat_executions = []
             number_of_samples = params[:number_of_samples]
             (1..number_of_samples.to_i).each do |i|
                 @tophat_executions.push(Tophat_Execution.new(:sample_id=>i))
+            end
         end
     end
 

@@ -67,6 +67,7 @@ class QueryAnalysisController < ApplicationController
     end
 
     def query_blast_db_2
+        debugger if ENV['RAILS_DEBUG'] == "true"
         if request.get?
             @blast_query = Blast_Query::Base.new()
         elsif request.post?

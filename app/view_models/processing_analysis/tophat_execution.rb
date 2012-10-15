@@ -5,6 +5,8 @@ module Processing_Analysis
         attr_accessor :sample_id, #Identifies this unique sample, not a tophat argument
             #Arugments
             :ebwt_base, :reference_fasta, :reads_file, 
+            #Argument helpers, which will be used which arguments to pass to Tophat
+            :ebwt_base_or_reference_fasta,
             #Options
             :read_mismatches, 
             :read_gap_length, :read_edit_dist, :read_realign_edit_dist,
@@ -39,7 +41,12 @@ module Processing_Analysis
     
         def initialize(attributes = {})
             #Load in any values from the form
+            puts "PAWLPAWLPAWLPAWL"
             super(attributes)
+            #if (self.ebwt_base_or_reference_fasta.nil?)
+            puts "PAWLPAWLPAWL"
+                self.ebwt_base_or_reference_fasta = "reference_fasta"
+            #end
         end
     end
 end
