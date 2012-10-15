@@ -4,7 +4,7 @@ module Processing_Analysis
         #Attributes taken from http://tophat.cbcb.umd.edu/manual.html for Tophat 2.0.5
         attr_accessor :sample_id, #Identifies this unique sample, not a tophat argument
             #Arugments
-            :ebwt_base, :reference_fasta, :reads_file, 
+            :ebwt_base, :reference_fasta, :reads_fastq, 
             #Argument helpers, which will be used which arguments to pass to Tophat
             :ebwt_base_or_reference_fasta,
             #Options
@@ -16,6 +16,8 @@ module Processing_Analysis
             :solexa1point3_quals, :quals, :integer_quals, :color, :max_multihits,
             :report_secondary_alignments, :no_discordant, :no_mixed, 
             :no_coverage_search, :microexon_search, :library_type,
+            #Option helpers, which will be used which arguments to pass to Tophat
+            :default_options_or_custom_options,
             #Advanced options
             :bowtie_n, :segment_mismatches, :segment_length, :min_segment_intron,
             :max_segment_intron, :min_coverage_intron, :max_coverage_intron,
@@ -41,12 +43,19 @@ module Processing_Analysis
     
         def initialize(attributes = {})
             #Load in any values from the form
-            puts "PAWLPAWLPAWLPAWL"
             super(attributes)
-            #if (self.ebwt_base_or_reference_fasta.nil?)
-            puts "PAWLPAWLPAWL"
-                self.ebwt_base_or_reference_fasta = "reference_fasta"
-            #end
+            if (self.ebwt_base_or_reference_fasta.blank?)
+                self.ebwt_base_or_reference_fasta = "ebwt_base"
+            end
+            if (self.default_options_or_custom_options.blank?)
+                self.default_options_or_custom_options = "default_options"
+            end
+            if (self.read_mismatches.blank?)
+                self.read_mismatches = 2
+            end
+            if (self.read_gap_length.blank?)
+                self.read_gap_length = 2
+            end
         end
     end
 end

@@ -15,33 +15,78 @@
                         :index => tophat_execution.sample_id %>
                     <%= ce.select(:ebwt_base_or_reference_fasta, 
                         options_for_select([['Built-in','ebwt_base'],['Upload your own','reference_fasta']],
-                        ce.object.ebwt_base_or_reference_fasta),{},
-                        {:index => tophat_execution.sample_id, :onchange=>"ebwt_base_changed();"}) %>
-                        debug <%= debug ce.object.ebwt_base_or_reference_fasta %>
+                        ce.object.ebwt_base_or_reference_fasta.to_s),{},
+                        {:index => tophat_execution.sample_id, 
+                        :onchange=>"sample_#{tophat_execution.sample_id}_ebwt_base_changed();"}) %>
                 </div>
-                <div id="built_in_reference">
+                <div class="tophat_built_in_reference">
                     <%= ce.label :ebwt_base, "Select reference genome to use", :index => tophat_execution.sample_id %>
                     <%= ce.select(:ebwt_base, options_for_select(['hg18','hg19','Arabadopsis'],'Arabadopsis'),{},
                         {:index => tophat_execution.sample_id}) %>
                 </div>
-                <div id="uploaded_reference" style="display:none">
-                    <%= ce.label :reference_fasta, "Please uploade a genome in fasta format", :index => tophat_execution.sample_id %>
+                <div class="tophat_uploaded_reference" style="display:none">
+                    <%= ce.label :reference_fasta, "Please upload a genome in fasta format", :index => tophat_execution.sample_id %>
                     <%= ce.file_field :reference_fasta, {:index => tophat_execution.sample_id} %>
                 </div>
                 <%= javascript_tag do -%>
-                    function ebwt_base_changed(){
-                        var uploaded_reference = $('div#Sample_1 > div#uploaded_reference');
-                        var built_in_reference = $('div#Sample_1 > div#built_in_reference');
-                        if (uploaded_reference.css('display') == 'block'){
-                            uploaded_reference.css('display','none');
+                    function sample_<%= tophat_execution.sample_id %>_ebwt_base_changed(){
+                        //Get some DOM elements
+                        var sample_id = <%= tophat_execution.sample_id %>;
+                        var uploaded_reference = $('div#Sample_' + sample_id + '> div.tophat_uploaded_reference');
+                        var built_in_reference = $('div#Sample_' + sample_id + '> div.tophat_built_in_reference');
+                        var selected_option = $("[name='processing_analysis_tophat_execution[" + sample_id + "]" + 
+                                "[ebwt_base_or_reference_fasta]'] option:selected");
+                        //Hide or show based on the user's choice
+                        if (selected_option.val() == "ebwt_base"){
                             built_in_reference.css('display','block');
+                            uploaded_reference.css('display','none');
                         }
                         else{
-                            uploaded_reference.css('display','block');
                             built_in_reference.css('display','none');
+                            uploaded_reference.css('display','block');
                         }
                     }
                 <% end -%>
+                <div>
+                    <%= ce.label :reads_fastq, "Please upload your reads in fastq format", :index => tophat_execution.sample_id %>
+                    <%= ce.file_field :reads_fastq, {:index => tophat_execution.sample_id} %>
+                </div>
+                <br/>
+                <div>
+                    <%= ce.label :default_options_or_custom_options, "Use the default options or customize your options?", 
+                        :index => tophat_execution.sample_id %>
+                    <%= ce.select(:default_options_or_custom_options, 
+                        options_for_select([['Default Options','default_options'],['Custom options','custom_options']],
+                        ce.object.default_options_or_custom_options.to_s),{},
+                        {:index => tophat_execution.sample_id, 
+                        :onchange=>"sample_#{tophat_execution.sample_id}_default_options_or_custom_options_changed();"}) %>
+                    <%= javascript_tag do -%>
+                        function sample_<%= tophat_execution.sample_id %>_default_options_or_custom_options_changed(){
+                            //Get some DOM elements
+                            var sample_id = <%= tophat_execution.sample_id %>;
+                            var tophat_options_div = $('div#Sample_' + sample_id + ' > div.tophat_options');
+                            var selected_option = $("[name='processing_analysis_tophat_execution[" + sample_id + "]" + 
+                                "[default_options_or_custom_options]'] option:selected");
+                            //Hide or show the options based on the user's choice
+                            if (selected_option.val() == "default_options"){
+                                tophat_options_div.css('display','none');
+                            }
+                            else{
+                                tophat_options_div.css('display','block');
+                            }
+                        }
+                    <% end -%>
+                </div>
+                <div class="tophat_options" style="display:none">
+                    <div>
+                        <%= ce.label :read_mismatches, "Maximum allowed read alignment mismatches", :index => tophat_execution.sample_id %>
+                        <%= ce.text_field :read_mismatches, {:index => tophat_execution.sample_id} %>
+                    </div>
+                    <div>
+                        <%= ce.label :read_gap_length, "Maximum allowed total gap length for a read", :index => tophat_execution.sample_id %>
+                        <%= ce.text_field :read_gap_length, {:index => tophat_execution.sample_id} %>
+                    </div>
+                </div>
             <br/>
             <% end %>
         </div>
