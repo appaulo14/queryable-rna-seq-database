@@ -8,10 +8,7 @@
         <h3>Sample <%= cuffcompare_execution.sample_id %></h3>
         <%= fields_for cuffcompare_execution do |ce| %>
             <%= ce.label :r, "Use Reference Annotation", :index => cuffcompare_execution.sample_id %>
-            <%= ce.check_box :r, :index => cuffcompare_execution.sample_id, :onchange=>"" %><br/>
-            <%= javascript_tag do -%>
-                
-            <% end -%>
+            <%= ce.check_box :r, :index => cuffcompare_execution.sample_id %><br/>
         <% end %>
         <br/>
     <% end %>

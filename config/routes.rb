@@ -15,17 +15,35 @@ end
 
 
 RnaSeqAnalysisPipeline::Application.routes.draw do
+    ##############################################################################
+    ##   Configure routes for reference_novel_isoforms_only_workflow controller ##     
+    ##############################################################################
+    get  "reference_novel_isoforms_only_workflow/tophat_configure"
+    post "reference_novel_isoforms_only_workflow/tophat_configure"
+
+    get "reference_novel_isoforms_only_workflow/tophat_success"
+
+    get "reference_novel_isoforms_only_workflow/cufflinks_configure"
+
+    get "reference_novel_isoforms_only_workflow/cufflinks_success"
+
+    get "reference_novel_isoforms_only_workflow/cuffcompare_configure"
+
+    get "reference_novel_isoforms_only_workflow/cuffcompare_success"
+
+    get "reference_novel_isoforms_only_workflow/in_progress"
+
     #Set the root page
     root :to => "home#welcome"
 
     ###########################################################################
-    ##########          Configur routes for home controller     ###############     
+    ##########          Configur routes for home controller     ###############
     ###########################################################################
     match "home", :to => "home#welcome"
-    get "home/welcome" 
+    get "home/welcome"
 
     ###########################################################################
-    ##########   Configur routes for processing analysis controller   #########     
+    ##########   Configur routes for processing analysis controller   #########
     ###########################################################################
     match "processing_analysis", :to => "processing_analysis#main_menu"
     get "processing_analysis/main_menu"
@@ -60,7 +78,7 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
     post "processing_analysis/cuffcompare_configuring"
     get  "processing_analysis/cuffcompare_in_progress"
     get  "processing_analysis/cuffcompare_success"
-    
+
     get  "processing_analysis/cuffdiff_configuring"
     post "processing_analysis/cuffdiff_configuring"
     get  "processing_analysis/cuffdiff_in_progress"
@@ -70,11 +88,11 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
     post "processing_analysis/params_foo"
 
     ###########################################################################
-    ##########     Configure routes for query analysis controller   ###########     
+    ##########     Configure routes for query analysis controller   ###########
     ###########################################################################
     match "query_analysis", :to => "query_analysis#welcome"
     get  "query_analysis/welcome"
-    
+
     get  "query_analysis/upload_main_menu"
     post "query_analysis/upload_main_menu"
 

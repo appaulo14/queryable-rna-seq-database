@@ -3,9 +3,7 @@ module Processing_Analysis
     
         #Attributes taken from theeeeeee "Usage" output displayed when 
         #       running cuffcompare with no arguments or options
-        attr_accessor \
-            #Identifies this unique sample, not a cuffcompare argument
-            :sample_id, 
+        attr_accessor :sample_id, #Identifies this unique sample, not a cuffcompare argument 
             #Arugments
             :input_gtfs,
             #Options

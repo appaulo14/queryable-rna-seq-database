@@ -4,7 +4,7 @@ module Processing_Analysis
         #Attributes taken from http://tophat.cbcb.umd.edu/manual.html for Tophat 2.0.5
         attr_accessor :sample_id, #Identifies this unique sample, not a tophat argument
             #Arugments
-            :ebwt_base, :reads_file, 
+            :ebwt_base, :reference_fasta, :reads_file, 
             #Options
             :read_mismatches, 
             :read_gap_length, :read_edit_dist, :read_realign_edit_dist,

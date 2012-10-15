@@ -1,0 +1,28 @@
+<h1>Tophat configuration</h1>
+<%= 
+    #link_to "Next Step", @next_step_url 
+%>
+<%= form_tag :action=>"tophat_configure", :multipart => true do %>
+<!--     debug<%= debug @tophat_executions %> -->
+    <% @tophat_executions.each do |tophat_execution| %>
+        <hr/>
+        <%= render 'shared/error_messages', :object => tophat_execution %>
+        <h3>Sample <%= tophat_execution.sample_id %></h3>
+        <%= fields_for tophat_execution do |ce| %>
+            <div>
+                <%= label_tag :built_in_or_uploaded_reference, "Use a built-in reference genome or upload your own?" %>
+                <%= select_tag(:built_in_or_uploaded_reference, options_for_select(['Built-in','Upload your own'],'Built-in')) %>
+            </div>
+            <div id="built_in_reference">
+                <%= ce.label :ebwt_base, "Select reference genome to use", :index => tophat_execution.sample_id %>
+                <%= ce.select :ebwt_base, options_for_select(['hg18','hg19','Arabadopsis'],'Arabadopsis') %>
+            </div>
+            <div id="uploaded_reference" >
+                <%= ce.label :reference_fasta, "Please uploade a genome in fasta format", :index => tophat_execution.sample_id %>
+                <%= ce.file_field :reference_fasta %>
+            </div>
+        <br/>
+        <% end %>
+    <% end %>
+    <p><%= button_tag "Submit", :disable_with => "Please wait..." %></p>
+<% end %>

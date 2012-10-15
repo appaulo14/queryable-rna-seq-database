@@ -29,6 +29,40 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
+-- Name: job2s; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE job2s (
+    id bigint NOT NULL,
+    "eID_of_owner" character varying(255),
+    workflow character varying(255),
+    current_step character varying(255),
+    next_step character varying(255),
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: job2s_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE job2s_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: job2s_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE job2s_id_seq OWNED BY job2s.id;
+
+
+--
 -- Name: job_statuses; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -187,6 +221,13 @@ ALTER SEQUENCE workflows_id_seq OWNED BY workflows.id;
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY job2s ALTER COLUMN id SET DEFAULT nextval('job2s_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY jobs ALTER COLUMN id SET DEFAULT nextval('jobs_id_seq'::regclass);
 
 
@@ -332,3 +373,5 @@ INSERT INTO schema_migrations (version) VALUES ('20121007022942');
 INSERT INTO schema_migrations (version) VALUES ('20121007023053');
 
 INSERT INTO schema_migrations (version) VALUES ('20121007023055');
+
+INSERT INTO schema_migrations (version) VALUES ('20121007023056');
