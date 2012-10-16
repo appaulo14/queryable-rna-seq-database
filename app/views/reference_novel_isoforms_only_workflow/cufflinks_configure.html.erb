@@ -1,2 +1,13 @@
 <h1>ReferenceNovelIsoformsOnlyWorkflow#cufflinks_configure</h1>
 <p>Find me in app/views/reference_novel_isoforms_only_workflow/cufflinks_configure.html.erb</p>
+<%= form_tag({:action => :cufflinks_configure}, :multipart => true) do %>
+    <% @cufflinks_executions.each do |cufflinks_execution| %>
+            <%= render 'shared/error_messages', :object => cufflinks_execution %>
+            <h3>Sample <%= cufflinks_execution.sample_id %></h3>
+            <%= fields_for cufflinks_execution do |ce| %>
+                <%= ce.label :multi_read_correct, "Use read correction", :index => cufflinks_execution.sample_id %>
+                <%= ce.check_box :multi_read_correct, :index => cufflinks_execution.sample_id %>
+            <% end %>
+    <% end %>
+    <p><%= button_tag "Submit", :disable_with => "Please wait..." %></p>
+<% end %>

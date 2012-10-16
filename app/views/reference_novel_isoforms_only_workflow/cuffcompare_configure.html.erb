@@ -1,2 +1,5 @@
 <h1>ReferenceNovelIsoformsOnlyWorkflow#cuffcompare_configure</h1>
 <p>Find me in app/views/reference_novel_isoforms_only_workflow/cuffcompare_configure.html.erb</p>
+<%= form_tag({:action => :cuffcompare_configure}, :multipart => true) do %>
+    <p><%= button_tag "Submit", :disable_with => "Please wait..." %></p>
+<% end %>

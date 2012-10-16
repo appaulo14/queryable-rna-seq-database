@@ -34,10 +34,12 @@ SET default_with_oids = false;
 
 CREATE TABLE job2s (
     id bigint NOT NULL,
-    "eID_of_owner" character varying(255),
+    eid_of_owner character varying(255),
+    current_program_display_name character varying(255),
     workflow character varying(255),
     current_step character varying(255),
     next_step character varying(255),
+    number_of_samples integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -243,6 +245,14 @@ ALTER TABLE ONLY workflow_steps ALTER COLUMN id SET DEFAULT nextval('workflow_st
 --
 
 ALTER TABLE ONLY workflows ALTER COLUMN id SET DEFAULT nextval('workflows_id_seq'::regclass);
+
+
+--
+-- Name: job2s_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY job2s
+    ADD CONSTRAINT job2s_pkey PRIMARY KEY (id);
 
 
 --

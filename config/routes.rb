@@ -23,11 +23,13 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
 
     get "reference_novel_isoforms_only_workflow/tophat_success"
 
-    get "reference_novel_isoforms_only_workflow/cufflinks_configure"
+    get  "reference_novel_isoforms_only_workflow/cufflinks_configure"
+    post "reference_novel_isoforms_only_workflow/cufflinks_configure"
 
     get "reference_novel_isoforms_only_workflow/cufflinks_success"
 
-    get "reference_novel_isoforms_only_workflow/cuffcompare_configure"
+    get  "reference_novel_isoforms_only_workflow/cuffcompare_configure"
+    post "reference_novel_isoforms_only_workflow/cuffcompare_configure"
 
     get "reference_novel_isoforms_only_workflow/cuffcompare_success"
 
