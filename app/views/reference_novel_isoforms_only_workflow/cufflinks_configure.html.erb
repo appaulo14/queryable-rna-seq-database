@@ -1,6 +1,7 @@
 <h1>ReferenceNovelIsoformsOnlyWorkflow#cufflinks_configure</h1>
 <p>Find me in app/views/reference_novel_isoforms_only_workflow/cufflinks_configure.html.erb</p>
 <%= form_tag({:action => :cufflinks_configure}, :multipart => true) do %>
+    <input type="hidden" id="job_id" name="job_id" value="<%= @job_id %>" />
     <% @cufflinks_executions.each do |cufflinks_execution| %>
             <%= render 'shared/error_messages', :object => cufflinks_execution %>
             <h3>Sample <%= cufflinks_execution.sample_id %></h3>

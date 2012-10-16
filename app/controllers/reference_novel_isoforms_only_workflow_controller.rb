@@ -48,12 +48,13 @@ class ReferenceNovelIsoformsOnlyWorkflowController < ApplicationController
 
     def tophat_success
         job_id = params[:job_id]
-        job = Job2.find_by_id(job_id)
+        job = Job2.find_by_id!(job_id)
         @next_step_url = job.next_step + "?job_id=#{job_id}"
     end
 
     def cufflinks_configure
-        job = Job2.find_by_id(params[:job_id])
+        #In the final version, by sure the user actually has permission for the given job
+        job = Job2.find_by_id!(params[:job_id])
         if (request.post?)
             @cufflinks_executions = []
             (1..params[:processing_analysis_cufflinks_execution].length).each do |i|
@@ -79,6 +80,7 @@ class ReferenceNovelIsoformsOnlyWorkflowController < ApplicationController
             end
         else
             @cufflinks_executions = []
+            @job_id = job.id
             number_of_samples = job.number_of_samples
             (1..number_of_samples.to_i).each do |i|
                 @cufflinks_executions.push(Cufflinks_Execution.new(:sample_id=>i))
@@ -89,13 +91,52 @@ class ReferenceNovelIsoformsOnlyWorkflowController < ApplicationController
     def cufflinks_success
         job_id = params[:job_id]
         job = Job2.find_by_id(job_id)
-        @next_step_url = job.next_step
+        @next_step_url = "#{job.next_step}?job_id=#{job_id}"
     end
 
     def cuffcompare_configure
+        #In the final version, by sure the user actually has permission for the given job
+        job = Job2.find_by_id!(params[:job_id])
+        if (request.post?)
+            @cuffcompare_executions = []
+            (1..params[:processing_analysis_cuffcompare_execution].length).each do |i|
+                @cuffcompare_executions << Cuffcompare_Execution.new(params[:processing_analysis_cuffcompare_execution][i.to_s])
+                @cuffcompare_executions[i-1].sample_id = i
+                if @cuffcompare_executions[i-1].valid?
+                    job.current_program_display_name = "Cuffcompare"
+                    job.current_step = "in_progress"
+                    job.next_step="cuffcompare_success"
+                    job.save!
+                    child_pid = fork do
+                        sleep 15
+                        job.current_step = job.next_step
+                        job.next_step = "job_success"
+                        job.save!
+                        exit
+                    end
+                    Process.detach(child_pid)
+                    redirect_to :action => job.current_step.to_s, :job_id => job.id
+                else
+                    flash[:success]="Failure"
+                end
+            end
+        else
+            @cuffcompare_executions = []
+            @job_id = job.id
+            number_of_samples = job.number_of_samples
+            (1..number_of_samples.to_i).each do |i|
+                @cuffcompare_executions.push(Cuffcompare_Execution.new(:sample_id=>i))
+            end
+        end
     end
 
     def cuffcompare_success
+        job_id = params[:job_id]
+        job = Job2.find_by_id(job_id)
+        @next_step_url = "#{job.next_step}?job_id=#{job_id}"
+    end
+    
+    def job_success
     end
 
     def in_progress

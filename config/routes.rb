@@ -34,13 +34,15 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
     get "reference_novel_isoforms_only_workflow/cuffcompare_success"
 
     get "reference_novel_isoforms_only_workflow/in_progress"
-
-    #Set the root page
-    root :to => "home#welcome"
+    
+    get "reference_novel_isoforms_only_workflow/job_success"
 
     ###########################################################################
     ##########          Configur routes for home controller     ###############
     ###########################################################################
+    #Set the root page
+    root :to => "home#welcome"
+    
     match "home", :to => "home#welcome"
     get "home/welcome"
 

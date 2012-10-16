@@ -66,17 +66,6 @@ footer nav {
   float: none;
 }
 
-section {
-  margin-top: 1em;
-  font-size: 120%;
-  padding: 20px;
-  background: #fff;
-}
-
-section h1 {
-  font-size: 200%;
-}
-
 /* Links */
 
 a, a:link, a:active{
@@ -150,6 +139,10 @@ nav ul li a:hover {
   border-radius:         10px;
 }
 
+
+.sub-section {
+     background-color:rgb(211,184,239)
+}
 /* User show page */
 
 td {
