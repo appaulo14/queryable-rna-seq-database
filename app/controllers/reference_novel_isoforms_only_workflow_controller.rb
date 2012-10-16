@@ -45,6 +45,69 @@ class ReferenceNovelIsoformsOnlyWorkflowController < ApplicationController
             end
         end
     end
+    
+    def tophat_configure_v2
+        debugger if ENV['RAILS_DEBUG'] == 'true'
+        @next_step_url = "#"
+        if (request.post?)
+            #Declare some variables
+            @tophat_executions = []
+            number_of_samples = params[:processing_analysis_tophat_execution].length
+            all_executions_are_valid = true
+            #Check that all the tophat executions are valid
+            (1..number_of_samples).each do |i|
+                @tophat_executions << Tophat_Execution.new(params[:processing_analysis_tophat_execution][i.to_s])
+                @tophat_executions[i-1].sample_id = i
+                if not @tophat_executions[i-1].valid?
+                    all_executions_are_valid = false
+                end
+            end
+            if (all_executions_are_valid)
+                #Create a new job
+                job = Job2.new()
+                job.number_of_samples = number_of_samples
+                job.eid_of_owner = "pawl"
+                job.current_program_display_name = "Tophat"
+                job.workflow = "reference_novel_isoforms_only_workflow"
+                job.current_step = "in_progress"
+                job.next_step="tophat_success"
+                job.save!
+                tophat_executions.each do |tophat_execution|
+                    sample = Sample.new()
+                    sample.sample_id = tophat_execution.sample_id
+                    sample.status = "in_progess"
+                    sample.save!
+                    child_pid = fork do
+                        sleep 15
+                        job.current_step = job.next_step
+                        job.next_step = "cufflinks_configure"
+                        job.save!
+                        exit
+                    end
+                    Process.detach(child_pid) 
+                end
+                child_pid = fork do
+                    while (1) #while any samples are still in-progress
+                        sleep 5
+                    end
+                    job.current_step = job.next_step
+                    job.next_step = "cufflinks_configure"
+                    job.save!
+                    exit
+                end
+                Process.detach(child_pid) 
+                redirect_to :action => job.current_step.to_s, :job_id => job.id
+            else
+                flash[:success] = "Success"
+            end
+        else
+            @tophat_executions = []
+            number_of_samples = params[:number_of_samples]
+            (1..number_of_samples.to_i).each do |i|
+                @tophat_executions.push(Tophat_Execution.new(:sample_id=>i))
+            end
+        end
+    end
 
     def tophat_success
         job_id = params[:job_id]
