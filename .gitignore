@@ -35,3 +35,4 @@ database.yml~
 cert
 cert/*
 
+*.kate-swp
