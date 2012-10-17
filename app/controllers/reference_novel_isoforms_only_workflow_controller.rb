@@ -47,7 +47,6 @@ class ReferenceNovelIsoformsOnlyWorkflowController < ApplicationController
     end
     
     def tophat_configure
-        debugger if ENV['RAILS_DEBUG'] == 'true'
         @next_step_url = "#"
         if (request.post?)
             #Declare some variables
@@ -79,30 +78,36 @@ class ReferenceNovelIsoformsOnlyWorkflowController < ApplicationController
                     sample.status = "in_progess"
                     sample.save!
                     child_pid = fork do
-                        puts "Sample #{sample.sample_id} waiting 15 seconds"
+                        logger.warn "Sample #{sample.sample_id} waiting 15 seconds"
                         sleep 15
-                        sample.status="sucess"
+                        logger.warn "Sample #{sample.sample_id} slept for 15 seconds"
+                        sample.status="success"
                         sample.save!
+                        logger.warn "Sample #{sample.sample_id} saved"
                         exit
                     end
                     Process.detach(child_pid) 
                 end
                 child_pid = fork do
                     begin
-                        puts "Master thread sleeping for 5 seconds"
+                        logger.warn "Master thread sleeping for 5 seconds"
                         sleep 5
+                        logger.warn "Master thread slept for 5 seconds"
                         all_samples_complete = true
                         samples = Sample.find_all_by_job_id(job.id)
+                        debugger if ENV['RAILS_DEBUG'] == 'true'
                         samples.each do |s|
-                            if sample.status != "success"
+                            if s.status != "success"
                                 all_samples_complete = false
                                 break
                             end
                         end
                     end while (all_samples_complete == false)
+                    logger.warn "All samples completed successfully"
                     job.current_step = job.next_step
                     job.next_step = "cufflinks_configure"
                     job.save!
+                    logger.warn "job saved"
                     exit
                 end
                 Process.detach(child_pid) 
