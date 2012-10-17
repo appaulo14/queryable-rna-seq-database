@@ -6,7 +6,7 @@ class ReferenceNovelIsoformsOnlyWorkflowController < ApplicationController
     require 'processing_analysis/cuffdiff_execution.rb'
     include Processing_Analysis
 
-    def tophat_configure
+    def tophat_configure_old
         debugger if ENV['RAILS_DEBUG'] == 'true'
         @next_step_url = "#"
         if (request.post?)
@@ -46,7 +46,7 @@ class ReferenceNovelIsoformsOnlyWorkflowController < ApplicationController
         end
     end
     
-    def tophat_configure_v2
+    def tophat_configure
         debugger if ENV['RAILS_DEBUG'] == 'true'
         @next_step_url = "#"
         if (request.post?)
@@ -72,24 +72,34 @@ class ReferenceNovelIsoformsOnlyWorkflowController < ApplicationController
                 job.current_step = "in_progress"
                 job.next_step="tophat_success"
                 job.save!
-                tophat_executions.each do |tophat_execution|
+                @tophat_executions.each do |tophat_execution|
                     sample = Sample.new()
                     sample.sample_id = tophat_execution.sample_id
+                    sample.job_id = job.id
                     sample.status = "in_progess"
                     sample.save!
                     child_pid = fork do
+                        puts "Sample #{sample.sample_id} waiting 15 seconds"
                         sleep 15
-                        job.current_step = job.next_step
-                        job.next_step = "cufflinks_configure"
-                        job.save!
+                        sample.status="sucess"
+                        sample.save!
                         exit
                     end
                     Process.detach(child_pid) 
                 end
                 child_pid = fork do
-                    while (1) #while any samples are still in-progress
+                    begin
+                        puts "Master thread sleeping for 5 seconds"
                         sleep 5
-                    end
+                        all_samples_complete = true
+                        samples = Sample.find_all_by_job_id(job.id)
+                        samples.each do |s|
+                            if sample.status != "success"
+                                all_samples_complete = false
+                                break
+                            end
+                        end
+                    end while (all_samples_complete == false)
                     job.current_step = job.next_step
                     job.next_step = "cufflinks_configure"
                     job.save!
@@ -195,7 +205,7 @@ class ReferenceNovelIsoformsOnlyWorkflowController < ApplicationController
 
     def cuffcompare_success
         job_id = params[:job_id]
-        job = Job2.find_by_id(job_id)
+        job = Job2.find_by_id!(job_id)
         @next_step_url = "#{job.next_step}?job_id=#{job_id}"
     end
     
@@ -209,5 +219,6 @@ class ReferenceNovelIsoformsOnlyWorkflowController < ApplicationController
             redirect_to :action => job.current_step.to_s, :job_id => job.id
         end
         @current_program_display_name = job.current_program_display_name
+        @samples = Sample.find_all_by_job_id(job.id)
     end
 end

@@ -135,6 +135,39 @@ CREATE TABLE programs (
 
 
 --
+-- Name: samples; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE samples (
+    id integer NOT NULL,
+    sample_id integer,
+    job_id integer,
+    status character varying(255),
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: samples_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE samples_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: samples_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE samples_id_seq OWNED BY samples.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -237,6 +270,13 @@ ALTER TABLE ONLY jobs ALTER COLUMN id SET DEFAULT nextval('jobs_id_seq'::regclas
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY samples ALTER COLUMN id SET DEFAULT nextval('samples_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY workflow_steps ALTER COLUMN id SET DEFAULT nextval('workflow_steps_id_seq'::regclass);
 
 
@@ -285,6 +325,14 @@ ALTER TABLE ONLY program_statuses
 
 ALTER TABLE ONLY programs
     ADD CONSTRAINT programs_pkey PRIMARY KEY (internal_name);
+
+
+--
+-- Name: samples_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY samples
+    ADD CONSTRAINT samples_pkey PRIMARY KEY (id);
 
 
 --
@@ -385,3 +433,5 @@ INSERT INTO schema_migrations (version) VALUES ('20121007023053');
 INSERT INTO schema_migrations (version) VALUES ('20121007023055');
 
 INSERT INTO schema_migrations (version) VALUES ('20121007023056');
+
+INSERT INTO schema_migrations (version) VALUES ('20121007023057');
