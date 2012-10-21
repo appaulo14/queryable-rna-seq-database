@@ -72,12 +72,13 @@ class ReferenceNovelIsoformsOnlyWorkflowController < ApplicationController
                 job.next_step="tophat_success"
                 job.save!
                 @tophat_executions.each do |tophat_execution|
-                    sample = Sample.new()
-                    sample.sample_id = tophat_execution.sample_id
-                    sample.job_id = job.id
-                    sample.status = "in_progess"
-                    sample.save!
                     child_pid = fork do
+                        #Look here more: http://bibwild.wordpress.com/2011/11/14/multi-threading-in-rails-activerecord-3-0-3-1/
+                        sample = Sample.new()
+                        sample.sample_id = tophat_execution.sample_id
+                        sample.job_id = job.id
+                        sample.status = "in_progess"
+                        sample.save!
                         logger.warn "Sample #{sample.sample_id} waiting 15 seconds"
                         sleep 15
                         logger.warn "Sample #{sample.sample_id} slept for 15 seconds"
@@ -88,22 +89,39 @@ class ReferenceNovelIsoformsOnlyWorkflowController < ApplicationController
                     end
                     Process.detach(child_pid) 
                 end
+                parent_id = Process.pid
                 child_pid = fork do
                     begin
                         logger.warn "Master thread sleeping for 5 seconds"
                         sleep 5
                         logger.warn "Master thread slept for 5 seconds"
+                        #Kill this thread if its parent thread is dead
+                        if (Process.ppid == 1)
+                            logger.warn "Parent process is missing. exiting..."
+                            exit
+                        end
+                        logger.warn "Parent process id is #{Process.ppid}"
                         all_samples_complete = true
-                        samples = Sample.find_all_by_job_id(job.id)
+                        #The database seems to be caching the query result 
+                        #       instead of getting it from the database each time
+                        #samples = Sample.find_all_by_job_id(job.id)
+                        samples = Sample.where(:job_id => job.id)
                         debugger if ENV['RAILS_DEBUG'] == 'true'
-                        samples.each do |s|
+                        1..job.number_of_samples do |i|
+                            s = Sample.where(:job_id => job.id, :sample_id => i)[0]
                             if s.status != "success"
                                 all_samples_complete = false
                                 break
                             end
                         end
+#                         samples.each do |s|
+#                             if s.status != "success"
+#                                 all_samples_complete = false
+#                                 break
+#                             end
+#                         end
                     end while (all_samples_complete == false)
-                    logger.warn "All samples completed successfully"
+                    logger.warn "all_samples_complete = #{all_samples_complete}"
                     job.current_step = job.next_step
                     job.next_step = "cufflinks_configure"
                     job.save!
