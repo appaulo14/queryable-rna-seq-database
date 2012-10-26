@@ -72,32 +72,58 @@ class ReferenceNovelIsoformsOnlyWorkflowController < ApplicationController
                 job.current_step = "in_progress"
                 job.next_step="tophat_success"
                 job.save!
-                read_pipes = []
-                write_pipes = []
+                read_pipes = {}
+                write_pipes = {}
+                samples = {}
+                debugger if ENV['RAILS_DEBUG'] == 'true'
                 @tophat_executions.each do |tophat_execution|
-                    read_pipes[tophat_execution.to_s], write_pipes[tophat_execution.to_s] = IO.pipe
+                    sample_id = tophat_execution.sample_id
+                    read_pipes[sample_id], write_pipes[sample_id] = IO.pipe
+                    sample = Sample.new()
+                    sample.sample_id = sample_id
+                    sample.job_id = job.id
+                    sample.status = "in_progess"
+                    sample.save!
+                    samples[sample_id] = sample
                 end
                 child_pid = fork do
                     logger.warn "Main loop"
                     while (true)
                         sleep 5
-                        read_pipes.each do |rp|
-                            begin
-                                msg = rp.read_nonblock(255)
-                            rescue Errno::EAGAIN
-                            rescue EOFError
+                        if (samples.count > 0)
+                            samples.each do |sample_id,sample|
+                                rp = read_pipes[sample_id]
+                                #See if there is a message yet from the sample process
+                                begin
+                                    msg = rp.read_nonblock(255)
+                                    logger.warn "Message from sample #{sample_id} received"
+                                    if (msg == "success")
+                                        sample.status="success"
+                                        sample.save!
+                                        logger.warn "Sample #{sample_id} saved successfully"
+                                    end
+                                rescue Errno::EAGAIN
+                                    logger.warn "Sample #{sample_id} is not yet finished"
+                                rescue EOFError
+                                end
                             end
+                        else
+                            job.current_step = job.next_step
+                            job.next_step = "cufflinks_configure"
+                            job.save!
+                            logger.warn "job saved"
+                            exit
                         end
                     end
                     exit
                 end
                 Process.detach(child_pid)
                 @tophat_executions.each do |tophat_execution|
-                    sample = Sample.new()
-                    sample.sample_id = tophat_execution.sample_id
-                    sample.job_id = job.id
-                    sample.status = "in_progess"
-                    sample.save!
+#                     sample = Sample.new()
+#                     sample.sample_id = tophat_execution.sample_id
+#                     sample.job_id = job.id
+#                     sample.status = "in_progess"
+#                     sample.save!
 #                     logger.warn "Before = #{Sample.connection}"
                     debugger if ENV['RAILS_DEBUG'] == 'true'
                     ActiveRecord::Base.connection_pool.with_connection do |conn|
@@ -278,10 +304,10 @@ class ReferenceNovelIsoformsOnlyWorkflowController < ApplicationController
             end
         end
         if (all_samples_complete == true)
-            job.current_step = job.next_step
-            job.next_step = "cufflinks_configure"
-            job.save!
-            logger.warn "job saved"
+#             job.current_step = job.next_step
+#             job.next_step = "cufflinks_configure"
+#             job.save!
+#             logger.warn "job saved"
             redirect_to :action => job.current_step.to_s, :job_id => job.id
         else
             @current_program_display_name = job.current_program_display_name
