@@ -55,11 +55,12 @@ class ReferenceNovelIsoformsOnlyWorkflowController < ApplicationController
             all_executions_are_valid = true
             #Check that all the tophat executions are valid
             (1..number_of_samples).each do |i|
-                @tophat_executions << Tophat_Execution.new(params[:processing_analysis_tophat_execution][i.to_s])
-                @tophat_executions[i-1].sample_id = i
-                if not @tophat_executions[i-1].valid?
+                tophat_execution = Tophat_Execution.new(params[:processing_analysis_tophat_execution][i.to_s])
+                tophat_execution.sample_id = i
+                if not tophat_execution.valid?
                     all_executions_are_valid = false
                 end
+                @tophat_executions << tophat_execution
             end
             if (all_executions_are_valid)
                 #Create a new job
@@ -71,22 +72,60 @@ class ReferenceNovelIsoformsOnlyWorkflowController < ApplicationController
                 job.current_step = "in_progress"
                 job.next_step="tophat_success"
                 job.save!
+                read_pipes = []
+                write_pipes = []
+                @tophat_executions.each do |tophat_execution|
+                    read_pipes[tophat_execution.to_s], write_pipes[tophat_execution.to_s] = IO.pipe
+                end
+                child_pid = fork do
+                    logger.warn "Main loop"
+                    while (true)
+                        sleep 5
+                        read_pipes.each do |rp|
+                            begin
+                                msg = rp.read_nonblock(255)
+                            rescue Errno::EAGAIN
+                            rescue EOFError
+                            end
+                        end
+                    end
+                    exit
+                end
+                Process.detach(child_pid)
                 @tophat_executions.each do |tophat_execution|
                     sample = Sample.new()
                     sample.sample_id = tophat_execution.sample_id
                     sample.job_id = job.id
                     sample.status = "in_progess"
                     sample.save!
-                    child_pid = fork do
-                        logger.warn "Sample #{sample.sample_id} waiting 15 seconds"
-                        sleep 15
-                        logger.warn "Sample #{sample.sample_id} slept for 15 seconds"
-                        sample.status="success"
-                        sample.save!
-                        logger.warn "Sample #{sample.sample_id} saved"
-                        exit
-                    end
-                    Process.detach(child_pid) 
+#                     logger.warn "Before = #{Sample.connection}"
+                    debugger if ENV['RAILS_DEBUG'] == 'true'
+                    ActiveRecord::Base.connection_pool.with_connection do |conn|
+                        child_pid = fork do
+#                             logger.warn "Inside = #{Sample.connection}"
+#                             logger.warn "Conn   = #{conn}"
+#                             ActiveRecord::Base.connection_pool.with_connection do |conn2|
+#                                 logger.warn "Inside2= #{Sample.connection}"
+#                                 logger.warn "Conn2  = #{conn2}"
+#                             end
+#                             conn3 = ActiveRecord::Base.connection_pool.checkout
+#                             logger.warn "Conn3  = #{conn3}"
+#                             Sample.establish_connection
+#                             logger.warn "Established connection= #{Sample.connection}"
+#                             logger.warn "Number of connections = #{ActiveRecord::Base.connection_pool.connections.count}"
+#                             ActiveRecord::Base.connection_pool.checkin(conn3)
+                            logger.warn "Sample #{sample.sample_id} waiting 15 seconds"
+                            sleep 15
+                            logger.warn "Sample #{sample.sample_id} slept for 15 seconds"
+                            write_pipes[tophat_execution.to_s].write "success"
+                            write_pipes[tophat_execution.to_s].close
+#                             sample.status="success"
+#                             sample.save!
+#                             logger.warn "Sample #{sample.sample_id} saved"
+                            exit
+                        end
+                        Process.detach(child_pid) 
+                    end   
                 end
 #                 child_pid = fork do
 #                     begin
