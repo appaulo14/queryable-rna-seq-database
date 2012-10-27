@@ -19,9 +19,10 @@ module Processing_Analysis
             :trim_3_avgcov_thresh, :trim_3_dropoff_frac, :max_multiread_fraction,
             :overlap_radius,
             #Advanced Reference Annotation Based Transcript (RABT) Assembly Options
-            :three_overhang_tolerance, :intron_overhang_tolerance, :no_faux_reads
-           
+            :three_overhang_tolerance, :intron_overhang_tolerance, :no_faux_reads   
     
+        validates :multi_read_correct, :inclusion => {:in => ['1', '0']}
+        
         def initialize(attributes = {})
             #Load in any values from the form
             super(attributes)

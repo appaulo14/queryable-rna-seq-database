@@ -269,10 +269,10 @@ class ReferenceNovelIsoformsOnlyWorkflowController < ApplicationController
              #Declare some variables
             @tophat_executions = []
             @cufflinks_executions = []
-            number_of_samples = params[:number_of_samples].to_i
+            @number_of_samples = params[:number_of_samples].to_i
             all_executions_are_valid = true
             #Check that all the tophat parameters for all the samples are valid
-            (1..number_of_samples).each do |i|
+            (1..@number_of_samples).each do |i|
                 tophat_execution = Tophat_Execution.new(params[:processing_analysis_tophat_execution][i.to_s])
                 tophat_execution.sample_id = i
                 if not tophat_execution.valid?
@@ -281,7 +281,7 @@ class ReferenceNovelIsoformsOnlyWorkflowController < ApplicationController
                 @tophat_executions << tophat_execution
             end
             #Check that all the cufflinks parameters for all the samples are valid
-            (1..number_of_samples).each do |i|
+            (1..@number_of_samples).each do |i|
                 cufflinks_execution = Cufflinks_Execution.new(params[:processing_analysis_cufflinks_execution][i.to_s])
                 cufflinks_execution.sample_id = i
                 if not cufflinks_execution.valid?
@@ -290,15 +290,15 @@ class ReferenceNovelIsoformsOnlyWorkflowController < ApplicationController
                 @cufflinks_executions << cufflinks_execution
             end
             #Check that all the cuffcompare samples are valid
-            cuffcompare_execution = Cuffcompare_Execution.new(params[:processing_analysis_cuffcompare_execution])
-            if not cuffcompare_execution.valid?
+            @cuffcompare_execution = Cuffcompare_Execution.new(params[:processing_analysis_cuffcompare_execution])
+            if not @cuffcompare_execution.valid?
                 all_executions_are_valid = false
             end
-            raise "Goat"
+            debugger if ENV['RAILS_DEBUG'] == 'true'
             if (all_executions_are_valid)
                 #Create a new job
                 job = Job2.new()
-                job.number_of_samples = number_of_samples
+                job.number_of_samples = @number_of_samples
                 job.eid_of_owner = "pawl"
                 job.current_program_display_name = "Tophat"
                 job.workflow = WORKFLOW
@@ -377,7 +377,7 @@ class ReferenceNovelIsoformsOnlyWorkflowController < ApplicationController
                 end
                 redirect_to :action => job.current_step.to_s, :job_id => job.id
             else
-                flash[:success] = "Success"
+                flash[:success] = "Errors"
             end
             return
         end

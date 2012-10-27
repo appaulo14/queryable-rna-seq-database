@@ -40,7 +40,10 @@ module Processing_Analysis
             :transcriptomes_only, :transcriptome_max_hits, :prefilter_multihits,
             #Supplying your own insertions/deletions
             :insertions, :deletions, :no_novel_indels
-    
+        
+        validates :read_mismatches, :numericality => {:only_integer => true}
+        validates :read_gap_length, :numericality => {:only_integer => true}
+        
         def initialize(attributes = {})
             #Load in any values from the form
             super(attributes)

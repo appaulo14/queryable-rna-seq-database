@@ -9,7 +9,8 @@ module Processing_Analysis
             #Options
             :r, :r_gtf, :R, :M, :N, :s, :d, :p, :C, :G
            
-    
+        validates :M, :inclusion => {:in => ['1', '0']}
+        
         def initialize(attributes = {})
             #Load in any values from the form
             super(attributes)
