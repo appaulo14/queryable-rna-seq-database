@@ -255,14 +255,13 @@ class ReferenceNovelIsoformsOnlyWorkflowController < ApplicationController
     
     def express
         if (request.get?)
-            number_of_samples = params[:number_of_samples]
+            @number_of_samples = params[:number_of_samples]
             @tophat_executions = []
             @cufflinks_executions = []
-            @cuffcompare_executions = []
-            (1..number_of_samples.to_i).each do |i|
+            @cuffcompare_execution = Cuffcompare_Execution.new()
+            (1..@number_of_samples.to_i).each do |i|
                 @tophat_executions.push(Tophat_Execution.new(:sample_id=>i))
                 @cufflinks_executions.push(Cufflinks_Execution.new(:sample_id=>i))
-                @cuffcompare_executions.push(Cuffcompare_Execution.new(:sample_id=>i))
             end
             return
         end
@@ -270,10 +269,9 @@ class ReferenceNovelIsoformsOnlyWorkflowController < ApplicationController
              #Declare some variables
             @tophat_executions = []
             @cufflinks_executions = []
-            @cuffcompare_executions = []
-            number_of_samples = params[:processing_analysis_tophat_execution].length
+            number_of_samples = params[:number_of_samples].to_i
             all_executions_are_valid = true
-            #Check that all the tophat executions are valid
+            #Check that all the tophat parameters for all the samples are valid
             (1..number_of_samples).each do |i|
                 tophat_execution = Tophat_Execution.new(params[:processing_analysis_tophat_execution][i.to_s])
                 tophat_execution.sample_id = i
@@ -282,6 +280,21 @@ class ReferenceNovelIsoformsOnlyWorkflowController < ApplicationController
                 end
                 @tophat_executions << tophat_execution
             end
+            #Check that all the cufflinks parameters for all the samples are valid
+            (1..number_of_samples).each do |i|
+                cufflinks_execution = Cufflinks_Execution.new(params[:processing_analysis_cufflinks_execution][i.to_s])
+                cufflinks_execution.sample_id = i
+                if not cufflinks_execution.valid?
+                    all_executions_are_valid = false
+                end
+                @cufflinks_executions << cufflinks_execution
+            end
+            #Check that all the cuffcompare samples are valid
+            cuffcompare_execution = Cuffcompare_Execution.new(params[:processing_analysis_cuffcompare_execution])
+            if not cuffcompare_execution.valid?
+                all_executions_are_valid = false
+            end
+            raise "Goat"
             if (all_executions_are_valid)
                 #Create a new job
                 job = Job2.new()
