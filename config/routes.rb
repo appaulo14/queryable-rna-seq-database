@@ -1,17 +1,17 @@
-require 'sinatra'
-class ApiApp < Sinatra::Base
-    get '/' do
-    end
-
-    get "/endpoint" do
-    end
-
-    post "/endpoint" do
-    end
-
-    get "/get_sequence" do
-    end
-end
+# require 'sinatra'
+# class ApiApp < Sinatra::Base
+#     get '/' do
+#     end
+# 
+#     get "/endpoint" do
+#     end
+# 
+#     post "/endpoint" do
+#     end
+# 
+#     get "/get_sequence" do
+#     end
+# end
 
 
 RnaSeqAnalysisPipeline::Application.routes.draw do
@@ -36,6 +36,9 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
     get "reference_novel_isoforms_only_workflow/in_progress"
     
     get "reference_novel_isoforms_only_workflow/job_success"
+    
+    get  "reference_novel_isoforms_only_workflow/express"
+    post "reference_novel_isoforms_only_workflow/express"
 
     ###########################################################################
     ##########          Configur routes for home controller     ###############
@@ -126,13 +129,13 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
     get  "query_analysis/tblastn"
     post "query_analysis/tblastn"
 
-    SequenceServer::App.init
-    #match "/sequenceserver" => SequenceServer::App, :anchor => false
-    #match "/sequenceserver(/*other_params)" => SequenceServer::App, :anchor => false
-    mount SequenceServer::App => "sequenceserver"
-    #ApiApp.init
-    mount ApiApp => "api"
-    #   SequenceServer::App.routes do
+#     SequenceServer::App.init
+#     #match "/sequenceserver" => SequenceServer::App, :anchor => false
+#     #match "/sequenceserver(/*other_params)" => SequenceServer::App, :anchor => false
+#     mount SequenceServer::App => "sequenceserver"
+#     #ApiApp.init
+#     mount ApiApp => "api"
+#     #   SequenceServer::App.routes do
     #     get "get_sequence"# => "sequenceserver/get_sequence"
     #     get "sequenceserver/get_sequence"
     #     get "/sequenceserver/get_sequence"

@@ -1,0 +1,114 @@
+<h1>ReferenceNovelIsoformsOnlyWorkflow#express</h1>
+<p>Find me in app/views/reference_novel_isoforms_only_workflow/express.html.erb</p>
+<%= form_tag({:action => :express}, :multipart => true) do %>
+    <% @tophat_executions.each do |tophat_execution| %>
+        <div id="<%= "Sample_#{tophat_execution.sample_id}" %>">
+            <hr/>
+            <%= render 'shared/error_messages', :object => tophat_execution %>
+            <h3>Sample <%= tophat_execution.sample_id %></h3>
+            <%= fields_for tophat_execution do |te| %>
+                <div class="sub-section rounded-corners">
+                    <div>
+                        <%= te.label :ebwt_base_or_reference_fasta, "Use a built-in reference genome or upload your own?", 
+                            :index => tophat_execution.sample_id %>
+                        <%= te.select(:ebwt_base_or_reference_fasta, 
+                            options_for_select([['Built-in','ebwt_base'],['Upload your own','reference_fasta']],
+                            te.object.ebwt_base_or_reference_fasta.to_s),{},
+                            {:index => tophat_execution.sample_id, 
+                            :onchange=>"sample_#{tophat_execution.sample_id}_ebwt_base_changed();"}) %>
+                    </div>
+                    <div class="tophat_built_in_reference">
+                        <%= te.label :ebwt_base, "Select reference genome to use", :index => tophat_execution.sample_id %>
+                        <%= te.select(:ebwt_base, options_for_select(['hg18','hg19','Arabadopsis'],'Arabadopsis'),{},
+                            {:index => tophat_execution.sample_id}) %>
+                    </div>
+                    <div class="tophat_uploaded_reference" style="display:none">
+                        <%= te.label :reference_fasta, "Please upload a genome in fasta format", :index => tophat_execution.sample_id %>
+                        <%= te.file_field :reference_fasta, {:index => tophat_execution.sample_id} %>
+                    </div>
+                    <%= javascript_tag do -%>
+                        function sample_<%= tophat_execution.sample_id %>_ebwt_base_changed(){
+                            //Get some DOM elements
+                            var sample_id = <%= tophat_execution.sample_id %>;
+                            var uploaded_reference = $('div#Sample_' + sample_id + '> div > div.tophat_uploaded_reference');
+                            var built_in_reference = $('div#Sample_' + sample_id + '> div > div.tophat_built_in_reference');
+                            var selected_option = $("[name='processing_analysis_tophat_execution[" + sample_id + "]" + 
+                                    "[ebwt_base_or_reference_fasta]'] option:selected");
+                            //Hide or show based on the user's choice
+                            if (selected_option.val() == "ebwt_base"){
+                                built_in_reference.css('display','block');
+                                uploaded_reference.css('display','none');
+                            }
+                            else{
+                                built_in_reference.css('display','none');
+                                uploaded_reference.css('display','block');
+                            }
+                        }
+                    <% end -%>
+                </div>
+                <div>
+                    <%= te.label :reads_fastq, "Please upload your reads in fastq format", :index => tophat_execution.sample_id %>
+                    <%= te.file_field :reads_fastq, {:index => tophat_execution.sample_id} %>
+                </div>
+                <div class="sub-section rounded-corners">
+                    <div>
+                        <%= te.label :default_options_or_custom_options, "Use the default options or customize your options?", 
+                            :index => tophat_execution.sample_id %>
+                        <%= te.select(:default_options_or_custom_options, 
+                            options_for_select([['Default Options','default_options'],['Custom options','custom_options']],
+                            te.object.default_options_or_custom_options.to_s),{},
+                            {:index => tophat_execution.sample_id, 
+                            :onchange=>"sample_#{tophat_execution.sample_id}_default_options_or_custom_options_changed();"}) %>
+                        <%= javascript_tag do -%>
+                            function sample_<%= tophat_execution.sample_id %>_default_options_or_custom_options_changed(){
+                                //Get some DOM elements
+                                var sample_id = <%= tophat_execution.sample_id %>;
+                                var tophat_options_div = $('div#Sample_' + sample_id + ' > div > div.tophat_options');
+                                var selected_option = $("[name='processing_analysis_tophat_execution[" + sample_id + "]" + 
+                                    "[default_options_or_custom_options]'] option:selected");
+                                //Hide or show the options based on the user's choice
+                                if (selected_option.val() == "default_options"){
+                                    tophat_options_div.css('display','none');
+                                }
+                                else{
+                                    tophat_options_div.css('display','block');
+                                }
+                            }
+                        <% end -%>
+                    </div>
+                    <div class="tophat_options" style="display:none">
+                        <div>
+                            <%= te.label :read_mismatches, "Maximum allowed read alignment mismatches", :index => tophat_execution.sample_id %>
+                            <%= te.text_field :read_mismatches, {:index => tophat_execution.sample_id} %>
+                        </div>
+                        <div>
+                            <%= te.label :read_gap_length, "Maximum allowed total gap length for a read", :index => tophat_execution.sample_id %>
+                            <%= te.text_field :read_gap_length, {:index => tophat_execution.sample_id} %>
+                        </div>
+                    </div>
+                </div>
+            <br/>
+            <% end %>
+        </div>
+    <% end %>
+    <input type="hidden" id="job_id" name="job_id" value="<%= @job_id %>" />
+    <% @cufflinks_executions.each do |cufflinks_execution| %>
+            <%= render 'shared/error_messages', :object => cufflinks_execution %>
+            <h3>Sample <%= cufflinks_execution.sample_id %></h3>
+            <%= fields_for cufflinks_execution do |ce| %>
+                <%= ce.label :multi_read_correct, "Use read correction", :index => cufflinks_execution.sample_id %>
+                <%= ce.check_box :multi_read_correct, :index => cufflinks_execution.sample_id %>
+            <% end %>
+    <% end %>
+    <% @cuffcompare_executions.each do |cuffcompare_execution| %>
+            <%= render 'shared/error_messages', :object => cuffcompare_execution %>
+            <h3>Sample <%= cuffcompare_execution.sample_id %></h3>
+            <%= fields_for cuffcompare_execution do |ce| %>
+                <%= ce.label :input_gtfs, "Input gtfs", :index => cuffcompare_execution.sample_id %>
+                <%= ce.file_field :input_gtfs, :index => cuffcompare_execution.sample_id %>
+                <%= ce.label :M, "discard (ignore) single-exon transfrags and reference transcripts" %>
+                <%= ce.check_box :M %>
+            <% end %>
+    <% end %>
+    <p><%= button_tag "Submit", :disable_with => "Please wait..." %></p>
+<% end %>

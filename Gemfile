@@ -7,8 +7,8 @@ gem 'rails', '3.2.8'
 
 gem 'pg'
 # gem 'thin'
-gem 'sinatra'
-gem 'sequenceserver'
+#gem 'sinatra'
+#gem 'sequenceserver'
 
 # Gems used only for assets and not required
 # in production environments by default.
