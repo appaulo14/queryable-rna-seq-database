@@ -112,9 +112,9 @@
         <displaycolumn property-id="tpd9" order="-1" width="75" visible="false"/>
         <displaycolumn property-id="tpd1" order="-1" width="75" visible="false"/>
         <displaycolumn property-id="tpd0" order="-1" width="75" visible="false"/>
-        <displaycolumn property-id="tpd3" order="0" width="260" visible="true"/>
-        <displaycolumn property-id="tpd4" order="1" width="104" visible="true"/>
-        <displaycolumn property-id="tpd5" order="2" width="119" visible="true"/>
+        <displaycolumn property-id="tpd3" order="0" width="252" visible="true"/>
+        <displaycolumn property-id="tpd4" order="1" width="101" visible="true"/>
+        <displaycolumn property-id="tpd5" order="2" width="115" visible="true"/>
     </taskdisplaycolumns>
     <previous/>
     <roles roleset-name="Default"/>

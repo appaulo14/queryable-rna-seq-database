@@ -36,7 +36,7 @@ end
 
 group :bioinformatics do
     gem 'bio', '1.4.2'
-    gem 'goruby'
+    #gem 'goruby'
 end
 
 #For foreigner key constraints. 
