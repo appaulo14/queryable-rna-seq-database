@@ -1,16 +1,34 @@
-<h1>ProcessingAnalysis#main_menu</h1>
-<p>Find me in app/views/processing_analysis/main_menu.html.erb</p>
-<h3>What would you like to do?</h3>
-<%= form_tag('/query_analysis/upload_main_menu') do %>
-    <h3>What type of data do you have?</h3>
-    <!--<input type="radio" name="data_type" value="upload_reference_cuffdiff" />Reference Cuffdiff<br />
-    <input type="radio" name="data_type" value="upload_de_novo_cuffdiff" />De-novo Cuffdiff<br/>
-    <input type="radio" name="data_type" value="upload_de_novo_edgeR" />EdgeR<br/>-->
-    <%= radio_button_tag(:data_type, "upload_reference_cuffdiff") %>
-    <%= label_tag(:data_type_upload_reference_cuffdiff, "Reference Cuffdiff") %><br/>
-    <%= radio_button_tag(:data_type, "upload_de_novo_cuffdiff") %>
-    <%= label_tag(:data_type_upload_de_novo_cuffdiff, "De-novo Cuffdiff") %><br/>
-    <%= radio_button_tag(:data_type, "upload_de_novo_edgeR") %>
-    <%= label_tag(:data_type_upload_de_novo_edgeR, "EdgeR") %><br/>
-    <%= submit_tag("Proceed to next step") %>
-<% end %>
+<h1>What type of processing would you like to do?</h1>
+<table>
+    <tr>
+<!--        <td class="rounded-corners" style="background-color:rgb(211,184,239);padding-left:25px;padding-right:25px">
+            <h3 style="text-align:center">Wizard</h3>
+            <%= form_tag('/query_analysis/upload_main_menu') do %>
+                <%= radio_button_tag(:data_type, "upload_reference_cuffdiff") %>
+                <%= label_tag(:data_type_upload_reference_cuffdiff, "Differential Expression") %><br/>
+                <%= radio_button_tag(:data_type, "upload_de_novo_cuffdiff") %>
+                <%= label_tag(:data_type_upload_de_novo_cuffdiff, "Novel Isoforms") %><br/>
+                <%= radio_button_tag(:data_type, "upload_de_novo_edgeR") %>
+                <%= label_tag(:data_type_upload_de_novo_edgeR, "Both") %><br/>
+                <%= submit_tag("Proceed to next step") %>
+            <% end %>
+        </td>-->
+        <td class="rounded-corners" style="background-color:rgb(211,184,239);padding-left:25px;padding-right:25px">
+            <h3 style="text-align:center">Quick Navigation</h3>
+            <p>
+                <%= label_tag :number_of_samples, "Number of Samples" %>
+                <%= select_tag 'number_of_samples', options_for_select(1..10,2) %>
+            </p>
+            With Reference Genome
+            <ul>
+                <li>Tophat & Cufflinks (Novel Isoforms & Differential Expression)</li>
+                <li>Tophat & Cufflinks (Novel Isoforms only)</li>
+            </ul>
+            Without Reference Genome (Differential Expression Only)     
+            <ul>
+                <li>Trinity & Cufflinks</li>
+                <li>Trinity & EdgeR</li>
+            </ul>
+        </td>
+    </tr>
+</table>

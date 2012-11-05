@@ -52,7 +52,7 @@ module RnaSeqAnalysisPipeline
     # Use SQL instead of Active Record's schema dumper when creating the database.
     # This is necessary if your schema can't be completely dumped by the schema dumper,
     # like if you have constraints or database-specific column types
-    # config.active_record.schema_format = :sql
+    config.active_record.schema_format = :sql
 
     # Enforce whitelist mode for mass assignment.
     # This will create an empty whitelist of attributes available for mass-assignment for all models
@@ -64,6 +64,9 @@ module RnaSeqAnalysisPipeline
     config.assets.enabled = true
 
     # Version of your assets, change this if you want to expire all your assets
-    config.assets.version = '1.0'
+    config.assets.version = '2.0'
+    
+    #Use numbered migrations instead of timestamped migrations
+    config.active_record.timestamped_migrations = false
   end
 end

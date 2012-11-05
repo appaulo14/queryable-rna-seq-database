@@ -1,2 +1,10 @@
 <h1>ProcessingAnalysis#reference_analysis_isoforms_only</h1>
 <p>Find me in app/views/processing_analysis/reference_analysis_isoforms_only.html.erb</p>
+<h2><%= @job_status %></h2>
+<h2><%= @current_program_status %></h2>
+<%= busy_indicator %>
+<%= link_to "Next Step", @next_step_url %>
+<%= form_tag('/processing_analysis/reference_analysis_isoforms_only') do %>
+    <%= hidden_field_tag :job_id, @job_id %>
+    <%= submit_tag("Fork") %>
+<% end %>

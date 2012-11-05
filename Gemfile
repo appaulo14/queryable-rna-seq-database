@@ -7,8 +7,8 @@ gem 'rails', '3.2.8'
 
 gem 'pg'
 # gem 'thin'
-gem 'sinatra'
-gem 'sequenceserver'
+#gem 'sinatra'
+#gem 'sequenceserver'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -22,16 +22,27 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
-gem 'jquery-rails'
+#You may need to update the CDN for jquery in views/application.html.erb
+#    to the lastest version when updating this
+gem 'jquery-rails', '2.1.3'
 
 gem 'heroku'
+
+gem 'activerecord-tableless', '>= 1.0.1'
 
 group :development, :test do
   gem 'rspec-rails'
 end
 
-# gem 'bio', :git => "git://github.com/bioruby/bioruby.git" #'1.4.2'
-# gem 'goruby'
+group :bioinformatics do
+    gem 'bio', '1.4.2'
+    gem 'goruby'
+end
+
+#For foreigner key constraints. 
+#       Unfortunately, it doesn't have cascading updates from what I can ascertain.
+#gem 'foreigner'
+
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
