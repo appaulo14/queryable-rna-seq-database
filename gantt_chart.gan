@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Untitled Gantt Project" company="" webLink="http://" view-date="2012-10-21" view-index="0" gantt-divider-location="487" resource-divider-location="300" version="2.0" locale="en_US">
+<project name="Untitled Gantt Project" company="" webLink="http://" view-date="2012-10-07" view-index="0" gantt-divider-location="487" resource-divider-location="300" version="2.0" locale="en_US">
     <description/>
-    <view zooming-state="default:4" id="gantt-chart">
+    <view zooming-state="default:6" id="gantt-chart">
         <field id="tpd3" name="Name" width="53" order="0"/>
         <field id="tpd4" name="Begin date" width="21" order="1"/>
         <field id="tpd5" name="End date" width="24" order="2"/>
@@ -39,7 +39,6 @@
         </taskproperties>
         <task id="0" name="Inception Phase" color="#8cb6ce" meeting="false" start="2012-11-05" duration="3" complete="0" expand="true">
             <depend id="55" type="2" difference="0" hardness="Strong"/>
-            <task id="5" name="Demonstration" color="#8cb6ce" meeting="false" start="2012-11-05" duration="1" complete="0" expand="true"/>
             <task id="3" name="Vision Document 1.0" color="#8cb6ce" meeting="false" start="2012-11-05" duration="1" complete="0" expand="true">
                 <depend id="4" type="2" difference="0" hardness="Strong"/>
             </task>
@@ -47,6 +46,7 @@
                 <depend id="6" type="2" difference="0" hardness="Strong"/>
             </task>
             <task id="6" name="Software Quality Assurance Plan" color="#8cb6ce" meeting="false" start="2012-11-07" duration="1" complete="0" expand="true"/>
+            <task id="5" name="Demonstration" color="#8cb6ce" meeting="false" start="2012-11-05" duration="1" complete="0" expand="true"/>
         </task>
         <task id="55" name="Presentation 1" color="#8cb6ce" meeting="false" start="2012-11-08" duration="1" complete="0" expand="true">
             <depend id="1" type="2" difference="0" hardness="Strong"/>
@@ -70,7 +70,6 @@
             <depend id="2" type="2" difference="0" hardness="Strong"/>
         </task>
         <task id="2" name="Construction Phase" color="#8cb6ce" meeting="false" start="2012-11-14" duration="3" complete="0" expand="true">
-            <depend id="156" type="2" difference="0" hardness="Strong"/>
             <task id="27" name="Action Items 2.0" color="#8cb6ce" meeting="false" start="2012-11-14" duration="1" complete="0" expand="true"/>
             <task id="30" name="Component Design" color="#8cb6ce" meeting="false" start="2012-11-14" duration="1" complete="0" expand="true"/>
             <task id="31" name="Source Code" color="#8cb6ce" meeting="false" start="2012-11-14" duration="3" complete="0" expand="true">
@@ -97,7 +96,8 @@
             </task>
             <task id="36" name="Formal Technical Inspection Letters" color="#8cb6ce" meeting="false" start="2012-11-16" duration="1" complete="0" expand="true"/>
         </task>
-        <task id="156" name="Presentation 3" color="#8cb6ce" meeting="false" start="2012-11-16" duration="1" complete="0" expand="true"/>
+        <task id="176" name="Transition Phase" color="#8cb6ce" meeting="false" start="2012-10-22" duration="1" complete="0" expand="true"/>
+        <task id="156" name="Presentation 3" color="#8cb6ce" meeting="false" start="2012-10-23" duration="2" complete="0" expand="true"/>
     </tasks>
     <resources/>
     <allocations/>
@@ -112,9 +112,9 @@
         <displaycolumn property-id="tpd9" order="-1" width="75" visible="false"/>
         <displaycolumn property-id="tpd1" order="-1" width="75" visible="false"/>
         <displaycolumn property-id="tpd0" order="-1" width="75" visible="false"/>
-        <displaycolumn property-id="tpd3" order="0" width="252" visible="true"/>
-        <displaycolumn property-id="tpd4" order="1" width="101" visible="true"/>
-        <displaycolumn property-id="tpd5" order="2" width="115" visible="true"/>
+        <displaycolumn property-id="tpd3" order="0" width="257" visible="true"/>
+        <displaycolumn property-id="tpd4" order="1" width="106" visible="true"/>
+        <displaycolumn property-id="tpd5" order="2" width="120" visible="true"/>
     </taskdisplaycolumns>
     <previous/>
     <roles roleset-name="Default"/>
