@@ -1,7 +1,10 @@
-<h1>What type of processing would you like to do?</h1>
+
 <table>
     <tr>
-<!--        <td class="rounded-corners" style="background-color:rgb(211,184,239);padding-left:25px;padding-right:25px">
+        <th colspan="2"><h1>Process Reads</h1></th>
+    </tr>
+    <tr>
+        <!--<td class="rounded-corners" style="background-color:rgb(211,184,239);padding-left:25px;padding-right:25px">
             <h3 style="text-align:center">Wizard</h3>
             <%= form_tag('/query_analysis/upload_main_menu') do %>
                 <%= radio_button_tag(:data_type, "upload_reference_cuffdiff") %>
@@ -14,20 +17,27 @@
             <% end %>
         </td>-->
         <td class="rounded-corners" style="background-color:rgb(211,184,239);padding-left:25px;padding-right:25px">
-            <h3 style="text-align:center">Quick Navigation</h3>
-            <p>
-                <%= label_tag :number_of_samples, "Number of Samples" %>
-                <%= select_tag 'number_of_samples', options_for_select(1..10,2) %>
-            </p>
-            With Reference Genome
+            <div style="font-size:15pt;font-weight:bold;text-align:center">Step 1: Filter and Trim Your Reads</div>
+            <div style="font-size:13pt;text-align:center"><em>For More Acccurate Processing</em></div>
+            <ol style="list-style-type:lower-alpha">
+                <li>Upload your reads to <a href="http://edwards.sdsu.edu/cgi-bin/prinseq/prinseq.cgi">Prinseq</a>.</li>
+                <li>Follow the instructions to trim and filter you reads.</li>
+                <li>Download your newly trimmed and filtered reads.</li>
+                <li>Proceed to step 2 =====================&gt;</li>
+            </ol>
+        </td>
+        <td class="rounded-corners" style="background-color:rgb(211,184,239);padding-left:25px;padding-right:25px">
+            <h3 style="text-align:center">Step 2: Select a Processing Analysis Workflow</h3>
+            <div><u>If you have 1 sample:</div>
             <ul>
-                <li>Tophat & Cufflinks (Novel Isoforms & Differential Expression)</li>
-                <li>Tophat & Cufflinks (Novel Isoforms only)</li>
+                <li><a href="#">Novel Gene and Transcript Discovery</a></li>
             </ul>
-            Without Reference Genome (Differential Expression Only)     
+            <div>If you have 2 or more samples:</div>
             <ul>
-                <li>Trinity & Cufflinks</li>
-                <li>Trinity & EdgeR</li>
+                <li><a href="#">Differential Expression Analysis With Novel Gene and Transcript Discovery</a></li>
+                <li><a href="#">Differential Expression Analysis using a Reference Genome</a></li>
+                <li><a href="#">Differential Expression Analysis without a Refernence Genome using Trinity and EdgeR</a></li>
+                <li><a href="#">Differential Expression Analysis without a Refernence Genome using Trinity, Tophat, and Cufflinks</a></li>
             </ul>
         </td>
     </tr>
