@@ -1,7 +1,5 @@
-<h1>QueryAnalysis#query_diff_exp_transcripts</h1>
-<p>Find me in app/views/query_analysis/query_diff_exp_transcripts.html.erb</p>
 <%= form_tag({:action => :query_diff_exp_transcripts}) do %>
-  <h2>Please select your differential expression search options</h2>
+  <h1>Please select your differential expression search options</h1>
   <p>
     <%= label(:comparison_data_set, "Comparison of expression:") %>
     <%= select_tag(:comparison_data_set, options_for_select([['Brain vs Liver', 1], ['Spleen vs Gizzard', 2]])) %>
@@ -22,7 +20,7 @@
     </div>
   </p>
   <br/>
-  <h2>Limit the search in the data Class</h2>
+  <h2>Query filtering options</h2>
   <p>
     <div>
         <%= check_box_tag(:go_names) %>

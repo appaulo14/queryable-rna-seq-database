@@ -1,8 +1,5 @@
-<h1>QueryAnalysis#upload_de-novo_edgeR</h1>
-<p>Find me in app/views/query_analysis/upload_de-novo_edgeR.html.erb</p>
-
 <%= form_tag({:action => :upload_de_novo_edgeR}, :multipart => true) do %>
-  <h2>Please upload the Trinity.fasta file for each sample</h2>
+  <h1>Please upload the Trinity.fasta file for each sample</h1>
   <p id="sample_fasta_uploads">
   <%= label(:sample_fasta1, "Sample 1 fasta") %>
   <%= file_field_tag 'sample_fasta1' %><br/>
