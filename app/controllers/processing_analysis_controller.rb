@@ -7,6 +7,9 @@ class ProcessingAnalysisController < ApplicationController
     include Processing_Analysis
 
     def main_menu
+        if (request.post?)
+            redirect_to :controller => params[:workflow], :action=>:express, :number_of_samples => params[:number_of_samples]
+        end
         #Do we need the main_menu form?
         #         @choices = []
         #         @form_target = '/processing_analysis/main_menu'

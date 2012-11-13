@@ -1,7 +1,7 @@
 
 <table style="font-family:arial">
     <tr>
-        <th colspan="2"><h1>Process Reads</h1></th>
+        <th colspan="3"><h1>Process Reads</h1></th>
     </tr>
     <tr>
         <!--<td class="rounded-corners" style="background-color:rgb(211,184,239);padding-left:25px;padding-right:25px">
@@ -16,29 +16,47 @@
                 <%= submit_tag("Proceed to next step") %>
             <% end %>
         </td>-->
-        <td class="rounded-corners" style="background-color:rgb(211,184,239);padding-left:25px;padding-right:25px">
-            <div style="font-size:1.17em;font-weight:bold;text-align:center;padding-top:20px">Step 1: Filter and Trim Your Reads</div>
-            <div style="font-size:1.10em;text-align:center"><em>For More Acccurate Processing</em></div>
-            <ol style="list-style-type:lower-alpha">
-                <li>Upload your reads to <a href="http://edwards.sdsu.edu/cgi-bin/prinseq/prinseq.cgi">Prinseq</a>.</li>
-                <li>Follow the instructions to trim and filter you reads.</li>
-                <li>Download your newly trimmed and filtered reads.</li>
-                <li>Proceed to step 2 =====================&gt;</li>
-            </ol>
-        </td>
-        <td class="rounded-corners" style="background-color:rgb(211,184,239);padding-left:25px;padding-right:25px">
-            <div style="font-size:1.17em;font-weight:bold;text-align:center;padding-top:20px">Step 2: Select a Processing Analysis Workflow</h3></div>
-            <div><u>If you have 1 sample:</div>
-            <ul>
-                <li><a href="#">Novel Gene and Transcript Discovery</a></li>
-            </ul>
-            <div>If you have 2 or more samples:</div>
-            <ul>
-                <li><a href="#">Differential Expression Analysis With Novel Gene and Transcript Discovery</a></li>
-                <li><a href="#">Differential Expression Analysis using a Reference Genome</a></li>
-                <li><a href="#">Differential Expression Analysis without a Refernence Genome using Trinity and EdgeR</a></li>
-                <li><a href="#">Differential Expression Analysis without a Refernence Genome using Trinity, Tophat, and Cufflinks</a></li>
-            </ul>
-        </td>
+        <%= form_tag({:action => :main_menu}) do %>
+            <td class="rounded-corners" style="background-color:rgb(211,184,239);padding-left:25px;padding-right:25px">
+                <div style="font-size:1.17em;font-weight:bold;text-align:center;padding-top:20px">Step 1: Filter and Trim Your Reads</div>
+                <div style="font-size:1.10em;text-align:center"><em>For More Acccurate Processing</em></div>
+                <ol style="list-style-type:lower-alpha">
+                    <li>Upload your reads to <a href="http://edwards.sdsu.edu/cgi-bin/prinseq/prinseq.cgi">Prinseq</a>.</li>
+                    <li>Follow the guidance in Prinseq to trim and filter you reads.</li>
+                    <li>Read the <a href="http://prinseq.sourceforge.net/manual.html">Prinseq manual</a> if necessary.</li>
+                    <li>Download your newly trimmed and filtered reads.</li>
+                    <li>Proceed to step 2 =====================&gt;</li>
+                </ol>
+            </td>
+            <td class="rounded-corners" style="background-color:rgb(211,184,239);padding-left:25px;padding-right:25px">
+                <div style="font-size:1.17em;font-weight:bold;text-align:center;padding-top:20px">Step 2: Select Number of Samples</div>
+                <ol style="list-style-type:lower-alpha">
+                    <li>
+                        <%= label(:number_of_samples, "Number of Samples:") %>
+                        <%= text_field_tag(:number_of_samples,2,{:size=>3}) %>
+                    <li>Proceed to step 3 =====================&gt;</li>
+                </ol>
+            </td>
+            <td class="rounded-corners" style="background-color:rgb(211,184,239);padding-left:25px;padding-right:25px">
+                <div style="font-size:1.17em;font-weight:bold;text-align:center;padding-top:20px">Step 3: Select a Processing Analysis Workflow</h3></div>
+                <div><u>If you have 1 or more samples:</u></div>
+                <ul>
+                    <%= radio_button_tag(:workflow, :reference_novel_isoforms_only_workflow, true) %>
+                    <%= label(:workflow, "Novel Gene and Transcript Discovery") %>
+                </ul>
+                <div>If you have 2 or more samples:</div>
+                <ul>
+                    <%= radio_button_tag(:workflow, :reference_novel_isoforms_only_workflow) %>
+                    <%= label(:workflow, "Differential Expression Analysis With Novel Gene and Transcript Discovery") %><br/>
+                    <%= radio_button_tag(:workflow, :reference_novel_isoforms_only_workflow) %>
+                    <%= label(:workflow, "Differential Expression Analysis using a Reference Genome") %><br/>
+                    <%= radio_button_tag(:workflow, :reference_novel_isoforms_only_workflow) %>
+                    <%= label(:workflow, "Differential Expression Analysis without a Refernence Genome using Trinity and EdgeR") %><br/>
+                    <%= radio_button_tag(:workflow, :reference_novel_isoforms_only_workflow) %>
+                    <%= label(:workflow, "Differential Expression Analysis without a Refernence Genome using Trinity, Tophat, and Cufflinks") %><br/>
+                </ul>
+                <p><%= submit_tag("Begin processing analysis") %></p>
+            </td>
+        <% end %>
     </tr>
 </table>

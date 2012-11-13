@@ -39,6 +39,8 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
     
     get  "reference_novel_isoforms_only_workflow/express"
     post "reference_novel_isoforms_only_workflow/express"
+    
+    match "reference_novel_isoforms_only_workflow", :to => "reference_novel_isoforms_only_workflow#express"
 
     ###########################################################################
     ##########          Configur routes for home controller     ###############
