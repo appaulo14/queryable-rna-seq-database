@@ -1,7 +1,7 @@
 class CreateFpkmSamples < ActiveRecord::Migration
   def up
     create_table :fpkm_samples, :id => false do |t|
-      t.integer :sample_number, :limit=>2
+      t.integer :sample_number, :limit=>2, :null => false
       t.decimal :q_FPKM, :null=>false
       t.decimal :q_FPKM_hi, :null=>false
       t.decimal :q_FPKM_lo, :null=>false
