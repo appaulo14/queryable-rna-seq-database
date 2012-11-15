@@ -9,17 +9,18 @@ class CreateTranscripts < ActiveRecord::Migration
             t.column :differential_expression_test_id, 'BIGINT UNSIGNED', :null => false
             t.column :job_id, 'BIGINT UNSIGNED', :null => false
             t.column :gene_id,'BIGINT UNSIGNED', :null => false
+            t.column :sequence, "longtext", :null => false
         when /postgresql/
             t.column :id, 'bigserial', :null => false
             t.column :differential_expression_test_id, 'BIGINT', :null => false
             t.column :job_id, 'BIGINT', :null => false
             t.column :gene_id,'BIGINT', :null => false
+            t.column :sequence, :text, :null => false
         else
             throw NotImplementedError.new("Unknown adapter type '#{adapter_type}'")
         end
         #Add the other columns
       t.string :program_id, :null => false
-      t.text :sequence, :limit=> 4294967295, :null => false
 
       t.timestamps
     end
@@ -38,6 +39,6 @@ class CreateTranscripts < ActiveRecord::Migration
   end
   
   def down
-    drop_table :transcccripts
+    drop_table :transcripts
   end
 end

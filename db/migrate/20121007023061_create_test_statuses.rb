@@ -10,6 +10,6 @@ class CreateTestStatuses < ActiveRecord::Migration
   end
   
   def down
-      drop-table :test_statuses
+      drop_table :test_statuses
   end
 end

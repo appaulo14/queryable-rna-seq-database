@@ -14,12 +14,12 @@ class CreateDifferentialExpressionTests < ActiveRecord::Migration
       t.string :sample1, :null => false
       t.string :sample2, :null => false
       t.string :test_status_name, :null => false
-      t.double :FPKMx, :null => false
-      t.double :FPKMy, :null => false
-      t.double :log2_y_over_x, :null => false
-      t.double :test_stat, :null => false
-      t.double :p_value, :null => false
-      t.double :q_value, :null => false
+      t.decimal :FPKMx, :null => false
+      t.decimal :FPKMy, :null => false
+      t.decimal :log2_y_over_x, :null => false
+      t.decimal :test_stat, :null => false
+      t.decimal :p_value, :null => false
+      t.decimal :q_value, :null => false
       t.boolean :significant?, :null => false
 
       t.timestamps
