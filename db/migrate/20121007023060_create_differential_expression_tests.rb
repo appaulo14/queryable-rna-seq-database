@@ -20,7 +20,7 @@ class CreateDifferentialExpressionTests < ActiveRecord::Migration
       t.decimal :test_stat, :null => false
       t.decimal :p_value, :null => false
       t.decimal :q_value, :null => false
-      t.boolean :significant?, :null => false
+      t.boolean :is_significant, :null => false
 
       t.timestamps
     end

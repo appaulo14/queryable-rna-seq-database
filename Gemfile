@@ -31,13 +31,20 @@ gem 'heroku'
 
 gem 'activerecord-tableless', '>= 1.0.1'
 
-group :development, :test do
-  gem 'rspec-rails'
-end
-
 group :bioinformatics do
     gem 'bio', '1.4.2'
     #gem 'goruby'
+end
+
+group :development do
+  gem 'rspec-rails', '>= 2.0.1'
+  gem 'annotate'
+end
+
+group :test do
+  gem 'rspec',  '>= 2.0.1'
+  gem 'webrat', '>= 0.7.1'
+  gem 'factory_girl_rails', '1.0'
 end
 
 #For foreigner key constraints. 

@@ -20,7 +20,7 @@ class CreateTranscripts < ActiveRecord::Migration
             throw NotImplementedError.new("Unknown adapter type '#{adapter_type}'")
         end
         #Add the other columns
-      t.string :program_id, :null => false
+      t.string :name_from_program, :null => false
 
       t.timestamps
     end

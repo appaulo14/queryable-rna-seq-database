@@ -16,7 +16,7 @@ class CreateGenes < ActiveRecord::Migration
             throw NotImplementedError.new("Unknown adapter type '#{adapter_type}'")
         end
 
-       t.string :program_id, :null => false
+       t.string :name_from_program, :null => false
       t.timestamps
     end
     #Add primary key using execute statement because

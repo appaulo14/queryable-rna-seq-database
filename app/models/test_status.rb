@@ -12,7 +12,7 @@ class TestStatus < ActiveRecord::Base
   attr_accessible :description, :name
   
   #Associations
-  has_many :differential_expression_tests
+  #has_many :differential_expression_tests
   
   #Validations
   validates :name, :presence => true

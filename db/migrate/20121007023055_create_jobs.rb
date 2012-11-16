@@ -12,10 +12,10 @@ class CreateJobs < ActiveRecord::Migration
                 throw NotImplementedError.new("Unknown adapter type '#{adapter_type}'")
             end
             #Add the other columns
-            t.string :current_job_status, :null => false
-            t.string :current_program_status, :null => false
-            t.string :eid_of_owner, :null => false
-            t.integer :workflow_step_id, :null => false
+            t.string :current_job_status#, :null => false
+            t.string :current_program_status#, :null => false
+            t.string :eid_of_owner#, :null => false
+            t.integer :workflow_step_id#, :null => false
 
             t.timestamps
         end

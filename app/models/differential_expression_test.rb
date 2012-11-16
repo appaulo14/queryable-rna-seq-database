@@ -21,12 +21,12 @@ class DifferentialExpressionTest < ActiveRecord::Base
   attr_accessible :FPKMx, :FPKMy, :log2_y_over_x, :p_value, :q_value, :sample1, :sample2, :significant?, :test_stat, :test_status_name
   
   #Associations
-  has_one :test_status
+  #has_one :test_status, :foreign_key => :name
   has_one :gene
   has_one :transcript
   
   #Validations
-  validates :id, :presence => true
+  #validates :id, :presence => true
   validates :sample1, :presence => true
   validates :sample2, :presence => true
   validates :test_status_name, :presence => true
@@ -36,5 +36,5 @@ class DifferentialExpressionTest < ActiveRecord::Base
   validates :test_stat, :presence => true
   validates :p_value, :presence => true
   validates :q_value, :presence => true
-  validates :significant?, :presence => true
+  validates :is_significant, :presence => true
 end

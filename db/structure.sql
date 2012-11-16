@@ -43,7 +43,7 @@ CREATE TABLE differential_expression_tests (
     test_stat numeric NOT NULL,
     p_value numeric NOT NULL,
     q_value numeric NOT NULL,
-    "significant?" boolean NOT NULL,
+    is_significant boolean NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -92,7 +92,7 @@ CREATE TABLE genes (
     id bigint NOT NULL,
     differential_expression_test_id bigint NOT NULL,
     job_id bigint NOT NULL,
-    program_id character varying(255) NOT NULL,
+    name_from_program character varying(255) NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -171,10 +171,10 @@ CREATE TABLE job_statuses (
 
 CREATE TABLE jobs (
     id bigint NOT NULL,
-    current_job_status character varying(255) NOT NULL,
-    current_program_status character varying(255) NOT NULL,
-    eid_of_owner character varying(255) NOT NULL,
-    workflow_step_id integer NOT NULL,
+    current_job_status character varying(255),
+    current_program_status character varying(255),
+    eid_of_owner character varying(255),
+    workflow_step_id integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -287,7 +287,7 @@ CREATE TABLE transcripts (
     job_id bigint NOT NULL,
     gene_id bigint NOT NULL,
     sequence text NOT NULL,
-    program_id character varying(255) NOT NULL,
+    name_from_program character varying(255) NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
