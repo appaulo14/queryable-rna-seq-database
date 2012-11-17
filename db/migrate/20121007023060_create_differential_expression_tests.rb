@@ -14,8 +14,8 @@ class CreateDifferentialExpressionTests < ActiveRecord::Migration
       t.string :sample1, :null => false
       t.string :sample2, :null => false
       t.string :test_status_name, :null => false
-      t.decimal :FPKMx, :null => false
-      t.decimal :FPKMy, :null => false
+      t.decimal :fpkm_x, :null => false
+      t.decimal :fpkm_y, :null => false
       t.decimal :log2_y_over_x, :null => false
       t.decimal :test_stat, :null => false
       t.decimal :p_value, :null => false

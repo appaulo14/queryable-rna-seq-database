@@ -13,7 +13,8 @@
 #
 
 class Transcript < ActiveRecord::Base
-  attr_accessible :differential_expression_test_id, :gene_id, :job_id, :program_id, :sequence
+  #attr_accessible :differential_expression_test_id, :gene_id, :job_id, :program_id, :sequence
+    attr_accessible :differential_expression_test, :gene, :job, :program, :sequence, :name_from_program
   
   ###Constants###
   #Based off the NCBI fasta format guide: 
@@ -22,8 +23,8 @@ class Transcript < ActiveRecord::Base
   
   #Associations
   belongs_to :job
-  has_one :gene
-  has_one :differential_expression_test, :dependent => :destroy
+  belongs_to :gene
+  belongs_to :differential_expression_test
   has_many :fpkm_samples, :dependent => :destroy
   
   #Validation

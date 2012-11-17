@@ -16,8 +16,8 @@ Factory.define :differential_expression_test do |differential_expression_test|
   differential_expression_test.sample1          "Sample 1 Name"
   differential_expression_test.sample2          "Sample 2 Name"
   differential_expression_test.test_status_name "OK"
-  differential_expression_test.FPKMx            1.1243
-  differential_expression_test.FPKMy            4343.2
+  differential_expression_test.fpkm_x            1.1243
+  differential_expression_test.fpkm_y            4343.2
   differential_expression_test.log2_y_over_x    332.11
   differential_expression_test.test_stat        0.0001
   differential_expression_test.p_value          0.05
@@ -29,7 +29,7 @@ Factory.define :gene do |gene|
   gene.name_from_program        "XLOC_00001"
   #gene.association              :transcript
   gene.association              :job
-  gene.assocation               :differential_expression_test
+  gene.association              :differential_expression_test
 end
 
 Factory.define :transcript do |transcript|
@@ -37,15 +37,14 @@ Factory.define :transcript do |transcript|
   transcript.sequence                 "ATKMBVCNSWD-GUYRHatkmbvcnswd-guyrh"
   transcript.association              :gene
   transcript.association              :job
-  transcript.assocation               :differential_expression_test
+  transcript.association               :differential_expression_test
 end
 
 Factory.define :fpkm_sample do |fpkm_sample|
-    fpkm_sample.association     :transcript
-    
     fpkm_sample.sample_number           1
     fpkm_sample.q_FPKM                  2.22
     fpkm_sample.q_FPKM_hi               33.33
     fpkm_sample.q_FPKM_lo               0.05
     fpkm_sample.q_status                "OK"
+    fpkm_sample.association     :transcript
 end

@@ -3,25 +3,13 @@
 # Table name: jobs
 #
 #  id                     :integer          not null, primary key
-#  current_job_status     :string(255)      not null
-#  current_program_status :string(255)      not null
-#  eid_of_owner           :string(255)      not null
-#  workflow_step_id       :integer          not null
+#  current_job_status     :string(255)
+#  current_program_status :string(255)
+#  eid_of_owner           :string(255)
+#  workflow_step_id       :integer
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #
-
-# == Schema Information
-#
-# Table name: jobs
-#
-#  id                     :integer          not null, primary key
-#  current_job_status     :string(255)      not null
-#  current_program_status :string(255)      not null
-#  eid_of_owner           :string(255)      not null
-#  workflow_step_id       :integer          not null
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
 #
 class Job < ActiveRecord::Base
     attr_accessible :id, :current_job_status, :current_program_status, :eid_of_owner, :workflow_step_id
@@ -33,8 +21,10 @@ class Job < ActiveRecord::Base
     #Associations
     has_many :genes, :dependent => :destroy
     has_many :transcripts, :dependent => :destroy
+    validates_associated :genes, :transcripts
     
     #Validations
+    validates :id, :uniqueness => true
 #     validates :current_job_status, :presence => true
 #     validates :current_program_status, :presence => true
 #     validates :eid_of_owner, :presence => true
