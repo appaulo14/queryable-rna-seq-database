@@ -26,6 +26,7 @@ class Transcript < ActiveRecord::Base
   belongs_to :gene
   belongs_to :differential_expression_test
   has_many :fpkm_samples, :dependent => :destroy
+  validates_associated :job, :gene, :differential_expression_test, :fpkm_samples
   
   #Validation
   #validates :id, :presence => true

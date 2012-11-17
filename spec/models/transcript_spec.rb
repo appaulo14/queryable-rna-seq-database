@@ -28,16 +28,10 @@ describe Transcript do
       :sequence => "ATKMBVCNSWD-GUYRHatkmbvcnswd-guyrh",
       :name_from_program => "TCONS_00001",
     }
-    
-    @transcript = Transcript.new(@attr)
-    @fpkm_samples = []
-      @fpkm_samples << Factory(:fpkm_sample, :sample_number => 1, :transcript => @transcript)
-      @fpkm_samples << Factory(:fpkm_sample, :sample_number => 2, :transcript => @transcript)
-    @transcript.fpkm_samples = @fpkm_samples
   end
   
   it "should create a new instances when given valid attributes" do
-      @transcript.save!
+      Transcript.create!(@attr)
   end
   
   it "should require a differential expression test id" do
@@ -74,9 +68,23 @@ describe Transcript do
   
   it "should require a name from the program (ex. cufflinks)"
   
-  it "should respond to fpkm_samples"
+  describe "relationship with fpkm_samples" do
   
-  it "should destroy any dependents from fpkm_samples"
+    it "should respond to fpkm_samples" do
+        Transcript.create!(@attr).should respond_to(:fpkm_samples)
+    end
+    
+    it "should destroy any dependents from fpkm_samples"
+    
+    it "should successfully create a new instance when " + 
+       "fpkm samples are valid" do
+        transcript = Transcript.create!(@attr)
+        transcript.fpkm_samples << Factory(:fpkm_sample, :sample_number => 1, :transcript => transcript)
+        transcript.fpkm_samples << Factory(:fpkm_sample, :sample_number => 2, :transcript => transcript)
+        transcript.save!
+    end
+    
+    it "should require the associated fpkm_samples be valid"
   
-  it "should require the associated fpkm_samples be valid"
+  end
 end
