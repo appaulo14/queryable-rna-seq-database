@@ -285,7 +285,7 @@ CREATE TABLE transcripts (
     id bigint NOT NULL,
     differential_expression_test_id bigint NOT NULL,
     job_id bigint NOT NULL,
-    gene_id bigint NOT NULL,
+    gene_id bigint,
     fasta_sequence text NOT NULL,
     name_from_program character varying(255) NOT NULL,
     created_at timestamp without time zone NOT NULL,

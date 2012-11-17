@@ -7,7 +7,7 @@
 #  q_fpkm_hi     :decimal(, )      not null
 #  q_fpkm_lo     :decimal(, )      not null
 #  q_status      :string(255)      not null
-#  transcript_id :integer          not null. primary key
+#  transcript_id :integer          not null, primary_key
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #

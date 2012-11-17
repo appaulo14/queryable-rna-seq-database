@@ -6,7 +6,7 @@
 #  differential_expression_test_id :integer          not null
 #  job_id                          :integer          not null
 #  gene_id                         :integer          not null
-#  fasta_sequence                        :text             not null
+#  fasta_sequence                  :text             not null
 #  name_from_program               :string(255)      not null
 #  created_at                      :datetime         not null
 #  updated_at                      :datetime         not null
@@ -32,8 +32,17 @@ class Transcript < ActiveRecord::Base
   validates :id, :uniqueness => true
   validates :differential_expression_test_id, :presence => true
   validates :job_id, :presence => true
-  validates :gene_id, :presence => true
+  #validates :gene_id, :presence => true
   validates :fasta_sequence, :presence => true,
                        :format => { :with => NUCLEOTIDE_FASTA_SEQUENCE_REGEX }   
   validates :name_from_program, :presence => true
+  validate  :transcript_and_gene_have_same_job
+  
+  private
+  def transcript_and_gene_have_same_job
+    if gene.nil? == false and job_id != gene.job_id
+      errors[:job] << "Job must be the same for the both the " +
+                       "transcript its associated gene"
+    end
+  end
 end

@@ -15,6 +15,6 @@ require 'spec_helper'
 
 describe Job do
   pending "add some examples to (or delete) #{__FILE__}"
-  
+
   it "should delete all the records dependent upon it"
 end
