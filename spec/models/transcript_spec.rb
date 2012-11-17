@@ -6,7 +6,7 @@
 #  differential_expression_test_id :integer          not null
 #  job_id                          :integer          not null
 #  gene_id                         :integer          not null
-#  sequence                        :text             not null
+#  fasta_sequence                        :text             not null
 #  name_from_program               :string(255)      not null
 #  created_at                      :datetime         not null
 #  updated_at                      :datetime         not null
@@ -34,37 +34,51 @@ describe Transcript do
       Transcript.create!(@attr)
   end
   
-  it "should require a differential expression test id" do
+  it "should require a unique id"
+  
+  it "should require a differential expression test" do
       @attr[:differential_expression_test]=nil
       Transcript.new(@attr).should_not be_valid
   end
   
-  it "should respond to differential_expression_test"
+  it "should respond to differential_expression_test" do
+    Transcript.create!(@attr).should respond_to(:differential_expression_test)
+  end
   
   
-  it "should require the associated differential_expression_test be valid"
+  it "should require the associated differential_expression_test be valid" do
+      @attr[:differential_expression_test].p_value = "INVALID_P_VALUE"
+      Transcript.new(@attr).should_not be_valid
+  end
   
-  it "should require a job id" 
+  it "should require a job" do
+      @attr[:job]=nil
+      Transcript.new(@attr).should_not be_valid
+  end
   
-  it "should enforce referential integrity for " +
-          "the job id" 
+  it "should required the associated job to be valid" do
+       @attr[:job].eid_of_owner = nil
+      Transcript.new(@attr).should_not be_valid
+  end
   
-  it "should respond to job"
+  it "should respond to job" do
+    Transcript.create!(@attr).should respond_to(:job)
+  end
   
-  it "should require the associated job be valid"
+  it "should require a gene" do
+       @attr[:gene]=nil
+      Transcript.new(@attr).should_not be_valid
+  end
   
-  it "should require a gene id" 
+  it "should require the associated gene to be valid"
   
-  it "should enforce referential integrity for " +
-          "the gene id"
+  it "should respond to gene" do
+      Transcript.create!(@attr).should respond_to(:gene)
+  end
   
-  it "should respond to gene"
+  it "should require a fasta sequence" 
   
-  it "should require the associated gene be valid"
-  
-  it "should require a sequence" 
-  
-  it "should require a sequence in fasta format" 
+  it "should require a fasta sequence in fasta format" 
   
   it "should require a name from the program (ex. cufflinks)"
   
@@ -74,7 +88,17 @@ describe Transcript do
         Transcript.create!(@attr).should respond_to(:fpkm_samples)
     end
     
-    it "should destroy any dependents from fpkm_samples"
+    it "should destroy any dependents from fpkm_samples" do
+        transcript = Transcript.create!(@attr)
+        transcript.fpkm_samples << Factory(:fpkm_sample, :sample_number => 1, :transcript => transcript)
+        transcript.fpkm_samples << Factory(:fpkm_sample, :sample_number => 2, :transcript => transcript)
+        transcript.save!
+        transcript.destroy
+        transcript.should be_destroyed
+        transcript.fpkm_samples.each do |fpkm_sample|
+            fpkm_sample.should be_destroyed
+        end
+    end
     
     it "should successfully create a new instance when " + 
        "fpkm samples are valid" do
@@ -84,7 +108,13 @@ describe Transcript do
         transcript.save!
     end
     
-    it "should require the associated fpkm_samples be valid"
+    it "should require the associated fpkm_samples be valid" do
+        transcript = Transcript.create!(@attr)
+        transcript.fpkm_samples << Factory(:fpkm_sample, :sample_number => 1, :transcript => transcript)
+        transcript.fpkm_samples << Factory(:fpkm_sample, :sample_number => 2, :transcript => transcript)
+        transcript.fpkm_samples[0].sample_number = "INVALID SAMPLE NUMBER"
+        transcript.should_not be_valid
+    end
   
   end
 end

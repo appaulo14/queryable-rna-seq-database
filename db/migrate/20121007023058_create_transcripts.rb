@@ -9,13 +9,13 @@ class CreateTranscripts < ActiveRecord::Migration
             t.column :differential_expression_test_id, 'BIGINT UNSIGNED', :null => false
             t.column :job_id, 'BIGINT UNSIGNED', :null => false
             t.column :gene_id,'BIGINT UNSIGNED', :null => false
-            t.column :sequence, "longtext", :null => false
+            t.column :fasta_sequence, "longtext", :null => false
         when /postgresql/
             t.column :id, 'bigserial', :null => false
             t.column :differential_expression_test_id, 'BIGINT', :null => false
             t.column :job_id, 'BIGINT', :null => false
             t.column :gene_id,'BIGINT', :null => false
-            t.column :sequence, :text, :null => false
+            t.column :fasta_sequence, :text, :null => false
         else
             throw NotImplementedError.new("Unknown adapter type '#{adapter_type}'")
         end

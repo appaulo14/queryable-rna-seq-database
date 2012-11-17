@@ -6,7 +6,7 @@
 #  differential_expression_test_id :integer          not null
 #  job_id                          :integer          not null
 #  gene_id                         :integer          not null
-#  sequence                        :text             not null
+#  fasta_sequence                        :text             not null
 #  name_from_program               :string(255)      not null
 #  created_at                      :datetime         not null
 #  updated_at                      :datetime         not null
@@ -14,7 +14,7 @@
 
 class Transcript < ActiveRecord::Base
   #attr_accessible :differential_expression_test_id, :gene_id, :job_id, :program_id, :sequence
-    attr_accessible :differential_expression_test, :gene, :job, :program, :sequence, :name_from_program
+    attr_accessible :differential_expression_test, :gene, :job, :fasta_sequence, :name_from_program
   
   ###Constants###
   #Based off the NCBI fasta format guide: 
@@ -29,11 +29,11 @@ class Transcript < ActiveRecord::Base
   validates_associated :job, :gene, :differential_expression_test, :fpkm_samples
   
   #Validation
-  #validates :id, :presence => true
+  validates :id, :uniqueness => true
   validates :differential_expression_test_id, :presence => true
   validates :job_id, :presence => true
   validates :gene_id, :presence => true
-  validates :sequence, :presence => true,
+  validates :fasta_sequence, :presence => true,
                        :format => { :with => NUCLEOTIDE_FASTA_SEQUENCE_REGEX }   
   validates :name_from_program, :presence => true
 end

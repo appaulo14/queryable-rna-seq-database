@@ -74,9 +74,9 @@ ALTER SEQUENCE differential_expression_tests_id_seq OWNED BY differential_expres
 
 CREATE TABLE fpkm_samples (
     sample_number smallint NOT NULL,
-    "q_FPKM" numeric NOT NULL,
-    "q_FPKM_hi" numeric NOT NULL,
-    "q_FPKM_lo" numeric NOT NULL,
+    q_fpkm numeric NOT NULL,
+    q_fpkm_hi numeric NOT NULL,
+    q_fpkm_lo numeric NOT NULL,
     q_status character varying(255) NOT NULL,
     transcript_id integer NOT NULL,
     created_at timestamp without time zone NOT NULL,
@@ -286,7 +286,7 @@ CREATE TABLE transcripts (
     differential_expression_test_id bigint NOT NULL,
     job_id bigint NOT NULL,
     gene_id bigint NOT NULL,
-    sequence text NOT NULL,
+    fasta_sequence text NOT NULL,
     name_from_program character varying(255) NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
