@@ -16,5 +16,7 @@ require 'spec_helper'
 describe Job do
   pending "add some examples to (or delete) #{__FILE__}"
 
-  it "should delete all the records dependent upon it"
+  it "should destroy all genes associated with it when it is destroyed"
+  
+  it "should destroy all transcripts associated with it when it is destroyed"
 end

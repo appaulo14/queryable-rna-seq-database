@@ -24,7 +24,7 @@ class Transcript < ActiveRecord::Base
   #Associations
   belongs_to :job
   belongs_to :gene
-  belongs_to :differential_expression_test
+  belongs_to :differential_expression_test, :dependent => :destroy
   has_many :fpkm_samples, :dependent => :destroy
   validates_associated :job, :gene, :differential_expression_test, :fpkm_samples
   

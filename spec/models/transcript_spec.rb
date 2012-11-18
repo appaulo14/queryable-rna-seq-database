@@ -64,7 +64,11 @@ describe Transcript do
       @transcript.should_not be_valid
     end
     
-    it "should destroy its differential expression test when it is destroyed"
+    it "should destroy its differential expression test when it is destroyed" do
+      @transcript.save!
+      @transcript.destroy
+      @transcript.differential_expression_test.should be_destroyed
+    end
   end
 
   
@@ -123,7 +127,6 @@ describe Transcript do
                                                     :transcript => @transcript)
       @transcript.save!
       @transcript.destroy
-      @transcript.should be_destroyed
       @transcript.fpkm_samples.each do |fpkm_sample|
         fpkm_sample.should be_destroyed
       end
