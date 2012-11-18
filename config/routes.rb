@@ -108,6 +108,9 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
     get "query_analysis/upload_reference_cuffdiff"
 
     get "query_analysis/upload_de_novo_cuffdiff"
+    
+    get  "query_analysis/upload"
+    post "query_analysis/upload"
 
     get "query_analysis/upload_de_novo_edgeR"
     post "query_analysis/upload_de_novo_edgeR"

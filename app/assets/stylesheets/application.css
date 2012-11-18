@@ -143,6 +143,13 @@ nav ul li a:hover {
 .sub-section {
      background-color:rgb(211,184,239)
 }
+
+.sub-section-heading{
+  font-size:1.17em;
+  font-weight:bold;
+  text-align:center;
+  padding-top:20px
+}
 /* User show page */
 
 td {

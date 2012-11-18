@@ -1,20 +1,15 @@
-<%= form_tag({:action => :upload_de_novo_edgeR}, :multipart => true) do %>
-  <h2>Please upload your Trinity.fasta file</h2>
+<%= form_tag({:action => :upload}, :multipart => true) do %>
+  <h1>Please upload the Trinity.fasta file for each sample</h1>
   <p id="sample_fasta_uploads">
-  <%= label(:trinity_fasta, "Trinity.fasta file") %>
-  <%= file_field_tag :trinity_fasta %><br/>
+  <%= label(:sample_fasta1, "Sample 1 fasta") %>
+  <%= file_field_tag 'sample_fasta1' %><br/>
+  <%= label(:sample_fasta2, "Sample 2 fasta") %>
+  <%= file_field_tag 'sample_fasta2', :class=>'rounded-corners' %><br/>
   </p>
-  
-  <h2>Please upload your differential expression test files 
-    (sample_x_vs_sample_y.results.txt)
-  </h2>
-  <% (1..@number_of_samples.to_i).each do |sample_id| %>
-    <%= label(:differential_expression_file, 
-              "Differential expression file for Sample #{sample_id}",
-              :index => sample_id) %>
-    <%= file_field_tag( :differential_expression_file, {:index => sample_id}) %>
-    <br/>
-  <% end %>
+  <p>
+    <button type="button" onclick="add_sample_fasta_upload();">I have more samples than this</button>
+    <%= image_tag("question_mark.png") %>
+  </p>
   <p><%= submit_tag("Upload files") %></p>
 <% end %>
 
@@ -33,3 +28,4 @@
     }
 </script>
 
+ 

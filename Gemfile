@@ -23,7 +23,7 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
-#You may need to update the CDN for jquery in views/application.html.erb
+#NOTE: Update the CDN for jquery in views/application.html.erb
 #    to the lastest version when updating this
 gem 'jquery-rails', '2.1.3'
 
@@ -44,7 +44,7 @@ end
 group :test do
   gem 'rspec',  '>= 2.0.1'
   gem 'webrat', '>= 0.7.1'
-  gem "factory_girl_rails", "~> 4.0"
+  gem 'factory_girl_rails', '~> 4.0'
 end
 
 #For foreigner key constraints. 

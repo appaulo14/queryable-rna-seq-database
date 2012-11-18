@@ -3,9 +3,9 @@ class QueryAnalysisController < ApplicationController
 
     def upload_main_menu
         debugger if ENV['RAILS_DEBUG'] == "true"
-        if request.post? and not params[:data_type].nil?
+        if request.post? and not params[:type_of_files].nil?
             #Would redirecting like this be a security issue because it uses browser response data?
-            redirect_to :action => params[:data_type]
+            redirect_to :action => params[:type_of_files]
         end
     end
 
@@ -19,6 +19,8 @@ class QueryAnalysisController < ApplicationController
     end
 
     def upload_de_novo_edgeR
+        @number_of_samples = 
+            params[:number_of_samples] ? params[:number_of_samples] : 2
         debugger if ENV['RAILS_DEBUG'] == "true"
         if (request.post?)
             params.keys.each do |key|

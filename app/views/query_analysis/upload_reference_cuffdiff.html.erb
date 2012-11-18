@@ -1,2 +1,31 @@
 <h1>QueryAnalysis#upload_reference_cuffdiff</h1>
 <p>Find me in app/views/query_analysis/upload_reference_cuffdiff.html.erb</p>
+<%= form_tag({:action => :upload_reference_cuffdiff}, :multipart => true) do %>
+  <h1>Please upload the Trinity.fasta file for each sample</h1>
+  <%= label(:transcripts_fasta, "Transcripts fasta") %>
+  <%= file_field_tag 'transcripts_fasta' %><br/>
+  
+  <div class="sub-section">
+    <%= label(:differential_expression_tests, "Differential Expression Tests") %>
+    <%= check_box_tag(:differential_expression_tests) %>
+    <%= label(:gene_exp_diff, "gene_exp_diff") %>
+    <%= file_field_tag 'gene_exp_diff', :class=>'rounded-corners' %><br/>
+    <%= label(:isoform_exp_diff, "isoform_exp_diff") %>
+    <%= file_field_tag 'isoform_exp_diff', :class=>'rounded-corners' %><br/>
+  </div>
+  
+  <div class="sub-section">
+    <%= label(:novel_genes_and_transcripts, "Novel Genes and Transcripts") %>
+    <%= check_box_tag(:novel_genes_and_transcripts) %>
+    <%= label(:isoforms_fpkm_tracking, "isoforms_fpkm_tracking") %>
+    <%= file_field_tag 'isoforms_fpkm_tracking', :class=>'rounded-corners' %>
+    <br/>
+  </div>
+  <p>
+    <button type="button" onclick="add_sample_fasta_upload();">
+      I have more samples than this
+    </button>
+    <%= image_tag("question_mark.png") %>
+  </p>
+  <p><%= submit_tag("Upload files") %></p>
+<% end %>
