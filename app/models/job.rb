@@ -12,11 +12,13 @@
 #
 #
 class Job < ActiveRecord::Base
-    attr_accessible :id, :current_job_status, :current_program_status, :eid_of_owner, :workflow_step_id
+    attr_accessible :id, :current_job_status, :current_program_status, :email, :workflow_step_id
 #     has_one :job_status, :foreign_key => "current_job_status"
 #     has_one :program_status, :foreign_key => "current_program_status"
 #     belongs_to :users, :foreign_key => "eid_of_owner"
 #     has_one :workflow_step, :foreign_key => "workflow_step_id"
+    
+    EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
     
     #Associations
     has_many :genes, :dependent => :destroy
@@ -27,6 +29,8 @@ class Job < ActiveRecord::Base
     validates :id, :uniqueness => true
 #     validates :current_job_status, :presence => true
 #     validates :current_program_status, :presence => true
-    validates :eid_of_owner, :presence => true
+    validates :email, :presence => true,
+              :format => { :with => EMAIL_REGEX }
+        
 #     validates :workflow_step_id, :presence => true
 end

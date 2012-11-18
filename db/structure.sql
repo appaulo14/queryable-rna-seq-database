@@ -173,7 +173,7 @@ CREATE TABLE jobs (
     id bigint NOT NULL,
     current_job_status character varying(255),
     current_program_status character varying(255),
-    eid_of_owner character varying(255),
+    email character varying(255) NOT NULL,
     workflow_step_id integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL

@@ -1,10 +1,10 @@
 FactoryGirl.define do
     factory :job do
-        eid_of_owner    'nietz111@ksu.edu'
+        email    'nietz111@ksu.edu'
     end
     
     factory :invalid_job, class: Job do
-        eid_of_owner    nil
+        email    nil
     end
     
     factory :differential_expression_test do
@@ -47,6 +47,14 @@ FactoryGirl.define do
     
     factory :transcript do
         name_from_program        'TCONS_00001'
+        fasta_sequence           'ATKMBVCNSWD-GUYRHatkmbvcnswd-guyrh'
+        gene
+        job                     {gene.job}                 
+        differential_expression_test
+    end
+    
+    factory :invalid_transcript, class: Transcript do
+        name_from_program        nil
         fasta_sequence           'ATKMBVCNSWD-GUYRHatkmbvcnswd-guyrh'
         gene
         job                     {gene.job}                 

@@ -80,7 +80,7 @@ describe Transcript do
 
     it "should be invalid if the associated job is invalid" do
       @transcript.job =
-      FactoryGirl.build(:invalid_job)
+        FactoryGirl.build(:invalid_job)
       @transcript.should_not be_valid
     end
 
@@ -98,7 +98,7 @@ describe Transcript do
 
     it "should be invalid if the associated gene is invalid" do
       @transcript.gene =
-      FactoryGirl.build(:invalid_gene)
+        FactoryGirl.build(:invalid_gene)
       @transcript.should_not be_valid
     end
 

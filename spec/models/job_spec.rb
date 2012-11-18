@@ -14,21 +14,66 @@
 require 'spec_helper'
 
 describe Job do
-  pending "add some examples to (or delete) #{__FILE__}"
+  before(:each) do
+    @job = FactoryGirl.build(:job)
+  end
 
-  it "should require a unique id"
+  it "should create a new instances when given valid attributes" do
+    @job.save!
+  end
   
-  it "should require the email of the job owner"
+  it "should require a unique id" do
+    @job.save!
+    job2 = FactoryGirl.build(:job)
+    job2.id = @job.id
+    job2.should_not be_valid
+  end
   
-  it "should destroy all genes associated with it when it is destroyed"
+  it "should require the email of the job owner" do
+    @job.email = nil
+    @job.should_not be_valid
+  end
   
-  it "should destroy all transcripts associated with it when it is destroyed"
+  it "should require the email to be in valid email format"
   
-  it "should respond to genes"
+  describe "relationship with genes" do
+    it "should respond to genes" do
+      @job.should respond_to(:genes)
+    end
+    
+    it "should be invalid if an associated gene is invalid" do
+      @job.genes << FactoryGirl.build(:invalid_gene)
+      @job.genes << FactoryGirl.build(:invalid_gene)
+      @job.should_not be_valid
+    end
+    
+    it "should destroy all genes associated with it when it is destroyed" do
+      @job.save!
+      @job.destroy
+      @job.genes.each do |gene|
+        gene.should be_destroyed
+      end
+    end
+  end
   
-  it "should respond to transcripts"
   
-  it "should be invalid if an associated gene is invalid"
-  
-  it "should be invalid if an associated transcript is invalid"
+  describe "relationship with transcripts" do
+    it "should respond to transcripts" do
+      @job.should respond_to(:transcripts)
+    end
+    
+    it "should destroy all transcripts associated with it when it is destroyed" do
+      @job.save!
+      @job.destroy
+      @job.transcripts.each do |transcript|
+        transcript.should be_destroyed
+      end
+    end
+    
+    it "should be invalid if an associated transcript is invalid" do
+      @job.transcripts << FactoryGirl.build(:invalid_transcript)
+      @job.transcripts << FactoryGirl.build(:invalid_transcript)
+      @job.should_not be_valid
+    end
+  end
 end

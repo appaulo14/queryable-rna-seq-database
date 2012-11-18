@@ -14,7 +14,7 @@ class CreateJobs < ActiveRecord::Migration
             #Add the other columns
             t.string :current_job_status#, :null => false
             t.string :current_program_status#, :null => false
-            t.string :eid_of_owner#, :null => false
+            t.string :email, :null => false
             t.integer :workflow_step_id#, :null => false
 
             t.timestamps
