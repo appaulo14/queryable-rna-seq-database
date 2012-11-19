@@ -25,11 +25,53 @@ class Upload_EdgeR
     x = 1
     #Create new job
     job = Job.new
-    #Read the normalized transcripts FPKM file, writing transcripts and fpkm_samples
-    #Read the normalized genes FPKM file, writing to genes and fpkm_samples and connecting genes to transcripts
+    job.output_from_prorgam = "trinity_with_edger"
+    #Read the normalized genes FPKM file, writing to genes and fpkm_samples
+    header_line = gene_fpkm_file.tempfile.readline
+    samples_names = header_line.split("\t")
+    while not transcript_fpkm_file.tempfile.eof?
+      table_cells = gene_fpkm_file.tempfile.readline.split("\t")
+      gene_name = table_cells.shift
+      sample_fpkms = table_cells
+      gene = Gene.new(:job => job, 
+                      :name_from_program => gene_name)
+      gene.save!
+      if sample_names.length == sample_fpkms.length
+        (0..sample_fpkms.length).each do |i|
+          fpkm_sample = FpkmSample.new(:gene => gene,
+                                       :sample_name => sample_names[i],
+                                       :q_fpkm => sample_fpkms[i])
+          fpkm_sample.save!
+        end
+      end
+    end
+    #Read the normalized transcripts FPKM file, connecting transcripts to genes
+    #   and writing transcripts and fpkm_samples
+    header_line = transcript_fpkm_file.tempfile.readline
+    samples_names = header_line.split("\t")
+    while not transcript_fpkm_file.tempfile.eof?
+      table_cells = transcript_fpkm_file.tempfile.readline.split("\t")
+      transcript_name = table_cells.shift
+      sample_fpkms = table_cells
+      associated_gene = 
+          Gene.find_by_name_from_program(transcript_name.gsub(/_seq\d+/,""))
+      transcript = Transcript.new(:job => job, 
+                                  :name_from_program => transcript_name,
+                                  :gene => associated_gene)
+      transcript.save!
+      if (sample_names.length == sample_fpkms.length)
+        (0..sample_fpkms.length).each do |i|
+          fpkm_sample = FpkmSample.new(:transcript => transcript,
+                                       :sample_name => sample_names[i],
+                                       :q_fpkm => sample_fpkms[i])
+          fpkm_sample.save!
+        end
+      end
+    end
     #Read the differential expression file for transcripts, writing the differential expression table
     #Read the differential expression file for genes, writing the differential expression table
     #Read the Trinity.fasta file, writing to the transcript table
+    #Run blast2go, writing to the genes table
     #Write Trinity.fasta to database
 #     line = trinity_fasta_file.readline
 #     while not trinity_fasta_file.tempfile.eof?
@@ -57,7 +99,7 @@ class Upload_EdgeR
     
   end
   
-  def validate_differential_expression_file
+  def validate_transcript_differential_expression_file
     #Ensure this is a file before parsing it
 #     return if trinity_fasta_file.nil?
 #     if not trinity_fasta_file.kind_of? ActionDispatch::Http::UploadedFile
@@ -70,5 +112,16 @@ class Upload_EdgeR
 #     trinity_fasta_file.tempfile
     #Must have 7 columns
     #Last 4 columns must be convertable to double types
+  end
+  
+  def validate_gene_differential_expression_file
+  end
+  
+  def validate_transcript_fpkm_file
+    #Confirm at least two samples in header column
+    #Confirm all rows have the right number of fpkm_samples
+  end
+  
+  def validate_gene_fpkm_file
   end
 end
