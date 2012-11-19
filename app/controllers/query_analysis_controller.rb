@@ -1,5 +1,6 @@
 class QueryAnalysisController < ApplicationController
     include Blast_Query
+    require 'query_analysis/upload_edger.rb'
 
     def upload_main_menu
         debugger if ENV['RAILS_DEBUG'] == "true"
@@ -18,21 +19,28 @@ class QueryAnalysisController < ApplicationController
     def upload_de_novo_cuffdiff
     end
 
-    def upload_de_novo_edgeR
-        @number_of_samples = 
-            params[:number_of_samples] ? params[:number_of_samples] : 2
-        debugger if ENV['RAILS_DEBUG'] == "true"
-        if (request.post?)
-            params.keys.each do |key|
-                if params[key].kind_of? ActionDispatch::Http::UploadedFile
-                    uploaded_file = params[key].tempfile
-                    #file_to_write = Rails.root.join('tmp/file_uploads', uploaded_file.original_filename)
-                    #File.open(file_to_write, 'wb') do |file|
-                    #file.write(uploaded_file.read)
-                    #TODO: Be sure to delete these files when finished
-                    #end
-                end
-            end
+    def upload_edgeR
+        if (request.get?)
+          @upload_edgeR = Upload_EdgeR.new
+        elsif (request.post?)
+          debugger if ENV['RAILS_DEBUG'] == 'true'
+          @upload_edgeR = Upload_EdgeR.new(params[:upload_edge_r])
+          if @upload_edgeR.valid?
+             @upload_edgeR.save!
+             flash[:success] = "Success"
+          else
+              flash[:success]="Failure"
+          end
+#           params.keys.each do |key|
+#               if params[key].kind_of? ActionDispatch::Http::UploadedFile
+#                   uploaded_file = params[key].tempfile
+#                   #file_to_write = Rails.root.join('tmp/file_uploads', uploaded_file.original_filename)
+#                   #File.open(file_to_write, 'wb') do |file|
+#                   #file.write(uploaded_file.read)
+#                   #TODO: Be sure to delete these files when finished
+#                   #end
+#               end
+#           end
         end
     end
 

@@ -6,8 +6,12 @@
     <ul>
       <li><%= link_to "Home", root_path %></li>
       <li><%= link_to "Process reads", "/processing_analysis" %></li>
-      <li><%= link_to "Upload processed dataset", "/query_analysis/upload_de_novo_edgeR" %></li>
-      <li><%= link_to "Differential Expression", "/query_analysis/query_diff_exp_transcripts" %></li>
+      <li><%= link_to "Upload processed dataset",
+                      "/query_analysis/upload_main_menu" %>
+      </li>
+      <li><%= link_to "Differential Expression", 
+                      "/query_analysis/query_diff_exp_transcripts" %>
+      </li>
       <li><%= link_to "Novel Isoforms", "#" %></li>
       <li><%= link_to "BLAST", "/query_analysis/query_blast_db" %></li>
     </ul>

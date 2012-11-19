@@ -1,24 +1,23 @@
-<%= form_tag({:action => :upload_de_novo_edgeR}, :multipart => true) do %>
+<%= render 'shared/error_messages', :object => @upload_edgeR %>
+<%= form_for( @upload_edgeR,{:url => "upload_edgeR"} ) do |ue| %>
   <h2>Please upload your Trinity.fasta file</h2>
   <p id="sample_fasta_uploads">
-  <%= label(:trinity_fasta, "Trinity.fasta file") %>
-  <%= file_field_tag :trinity_fasta %><br/>
+  <%= ue.label( :trinity_fasta, "Trinity.fasta file" ) %>
+  <%= ue.file_field :trinity_fasta %><br/>
   </p>
   
-  <h2>Please upload your differential expression test files 
-    (sample_x_vs_sample_y.results.txt)
+  <h2>Please upload your differential expression test file for all samples 
+    (all_diff_expression_results.txt)
   </h2>
-  <% (1..@number_of_samples.to_i).each do |sample_id| %>
-    <%= label(:differential_expression_file, 
-              "Differential expression file for Sample #{sample_id}",
-              :index => sample_id) %>
-    <%= file_field_tag( :differential_expression_file, {:index => sample_id}) %>
+    <%= 
+      ue.label( :differential_expression_file, "Differential expression file" ) 
+    %>
+    <%= ue.file_field( :differential_expression_file ) %>
     <br/>
-  <% end %>
   <p><%= submit_tag("Upload files") %></p>
 <% end %>
 
-<script type="text/javascript">
+<!--<script type="text/javascript">
     function add_sample_fasta_upload(){
         p = document.getElementById("sample_fasta_uploads");
         var i = 1;
@@ -31,5 +30,5 @@
         p.innerHTML += '<label for="sample_fasta' + i + '_Sample ' + i + ' fasta">Sample ' + i + ' fasta</label>';
         p.innerHTML += '<input id="sample_fasta' + i + '" name="sample_fasta' + i +'" type="file" /><br/>';
     }
-</script>
+</script>-->
 
