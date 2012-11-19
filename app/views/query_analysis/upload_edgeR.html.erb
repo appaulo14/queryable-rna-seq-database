@@ -2,8 +2,8 @@
 <%= form_for( @upload_edgeR,{:url => "upload_edgeR"} ) do |ue| %>
   <h2>Please upload your Trinity.fasta file</h2>
   <p id="sample_fasta_uploads">
-  <%= ue.label( :trinity_fasta, "Trinity.fasta file" ) %>
-  <%= ue.file_field :trinity_fasta %><br/>
+  <%= ue.label( :trinity_fasta_file, "Trinity.fasta file" ) %>
+  <%= ue.file_field :trinity_fasta_file %><br/>
   </p>
   
   <h2>Please upload your differential expression test file for all samples 

@@ -9,13 +9,34 @@ class Upload_EdgeR
   validate :validate_differential_expression_file, :presence => true
   
   def initialize(attributes = {})
+    #Load in any values from the form
+    attributes.each do |name, value|
+        send("#{name}=", value)
+    end
   end
   
   def save!
     debugger if ENV['RAILS_DEBUG'] == 'true'
     puts "hello world"
     x = 1
-    #Write Trinity.fasta?
+    #Create new job
+    job = Job.new
+    #Write Trinity.fasta to database
+    while not trinity_fasta_file.tempfile.eof?
+      line = trinity_fasta_file.readline
+      #If this is a fasta description line
+      if line.match(/\A>/)
+        transcript = Transcript.new(:job => job)
+        #transcript.name_from_program = 
+        #transcript.fasta_description = 
+        while not line.match(/\A>/)
+          fasta_sequence+=line
+        end
+        transcript.fasta_sequence = sequence
+      end
+    end
+    
+    #Delete Trinity.fasta file
     #Write differential expression tests?
   end
   
