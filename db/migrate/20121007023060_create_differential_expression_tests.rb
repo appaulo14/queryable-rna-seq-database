@@ -9,7 +9,7 @@ class CreateDifferentialExpressionTests < ActiveRecord::Migration
         t.column :fpkm_sample_1_id, 'BIGINT UNSIGNED'
         t.column :fpkm_sample_2_id, 'BIGINT UNSIGNED'
       when /postgresql/
-        t.column :id, 'bigserial', :null => false
+        t.column :id, 'bigserial', :null => false, :unique => true
         t.column :fpkm_sample_1_id, 'BIGINT'
         t.column :fpkm_sample_2_id, 'BIGINT'
       else

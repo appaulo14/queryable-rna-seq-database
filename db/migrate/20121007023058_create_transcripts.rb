@@ -10,7 +10,7 @@ class CreateTranscripts < ActiveRecord::Migration
           t.column :gene_id,'BIGINT UNSIGNED'
           t.column :fasta_sequence, "longtext"
       when /postgresql/
-          t.column :id, 'bigserial', :null => false
+          t.column :id, 'bigserial', :null => false, :unique => true
           t.column :job_id, 'BIGINT', :null => false
           t.column :gene_id,'BIGINT'
           t.column :fasta_sequence, :text

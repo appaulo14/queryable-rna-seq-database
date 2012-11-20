@@ -2,14 +2,14 @@
 #
 # Table name: transcripts
 #
-#  id                              :integer          not null, primary key
-#  differential_expression_test_id :integer          not null
-#  job_id                          :integer          not null
-#  gene_id                         :integer          not null
-#  fasta_sequence                  :text             not null
-#  name_from_program               :string(255)      not null
-#  created_at                      :datetime         not null
-#  updated_at                      :datetime         not null
+#  id                :integer          not null, primary key
+#  job_id            :integer          not null
+#  gene_id           :integer
+#  fasta_sequence    :text(2147483647)
+#  name_from_program :string(255)      not null
+#  fasta_description :string(255)
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
 #
 
 require 'spec_helper'

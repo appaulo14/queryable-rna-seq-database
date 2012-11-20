@@ -10,7 +10,7 @@ class CreateFpkmSamples < ActiveRecord::Migration
         t.column :gene_id, 'BIGINT UNSIGNED'
         t.column :transcript_id, 'BIGINT UNSIGNED'
       when /postgresql/
-        t.column :id, 'bigserial', :null => false
+        t.column :id, 'bigserial', :null => false, :unique => true
         t.column :gene_id, 'BIGINT'
         t.column :transcript_id, 'BIGINT'
       else

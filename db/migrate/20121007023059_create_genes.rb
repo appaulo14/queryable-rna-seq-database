@@ -8,7 +8,7 @@ class CreateGenes < ActiveRecord::Migration
         t.column :id, 'BIGINT UNSIGNED', :null => false
         t.column :job_id, 'BIGINT UNSIGNED', :null => false
       when /postgresql/
-        t.column :id, 'bigserial', :null => false
+        t.column :id, 'bigserial', :null => false, :unique => true
         t.column :job_id, 'BIGINT', :null => false
       else
         throw NotImplementedError.new("Unknown adapter type '#{adapter_type}'")

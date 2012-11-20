@@ -2,32 +2,36 @@
 #
 # Table name: fpkm_samples
 #
-#  sample_number :integer          not null, primary key
-#  q_fpkm        :decimal(, )      not null
-#  q_fpkm_hi     :decimal(, )      not null
-#  q_fpkm_lo     :decimal(, )      not null
-#  q_status      :string(255)      not null
-#  transcript_id :integer          not null, primary key
+#  id            :integer          not null, primary key
+#  gene_id       :integer
+#  transcript_id :integer
+#  sample_name   :string(255)      not null
+#  fpkm          :integer          not null
+#  fpkm_hi       :integer
+#  fpkm_lo       :integer
+#  status        :string(255)
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #
 
 class FpkmSample < ActiveRecord::Base
-  attr_accessible :gene_id, :q_fpkm, :q_fpkm_hi, :q_fpkm_lo, :q_status, :sample_number, :transcript_id
+  attr_accessible :gene, :transcript, :fpkm, :fpkm_hi, :fpkm_lo, :status, 
+                  :sample_name
   
   #Associations
   belongs_to :transcript
+  belongs_to :gene
   
   #Validation
-  validates :sample_number, :presence => true,
-          :numericality => { :only_integer => true, :greater_than => 0 }
-  validates :q_fpkm, :presence => true,
-          :numericality => { :only_double => true }
-  validates :q_fpkm_hi, :presence => true,
-          :numericality => { :only_double => true }
-  validates :q_fpkm_lo, :presence => true,
-          :numericality => { :only_double => true }
-  validates :q_status, :presence => true,
-          :inclusion => { :in => %w(OK LOWDATA HIDATA FAIL) }
-  validates :transcript, :presence => true
+#   validates :sample_number, :presence => true,
+#           :numericality => { :only_integer => true, :greater_than => 0 }
+#   validates :q_fpkm, :presence => true,
+#           :numericality => { :only_double => true }
+#   validates :q_fpkm_hi, :presence => true,
+#           :numericality => { :only_double => true }
+#   validates :q_fpkm_lo, :presence => true,
+#           :numericality => { :only_double => true }
+#   validates :q_status, :presence => true,
+#           :inclusion => { :in => %w(OK LOWDATA HIDATA FAIL) }
+#   validates :transcript, :presence => true
 end

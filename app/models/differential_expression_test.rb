@@ -3,46 +3,44 @@
 # Table name: differential_expression_tests
 #
 #  id               :integer          not null, primary key
-#  sample1          :string(255)      not null
-#  sample2          :string(255)      not null
-#  test_status_name :string(255)      not null
-#  fpkm_x           :decimal(, )      not null
-#  fpkm_y           :decimal(, )      not null
-#  log2_y_over_x    :decimal(, )      not null
-#  test_stat        :decimal(, )      not null
-#  p_value          :decimal(, )      not null
-#  q_value          :decimal(, )      not null
-#  is_significant   :boolean          not null
+#  fpkm_sample_1_id :integer
+#  fpkm_sample_2_id :integer
+#  test_status      :string(255)
+#  log2_fold_change :integer
+#  p_value          :integer
+#  q_value          :integer
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #
 
 class DifferentialExpressionTest < ActiveRecord::Base
-  attr_accessible  :log2_y_over_x, :p_value, :q_value, :sample1, :sample2, 
-                   :is_significant?, :test_stat, :test_status_name
+  attr_accessible  :log_fold_change, :p_value, :q_value, :fpkm_sample_1, 
+                   :fpkm_sample_2, :test_stat, :test_status
   
   #Associations
   #has_one :test_status, :foreign_key => :name
-  has_one :gene, :dependent => :destroy
-  has_one :transcript, :dependent => :destroy
+  belongs_to :gene
+  belongs_to :transcript
+  belongs_to :fpkm_sample_1, :class_name => 'FpkmSample'
+  belongs_to :fpkm_sample_2, :class_name => 'FpkmSample'
   
   #Validations
-  validates :sample1, :presence => true
-  validates :sample2, :presence => true
-  validates :test_status_name, :presence => true,
-          :inclusion => { :in => %w(OK LOWDATA HIDATA FAIL) }
-  validates :fpkm_x, :presence => true,
-          :numericality => { :only_double => true }
-  validates :fpkm_y, :presence => true,
-          :numericality => { :only_double => true }
-  validates :log2_y_over_x, :presence => true,
-          :numericality => { :only_double => true }
-  validates :test_stat, :presence => true,
-          :numericality => { :only_double => true }
-  validates :p_value, :presence => true,
-          :numericality => { :only_double => true }
-  validates :q_value, :presence => true,
-          :numericality => { :only_double => true }
-  validates :is_significant, :presence => true,
-          :inclusion => { :in => [true, false] }
+#   validates :sample1, :presence => true
+#   validates :sample2, :presence => true
+#   validates :test_status_name, :presence => true,
+#           :inclusion => { :in => %w(OK LOWDATA HIDATA FAIL) }
+#   validates :fpkm_x, :presence => true,
+#           :numericality => { :only_double => true }
+#   validates :fpkm_y, :presence => true,
+#           :numericality => { :only_double => true }
+#   validates :log2_y_over_x, :presence => true,
+#           :numericality => { :only_double => true }
+#   validates :test_stat, :presence => true,
+#           :numericality => { :only_double => true }
+#   validates :p_value, :presence => true,
+#           :numericality => { :only_double => true }
+#   validates :q_value, :presence => true,
+#           :numericality => { :only_double => true }
+#   validates :is_significant, :presence => true,
+#           :inclusion => { :in => [true, false] }
 end

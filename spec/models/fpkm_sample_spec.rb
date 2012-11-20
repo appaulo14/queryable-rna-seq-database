@@ -2,12 +2,14 @@
 #
 # Table name: fpkm_samples
 #
-#  sample_number :integer          not null, primary key
-#  q_fpkm        :decimal(, )      not null
-#  q_fpkm_hi     :decimal(, )      not null
-#  q_fpkm_lo     :decimal(, )      not null
-#  q_status      :string(255)      not null
-#  transcript_id :integer          not null, primary_key
+#  id            :integer          not null, primary key
+#  gene_id       :integer
+#  transcript_id :integer
+#  sample_name   :string(255)      not null
+#  fpkm          :integer          not null
+#  fpkm_hi       :integer
+#  fpkm_lo       :integer
+#  status        :string(255)
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #

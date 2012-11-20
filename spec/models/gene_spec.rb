@@ -2,11 +2,11 @@
 #
 # Table name: genes
 #
-#  id                              :integer          not null, primary key
-#  differential_expression_test_id :integer          not null
-#  name_from_program               :string(255)      not null
-#  created_at                      :datetime         not null
-#  updated_at                      :datetime         not null
+#  id                :integer          not null, primary key
+#  job_id            :integer          not null
+#  name_from_program :string(255)      not null
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
 #
 
 require 'spec_helper'

@@ -2,19 +2,19 @@
 #
 # Table name: transcripts
 #
-#  id                              :integer          not null, primary key
-#  differential_expression_test_id :integer          not null
-#  job_id                          :integer          not null
-#  gene_id                         :integer          not null
-#  fasta_sequence                  :text             not null
-#  name_from_program               :string(255)      not null
-#  created_at                      :datetime         not null
-#  updated_at                      :datetime         not null
+#  id                :integer          not null, primary key
+#  job_id            :integer          not null
+#  gene_id           :integer
+#  fasta_sequence    :text(2147483647)
+#  name_from_program :string(255)      not null
+#  fasta_description :string(255)
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
 #
 
 class Transcript < ActiveRecord::Base
-  #attr_accessible :differential_expression_test_id, :gene_id, :job_id, :program_id, :sequence
-    attr_accessible :differential_expression_test, :gene, :job, :fasta_sequence, :name_from_program
+    attr_accessible :gene, :job, :fasta_sequence, :name_from_program, 
+                    :fasta_description
   
   ###Constants###
   #Based off the NCBI fasta format guide: 
@@ -24,19 +24,19 @@ class Transcript < ActiveRecord::Base
   #Associations
   belongs_to :job
   belongs_to :gene
-  belongs_to :differential_expression_test, :dependent => :destroy
-  has_many :fpkm_samples, :dependent => :destroy
-  validates_associated :job, :gene, :differential_expression_test, :fpkm_samples
+  has_many :differential_expression_tests#, :dependent => :destroy
+  has_many :fpkm_samples#, :dependent => :destroy
+  #validates_associated :job, :gene, :differential_expression_test, :fpkm_samples
   
   #Validation
-  validates :id, :uniqueness => true
-  validates :differential_expression_test_id, :presence => true
-  validates :job_id, :presence => true
-  #validates :gene_id, :presence => true
-  validates :fasta_sequence, :presence => true,
-                       :format => { :with => NUCLEOTIDE_FASTA_SEQUENCE_REGEX }   
-  validates :name_from_program, :presence => true
-  validate  :transcript_and_gene_have_same_job
+#   validates :id, :uniqueness => true
+#   validates :differential_expression_test_id, :presence => true
+#   validates :job_id, :presence => true
+#   #validates :gene_id, :presence => true
+#   validates :fasta_sequence, :presence => true,
+#                        :format => { :with => NUCLEOTIDE_FASTA_SEQUENCE_REGEX }   
+#   validates :name_from_program, :presence => true
+#   validate  :transcript_and_gene_have_same_job
   
   private
   def transcript_and_gene_have_same_job
