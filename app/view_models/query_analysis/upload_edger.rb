@@ -65,7 +65,8 @@ class Upload_EdgeR
         end
       end
     end
-    #Read the differential expression file for transcripts, writing the differential expression table
+    #Read the differential expression file for transcripts, 
+    #   writing the differential expression table
     while not transcript_differential_expression_file.tempfile.eof?
       line = transcript_differential_expression_file.tempfile.readline
       next if line.match(/\A#/) #Skip comment linse
@@ -82,7 +83,8 @@ class Upload_EdgeR
                                            :p_value => table_cells[5],
                                            :q_value => table_cells[6])
     end
-    #Read the differential expression file for genes, writing the differential expression table
+    #Read the differential expression file for genes, 
+    #   writing the differential expression table
     while not gene_differential_expression_file.tempfile.eof?
       line = gene_differential_expression_file.tempfile.readline
       next if line.match(/\A#/) #Skip comment linse
@@ -100,20 +102,29 @@ class Upload_EdgeR
                                            :q_value => table_cells[6])
     end
     #Read the Trinity.fasta file, writing to the transcript table
-#     line = trinity_fasta_file.readline
-#     while not trinity_fasta_file.tempfile.eof?
-#       #If this is a fasta description line
-#       if line.match(/\A>/)
-#         transcript = Transcript.new(:job => job)
-#         #transcript.name_from_program = 
-#         #transcript.fasta_description = 
-#         while not line.match(/\A>/)
-#           fasta_sequence+=line
-#         end
-#         transcript.fasta_sequence = sequence
-#       end
-#     end
+    line = trinity_fasta_file.readline
+    while not trinity_fasta_file.tempfile.eof?
+      #If this is a fasta description line
+      description_line_match = line.match(/\A>(\w+)\s/)
+      transcript_name = description_line_match.captures[0]
+      transcript = Transcript.find_by_name_from_program(transcript_name)
+      transcript.fasta_description = line
+      line = trinity_fasta_file.readline
+      while not line.match(/\A>/)
+        fasta_sequence+=line
+        line = trinity_fasta_file.readline
+      end
+      transcript.fasta_sequence = fasta_sequence
+      transcript.save!
+    end
     #Delete the files
+    File.delete(trinity_fasta_file.tempfile.orginal_filename)
+    File.delete(gene_differential_expression_file.tempfile.orginal_filename)
+    File.delete(
+      transcript_differential_expression_file.tempfile.orginal_filename
+    )
+    File.delete(gene_fpkm_file.tempfile.orginal_filename)
+    File.delete(transcript_fpkm_file.tempfile.orginal_filename)
   end
   
   def persisted?
@@ -122,7 +133,7 @@ class Upload_EdgeR
   
   private
   def validate_trinity_fasta_file
-    
+    #Validate that transcript name can be captured from description line?
   end
   
   def validate_transcript_differential_expression_file
