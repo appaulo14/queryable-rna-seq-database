@@ -21,15 +21,15 @@ class Upload_EdgeR
   def save!
     debugger if ENV['RAILS_DEBUG'] == 'true'
     #Create new job
-    job = Job.new
-    job.output_files_type = "trinity_with_edger"
+    job = Job.new(:email => 'nietz111@ksu.edu',
+                  :output_files_type => 'trinity_with_edger')
     job.save!
     #TODO: Run blast2go, writing to the genes table?
     #Read the normalized genes FPKM file, writing to genes and fpkm_samples
     if not gene_fpkm_file.nil?
       header_line = gene_fpkm_file.tempfile.readline
-      samples_names = header_line.split("\t")
-      while not transcript_fpkm_file.tempfile.eof?
+      sample_names = header_line.split("\t")
+      while not gene_fpkm_file.tempfile.eof?
         table_cells = gene_fpkm_file.tempfile.readline.split("\t")
         gene_name = table_cells.shift
         sample_fpkms = table_cells
@@ -74,10 +74,13 @@ class Upload_EdgeR
       sample_names = table_cells[0..1]
       transcript = Transcript.find_by_name_from_program(table_cells[2])
       different_expression_values = table_cells[3..6]
+      fpkm_sample_1 = 
+          transcript.fpkm_samples.find_by_sample_name(sample_names[0])
+      fpkm_sample_2 = 
+          transcript.fpkm_samples.find_by_sample_name(sample_names[1])
       differential_expression_test = 
-        DifferentialExpressionTest.create!(:job=>job,
-                                           :sample_1_name => sample_names[0],
-                                           :sample_2_name => sample_names[1],
+        DifferentialExpressionTest.create!(:fpkm_sample_1 => fpkm_sample_1,
+                                           :fpkm_sample_2 => fpkm_sample_2,
                                            :transcript => transcript,
                                            :log_fold_change => table_cells[4],
                                            :p_value => table_cells[5],
@@ -92,31 +95,34 @@ class Upload_EdgeR
         table_cells = line.split("\t")
         samples = table_cells[0..1]
         gene = Gene.find_by_name_from_program(table_cells[2])
+        fpkm_sample_1 = 
+          gene.fpkm_samples.find_by_sample_name(sample_names[0])
+        fpkm_sample_2 = 
+          gene.fpkm_samples.find_by_sample_name(sample_names[1])
         different_expression_values = table_cells[3..6]
         differential_expression_test = 
-          DifferentialExpressionTest.create!(:job=>job,
-                                            :sample_1_name => sample_names[0],
-                                            :sample_2_name => sample_names[1],
-                                            :gene => gene,
-                                            :log_fold_change => table_cells[4],
-                                            :p_value => table_cells[5],
-                                            :q_value => table_cells[6])
+          DifferentialExpressionTest.create!(:fpkm_sample_1 => fpkm_sample_1,
+                                             :fpkm_sample_2 => fpkm_sample_2,
+                                             :gene => gene,
+                                             :log_fold_change => table_cells[4],
+                                             :p_value => table_cells[5],
+                                             :q_value => table_cells[6])
       end
     end
     #Read the Trinity.fasta file, writing to the transcript table
-    line = trinity_fasta_file.readline
+    line = trinity_fasta_file.tempfile.readline
     while not trinity_fasta_file.tempfile.eof?
       #If this is a fasta description line
       description_line_match = line.match(/\A>(\w+)\s/)
       transcript_name = description_line_match.captures[0]
       transcript = Transcript.find_by_name_from_program(transcript_name)
       transcript.fasta_description = line
-      line = trinity_fasta_file.readline
-      while not line.match(/\A>/)
-        fasta_sequence+=line
-        line = trinity_fasta_file.readline
+      line = trinity_fasta_file.tempfile.readline
+      transcript.fasta_sequence = ""
+      while not line.match(/\A>/) and not trinity_fasta_file.tempfile.eof?
+        transcript.fasta_sequence << line
+        line = trinity_fasta_file.tempfile.readline
       end
-      transcript.fasta_sequence = fasta_sequence
       transcript.save!
     end
     #Delete the files

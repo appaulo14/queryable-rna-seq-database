@@ -8,15 +8,19 @@ class CreateDifferentialExpressionTests < ActiveRecord::Migration
         t.column :id, 'BIGINT UNSIGNED', :null => false
         t.column :fpkm_sample_1_id, 'BIGINT UNSIGNED'
         t.column :fpkm_sample_2_id, 'BIGINT UNSIGNED'
+        t.column :gene_id, 'BIGINT UNSIGNED'
+        t.column :transcript_2_id, 'BIGINT UNSIGNED'
       when /postgresql/
         t.column :id, 'bigserial', :null => false, :unique => true
         t.column :fpkm_sample_1_id, 'BIGINT'
         t.column :fpkm_sample_2_id, 'BIGINT'
+        t.column :gene_id, 'BIGINT'
+        t.column :transcript_id, 'BIGINT'
       else
         throw NotImplementedError.new("Unknown adapter type '#{adapter_type}'")
       end
       t.string :test_status
-      t.decimal :log2_fold_change
+      t.decimal :log_fold_change
       t.decimal :p_value
       t.decimal :q_value
 

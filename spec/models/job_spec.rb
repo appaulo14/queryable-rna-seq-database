@@ -7,6 +7,7 @@
 #  current_program_status :string(255)
 #  email                  :string(255)      not null
 #  workflow_step_id       :integer
+#  output_files_type      :string(255)
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #

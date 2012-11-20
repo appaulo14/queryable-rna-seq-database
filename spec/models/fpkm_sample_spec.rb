@@ -6,9 +6,9 @@
 #  gene_id       :integer
 #  transcript_id :integer
 #  sample_name   :string(255)      not null
-#  fpkm          :integer          not null
-#  fpkm_hi       :integer
-#  fpkm_lo       :integer
+#  fpkm          :decimal(, )      not null
+#  fpkm_hi       :decimal(, )
+#  fpkm_lo       :decimal(, )
 #  status        :string(255)
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null

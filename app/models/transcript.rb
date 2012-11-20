@@ -5,7 +5,7 @@
 #  id                :integer          not null, primary key
 #  job_id            :integer          not null
 #  gene_id           :integer
-#  fasta_sequence    :text(2147483647)
+#  fasta_sequence    :text
 #  name_from_program :string(255)      not null
 #  fasta_description :string(255)
 #  created_at        :datetime         not null
