@@ -1,15 +1,26 @@
 require 'spec_helper'
 
-describe Upload_EdgeR do
+describe Upload_Trinity_With_EdgeR_Transcripts_And_Genes do
   before(:each) do
-    Dir.chdir('spec/view_models')
-    trintiy_fasta_file = File.new('Trinity.fasta','r')
-    gene_det_file = File.new('all_gene_diff_expression_results.txt','r')
-    transcript_det_file = 
-      File.new('all_transcript_diff_expression_results.txt','r')
-    gene_fpkm_file = File.new('genes.matrix.TMM_normalized.FPKM','r')
+    #Change to the directory of this spec
+    Dir.chdir('spec/view_models/query_analysis')
+    #Make copies of the test files
+    FileUtils.copy('Trinity.fasta','trinity_fasta_file')
+    FileUtils.copy('all_gene_diff_expression_results.txt','gene_det_file')
+    FileUtils.copy('all_transcript_diff_expression_results.txt',
+                   'transcript_det_file')
+    FileUtils.copy('genes.matrix.TMM_normalized.FPKM',
+                   'gene_fpkm_file')
+    FileUtils.copy('transcripts.matrix.TMM_normalized.FPKM',
+                   'transcript_fpkm_file')
+    #Open the test files
+    trintiy_fasta_file = File.new('trinity_fasta_file','r')
+    gene_det_file = File.new('gene_det_file','r')
+    transcript_det_file = File.new('transcript_det_file','r')
+    gene_fpkm_file = File.new('gene_fpkm_file','r')
     transcript_fpkm_file = 
-      File.new('transcripts.matrix.TMM_normalized.FPKM','r')
+      File.new('transcript_fpkm_file','r')
+    #Create the uploaded file objects
     uploaded_trinity_fasta_file = 
       ActionDispatch::Http::UploadedFile.new({:tempfile=>trintiy_fasta_file})
     uploaded_gene_det_file = 
@@ -20,20 +31,29 @@ describe Upload_EdgeR do
       ActionDispatch::Http::UploadedFile.new({:tempfile=>gene_fpkm_file})
     uploaded_transcript_fpkm_file = 
       ActionDispatch::Http::UploadedFile.new({:tempfile=>transcript_fpkm_file})
-    @upload_edger = Upload_EdgeR.new()
-    @upload_edger.trinity_fasta_file = uploaded_trinity_fasta_file
-    @upload_edger.gene_differential_expression_file = uploaded_gene_det_file 
-    @upload_edger.transcript_differential_expression_file = 
-      uploaded_transcript_det_file
-    @upload_edger.gene_fpkm_file = uploaded_gene_fpkm_file
-    @upload_edger.transcript_fpkm_file = uploaded_transcript_fpkm_file
+    @it = Upload_Trinity_With_EdgeR_Transcripts.new()
+    @it.trinity_fasta_file = uploaded_trinity_fasta_file
+    @it.gene_differential_expression_file = uploaded_gene_det_file 
+    @it.transcript_differential_expression_file = uploaded_transcript_det_file
+    @it.gene_fpkm_file = uploaded_gene_fpkm_file
+    @it.transcript_fpkm_file = uploaded_transcript_fpkm_file
   end
   
   it "should save without generating any errors" do
-    @upload_edger.save!
+    @it.save!
   end
   
   it "should have x amount of transcripts"
+  
+  it "should have x amount of genes"
+  
+  it "should have x amount of differential expression tests"
+  
+  it "should have only 1 job"
+  
+  it "should have x amount of fpkm_samples"
+  
+  it "should delete the uploaded files when finished"
 
 #   it "should create a new instances when given valid attributes" do
 #     @transcript.save!

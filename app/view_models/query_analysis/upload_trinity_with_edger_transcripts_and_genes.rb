@@ -1,4 +1,4 @@
-class Upload_EdgeR
+class Upload_Trinity_With_EdgeR_Transcripts_And_Genes
   include ActiveModel::Validations
   include ActiveModel::Conversion
   extend ActiveModel::Naming
@@ -26,21 +26,19 @@ class Upload_EdgeR
     job.save!
     #TODO: Run blast2go, writing to the genes table?
     #Read the normalized genes FPKM file, writing to genes and fpkm_samples
-    if not gene_fpkm_file.nil?
-      header_line = gene_fpkm_file.tempfile.readline
-      sample_names = header_line.split("\t")
-      while not gene_fpkm_file.tempfile.eof?
-        table_cells = gene_fpkm_file.tempfile.readline.split("\t")
-        gene_name = table_cells.shift
-        sample_fpkms = table_cells
-        gene = Gene.create!(:job => job, 
-                            :name_from_program => gene_name)
-        if sample_names.length == sample_fpkms.length
-          (0..sample_fpkms.length).each do |i|
-            fpkm_sample = FpkmSample.create!(:gene => gene,
-                                             :sample_name => sample_names[i],
-                                             :fpkm => sample_fpkms[i])
-          end
+    header_line = gene_fpkm_file.tempfile.readline
+    sample_names = header_line.split("\t")
+    while not gene_fpkm_file.tempfile.eof?
+      table_cells = gene_fpkm_file.tempfile.readline.split("\t")
+      gene_name = table_cells.shift
+      sample_fpkms = table_cells
+      gene = Gene.create!(:job => job, 
+                          :name_from_program => gene_name)
+      if sample_names.length == sample_fpkms.length
+        (0..sample_fpkms.length).each do |i|
+          fpkm_sample = FpkmSample.create!(:gene => gene,
+                                            :sample_name => sample_names[i],
+                                            :fpkm => sample_fpkms[i])
         end
       end
     end
@@ -88,26 +86,24 @@ class Upload_EdgeR
     end
     #Read the differential expression file for genes, 
     #   writing the differential expression table
-    if not gene_differential_expression_file.nil?
       while not gene_differential_expression_file.tempfile.eof?
-        line = gene_differential_expression_file.tempfile.readline
-        next if line.match(/\A#/) #Skip comment linse
-        table_cells = line.split("\t")
-        samples = table_cells[0..1]
-        gene = Gene.find_by_name_from_program(table_cells[2])
-        fpkm_sample_1 = 
-          gene.fpkm_samples.find_by_sample_name(sample_names[0])
-        fpkm_sample_2 = 
-          gene.fpkm_samples.find_by_sample_name(sample_names[1])
-        different_expression_values = table_cells[3..6]
-        differential_expression_test = 
-          DifferentialExpressionTest.create!(:fpkm_sample_1 => fpkm_sample_1,
-                                             :fpkm_sample_2 => fpkm_sample_2,
-                                             :gene => gene,
-                                             :log_fold_change => table_cells[4],
-                                             :p_value => table_cells[5],
-                                             :q_value => table_cells[6])
-      end
+      line = gene_differential_expression_file.tempfile.readline
+      next if line.match(/\A#/) #Skip comment linse
+      table_cells = line.split("\t")
+      samples = table_cells[0..1]
+      gene = Gene.find_by_name_from_program(table_cells[2])
+      fpkm_sample_1 = 
+        gene.fpkm_samples.find_by_sample_name(sample_names[0])
+      fpkm_sample_2 = 
+        gene.fpkm_samples.find_by_sample_name(sample_names[1])
+      different_expression_values = table_cells[3..6]
+      differential_expression_test = 
+        DifferentialExpressionTest.create!(:fpkm_sample_1 => fpkm_sample_1,
+                                            :fpkm_sample_2 => fpkm_sample_2,
+                                            :gene => gene,
+                                            :log_fold_change => table_cells[4],
+                                            :p_value => table_cells[5],
+                                            :q_value => table_cells[6])
     end
     #Read the Trinity.fasta file, writing to the transcript table
     line = trinity_fasta_file.tempfile.readline
