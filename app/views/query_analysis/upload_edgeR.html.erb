@@ -1,19 +1,39 @@
 <%= render 'shared/error_messages', :object => @upload_edgeR %>
 <%= form_for( @upload_edgeR,{:url => "upload_edgeR"} ) do |ue| %>
   <h2>Please upload your Trinity.fasta file</h2>
-  <p id="sample_fasta_uploads">
-  <%= ue.label( :trinity_fasta_file, "Trinity.fasta file" ) %>
-  <%= ue.file_field :trinity_fasta_file %><br/>
-  </p>
+  <div>
+    <%= ue.label( :trinity_fasta_file, "Trinity.fasta file" ) %>
+    <%= ue.file_field :trinity_fasta_file %>
+  </div>
   
-  <h2>Please upload your differential expression test file for all samples 
-    (all_diff_expression_results.txt)
+  <h2>Please upload your Transcript and Gene (if available) 
+    differential expression test file(s) (all_diff_expression_results.txt)
   </h2>
-    <%= 
-      ue.label( :differential_expression_file, "Differential expression file" ) 
-    %>
-    <%= ue.file_field( :differential_expression_file ) %>
-    <br/>
+  <div>
+    <%= ue.label( :gene_differential_expression_file, 
+      "Gene differential expression file (optional)" ) %>
+    <%= ue.file_field( :gene_differential_expression_file ) %>
+  </div>
+  <div>
+    <%= ue.label( :transcript_differential_expression_file, 
+      "Transcript differential expression file" ) %>
+    <%= ue.file_field( :transcript_differential_expression_file ) %>
+  </div>
+  
+  <h2>
+    Please upload your Transcript and Gene (if available) fpkm tracking file(s) 
+    (matrix.TMM_normalized.FPKM).
+  </h2>
+  <div>
+    <%= ue.label( :gene_fpkm_file, 
+      "Gene FPKM file (optional)" ) %>
+    <%= ue.file_field( :gene_fpkm_file ) %>
+  </div>
+  <div>
+    <%= ue.label( :transcript_fpkm_file, 
+      "Transcript FPKM file" ) %>
+    <%= ue.file_field( :transcript_fpkm_file ) %>
+  </div>
   <p><%= submit_tag("Upload files") %></p>
 <% end %>
 

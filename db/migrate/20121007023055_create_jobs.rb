@@ -16,7 +16,7 @@ class CreateJobs < ActiveRecord::Migration
             t.string :current_program_status#, :null => false
             t.string :email, :null => false
             t.integer :workflow_step_id#, :null => false
-
+            t.string :output_files_type
             t.timestamps
         end
         #Add primary key using execute statement because

@@ -191,6 +191,7 @@ CREATE TABLE jobs (
     current_program_status character varying(255),
     email character varying(255) NOT NULL,
     workflow_step_id integer,
+    output_files_type character varying(255),
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );

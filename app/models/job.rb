@@ -25,7 +25,8 @@
 #
 #
 class Job < ActiveRecord::Base
-    attr_accessible :id, :current_job_status, :current_program_status, :email, :workflow_step_id
+    attr_accessible :id, :current_job_status, :current_program_status, :email, 
+                    :workflow_step_id, :output_files_type
 #     has_one :job_status, :foreign_key => "current_job_status"
 #     has_one :program_status, :foreign_key => "current_program_status"
 #     belongs_to :users, :foreign_key => "eid_of_owner"

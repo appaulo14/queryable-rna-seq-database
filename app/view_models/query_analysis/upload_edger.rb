@@ -9,8 +9,7 @@ class Upload_EdgeR
                 :gene_fpkm_file, 
                 :transcript_fpkm_file
   
-  validate :validate_trinity_fasta_file, :presence => true
-  validate :validate_differential_expression_file, :presence => true
+  validate :validate_all_or_none_gene_files
   
   def initialize(attributes = {})
     #Load in any values from the form
@@ -21,26 +20,27 @@ class Upload_EdgeR
   
   def save!
     debugger if ENV['RAILS_DEBUG'] == 'true'
-    puts "hello world"
-    x = 1
     #Create new job
     job = Job.new
-    job.output_from_prorgam = "trinity_with_edger"
+    job.output_files_type = "trinity_with_edger"
+    job.save!
     #TODO: Run blast2go, writing to the genes table?
     #Read the normalized genes FPKM file, writing to genes and fpkm_samples
-    header_line = gene_fpkm_file.tempfile.readline
-    samples_names = header_line.split("\t")
-    while not transcript_fpkm_file.tempfile.eof?
-      table_cells = gene_fpkm_file.tempfile.readline.split("\t")
-      gene_name = table_cells.shift
-      sample_fpkms = table_cells
-      gene = Gene.create!(:job => job, 
-                          :name_from_program => gene_name)
-      if sample_names.length == sample_fpkms.length
-        (0..sample_fpkms.length).each do |i|
-          fpkm_sample = FpkmSample.create!(:gene => gene,
-                                           :sample_name => sample_names[i],
-                                           :q_fpkm => sample_fpkms[i])
+    if not gene_fpkm_file.nil?
+      header_line = gene_fpkm_file.tempfile.readline
+      samples_names = header_line.split("\t")
+      while not transcript_fpkm_file.tempfile.eof?
+        table_cells = gene_fpkm_file.tempfile.readline.split("\t")
+        gene_name = table_cells.shift
+        sample_fpkms = table_cells
+        gene = Gene.create!(:job => job, 
+                            :name_from_program => gene_name)
+        if sample_names.length == sample_fpkms.length
+          (0..sample_fpkms.length).each do |i|
+            fpkm_sample = FpkmSample.create!(:gene => gene,
+                                             :sample_name => sample_names[i],
+                                             :fpkm => sample_fpkms[i])
+          end
         end
       end
     end
@@ -61,7 +61,7 @@ class Upload_EdgeR
         (0..sample_fpkms.length).each do |i|
           fpkm_sample = FpkmSample.create!(:transcript => transcript,
                                            :sample_name => sample_names[i],
-                                           :q_fpkm => sample_fpkms[i])
+                                           :fpkm => sample_fpkms[i])
         end
       end
     end
@@ -85,21 +85,23 @@ class Upload_EdgeR
     end
     #Read the differential expression file for genes, 
     #   writing the differential expression table
-    while not gene_differential_expression_file.tempfile.eof?
-      line = gene_differential_expression_file.tempfile.readline
-      next if line.match(/\A#/) #Skip comment linse
-      table_cells = line.split("\t")
-      samples = table_cells[0..1]
-      gene = Gene.find_by_name_from_program(table_cells[2])
-      different_expression_values = table_cells[3..6]
-      differential_expression_test = 
-        DifferentialExpressionTest.create!(:job=>job,
-                                           :sample_1_name => sample_names[0],
-                                           :sample_2_name => sample_names[1],
-                                           :gene => gene,
-                                           :log_fold_change => table_cells[4],
-                                           :p_value => table_cells[5],
-                                           :q_value => table_cells[6])
+    if not gene_differential_expression_file.nil?
+      while not gene_differential_expression_file.tempfile.eof?
+        line = gene_differential_expression_file.tempfile.readline
+        next if line.match(/\A#/) #Skip comment linse
+        table_cells = line.split("\t")
+        samples = table_cells[0..1]
+        gene = Gene.find_by_name_from_program(table_cells[2])
+        different_expression_values = table_cells[3..6]
+        differential_expression_test = 
+          DifferentialExpressionTest.create!(:job=>job,
+                                            :sample_1_name => sample_names[0],
+                                            :sample_2_name => sample_names[1],
+                                            :gene => gene,
+                                            :log_fold_change => table_cells[4],
+                                            :p_value => table_cells[5],
+                                            :q_value => table_cells[6])
+      end
     end
     #Read the Trinity.fasta file, writing to the transcript table
     line = trinity_fasta_file.readline
@@ -118,13 +120,11 @@ class Upload_EdgeR
       transcript.save!
     end
     #Delete the files
-    File.delete(trinity_fasta_file.tempfile.orginal_filename)
-    File.delete(gene_differential_expression_file.tempfile.orginal_filename)
-    File.delete(
-      transcript_differential_expression_file.tempfile.orginal_filename
-    )
-    File.delete(gene_fpkm_file.tempfile.orginal_filename)
-    File.delete(transcript_fpkm_file.tempfile.orginal_filename)
+    File.delete(trinity_fasta_file.tempfile.path)
+    File.delete(gene_differential_expression_file.tempfile.path)
+    File.delete(transcript_differential_expression_file.tempfile.path)
+    File.delete(gene_fpkm_file.tempfile.path)
+    File.delete(transcript_fpkm_file.tempfile.path)
   end
   
   def persisted?
@@ -160,5 +160,9 @@ class Upload_EdgeR
   end
   
   def validate_gene_fpkm_file
+  end
+  
+  def validate_all_or_none_gene_files
+    #User should upload both gene files or neither
   end
 end
