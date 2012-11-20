@@ -1,26 +1,24 @@
 class CreateDifferentialExpressionTests < ActiveRecord::Migration
   def up
     create_table :differential_expression_tests, :id=>false do |t|
-        #The primary key and some other columns are different for mysql vs postgresql
-        adapter_type = ActiveRecord::Base.connection.adapter_name.downcase
-        case adapter_type
-        when /mysql/
-            t.column :id, 'BIGINT UNSIGNED', :null => false
-        when /postgresql/
-            t.column :id, 'bigserial', :null => false
-        else
-            throw NotImplementedError.new("Unknown adapter type '#{adapter_type}'")
-        end
-      t.string :sample1, :null => false
-      t.string :sample2, :null => false
-      t.string :test_status_name, :null => false
-      t.decimal :fpkm_x, :null => false
-      t.decimal :fpkm_y, :null => false
-      t.decimal :log2_y_over_x, :null => false
-      t.decimal :test_stat, :null => false
-      t.decimal :p_value, :null => false
-      t.decimal :q_value, :null => false
-      t.boolean :is_significant, :null => false
+      #The primary key and some other columns are different for mysql vs postgresql
+      adapter_type = ActiveRecord::Base.connection.adapter_name.downcase
+      case adapter_type
+      when /mysql/
+        t.column :id, 'BIGINT UNSIGNED', :null => false
+        t.column :fpkm_sample_1_id, 'BIGINT UNSIGNED'
+        t.column :fpkm_sample_2_id, 'BIGINT UNSIGNED'
+      when /postgresql/
+        t.column :id, 'bigserial', :null => false
+        t.column :fpkm_sample_1_id, 'BIGINT'
+        t.column :fpkm_sample_2_id, 'BIGINT'
+      else
+        throw NotImplementedError.new("Unknown adapter type '#{adapter_type}'")
+      end
+      t.string :test_status
+      t.decimal :log2_fold_change
+      t.decimal :p_value
+      t.decimal :q_value
 
       t.timestamps
     end
@@ -29,16 +27,17 @@ class CreateDifferentialExpressionTests < ActiveRecord::Migration
     adapter_type = ActiveRecord::Base.connection.adapter_name.downcase
     case adapter_type
     when /mysql/
-        execute('ALTER TABLE differential_expression_tests ADD PRIMARY KEY (id);')
-        execute('ALTER TABLE differential_expression_tests MODIFY COLUMN id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT;')
+      execute('ALTER TABLE differential_expression_tests ADD PRIMARY KEY (id);')
+      execute('ALTER TABLE differential_expression_tests ' +
+                'MODIFY COLUMN id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT;')
     when /postgresql/
-        execute('ALTER TABLE differential_expression_tests ADD PRIMARY KEY (id);')
+      execute('ALTER TABLE differential_expression_tests ADD PRIMARY KEY (id);')
     else
-        throw NotImplementedError.new("Unknown adapter type '#{adapter_type}'")
+      throw NotImplementedError.new("Unknown adapter type '#{adapter_type}'")
     end
   end
   
   def down
-      drop_table :differential_expression_tests
+    drop_table :differential_expression_tests
   end
 end
