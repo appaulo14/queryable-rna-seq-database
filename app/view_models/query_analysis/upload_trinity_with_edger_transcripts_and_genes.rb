@@ -36,8 +36,7 @@ class Upload_Trinity_With_EdgeR_Transcripts_And_Genes
       sample_fpkms = table_cells
       gene = Gene.create!(:job => job, 
                           :name_from_program => gene_name)
-      #debugger
-      (0..sample_fpkms.length).each do |i|
+      (0..sample_fpkms.length-1).each do |i|
         fpkm_sample = FpkmSample.create!(:gene => gene,
                                          :sample_name => sample_names[i],
                                          :fpkm => sample_fpkms[i])
@@ -56,7 +55,7 @@ class Upload_Trinity_With_EdgeR_Transcripts_And_Genes
       transcript = Transcript.create!(:job => job, 
                                       :name_from_program => transcript_name,
                                       :gene => associated_gene)
-      (0..sample_fpkms.length).each do |i|
+      (0..sample_fpkms.length-1).each do |i|
         fpkm_sample = FpkmSample.create!(:transcript => transcript,
                                          :sample_name => sample_names[i],
                                          :fpkm => sample_fpkms[i])

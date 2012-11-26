@@ -67,10 +67,10 @@ describe Upload_Trinity_With_EdgeR_Transcripts_And_Genes do
     end.should change(DifferentialExpressionTest, :count).by(282)
   end
   
-  it "should add 1044 amount of fpkm samples to the database" do
+  it "should add 4176 amount of fpkm samples to the database" do
     lambda do
       @it.save!
-    end.should change(FpkmSample, :count).by(1044)
+    end.should change(FpkmSample, :count).by(4176)
   end
   
   it "should delete the uploaded files when finished" do
