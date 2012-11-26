@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Upload_Trinity_With_EdgeR_Transcripts_And_Genes do
   before(:each) do
     #Change to the directory of this spec
-    Dir.chdir('spec/view_models/query_analysis')
+    Dir.chdir("#{Rails.root}/spec/view_models/query_analysis")
     #Make copies of the test files
     FileUtils.copy('Trinity.fasta','trinity_fasta_file')
     FileUtils.copy('all_gene_diff_expression_results.txt','gene_det_file')
@@ -31,7 +31,7 @@ describe Upload_Trinity_With_EdgeR_Transcripts_And_Genes do
       ActionDispatch::Http::UploadedFile.new({:tempfile=>gene_fpkm_file})
     uploaded_transcript_fpkm_file = 
       ActionDispatch::Http::UploadedFile.new({:tempfile=>transcript_fpkm_file})
-    @it = Upload_Trinity_With_EdgeR_Transcripts.new()
+    @it = Upload_Trinity_With_EdgeR_Transcripts_And_Genes.new()
     @it.trinity_fasta_file = uploaded_trinity_fasta_file
     @it.gene_differential_expression_file = uploaded_gene_det_file 
     @it.transcript_differential_expression_file = uploaded_transcript_det_file
@@ -43,18 +43,50 @@ describe Upload_Trinity_With_EdgeR_Transcripts_And_Genes do
     @it.save!
   end
   
-  it "should have x amount of transcripts"
+  it "should add 533 transcripts to the database" do
+    lambda do
+      @it.save!
+    end.should change(Transcript, :count).by(533)
+  end
   
-  it "should have x amount of genes"
+  it "should add 511 gene to the database" do
+    lambda do
+      @it.save!
+    end.should change(Gene, :count).by(511)
+  end
   
-  it "should have x amount of differential expression tests"
+  it "should add 1 job to the database" do
+    lambda do
+      @it.save!
+    end.should change(Job, :count).by(1)
+  end
   
-  it "should have only 1 job"
+  it "should add 282 differential expression tests to the database" do
+    lambda do
+      @it.save!
+    end.should change(DifferentialExpressionTest, :count).by(282)
+  end
   
-  it "should have x amount of fpkm_samples"
+  it "should add 1044 amount of fpkm samples to the database" do
+    lambda do
+      @it.save!
+    end.should change(FpkmSample, :count).by(1044)
+  end
   
-  it "should delete the uploaded files when finished"
+  it "should delete the uploaded files when finished" do
+    @it.save!
+    File.exists?(@it.trinity_fasta_file.tempfile.path).should be_false
+    File.exists?(
+      @it.gene_differential_expression_file.tempfile.path
+    ).should be_false
+    File.exists?(
+      @it.transcript_differential_expression_file.tempfile.path
+    ).should be_false
+    File.exists?(@it.gene_fpkm_file.tempfile.path).should be_false
+    File.exists?(@it.transcript_fpkm_file.tempfile.path).should be_false
+  end
 
+  it "should have go terms"
 #   it "should create a new instances when given valid attributes" do
 #     @transcript.save!
 #   end

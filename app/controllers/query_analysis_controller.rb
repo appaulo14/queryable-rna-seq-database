@@ -1,6 +1,6 @@
 class QueryAnalysisController < ApplicationController
     include Blast_Query
-    require 'query_analysis/upload_edger.rb'
+    #require 'query_analysis/upload_edger.rb'
 
     def upload_main_menu
         debugger if ENV['RAILS_DEBUG'] == "true"
