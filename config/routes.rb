@@ -112,8 +112,8 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
     get  "query_analysis/upload"
     post "query_analysis/upload"
 
-    get "query_analysis/upload_edgeR"
-    post "query_analysis/upload_edgeR"
+    get "query_analysis/upload_trinity_with_edger_genes_and_transcripts"
+    post "query_analysis/upload_trinity_with_edger_genes_and_transcripts"
 
     get "query_analysis/query_diff_exp_transcripts"
     post "query_analysis/query_diff_exp_transcripts"

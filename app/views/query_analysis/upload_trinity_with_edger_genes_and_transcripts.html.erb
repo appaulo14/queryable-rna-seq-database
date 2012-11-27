@@ -1,23 +1,23 @@
-<%= render 'shared/error_messages', :object => @upload_edgeR %>
-<%= form_for( @upload_edgeR,{:url => "upload_edgeR"} ) do |ue| %>
+<%= render 'shared/error_messages', :object => @upload_files %>
+<%= form_for( @upload_files,{:url => "upload_edgeR"} ) do |uf| %>
   <h2>Please upload your Trinity.fasta file</h2>
   <div>
-    <%= ue.label( :trinity_fasta_file, "Trinity.fasta file" ) %>
-    <%= ue.file_field :trinity_fasta_file %>
+    <%= uf.label( :trinity_fasta_file, "Trinity.fasta file" ) %>
+    <%= uf.file_field :trinity_fasta_file %>
   </div>
   
   <h2>Please upload your Transcript and Gene (if available) 
     differential expression test file(s) (all_diff_expression_results.txt)
   </h2>
   <div>
-    <%= ue.label( :gene_differential_expression_file, 
+    <%= uf.label( :gene_differential_expression_file, 
       "Gene differential expression file (optional)" ) %>
-    <%= ue.file_field( :gene_differential_expression_file ) %>
+    <%= uf.file_field( :gene_differential_expression_file ) %>
   </div>
   <div>
-    <%= ue.label( :transcript_differential_expression_file, 
+    <%= uf.label( :transcript_differential_expression_file, 
       "Transcript differential expression file" ) %>
-    <%= ue.file_field( :transcript_differential_expression_file ) %>
+    <%= uf.file_field( :transcript_differential_expression_file ) %>
   </div>
   
   <h2>
@@ -25,14 +25,14 @@
     (matrix.TMM_normalized.FPKM).
   </h2>
   <div>
-    <%= ue.label( :gene_fpkm_file, 
+    <%= uf.label( :gene_fpkm_file, 
       "Gene FPKM file (optional)" ) %>
-    <%= ue.file_field( :gene_fpkm_file ) %>
+    <%= uf.file_field( :gene_fpkm_file ) %>
   </div>
   <div>
-    <%= ue.label( :transcript_fpkm_file, 
+    <%= uf.label( :transcript_fpkm_file, 
       "Transcript FPKM file" ) %>
-    <%= ue.file_field( :transcript_fpkm_file ) %>
+    <%= uf.file_field( :transcript_fpkm_file ) %>
   </div>
   <p><%= submit_tag("Upload files") %></p>
 <% end %>

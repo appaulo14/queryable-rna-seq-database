@@ -1,6 +1,6 @@
 class QueryAnalysisController < ApplicationController
     include Blast_Query
-    #require 'query_analysis/upload_edger.rb'
+    require 'query_analysis/upload_trinity_with_edger_transcripts_and_genes.rb'
 
     def upload_main_menu
         debugger if ENV['RAILS_DEBUG'] == "true"
@@ -17,6 +17,21 @@ class QueryAnalysisController < ApplicationController
     end
 
     def upload_de_novo_cuffdiff
+    end
+    
+    def upload_trinity_with_edger_genes_and_transcripts
+      if (request.get?)
+          @upload_files = Upload_Trinity_With_EdgeR_Transcripts_And_Genes.new()
+        elsif (request.post?)
+#           debugger if ENV['RAILS_DEBUG'] == 'true'
+#           @upload_edgeR = Upload_EdgeR.new(params[:upload_edge_r])
+#           if @upload_edgeR.valid?
+#              @upload_edgeR.save!
+#              flash[:success] = "Success"
+#           else
+#               flash[:success]="Failure"
+#           end
+        end
     end
 
     def upload_edgeR
