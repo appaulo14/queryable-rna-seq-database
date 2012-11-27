@@ -37,6 +37,15 @@ class CreateFpkmSamples < ActiveRecord::Migration
     else
       throw NotImplementedError.new("Unknown adapter type '#{adapter_type}'")
     end
+    #Add foreign keys. The SQL is the same for both postgresql and mysql
+#     execute('ALTER TABLE fpkm_samples ' +
+#             'ADD CONSTRAINT genes_fk ' + 
+#             'FOREIGN KEY (gene_id) REFERENCES genes (id) ' + 
+#             'ON UPDATE CASCADE ON DELETE CASCADE;')
+#     execute('ALTER TABLE fpmk_samples ' +
+#             'ADD CONSTRAINT transcripts_fk ' + 
+#             'FOREIGN KEY (transcript_id) REFERENCES transcripts (id) ' + 
+#             'ON UPDATE CASCADE ON DELETE CASCADE;')
   end
   
   def down

@@ -30,6 +30,10 @@ class CreateGenes < ActiveRecord::Migration
     else
         throw NotImplementedError.new("Unknown adapter type '#{adapter_type}'")
     end
+    #Add foreign keys. The SQL is the same for both postgresql and mysql
+#     execute('ALTER TABLE genes ADD CONSTRAINT jobs_fk ' + 
+#             'FOREIGN KEY (job_id) REFERENCES jobs (id) ' + 
+#             'ON UPDATE CASCADE ON DELETE RESTRICT;')
   end
   
   def down

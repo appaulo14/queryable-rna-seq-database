@@ -31,7 +31,7 @@ class CreateJobs < ActiveRecord::Migration
         else
             throw NotImplementedError.new("Unknown adapter type '#{adapter_type}'")
         end
-        #Add foreign keys. The SQL is the same for both postgresql and mysql
+#         #Add foreign keys. The SQL is the same for both postgresql and mysql
 #         execute("ALTER TABLE jobs ADD CONSTRAINT users_fk FOREIGN KEY (eid_of_owner) REFERENCES users (eid) ON UPDATE CASCADE ON DELETE RESTRICT;")
 #         execute("ALTER TABLE jobs ADD CONSTRAINT job_statuses_fk FOREIGN KEY (current_job_status) REFERENCES job_statuses (name) ON UPDATE CASCADE ON DELETE RESTRICT;")
 #         execute("ALTER TABLE jobs ADD CONSTRAINT program_statuses_fk FOREIGN KEY (current_program_status) REFERENCES program_statuses (internal_name) ON UPDATE CASCADE ON DELETE RESTRICT;")

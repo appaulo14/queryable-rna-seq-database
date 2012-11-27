@@ -590,11 +590,83 @@ CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (v
 
 
 --
+-- Name: differential_expression_tests_fpkm_sample_1_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY differential_expression_tests
+    ADD CONSTRAINT differential_expression_tests_fpkm_sample_1_fk FOREIGN KEY (fpkm_sample_1_id) REFERENCES fpkm_samples(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- Name: differential_expression_tests_fpkm_sample_2_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY differential_expression_tests
+    ADD CONSTRAINT differential_expression_tests_fpkm_sample_2_fk FOREIGN KEY (fpkm_sample_2_id) REFERENCES fpkm_samples(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- Name: differential_expression_tests_genes_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY differential_expression_tests
+    ADD CONSTRAINT differential_expression_tests_genes_fk FOREIGN KEY (gene_id) REFERENCES genes(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: differential_expression_tests_transcripts_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY differential_expression_tests
+    ADD CONSTRAINT differential_expression_tests_transcripts_fk FOREIGN KEY (transcript_id) REFERENCES transcripts(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: fpkm_samples_genes_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY fpkm_samples
+    ADD CONSTRAINT fpkm_samples_genes_fk FOREIGN KEY (gene_id) REFERENCES genes(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: fpkm_samples_transcripts_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY fpkm_samples
+    ADD CONSTRAINT fpkm_samples_transcripts_fk FOREIGN KEY (transcript_id) REFERENCES transcripts(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: genes_jobs_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY genes
+    ADD CONSTRAINT genes_jobs_fk FOREIGN KEY (job_id) REFERENCES jobs(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
 -- Name: programs_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY workflow_steps
     ADD CONSTRAINT programs_fk FOREIGN KEY (program_internal_name) REFERENCES programs(internal_name) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- Name: transripts_genes_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY transcripts
+    ADD CONSTRAINT transripts_genes_fk FOREIGN KEY (gene_id) REFERENCES genes(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- Name: transripts_jobs_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY transcripts
+    ADD CONSTRAINT transripts_jobs_fk FOREIGN KEY (job_id) REFERENCES jobs(id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --
@@ -636,3 +708,5 @@ INSERT INTO schema_migrations (version) VALUES ('20121007023060');
 INSERT INTO schema_migrations (version) VALUES ('20121007023061');
 
 INSERT INTO schema_migrations (version) VALUES ('20121007023062');
+
+INSERT INTO schema_migrations (version) VALUES ('20121007023063');
