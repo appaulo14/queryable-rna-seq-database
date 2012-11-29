@@ -70,11 +70,13 @@ describe Upload_Trinity_With_EdgeR_Transcripts_And_Genes do
 #       end.should change(DifferentialExpressionTest, :count).by(282)
 #     end
 #     
-#     it 'should add 4176 amount of fpkm samples to the database' do
+    it 'should add 4176 amount of fpkm samples to the database' do
 #       lambda do
 #         @it.save!
 #       end.should change(FpkmSample, :count).by(4176)
-#     end
+      @it.save!
+      (FpkmSample.all.count == 4176).should be_true
+    end
 #     
 #     it 'should delete the uploaded files when finished' do
 #       @it.save!
@@ -96,23 +98,23 @@ describe Upload_Trinity_With_EdgeR_Transcripts_And_Genes do
 #       end
 #     end
     
-    it 'should only write transcripts to the transcripts table' do
-      @it.save!
-      Transcript.all.each do |transcript|
-        transcript.name_from_program.should match(/_seq\d+/)
-      end
-      Gene.all.each do |gene|
-        gene.name_from_program.should_not match(/_seq\d+/)
-      end
-    end
-    
-    it 'should correctly associate transcripts with their genes' do
-      @it.save!
-      Transcript.all.each do |transcript|
-        name_from_transcript = transcript.name_from_program.sub(/_seq\d+/,'')
-        transcript.gene.name_from_program.should match(name_from_transcript)
-      end
-    end
+#     it 'should only write transcripts to the transcripts table' do
+#       @it.save!
+#       Transcript.all.each do |transcript|
+#         transcript.name_from_program.should match(/_seq\d+/)
+#       end
+#       Gene.all.each do |gene|
+#         gene.name_from_program.should_not match(/_seq\d+/)
+#       end
+#     end
+#     
+#     it 'should correctly associate transcripts with their genes' do
+#       @it.save!
+#       Transcript.all.each do |transcript|
+#         name_from_transcript = transcript.name_from_program.sub(/_seq\d+/,'')
+#         transcript.gene.name_from_program.should match(name_from_transcript)
+#       end
+#     end
 
     it 'should have go terms'
   

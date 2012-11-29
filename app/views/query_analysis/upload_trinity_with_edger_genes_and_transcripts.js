@@ -13,8 +13,10 @@ $(document).ready(function()
     //Tooltip for Differential expression files
     elements[1] = 'differential_expression_tooltip';
     titles[1] = 'Differential Expression File(s)';
-    texts[1] = 'run_edgeR.pl produces an FPKM tracking file. ' +
-      'It is the file in your edgeR output folder that ends in ".FPKM".'
+    texts[1] = 'run_edgeR.pl produces a file called ' + 
+      'all_diff_expression_results.txt, which contains all the ' +
+      'differential expression test results. ' +
+      'It can be found in your edgeR output directory.'
     //Tooltip for FPKM files
     elements[2] = 'fpkm_tooltip';
     titles[2] = 'FPKM Tracking File(s)';
