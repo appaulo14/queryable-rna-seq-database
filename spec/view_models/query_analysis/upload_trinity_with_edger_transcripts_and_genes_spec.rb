@@ -75,7 +75,7 @@ describe Upload_Trinity_With_EdgeR_Transcripts_And_Genes do
 #         @it.save!
 #       end.should change(FpkmSample, :count).by(4176)
       @it.save!
-      (FpkmSample.all.count == 4176).should be_true
+      FpkmSample.should have_exactly(4176).all
     end
 #     
 #     it 'should delete the uploaded files when finished' do
