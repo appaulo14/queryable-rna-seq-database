@@ -1,17 +1,23 @@
+<script src='upload_trinity_with_edger_genes_and_transcripts.js'
+  type='text/javascript' ></script>
 <%= render 'shared/error_messages', :object => @upload_files %>
 <%= form_for( @upload_files,{:url => "upload_edgeR"} ) do |uf| %>
-  <h2>Please upload your Trinity.fasta file</h2>
+  <h2>
+    Please upload your Trinity.fasta file
+    <%= image_tag('question_mark.png', :id=>'trinity_fasta_tooltip') %>
+  </h2>
   <div>
     <%= uf.label( :trinity_fasta_file, "Trinity.fasta file" ) %>
     <%= uf.file_field :trinity_fasta_file %>
   </div>
   
-  <h2>Please upload your Transcript and Gene (if available) 
+  <h2>Please upload your Transcript and Gene 
     differential expression test file(s) (all_diff_expression_results.txt)
+    <%= image_tag('question_mark.png', :id=>'differential_expression_tooltip')%>
   </h2>
   <div>
     <%= uf.label( :gene_differential_expression_file, 
-      "Gene differential expression file (optional)" ) %>
+      "Gene differential expression file" ) %>
     <%= uf.file_field( :gene_differential_expression_file ) %>
   </div>
   <div>
@@ -21,12 +27,12 @@
   </div>
   
   <h2>
-    Please upload your Transcript and Gene (if available) fpkm tracking file(s) 
-    (matrix.TMM_normalized.FPKM).
+    Please upload your Transcript and Gene fpkm tracking file.
+    <%= image_tag('question_mark.png', :id=>'fpkm_tooltip') %>
   </h2>
   <div>
     <%= uf.label( :gene_fpkm_file, 
-      "Gene FPKM file (optional)" ) %>
+      "Gene FPKM file" ) %>
     <%= uf.file_field( :gene_fpkm_file ) %>
   </div>
   <div>
@@ -36,7 +42,40 @@
   </div>
   <p><%= submit_tag("Upload files") %></p>
 <% end %>
-
+<!--<script type="text/javascript">
+$(document).ready(function()
+{
+        $('#goat')
+                /*
+                 * Lets delete the qTip data from our target element so we can apply multiple tooltips.
+                 * Since the data is also stored on the tooltip element itself this isn't a problem!
+                 * 
+                 * Check here for more details on this: http://craigsworks.com/projects/qtip2/tutorials/advanced/#multi
+                 */
+                .removeData('qtip') 
+                .qtip({
+                        content: {
+                                text: "Hello World <a href=\"#\">goat</a>", 
+                                title: {
+                                        text: "Hello\nWorld!",
+                                        button: true
+                                }
+                        },
+                        position: {
+                                my: 'left center', // Use the corner...
+                                at: 'right center' // ...and opposite corner
+                        },
+                        show: {
+                                event: 'click', // Don't specify a show event...
+                                ready: false // ... but show the tooltip when ready
+                        },
+                        hide: false, // Don't specify a hide event either!
+                        style: {
+                                classes: 'qtip-shadow qtip-' + 'red'
+                        }
+                });
+});
+</script>-->
 <!--<script type="text/javascript">
     function add_sample_fasta_upload(){
         p = document.getElementById("sample_fasta_uploads");
