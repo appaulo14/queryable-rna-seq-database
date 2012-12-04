@@ -39,12 +39,12 @@
             </td>
             <td class="rounded-corners sub-section" style="padding-left:25px;padding-right:25px">
                 <div class="sub-section-heading">Step 3: Select a Processing Analysis Workflow</h3></div>
-                <div><u>If you have 1 or more samples:</u></div>
+                <div><i>If you have 1 or more samples:</i></div>
                 <ul>
                     <%= radio_button_tag(:workflow, :reference_novel_isoforms_only_workflow, true) %>
                     <%= label(:workflow, "Novel Gene and Transcript Discovery") %>
                 </ul>
-                <div>If you have 2 or more samples:</div>
+                <div><i>If you have 2 or more samples:</i></div>
                 <ul>
                     <%= radio_button_tag(:workflow, :reference_novel_isoforms_only_workflow) %>
                     <%= label(:workflow, "Differential Expression Analysis With Novel Gene and Transcript Discovery") %><br/>
