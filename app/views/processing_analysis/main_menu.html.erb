@@ -42,12 +42,12 @@
                 <div><i>If you have 1 or more samples:</i></div>
                 <ul>
                     <%= radio_button_tag(:workflow, :reference_novel_isoforms_only_workflow, true) %>
-                    <%= label(:workflow, "Novel Gene and Transcript Discovery") %>
+                    <%= label(:workflow, "Novel Gene and Transcript Discovery Using a Reference Genome") %>
                 </ul>
                 <div><i>If you have 2 or more samples:</i></div>
                 <ul>
                     <%= radio_button_tag(:workflow, :reference_novel_isoforms_only_workflow) %>
-                    <%= label(:workflow, "Differential Expression Analysis With Novel Gene and Transcript Discovery") %><br/>
+                    <%= label(:workflow, "Differential Expression Analysis With Novel Gene and Transcript Discovery Using a Reference Genome") %><br/>
                     <%= radio_button_tag(:workflow, :reference_novel_isoforms_only_workflow) %>
                     <%= label(:workflow, "Differential Expression Analysis using a Reference Genome") %><br/>
                     <%= radio_button_tag(:workflow, :reference_novel_isoforms_only_workflow) %>

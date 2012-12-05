@@ -52,7 +52,7 @@ describe Upload_Trinity_With_EdgeR_Transcripts_And_Genes do
 #       end.should change(Transcript, :count).by(533)
 #     end
 #     
-#     it 'should add 511 gene to the database' do
+#     it 'should add 511 genes to the database' do
 #       lambda do
 #         @it.save!
 #       end.should change(Gene, :count).by(511)
