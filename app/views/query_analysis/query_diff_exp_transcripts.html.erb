@@ -47,29 +47,48 @@
   <p><%= submit_tag("Search") %></p>
 <% end %>
 
-<% if not @search_results.nil? and not @samples.nil? %>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Transcript</th><th>Transcript description</th><th>GO terms</th><th>P-value</th><th>FDR</th>
-                    <% @samples.each do |sample| %>
-                        <th><%= sample %></th>
-                    <% end %>
-            </tr>
-        </thead>
-        <tbody>
-            <% @search_results.each do |search_result| %>
-                <tr>
-                    <td><%= search_result[:transcript] %></td>
-                    <td><%= search_result[:transcript_description] %></td>
-                    <td><%= search_result[:go_terms] %></td>
-                    <td><%= search_result[:p_value] %></td>
-                    <td><%= search_result[:fdr] %></td>
-                    <td><%= search_result[:sample_1] %></td>
-                    <td><%= search_result[:sample_2] %></td>
-                    <td><%= search_result[:sample_3] %></td>
-                </tr>
-            <% end %>
-        </tbody>
-    </table>
+<% if not @qdet.search_results.nil? %>
+  <p>
 <% end %>
+<table border="1">
+    <thead>
+        <tr>
+            <th>Transcript</th>
+            <th>Associated gene</th>
+            <th>GO IDs</th>
+            <th>P-value</th>
+            <th>FDR</th>
+            <th>Sample 1 Name</th>
+            <th>Sample 2 Name</th>
+            <th>Sample 1 FPKM</th>
+            <th>Sample 2 FPKM</th>
+            <th>Log Fold Change</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @qdet.search_results.each do |search_result| %>
+            <tr>
+                <td>
+                  <%= link_to(search_result.transcript_name, get_transcripts_path(:dataset=>@qdet.dataset,:name=>search_result.transcript_name))%>
+                </td>
+                <td><%= search_result.gene_name %></td>
+                <td>
+                  <% if search_result.go_ids.empty? == false %>
+                    <% search_result.go_ids.each do |go_id| %>
+                      <%= link_to(go_id, "http://amigo.geneontology.org/cgi-bin/amigo/term_details?term=#{go_id}") %>
+                    <% end %>
+                  <% else %>
+                    No GO ids found.
+                  <% end %>
+                </td>
+                <td><%= search_result.p_value %></td>
+                <td><%= search_result.fdr %></td>
+                <td><%= search_result.sample_1_name %></td>
+                <td><%= search_result.sample_2_name %></td>
+                <td><%= search_result.sample_1_fpkm %></td>
+                <td><%= search_result.sample_2_fpkm %></td>
+                <td><%= search_result.log_fold_change %></td>
+            </tr>
+        <% end %>
+    </tbody>
+</table>
