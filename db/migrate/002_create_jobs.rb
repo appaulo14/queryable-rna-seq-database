@@ -12,9 +12,9 @@ class CreateJobs < ActiveRecord::Migration
                 throw NotImplementedError.new("Unknown adapter type '#{adapter_type}'")
             end
             #Add the other columns
-            t.string :current_job_status#, :null => false
-            t.string :current_program_status#, :null => false
-            t.string :email, :null => false
+            t.string  :current_job_status#, :null => false
+            t.string  :current_program_status#, :null => false
+            t.string  :email, :null => false
             t.integer :workflow_step_id#, :null => false
             t.string :output_files_type
             t.timestamps
@@ -25,7 +25,8 @@ class CreateJobs < ActiveRecord::Migration
         case adapter_type
         when /mysql/
             execute('ALTER TABLE jobs ADD PRIMARY KEY (id);')
-            execute('ALTER TABLE jobs MODIFY COLUMN id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT;')
+            execute('ALTER TABLE jobs MODIFY COLUMN id BIGINT ' +
+                    'UNSIGNED NOT NULL AUTO_INCREMENT;')
         when /postgresql/
             execute('ALTER TABLE jobs ADD PRIMARY KEY (id);')
         else

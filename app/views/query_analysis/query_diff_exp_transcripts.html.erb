@@ -1,54 +1,59 @@
-<%= form_tag({:action => :query_diff_exp_transcripts}) do %>
+<%= form_for(@qdet,{:url => :query_diff_exp_transcripts}) do |qdet| %>
   <h1>Please select your differential expression search options</h1>
   <p>
-    <%= label(:comparison_data_set, "Comparison of expression:") %>
-    <%= select_tag(:comparison_data_set, options_for_select([['Brain vs Liver', 1], ['Spleen vs Gizzard', 2]])) %>
+    <%= qdet.label :dataset, "Dataset to query" %>
+    <%= qdet.select :dataset, options_for_select(@qdet.available_datasets) %><br/>
+    <%= qdet.label :samples_to_compare, "Samples to compare" %>>
+    <%= qdet.select :samples_to_compare, options_for_select(@qdet.available_samples_for_comparison) %><br/>
   </p>
   <p>
     <div>
         <%= label(:fdr_or_pvalue, "Filter By:") %>
-        <%= radio_button_tag(:filter_by, :p_value, true) %>
-        <%= label(:filter_by_p_value, "P-value") %>
-        <%= radio_button_tag(:filter_by, :fdr) %>
-        <%= label(:filter_by_fdr, "FDR") %>
+        <%= qdet.radio_button :fdr_or_pvalue, :p_value, true %>
+        <%= qdet.label(:filter_by_p_value, "P-value") %>
+        <%= qdet.radio_button(:fdr_or_pvalue, :fdr) %>
+        <%= qdet.label(:filter_by_fdr, "FDR") %>
     </div>
     <div>
-        <%= label(:cutoff, "Select cutoff:") %>
-        <%= select_tag(:cutoff, options_for_select([['0.01', 0.01], ['0.005', 0.005],['0.001', 0.001],['0.0001', 0.0001],['0.00001', 0.00001],['Other', 'Other']],'Other')) %>
-        <%= label(:other_cutoff_value, "Enter Value:") %>
-        <%= text_field_tag(:other_cutoff_value) %>
+        <%= qdet.label(:cutoff, "Select cutoff:") %>
+        <!--<%= #qdet.select(:cutoff, options_for_select([['0.01', 0.01], ['0.005', 0.005],['0.001', 0.001],['0.0001', 0.0001],['0.00001', 0.00001],['Other', 'Other']],'Other'))
+        %>
+        <%= #qdet.label(:other_cutoff_value, "Enter Value:") 
+        %>-->
+        <%= qdet.text_field(:cutoff) %>
     </div>
   </p>
   <br/>
   <h2>Query filtering options</h2>
+  <!--TODO: Have these enable/disabled based on whether the check boxes are clicked -->
   <p>
     <div>
-        <%= check_box_tag(:go_names) %>
-        <%= label(:go_names, "GO Names (for associated genes) (separated by commas)") %>
-        <%= text_field_tag(:go_names) %>
+        <%= qdet.check_box(:filter_by_go_names) %>
+        <%= qdet.label(:go_names, "GO Names (for associated genes) (separated by commas)") %>
+        <%= qdet.text_field(:go_names) %>
     </div>
     <div>
-        <%= check_box_tag(:go_numbers) %>
-        <%= label(:go_numbers, "GO Numbers (for associated genes) (separated by commas)") %>
-        <%= text_field_tag(:go_numbers) %>
+        <%= qdet.check_box(:filter_by_go_numbers) %>
+        <%= qdet.label(:go_numbers, "GO Numbers (for associated genes) (separated by commas)") %>
+        <%= qdet.text_field(:go_numbers) %>
     </div>
     <div>
-        <%= check_box_tag(:transcript_length) %>
+        <%= qdet.check_box(:filter_by_transcript_length) %>
         <%= label(:transcript_length, "Transcript length") %>
-        <%= select_tag(:transcript_length_comparison, options_for_select([['>', '>'],['>=', '>='],['<', '<'],['=<', '=<'],['=', '=']],'>')) %>
-        <%= text_field_tag(:transcript_length_value) %>
+        <%= qdet.select(:transcript_length_comparison_sign, options_for_select(['>','>=','<','=<','='],'>')) %>
+        <%= qdet.text_field(:transcript_length_value) %>
     </div>
     <div>
-        <%= check_box_tag("transcript_name?") %>
-        <%= label(:transcript_name, "Transcript name:") %>
-        <%= text_field_tag(:transcript_name) %>
+        <%= qdet.check_box(:filter_by_transcript_name) %>
+        <%= qdet.label(:transcript_name, "Transcript name:") %>
+        <%= qdet.text_field(:transcript_name) %>
     </div>
   </p>
   <p><%= submit_tag("Search") %></p>
 <% end %>
 
 <% if not @qdet.search_results.nil? %>
-  <p>
+  <p><%= @qdet.search_results.length %> results found</p>
 <% end %>
 <table border="1">
     <thead>

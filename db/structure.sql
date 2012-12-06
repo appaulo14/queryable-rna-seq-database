@@ -29,19 +29,51 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
+-- Name: datasets; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE datasets (
+    id bigint NOT NULL,
+    name character varying(255),
+    eid_of_owner character varying(255),
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: datasets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE datasets_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: datasets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE datasets_id_seq OWNED BY datasets.id;
+
+
+--
 -- Name: differential_expression_tests; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE differential_expression_tests (
     id bigint NOT NULL,
-    fpkm_sample_1_id bigint,
-    fpkm_sample_2_id bigint,
+    fpkm_sample_1_id bigint NOT NULL,
+    fpkm_sample_2_id bigint NOT NULL,
     gene_id bigint,
     transcript_id bigint,
     test_status character varying(255),
     log_fold_change numeric,
-    p_value numeric,
-    q_value numeric,
+    p_value numeric NOT NULL,
+    q_value numeric NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -104,12 +136,24 @@ ALTER SEQUENCE fpkm_samples_id_seq OWNED BY fpkm_samples.id;
 
 
 --
+-- Name: gene_has_go_term; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE gene_has_go_term (
+    gene_id integer,
+    go_term_id character varying(255),
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
 -- Name: genes; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE genes (
     id bigint NOT NULL,
-    job_id bigint NOT NULL,
+    dataset_id bigint NOT NULL,
     name_from_program character varying(255) NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
@@ -133,6 +177,18 @@ CREATE SEQUENCE genes_id_seq
 --
 
 ALTER SEQUENCE genes_id_seq OWNED BY genes.id;
+
+
+--
+-- Name: go_terms; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE go_terms (
+    id character varying(255) NOT NULL,
+    term character varying(255),
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
 
 
 --
@@ -172,18 +228,6 @@ ALTER SEQUENCE job2s_id_seq OWNED BY job2s.id;
 
 
 --
--- Name: job_statuses; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE job_statuses (
-    name character varying(255) NOT NULL,
-    description character varying(255) NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
 -- Name: jobs; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -219,63 +263,6 @@ ALTER SEQUENCE jobs_id_seq OWNED BY jobs.id;
 
 
 --
--- Name: program_statuses; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE program_statuses (
-    internal_name character varying(255) NOT NULL,
-    display_name character varying(255) NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: programs; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE programs (
-    internal_name character varying(255) NOT NULL,
-    display_name character varying(255),
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: samples; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE samples (
-    id integer NOT NULL,
-    sample_id integer,
-    job_id integer,
-    status character varying(255),
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: samples_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE samples_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: samples_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE samples_id_seq OWNED BY samples.id;
-
-
---
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -285,24 +272,12 @@ CREATE TABLE schema_migrations (
 
 
 --
--- Name: test_statuses; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE test_statuses (
-    name character varying(255) NOT NULL,
-    description text,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
 -- Name: transcripts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE transcripts (
     id bigint NOT NULL,
-    job_id bigint NOT NULL,
+    dataset_id bigint NOT NULL,
     gene_id bigint,
     fasta_sequence text,
     name_from_program character varying(255) NOT NULL,
@@ -344,67 +319,10 @@ CREATE TABLE users (
 
 
 --
--- Name: workflow_steps; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-CREATE TABLE workflow_steps (
-    id integer NOT NULL,
-    workflow_id integer,
-    program_internal_name character varying(255),
-    step integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: workflow_steps_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE workflow_steps_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: workflow_steps_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE workflow_steps_id_seq OWNED BY workflow_steps.id;
-
-
---
--- Name: workflows; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE workflows (
-    id integer NOT NULL,
-    display_name character varying(255),
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: workflows_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE workflows_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: workflows_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE workflows_id_seq OWNED BY workflows.id;
+ALTER TABLE ONLY datasets ALTER COLUMN id SET DEFAULT nextval('datasets_id_seq'::regclass);
 
 
 --
@@ -446,28 +364,15 @@ ALTER TABLE ONLY jobs ALTER COLUMN id SET DEFAULT nextval('jobs_id_seq'::regclas
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY samples ALTER COLUMN id SET DEFAULT nextval('samples_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
 ALTER TABLE ONLY transcripts ALTER COLUMN id SET DEFAULT nextval('transcripts_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: datasets_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY workflow_steps ALTER COLUMN id SET DEFAULT nextval('workflow_steps_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY workflows ALTER COLUMN id SET DEFAULT nextval('workflows_id_seq'::regclass);
+ALTER TABLE ONLY datasets
+    ADD CONSTRAINT datasets_pkey PRIMARY KEY (id);
 
 
 --
@@ -495,6 +400,14 @@ ALTER TABLE ONLY genes
 
 
 --
+-- Name: go_terms_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY go_terms
+    ADD CONSTRAINT go_terms_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: job2s_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -503,51 +416,11 @@ ALTER TABLE ONLY job2s
 
 
 --
--- Name: job_statuses_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY job_statuses
-    ADD CONSTRAINT job_statuses_pkey PRIMARY KEY (name);
-
-
---
 -- Name: jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY jobs
     ADD CONSTRAINT jobs_pkey PRIMARY KEY (id);
-
-
---
--- Name: program_statuses_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY program_statuses
-    ADD CONSTRAINT program_statuses_pkey PRIMARY KEY (internal_name);
-
-
---
--- Name: programs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY programs
-    ADD CONSTRAINT programs_pkey PRIMARY KEY (internal_name);
-
-
---
--- Name: samples_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY samples
-    ADD CONSTRAINT samples_pkey PRIMARY KEY (id);
-
-
---
--- Name: test_statuses_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY test_statuses
-    ADD CONSTRAINT test_statuses_pkey PRIMARY KEY (name);
 
 
 --
@@ -564,22 +437,6 @@ ALTER TABLE ONLY transcripts
 
 ALTER TABLE ONLY users
     ADD CONSTRAINT users_pkey PRIMARY KEY (eid);
-
-
---
--- Name: workflow_steps_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY workflow_steps
-    ADD CONSTRAINT workflow_steps_pkey PRIMARY KEY (id);
-
-
---
--- Name: workflows_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY workflows
-    ADD CONSTRAINT workflows_pkey PRIMARY KEY (id);
 
 
 --
@@ -638,19 +495,19 @@ ALTER TABLE ONLY fpkm_samples
 
 
 --
--- Name: genes_jobs_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: genes_datasets_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY genes
-    ADD CONSTRAINT genes_jobs_fk FOREIGN KEY (job_id) REFERENCES jobs(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+    ADD CONSTRAINT genes_datasets_fk FOREIGN KEY (dataset_id) REFERENCES datasets(id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --
--- Name: programs_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: transripts_datasets_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY workflow_steps
-    ADD CONSTRAINT programs_fk FOREIGN KEY (program_internal_name) REFERENCES programs(internal_name) ON UPDATE CASCADE ON DELETE RESTRICT;
+ALTER TABLE ONLY transcripts
+    ADD CONSTRAINT transripts_datasets_fk FOREIGN KEY (dataset_id) REFERENCES datasets(id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --
@@ -662,51 +519,27 @@ ALTER TABLE ONLY transcripts
 
 
 --
--- Name: transripts_jobs_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY transcripts
-    ADD CONSTRAINT transripts_jobs_fk FOREIGN KEY (job_id) REFERENCES jobs(id) ON UPDATE CASCADE ON DELETE RESTRICT;
-
-
---
--- Name: workflows_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY workflow_steps
-    ADD CONSTRAINT workflows_fk FOREIGN KEY (workflow_id) REFERENCES workflows(id) ON UPDATE CASCADE ON DELETE RESTRICT;
-
-
---
 -- PostgreSQL database dump complete
 --
 
-INSERT INTO schema_migrations (version) VALUES ('20120918175550');
+INSERT INTO schema_migrations (version) VALUES ('1');
 
-INSERT INTO schema_migrations (version) VALUES ('20121001194311');
+INSERT INTO schema_migrations (version) VALUES ('10');
 
-INSERT INTO schema_migrations (version) VALUES ('20121001194456');
+INSERT INTO schema_migrations (version) VALUES ('11');
 
-INSERT INTO schema_migrations (version) VALUES ('20121007022600');
+INSERT INTO schema_migrations (version) VALUES ('2');
 
-INSERT INTO schema_migrations (version) VALUES ('20121007022942');
+INSERT INTO schema_migrations (version) VALUES ('3');
 
-INSERT INTO schema_migrations (version) VALUES ('20121007023053');
+INSERT INTO schema_migrations (version) VALUES ('4');
 
-INSERT INTO schema_migrations (version) VALUES ('20121007023055');
+INSERT INTO schema_migrations (version) VALUES ('5');
 
-INSERT INTO schema_migrations (version) VALUES ('20121007023056');
+INSERT INTO schema_migrations (version) VALUES ('6');
 
-INSERT INTO schema_migrations (version) VALUES ('20121007023057');
+INSERT INTO schema_migrations (version) VALUES ('7');
 
-INSERT INTO schema_migrations (version) VALUES ('20121007023058');
+INSERT INTO schema_migrations (version) VALUES ('8');
 
-INSERT INTO schema_migrations (version) VALUES ('20121007023059');
-
-INSERT INTO schema_migrations (version) VALUES ('20121007023060');
-
-INSERT INTO schema_migrations (version) VALUES ('20121007023061');
-
-INSERT INTO schema_migrations (version) VALUES ('20121007023062');
-
-INSERT INTO schema_migrations (version) VALUES ('20121007023063');
+INSERT INTO schema_migrations (version) VALUES ('9');

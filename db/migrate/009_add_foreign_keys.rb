@@ -1,15 +1,23 @@
 class AddForeignKeys < ActiveRecord::Migration
   def up
+    #Job foreign key
+#     execute('ALTER TABLE jobs ADD CONSTRAINT jobs_users_fk ' + 
+#             'FOREIGN KEY (eid_of_owner) REFERENCES users (eid) ' + 
+#             'ON UPDATE CASCADE ON DELETE RESTRICT;')
+#     #Dataset foreign keys
+#     execute('ALTER TABLE datasets ADD CONSTRAINT datasets_users_fk ' + 
+#             'FOREIGN KEY (eid_of_owner) REFERENCES users (eid) ' + 
+#             'ON UPDATE CASCADE ON DELETE RESTRICT;')
     #Transcript foreign keys
-    execute('ALTER TABLE transcripts ADD CONSTRAINT transripts_jobs_fk ' + 
-            'FOREIGN KEY (job_id) REFERENCES jobs (id) ' + 
+    execute('ALTER TABLE transcripts ADD CONSTRAINT transripts_datasets_fk ' + 
+            'FOREIGN KEY (dataset_id) REFERENCES datasets (id) ' + 
             'ON UPDATE CASCADE ON DELETE RESTRICT;')
     execute('ALTER TABLE transcripts ADD CONSTRAINT transripts_genes_fk ' +
             'FOREIGN KEY (gene_id) REFERENCES genes (id) ' +
             'ON UPDATE CASCADE ON DELETE RESTRICT;')
     #Gene foreign keys
-    execute('ALTER TABLE genes ADD CONSTRAINT genes_jobs_fk ' + 
-            'FOREIGN KEY (job_id) REFERENCES jobs (id) ' + 
+    execute('ALTER TABLE genes ADD CONSTRAINT genes_datasets_fk ' + 
+            'FOREIGN KEY (dataset_id) REFERENCES datasets (id) ' + 
             'ON UPDATE CASCADE ON DELETE RESTRICT;')
     #Differential expression test foreign keys
     execute('ALTER TABLE differential_expression_tests ' +

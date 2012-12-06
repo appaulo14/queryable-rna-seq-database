@@ -18,6 +18,8 @@ class Gene < ActiveRecord::Base
   has_many :transcripts#, :dependent => :destroy
   has_many :differential_expression_test
   has_many :fpkm_samples
+  has_many :gene_has_go_terms
+  has_many :go_terms, :through => :gene_has_go_terms
   #validates_associated :job, :transcripts, :differential_expression_test
   
   #Validation

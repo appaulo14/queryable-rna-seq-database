@@ -1,6 +1,7 @@
 class QueryAnalysisController < ApplicationController
     include Blast_Query
     require 'query_analysis/upload_trinity_with_edger_transcripts_and_genes.rb'
+    require 'query_analysis/query_diff_exp_transcripts.rb'
 
     def upload_main_menu
         debugger if ENV['RAILS_DEBUG'] == "true"
@@ -60,6 +61,7 @@ class QueryAnalysisController < ApplicationController
     end
 
     def query_diff_exp_transcripts
+      @qdet = Query_Diff_Exp_Transcripts.new()
         if (request.post?)
             @samples = ['Sample 1','Sample 2', 'Sample 3']
             #<th>Transcript</th><th>Transcript description</th><th>GO terms</th><th>P-value</th><th>FDR</th>
