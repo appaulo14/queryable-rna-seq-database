@@ -1,19 +1,24 @@
 class AddForeignKeys < ActiveRecord::Migration
   def up
     #Job foreign key
-#     execute('ALTER TABLE jobs ADD CONSTRAINT jobs_users_fk ' + 
-#             'FOREIGN KEY (eid_of_owner) REFERENCES users (eid) ' + 
-#             'ON UPDATE CASCADE ON DELETE RESTRICT;')
-#     #Dataset foreign keys
-#     execute('ALTER TABLE datasets ADD CONSTRAINT datasets_users_fk ' + 
-#             'FOREIGN KEY (eid_of_owner) REFERENCES users (eid) ' + 
-#             'ON UPDATE CASCADE ON DELETE RESTRICT;')
+    execute('ALTER TABLE jobs ADD CONSTRAINT jobs_users_fk ' + 
+            'FOREIGN KEY (user_id) REFERENCES users (id) ' + 
+            'ON UPDATE CASCADE ON DELETE RESTRICT;')
+    #Dataset foreign keys
+    execute('ALTER TABLE datasets ADD CONSTRAINT datasets_users_fk ' + 
+            'FOREIGN KEY (user_id) REFERENCES users (id) ' + 
+            'ON UPDATE CASCADE ON DELETE RESTRICT;')
     #Transcript foreign keys
     execute('ALTER TABLE transcripts ADD CONSTRAINT transripts_datasets_fk ' + 
             'FOREIGN KEY (dataset_id) REFERENCES datasets (id) ' + 
             'ON UPDATE CASCADE ON DELETE RESTRICT;')
     execute('ALTER TABLE transcripts ADD CONSTRAINT transripts_genes_fk ' +
             'FOREIGN KEY (gene_id) REFERENCES genes (id) ' +
+            'ON UPDATE CASCADE ON DELETE RESTRICT;')
+    #Transcript fpkm tracking foreign key
+    execute('ALTER TABLE transcript_fpkm_tracking_informations ' +
+            'ADD CONSTRAINT transcript_fpkm_tracking_informations_transripts_fk ' +
+            'FOREIGN KEY (transcript_id) REFERENCES transcripts (id) ' +
             'ON UPDATE CASCADE ON DELETE RESTRICT;')
     #Gene foreign keys
     execute('ALTER TABLE genes ADD CONSTRAINT genes_datasets_fk ' + 

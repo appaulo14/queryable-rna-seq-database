@@ -1,27 +1,33 @@
 <header>
   <%= link_to logo, root_path %>
-  <h1 id="header_title">RNA-Seq Analysis Pipeline</h1>
+  <h1 id='header_title'>RNA-Seq Analysis Pipeline</h1>
   <br/>
-  <div id="user_nav">
-    <% if user_signed_in? %>
-        Signed in as <%= current_user.email %>.
-        <%= link_to 'Sign out', destroy_user_session_path, :method => :delete %>
-    <% else %>
-        <%= link_to 'Register', new_user_registration_path %> or <%= link_to 'Sign in', new_user_session_path %>
-    <% end %>
-  </div>
   <nav>
     <ul>
-      <li><%= link_to "Home", root_path %></li>
-      <li><%= link_to "Process reads", "/processing_analysis" %></li>
-      <li><%= link_to "Upload processed dataset",
-                      "/query_analysis/upload_main_menu" %>
-      </li>
-      <li><%= link_to "Differential Expression", 
+      <% if user_signed_in? %>
+        <li><%= link_to "Home", root_path %></li>
+        <li><%= link_to "Process reads", "/processing_analysis" %></li>
+        <li><%= link_to "Upload processed dataset",
+                        "/query_analysis/upload_main_menu" %>
+        </li>
+        <li>
+          <%= link_to "Differential Expression", 
                       "/query_analysis/query_diff_exp_transcripts" %>
-      </li>
-      <li><%= link_to "Novel Isoforms", "#" %></li>
-      <li><%= link_to "BLAST", "/query_analysis/query_blast_db" %></li>
+        </li>
+        <li><%= link_to "Novel Isoforms", "#" %></li>
+        <li><%= link_to "BLAST", "/query_analysis/query_blast_db" %></li>
+        <li>
+          <%= link_to('Edit registration', edit_user_registration_path) %>
+        </li>
+        <li>
+          <%= link_to('Logout', destroy_user_session_path, 
+                      :method => :delete) %>
+        </li>
+      <% else %>
+        <li><%= link_to "Home", root_path %></li>
+        <li><%= link_to('Login', new_user_session_path)  %></li>
+        <li><%= link_to('Register', new_user_registration_path)  %></li>
+      <% end %>
     </ul>
   </nav>
 </header> 

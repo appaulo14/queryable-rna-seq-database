@@ -11,8 +11,8 @@ class CreateDatasets < ActiveRecord::Migration
       else
           throw NotImplementedError.new("Unknown adapter type '#{adapter_type}'")
       end
-      t.string :name
-      t.string :eid_of_owner
+      t.string :name, :null => false
+      t.integer :user_id, :null => false
 
       t.timestamps
     end
