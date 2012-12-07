@@ -15,6 +15,10 @@
 
 
 RnaSeqAnalysisPipeline::Application.routes.draw do
+  devise_for :admins
+
+  devise_for :users
+
     ##############################################################################
     ##   Configure routes for reference_novel_isoforms_only_workflow controller ##     
     ##############################################################################
