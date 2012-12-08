@@ -3,7 +3,7 @@
 # Table name: transcripts
 #
 #  id                :integer          not null, primary key
-#  job_id            :integer          not null
+#  dataset_id        :integer          not null
 #  gene_id           :integer
 #  fasta_sequence    :text
 #  name_from_program :string(255)      not null

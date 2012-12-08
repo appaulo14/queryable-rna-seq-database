@@ -17,6 +17,7 @@
 class FpkmSample < ActiveRecord::Base
   attr_accessible :gene, :transcript, :fpkm, :fpkm_hi, :fpkm_lo, :status, 
                   :sample_name
+  POSSIBLE_STATUSES = ['NOTEST','LOWDATA','HIDATA','FAIL']
   
   #Associations
   belongs_to :transcript

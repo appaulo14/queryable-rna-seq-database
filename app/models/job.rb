@@ -5,7 +5,7 @@
 #  id                     :integer          not null, primary key
 #  current_job_status     :string(255)
 #  current_program_status :string(255)
-#  email                  :string(255)      not null
+#  user_id                :integer          not null
 #  workflow_step_id       :integer
 #  output_files_type      :string(255)
 #  created_at             :datetime         not null

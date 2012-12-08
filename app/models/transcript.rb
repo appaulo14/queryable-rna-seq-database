@@ -3,7 +3,7 @@
 # Table name: transcripts
 #
 #  id                :integer          not null, primary key
-#  job_id            :integer          not null
+#  dataset_id        :integer          not null
 #  gene_id           :integer
 #  fasta_sequence    :text
 #  name_from_program :string(255)      not null
@@ -13,7 +13,7 @@
 #
 
 class Transcript < ActiveRecord::Base
-    attr_accessible :gene, :job, :fasta_sequence, :name_from_program, 
+    attr_accessible :gene, :dataset, :fasta_sequence, :name_from_program, 
                     :fasta_description
   
   ###Constants###
@@ -22,10 +22,11 @@ class Transcript < ActiveRecord::Base
   NUCLEOTIDE_FASTA_SEQUENCE_REGEX = /\A[ACGTNUKSYMWRBDHV\-]+\z/i 
   
   #Associations
-  belongs_to :job
+  belongs_to :dataset
   belongs_to :gene
   has_many :differential_expression_tests#, :dependent => :destroy
   has_many :fpkm_samples#, :dependent => :destroy
+  has_one :transcript_fpkm_tracking_informations
   #validates_associated :job, :gene, :differential_expression_test, :fpkm_samples
   
   #Validation

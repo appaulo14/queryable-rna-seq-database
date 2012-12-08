@@ -10,6 +10,8 @@ class Query_Diff_Exp_Transcripts
                 :transcript_length_comparison_sign, :transcript_length_value,
                 :filter_by_transcript_name, :transcript_name, :search_results
   
+  validate :user_has_permission_to_access_dataset
+  
   def initialize(attributes = {})
     #Load in any values from the form
     attributes.each do |name, value|
@@ -21,4 +23,7 @@ class Query_Diff_Exp_Transcripts
       return false
   end
   
+  private
+  def user_has_permission_to_access_dataset
+  end
 end

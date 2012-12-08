@@ -3,7 +3,7 @@
 # Table name: genes
 #
 #  id                :integer          not null, primary key
-#  job_id            :integer          not null
+#  dataset_id        :integer          not null
 #  name_from_program :string(255)      not null
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
@@ -11,10 +11,10 @@
 
 class Gene < ActiveRecord::Base
   #attr_accessible :differential_expression_test_id, :job_id, :program_id
-  attr_accessible :job, :name_from_program
+  attr_accessible :dataset, :name_from_program
     
   #Associations
-  belongs_to :job
+  belongs_to :dataset
   has_many :transcripts#, :dependent => :destroy
   has_many :differential_expression_test
   has_many :fpkm_samples

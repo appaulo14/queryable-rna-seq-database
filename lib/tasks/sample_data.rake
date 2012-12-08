@@ -1,3 +1,6 @@
+require 'faker'
+require 'bio'
+
 namespace :db do
   desc "Fill database with sample data"
   task :populate => :environment do
@@ -10,56 +13,97 @@ namespace :db do
     make_transcripts
     make_fpkm_samples
     make_transcript_fpkm_tracking_information
-    make_differential_expression_tests
-    make_go_terms
-    make_gene_has_go_terms
-#     make_programs
-#     make_program_statuses
-#     make_job_statuses
-#     make_workflows_and_workflow_steps
+#     make_differential_expression_tests
+#     make_go_terms
+#     make_gene_has_go_terms
   end
 end
 
 def make_users
-    User.create!(:email => 'nietz111@ksu.edu',
-                 :encryped_password => '$2a$10$CZyAbr4qOlb02IBiTRwok' +
-                                       'uoQgSAIb9NbH1cLhoO0U7rx5l3W0vY3G')
+    @user = User.new(:email => 'nietz111@ksu.edu')
+    @user.password = 'cis895'
+    @user.password_confirmation = 'cis895'
+    @user.save!
 end
 
+def make_datasets
+  10.times do |n|
+    Dataset.create!(:user => @user, :name => Faker::Lorem.word)
+  end
+end
 
-# def make_programs
-#     Program.create!(:internal_name => "tophat", :display_name => "Tophat")
-#     Program.create!(:internal_name => "cufflinks", :display_name => "Cufflinks")
-#     Program.create!(:internal_name => "cuffcompare",:display_name => "Cuffcompare")
-# end
-# 
-# def make_program_statuses
-#     Program_Status.create!(:internal_name => "configuring", :display_name => "Configuring parameters")
-#     Program_Status.create!(:internal_name => "in_progress", :display_name => "Execution in progress")
-#     Program_Status.create!(:internal_name=> "success", :display_name => "Execution successful")
-#     Program_Status.create!(:internal_name => "failure", :display_name => "Execution successful")
-# end
-# 
-# def make_job_statuses
-#     Job_Status.create!(:name => "not yet started", 
-#                        :description => "Files have been uploaded and the job created, but no programs have yet executed.")
-#     Job_Status.create!(:name => "in-progress", 
-#                        :description => "The programs in the job's workflow are in the process of running")
-#     Job_Status.create!(:name => "succeeded", 
-#                        :description => "All programs in the job's workflow have completed successfully")
-#     Job_Status.create!(:name => "failed", 
-#                        :description => "The job has failed and cannot continue for some reason")
-# end
-# 
-# def make_workflows_and_workflow_steps
-#     reference_novel_isoforms_only_workflow = Workflow.create!(:display_name => "Reference Workflow Novel Isoforms Only")
-#     Workflow_Step.create!(:workflow_id => reference_novel_isoforms_only_workflow.id,
-#                           :program_internal_name => "tophat",
-#                           :step => 1)
-#     Workflow_Step.create!(:workflow_id => reference_novel_isoforms_only_workflow.id,
-#                           :program_internal_name => "cufflinks",
-#                           :step => 2)
-#     Workflow_Step.create!(:workflow_id => reference_novel_isoforms_only_workflow.id,
-#                           :program_internal_name => "cuffcompare",
-#                           :step => 3)
-# end
+def make_genes
+  #Create 1000 genes with random datasets
+  all_datasets = Dataset.all
+  dataset_count = Dataset.count
+  1000.times do |n|
+    gene = Gene.create!(:name_from_program => Faker::Name.name,
+                        :dataset => all_datasets[rand(dataset_count)])
+  end
+end
+
+def make_transcripts
+  #Create 1000 transcripts with random datasets and genes
+  all_datasets = Dataset.all
+  dataset_count = Dataset.count
+  all_genes = Gene.all
+  gene_count = Gene.count
+  1000.times do |n|
+    nucleotide_counts = {'a' => rand(10),
+                         'c' => rand(21),
+                         'g' => rand(31),
+                         't' => rand(15)}
+    random_fasta_sequence = Bio::Sequence::NA.randomize(nucleotide_counts)
+    transcript = 
+        Transcript.create!(:dataset => all_datasets[rand(dataset_count)],
+                           :gene => all_genes[rand(gene_count)],
+                           :fasta_sequence => random_fasta_sequence,
+                           :name_from_program => "Transcript_#{n}",
+                           :fasta_description => Faker::Lorem.sentence)
+  end
+end
+
+def make_fpkm_samples
+  #Create 500 fpkm samples with random transcripts
+  all_genes = Gene.all
+  gene_count = Gene.count
+  all_transcripts = Transcript.all
+  transcript_count = Transcript.count
+  500.times do |n|
+    fpkm_hi = rand(0.0..62000.0)
+    fpkm_lo = rand(0.0..fpkm_hi)
+    fpkm = rand(fpkm_lo..fpkm_hi)
+    random_status = 
+      FpkmSample::POSSIBLE_STATUSES[rand(FpkmSample::POSSIBLE_STATUSES.count)]
+    FpkmSample.create!(:transcript => all_transcripts[rand(transcript_count)],
+                       :sample_name => Faker::Lorem.word,
+                       :fpkm => fpkm, 
+                       :fpkm_hi => fpkm_hi, 
+                       :fpkm_lo => fpkm_lo, 
+                       :status => random_status)
+  end
+  #Create 500 fpkm samples with random genes
+  500.times do |n|
+    fpkm_hi = rand(0.0..62000.0)
+    fpkm_lo = rand(0.0..fpkm_hi)
+    fpkm = rand(fpkm_lo..fpkm_hi)
+    random_status = 
+      FpkmSample::POSSIBLE_STATUSES[rand(FpkmSample::POSSIBLE_STATUSES.count)]
+    FpkmSample.create!(:gene => all_genes[rand(gene_count)],
+                       :sample_name => Faker::Lorem.word,
+                       :fpkm => fpkm, 
+                       :fpkm_hi => fpkm_hi, 
+                       :fpkm_lo => fpkm_lo, 
+                       :status => random_status)
+  end
+end
+
+def make_transcript_fpkm_tracking_information
+  Transcript.all.each do |t|
+    random_class_code = TranscriptFpkmTrackingInformation::POSSIBLE_CLASS_CODES[rand(TranscriptFpkmTrackingInformation::POSSIBLE_CLASS_CODES.count)]
+    TranscriptFpkmTrackingInformation.create!(:transcript => t,
+                                              :class_code => random_class_code,
+                                              :length => rand(1000000),
+                                              :coverage => rand(1000000.0))
+  end
+end

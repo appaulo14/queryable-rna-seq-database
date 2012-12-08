@@ -18,4 +18,6 @@ require 'spec_helper'
 
 describe FpkmSample do
   pending "add some examples to (or delete) #{__FILE__}"
+  
+  it 'should test for numbers being too big'
 end

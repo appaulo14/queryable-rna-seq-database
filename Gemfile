@@ -39,6 +39,7 @@ end
 group :development do
   gem 'rspec-rails', '>= 2.0.1'
   gem 'annotate'
+  gem 'faker'
 end
 
 group :test do
