@@ -1,6 +1,6 @@
 class CreateGeneHasGoTerm < ActiveRecord::Migration
   def up
-    create_table :gene_has_go_term, :id => false do |t|
+    create_table :gene_has_go_terms, :id => false do |t|
       t.integer :gene_id
       t.string :go_term_id
 
@@ -9,6 +9,6 @@ class CreateGeneHasGoTerm < ActiveRecord::Migration
   end
   
   def down
-      drop_table :gene_has_go_term
+      drop_table :gene_has_go_terms
   end
 end

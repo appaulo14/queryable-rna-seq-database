@@ -32,7 +32,7 @@ module Rails
                 super.merge(ssl_settings)
             else
                 super
-            end 
+            end
         end
     end
 end 

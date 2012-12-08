@@ -1,5 +1,5 @@
 class GeneHasGoTerm < ActiveRecord::Base
-  attr_accessible :gene_id, :go_term_id
+  attr_accessible :gene, :go_term
   
   belongs_to :gene
   belongs_to :go_term
