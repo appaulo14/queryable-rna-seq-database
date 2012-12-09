@@ -66,5 +66,5 @@ RnaSeqAnalysisPipeline::Application.configure do
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
   
   #NOTE: For the Devise gem. This will need to be changed for production
-  config.action_mailer.default_url_options = { :host => 'https://warm-badlands-3564.herokuapp.com/' }
+  config.action_mailer.default_url_options = { :host => 'rna-seq-analysis-pipeline-ksu.herokuapp.com' }
 end
