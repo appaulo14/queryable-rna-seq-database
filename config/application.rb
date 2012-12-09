@@ -62,6 +62,9 @@ module RnaSeqAnalysisPipeline
 
     # Enable the asset pipeline
     config.assets.enabled = true
+    
+    #Don't pre-compile assets because it causes problems when using devise with heroku
+    config.assets.initialize_on_precompile = false
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '2.0'
