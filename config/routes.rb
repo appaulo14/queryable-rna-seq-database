@@ -3,13 +3,13 @@
 #     get '/' do
 #     end
 # 
-#     get "/endpoint" do
+#     get '/endpoint' do
 #     end
 # 
-#     post "/endpoint" do
+#     post '/endpoint' do
 #     end
 # 
-#     get "/get_sequence" do
+#     get '/get_sequence' do
 #     end
 # end
 
@@ -20,156 +20,159 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
     ##############################################################################
     ##   Configure routes for reference_novel_isoforms_only_workflow controller ##     
     ##############################################################################
-    get  "reference_novel_isoforms_only_workflow/tophat_configure"
-    post "reference_novel_isoforms_only_workflow/tophat_configure"
+    get  'reference_novel_isoforms_only_workflow/tophat_configure'
+    post 'reference_novel_isoforms_only_workflow/tophat_configure'
 
-    get "reference_novel_isoforms_only_workflow/tophat_success"
+    get 'reference_novel_isoforms_only_workflow/tophat_success'
 
-    get  "reference_novel_isoforms_only_workflow/cufflinks_configure"
-    post "reference_novel_isoforms_only_workflow/cufflinks_configure"
+    get  'reference_novel_isoforms_only_workflow/cufflinks_configure'
+    post 'reference_novel_isoforms_only_workflow/cufflinks_configure'
 
-    get "reference_novel_isoforms_only_workflow/cufflinks_success"
+    get 'reference_novel_isoforms_only_workflow/cufflinks_success'
 
-    get  "reference_novel_isoforms_only_workflow/cuffcompare_configure"
-    post "reference_novel_isoforms_only_workflow/cuffcompare_configure"
+    get  'reference_novel_isoforms_only_workflow/cuffcompare_configure'
+    post 'reference_novel_isoforms_only_workflow/cuffcompare_configure'
 
-    get "reference_novel_isoforms_only_workflow/cuffcompare_success"
+    get 'reference_novel_isoforms_only_workflow/cuffcompare_success'
 
-    get "reference_novel_isoforms_only_workflow/in_progress"
+    get 'reference_novel_isoforms_only_workflow/in_progress'
     
-    get "reference_novel_isoforms_only_workflow/job_success"
+    get 'reference_novel_isoforms_only_workflow/job_success'
     
-    get  "reference_novel_isoforms_only_workflow/express"
-    post "reference_novel_isoforms_only_workflow/express"
+    get  'reference_novel_isoforms_only_workflow/express'
+    post 'reference_novel_isoforms_only_workflow/express'
     
-    match "reference_novel_isoforms_only_workflow", :to => "reference_novel_isoforms_only_workflow#express"
+    match 'reference_novel_isoforms_only_workflow', :to => 'reference_novel_isoforms_only_workflow#express'
 
     ###########################################################################
     ##########          Configur routes for home controller     ###############
     ###########################################################################
     #Set the root page
-    root :to => "home#welcome"
+    root :to => 'home#welcome'
     
-    match "home", :to => "home#welcome"
-    get "home/welcome"
+    match 'home', :to => 'home#welcome'
+    get 'home/welcome'
 
     ###########################################################################
     ##########   Configur routes for processing analysis controller   #########
     ###########################################################################
-    match "processing_analysis", :to => "processing_analysis#main_menu"
-    get "processing_analysis/main_menu"
-    post "processing_analysis/main_menu"
+    match 'processing_analysis', :to => 'processing_analysis#main_menu'
+    get 'processing_analysis/main_menu'
+    post 'processing_analysis/main_menu'
 
-    get  "processing_analysis/quality_filtering"
-    post "processing_analysis/quality_filtering"
+    get  'processing_analysis/quality_filtering'
+    post 'processing_analysis/quality_filtering'
 
-    get  "processing_analysis/upload_files"
-    post "processing_analysis/upload_files"
+    get  'processing_analysis/upload_files'
+    post 'processing_analysis/upload_files'
 
-    get "processing_analysis/reference_analysis"
+    get 'processing_analysis/reference_analysis'
 
-    get  "processing_analysis/reference_analysis_isoforms_only"
-    post "processing_analysis/reference_analysis_isoforms_only"
+    get  'processing_analysis/reference_analysis_isoforms_only'
+    post 'processing_analysis/reference_analysis_isoforms_only'
 
-    get "processing_analysis/de_novo_analysis_edgeR"
+    get 'processing_analysis/de_novo_analysis_edgeR'
 
-    get "processing_analysis/de_novo_analysis_cuffdiff"
+    get 'processing_analysis/de_novo_analysis_cuffdiff'
 
-    get  "processing_analysis/tophat_configuring"
-    post "processing_analysis/tophat_configuring"
-    get  "processing_analysis/tophat_in_progress"
-    get  "processing_analysis/tophat_success"
+    get  'processing_analysis/tophat_configuring'
+    post 'processing_analysis/tophat_configuring'
+    get  'processing_analysis/tophat_in_progress'
+    get  'processing_analysis/tophat_success'
 
-    get  "processing_analysis/cufflinks_configuring"
-    post "processing_analysis/cufflinks_configuring"
-    get  "processing_analysis/cufflinks_in_progress"
-    get  "processing_analysis/cufflinks_success"
+    get  'processing_analysis/cufflinks_configuring'
+    post 'processing_analysis/cufflinks_configuring'
+    get  'processing_analysis/cufflinks_in_progress'
+    get  'processing_analysis/cufflinks_success'
 
-    get  "processing_analysis/cuffcompare_configuring"
-    post "processing_analysis/cuffcompare_configuring"
-    get  "processing_analysis/cuffcompare_in_progress"
-    get  "processing_analysis/cuffcompare_success"
+    get  'processing_analysis/cuffcompare_configuring'
+    post 'processing_analysis/cuffcompare_configuring'
+    get  'processing_analysis/cuffcompare_in_progress'
+    get  'processing_analysis/cuffcompare_success'
 
-    get  "processing_analysis/cuffdiff_configuring"
-    post "processing_analysis/cuffdiff_configuring"
-    get  "processing_analysis/cuffdiff_in_progress"
-    get  "processing_analysis/cuffdiff_success"
+    get  'processing_analysis/cuffdiff_configuring'
+    post 'processing_analysis/cuffdiff_configuring'
+    get  'processing_analysis/cuffdiff_in_progress'
+    get  'processing_analysis/cuffdiff_success'
 
-    get  "processing_analysis/params_foo"
-    post "processing_analysis/params_foo"
+    get  'processing_analysis/params_foo'
+    post 'processing_analysis/params_foo'
 
     ###########################################################################
     ##########     Configure routes for query analysis controller   ###########
     ###########################################################################
-    match "query_analysis", :to => "query_analysis#welcome"
-    get  "query_analysis/welcome"
+    match 'query_analysis', :to => 'query_analysis#welcome'
+    get  'query_analysis/welcome'
 
-    get  "query_analysis/upload_main_menu"
-    post "query_analysis/upload_main_menu"
+    get  'query_analysis/upload_main_menu'
+    post 'query_analysis/upload_main_menu'
 
-    get "query_analysis/upload_reference_cuffdiff"
+    get 'query_analysis/upload_reference_cuffdiff'
 
-    get "query_analysis/upload_de_novo_cuffdiff"
+    get 'query_analysis/upload_de_novo_cuffdiff'
     
-    get  "query_analysis/upload"
-    post "query_analysis/upload"
+    get  'query_analysis/upload'
+    post 'query_analysis/upload'
 
-    get "query_analysis/upload_trinity_with_edger_genes_and_transcripts"
-    post "query_analysis/upload_trinity_with_edger_genes_and_transcripts"
+    get 'query_analysis/upload_trinity_with_edger_genes_and_transcripts'
+    post 'query_analysis/upload_trinity_with_edger_genes_and_transcripts'
 
-    get "query_analysis/query_diff_exp_transcripts"
-    post "query_analysis/query_diff_exp_transcripts"
+    get 'query_analysis/query_diff_exp_transcripts'
+    post 'query_analysis/query_diff_exp_transcripts'
 
-    get "query_analysis/query_diff_exp_genes"
+    get 'query_analysis/query_diff_exp_genes'
 
-    get "query_analysis/query_transcript_isoforms"
+    get 'query_analysis/query_transcript_isoforms'
 
-    get "query_analysis/query_gene_isoforms"
+    get 'query_analysis/query_gene_isoforms'
 
-    get  "query_analysis/query_blast_db"
-    get  "query_analysis/query_blast_db_2"
-    post "query_analysis/query_blast_db_2"
+    get  'query_analysis/query_blast_db'
+    get  'query_analysis/query_blast_db_2'
+    post 'query_analysis/query_blast_db_2'
 
-    get  "query_analysis/blastn"
-    post "query_analysis/blastn"
+    get  'query_analysis/blastn'
+    post 'query_analysis/blastn'
 
-    get  "query_analysis/tblastn"
-    post "query_analysis/tblastn"
+    get  'query_analysis/tblastn'
+    post 'query_analysis/tblastn'
+    
+    get  'query_analysis/ajax_test'
+    post 'query_analysis/ajax_test'
 
 #     SequenceServer::App.init
-#     #match "/sequenceserver" => SequenceServer::App, :anchor => false
-#     #match "/sequenceserver(/*other_params)" => SequenceServer::App, :anchor => false
-#     mount SequenceServer::App => "sequenceserver"
+#     #match '/sequenceserver' => SequenceServer::App, :anchor => false
+#     #match '/sequenceserver(/*other_params)' => SequenceServer::App, :anchor => false
+#     mount SequenceServer::App => 'sequenceserver'
 #     #ApiApp.init
-#     mount ApiApp => "api"
+#     mount ApiApp => 'api'
 #     #   SequenceServer::App.routes do
-    #     get "get_sequence"# => "sequenceserver/get_sequence"
-    #     get "sequenceserver/get_sequence"
-    #     get "/sequenceserver/get_sequence"
-    #     match "get_sequence", :to => SequenceServer::App
-    #     match "/sequenceserver/get_sequence", :to => SequenceServer::App
-    #     match "sequenceserver/get_sequence", :to => SequenceServer::App
-    #     match "get_sequence", :to => "get_sequence", :constraints => {:subdomain => "sequenceserver"}
-    #     match "/get_sequence", :to => "get_sequence", :constraints => {:subdomain => "sequenceserver"}
-    #     match "/sequenceserver/get_sequence", :to => "get_sequence", :constraints => {:subdomain => "sequenceserver"}
-    #     match "sequenceserver/get_sequence", :to => "get_sequence", :constraints => {:subdomain => "sequenceserver"}
+    #     get 'get_sequence'# => 'sequenceserver/get_sequence'
+    #     get 'sequenceserver/get_sequence'
+    #     get '/sequenceserver/get_sequence'
+    #     match 'get_sequence', :to => SequenceServer::App
+    #     match '/sequenceserver/get_sequence', :to => SequenceServer::App
+    #     match 'sequenceserver/get_sequence', :to => SequenceServer::App
+    #     match 'get_sequence', :to => 'get_sequence', :constraints => {:subdomain => 'sequenceserver'}
+    #     match '/get_sequence', :to => 'get_sequence', :constraints => {:subdomain => 'sequenceserver'}
+    #     match '/sequenceserver/get_sequence', :to => 'get_sequence', :constraints => {:subdomain => 'sequenceserver'}
+    #     match 'sequenceserver/get_sequence', :to => 'get_sequence', :constraints => {:subdomain => 'sequenceserver'}
     #   end
-    #   match "get_sequence", :to => SequenceServer::App
-    #   match "/sequenceserver/get_sequence", :to => SequenceServer::App
-    #   match "sequenceserver/get_sequence", :to => SequenceServer::App
-    #   match "get_sequence", :to => "get_sequence", :constraints => {:subdomain => "sequenceserver"}
-    #   match "/get_sequence", :to => "get_sequence", :constraints => {:subdomain => "sequenceserver"}
-    #   match "/sequenceserver/get_sequence", :to => "get_sequence", :constraints => {:subdomain => "sequenceserver"}
-    #   match "sequenceserver/get_sequence", :to => "get_sequence", :constraints => {:subdomain => "sequenceserver"}
+    #   match 'get_sequence', :to => SequenceServer::App
+    #   match '/sequenceserver/get_sequence', :to => SequenceServer::App
+    #   match 'sequenceserver/get_sequence', :to => SequenceServer::App
+    #   match 'get_sequence', :to => 'get_sequence', :constraints => {:subdomain => 'sequenceserver'}
+    #   match '/get_sequence', :to => 'get_sequence', :constraints => {:subdomain => 'sequenceserver'}
+    #   match '/sequenceserver/get_sequence', :to => 'get_sequence', :constraints => {:subdomain => 'sequenceserver'}
+    #   match 'sequenceserver/get_sequence', :to => 'get_sequence', :constraints => {:subdomain => 'sequenceserver'}
 
     # class HomeApp < Sinatra::Base
-    #     get "/" do
-    #     "Hello World!"
+    #     get '/' do
+    #     'Hello World!'
     #     end
     # end
 
     # Basecamp::Application.routes do
-    #   match "/home", :to => HomeApp
+    #   match '/home', :to => HomeApp
     # end
 
 
@@ -220,11 +223,11 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
     #     resources :products
     #   end
 
-    # You can have the root of your site routed with "root"
+    # You can have the root of your site routed with 'root'
     # just remember to delete public/index.html.
     # root :to => 'welcome#index'
 
-    # See how all your routes lay out with "rake routes"
+    # See how all your routes lay out with 'rake routes'
 
     # This is a legacy wild controller route that's not recommended for RESTful applications.
     # Note: This route will make all actions in every controller accessible via GET requests.

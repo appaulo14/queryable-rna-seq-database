@@ -1,15 +1,16 @@
-<%= form_for(@qdet,{:url => :query_diff_exp_transcripts}) do |qdet| %>
+<script type='text/javascript' src='query_diff_exp_transcripts.js' ></script>
+<%= form_for(@qdet, :url => 'query_diff_exp_transcripts') do |qdet| %>
   <h1>Please select your differential expression search options</h1>
   <p>
     <%= qdet.label :dataset, "Dataset to query" %>
-    <%= qdet.select :dataset, options_for_select(@qdet.available_datasets) %><br/>
-    <%= qdet.label :samples_to_compare, "Samples to compare" %>>
+    <%= qdet.select :dataset, options_for_select(@qdet.available_datasets, @qdet.dataset) %><br/>
+    <%= qdet.label :samples_to_compare, "Samples to compare" %>
     <%= qdet.select :samples_to_compare, options_for_select(@qdet.available_samples_for_comparison) %><br/>
   </p>
   <p>
     <div>
         <%= label(:fdr_or_pvalue, "Filter By:") %>
-        <%= qdet.radio_button :fdr_or_pvalue, :p_value, true %>
+        <%= qdet.radio_button(:fdr_or_pvalue, :p_value) %>
         <%= qdet.label(:filter_by_p_value, "P-value") %>
         <%= qdet.radio_button(:fdr_or_pvalue, :fdr) %>
         <%= qdet.label(:filter_by_fdr, "FDR") %>
@@ -20,7 +21,7 @@
         %>
         <%= #qdet.label(:other_cutoff_value, "Enter Value:") 
         %>-->
-        <%= qdet.text_field(:cutoff) %>
+        <%= qdet.text_field(:cutoff, {:size=>10}) %>
     </div>
   </p>
   <br/>
@@ -52,48 +53,48 @@
   <p><%= submit_tag("Search") %></p>
 <% end %>
 
-<% if not @qdet.search_results.nil? %>
+<% if @qdet.show_search_results? %>
   <p><%= @qdet.search_results.length %> results found</p>
-<% end %>
-<table border="1">
-    <thead>
-        <tr>
-            <th>Transcript</th>
-            <th>Associated gene</th>
-            <th>GO IDs</th>
-            <th>P-value</th>
-            <th>FDR</th>
-            <th>Sample 1 Name</th>
-            <th>Sample 2 Name</th>
-            <th>Sample 1 FPKM</th>
-            <th>Sample 2 FPKM</th>
-            <th>Log Fold Change</th>
-        </tr>
-    </thead>
-    <tbody>
-        <% @qdet.search_results.each do |search_result| %>
-            <tr>
-                <td>
-                  <%= link_to(search_result.transcript_name, get_transcripts_path(:dataset=>@qdet.dataset,:name=>search_result.transcript_name))%>
-                </td>
-                <td><%= search_result.gene_name %></td>
-                <td>
-                  <% if search_result.go_ids.empty? == false %>
-                    <% search_result.go_ids.each do |go_id| %>
-                      <%= link_to(go_id, "http://amigo.geneontology.org/cgi-bin/amigo/term_details?term=#{go_id}") %>
+  <table border="1">
+      <thead>
+          <tr>
+              <th>Transcript</th>
+              <th>Associated gene</th>
+              <th>GO IDs</th>
+              <th>P-value</th>
+              <th>FDR</th>
+              <th>Sample 1 Name</th>
+              <th>Sample 2 Name</th>
+              <th>Sample 1 FPKM</th>
+              <th>Sample 2 FPKM</th>
+              <th>Log Fold Change</th>
+          </tr>
+      </thead>
+      <tbody>
+          <% @qdet.search_results.each do |search_result| %>
+              <tr>
+                  <td>
+                    <%= link_to(search_result.transcript_name, get_transcripts_path(:dataset=>@qdet.dataset,:name=>search_result.transcript_name))%>
+                  </td>
+                  <td><%= search_result.gene_name %></td>
+                  <td>
+                    <% if search_result.go_ids.empty? == false %>
+                      <% search_result.go_ids.each do |go_id| %>
+                        <%= link_to(go_id, "http://amigo.geneontology.org/cgi-bin/amigo/term_details?term=#{go_id}") %>
+                      <% end %>
+                    <% else %>
+                      No GO ids found.
                     <% end %>
-                  <% else %>
-                    No GO ids found.
-                  <% end %>
-                </td>
-                <td><%= search_result.p_value %></td>
-                <td><%= search_result.fdr %></td>
-                <td><%= search_result.sample_1_name %></td>
-                <td><%= search_result.sample_2_name %></td>
-                <td><%= search_result.sample_1_fpkm %></td>
-                <td><%= search_result.sample_2_fpkm %></td>
-                <td><%= search_result.log_fold_change %></td>
-            </tr>
-        <% end %>
-    </tbody>
-</table>
+                  </td>
+                  <td><%= search_result.p_value %></td>
+                  <td><%= search_result.fdr %></td>
+                  <td><%= search_result.sample_1_name %></td>
+                  <td><%= search_result.sample_2_name %></td>
+                  <td><%= search_result.sample_1_fpkm %></td>
+                  <td><%= search_result.sample_2_fpkm %></td>
+                  <td><%= search_result.log_fold_change %></td>
+              </tr>
+          <% end %>
+      </tbody>
+  </table>
+<% end %>

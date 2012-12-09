@@ -1,0 +1,17 @@
+<h3>Add New Goat</h3>
+
+<%= form_tag ({:action => :ajax_test, :name => 'form1'}) do %> 
+  <%= text_field_tag(:add_goat, @name) %>
+  <%= hidden_field_tag(:goats, :value => @goats) %>
+  <%= select_tag(:select_program, options_for_select([['blastn', 'blastn'],['blastp','blastp'],['blastx','blastx'],['tblastn','tblastn'],['tblastx','tblastx']],@name)) %>
+  <p><%= submit_tag("Search") %></p>
+<% end %>
+<div id='goat'>
+</div>
+<script type='text/javascript'>
+  $("#goat").html("<%= escape_javascript(render('ajax_test_partial'))%>");
+  $('#select_program').change(select_changed);
+  function select_changed(){
+    window.location = 'ajax_test?name=' + $('#select_program').val();
+  }
+</script>

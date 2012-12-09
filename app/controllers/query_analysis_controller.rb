@@ -20,6 +20,14 @@ class QueryAnalysisController < ApplicationController
     def upload_de_novo_cuffdiff
     end
     
+    def ajax_test
+      @name = params[:name]
+      @goats = ['tom','dick','harry'] if @goats.nil?
+      if (request.post?)
+        @goats << params[:add_goat]
+      end
+    end
+    
     def upload_trinity_with_edger_genes_and_transcripts
       if (request.get?)
           @upload_files = Upload_Trinity_With_EdgeR_Transcripts_And_Genes.new()
@@ -61,24 +69,26 @@ class QueryAnalysisController < ApplicationController
     end
 
     def query_diff_exp_transcripts
-      @qdet = Query_Diff_Exp_Transcripts.new()
-        if (request.post?)
-            @samples = ['Sample 1','Sample 2', 'Sample 3']
-            #<th>Transcript</th><th>Transcript description</th><th>GO terms</th><th>P-value</th><th>FDR</th>
-            @search_results =
-            [
-                {
-                    :transcript => "transcript name",
-                    :transcript_description => "transcript description",
-                    :go_terms => "go terms",
-                    :p_value  => "p value",
-                    :fdr      => "fdr",
-                    :sample_1 => "sample 1",
-                    :sample_2 => "sample 2",
-                    :sample_3 => "sample 3"
-                }
-            ]
-        end
+      #@datasets = Dataset.find_all_by_user_id(current_user.id)
+      #debugger
+      @qdet = Query_Diff_Exp_Transcripts.new(:dataset => params[:dataset])
+      if (request.post?)
+          @samples = ['Sample 1','Sample 2', 'Sample 3']
+          #<th>Transcript</th><th>Transcript description</th><th>GO terms</th><th>P-value</th><th>FDR</th>
+          @search_results =
+          [
+              {
+                  :transcript => "transcript name",
+                  :transcript_description => "transcript description",
+                  :go_terms => "go terms",
+                  :p_value  => "p value",
+                  :fdr      => "fdr",
+                  :sample_1 => "sample 1",
+                  :sample_2 => "sample 2",
+                  :sample_3 => "sample 3"
+              }
+          ]
+      end
     end
 
     def query_diff_exp_genes
