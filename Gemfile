@@ -39,7 +39,6 @@ end
 group :development do
   gem 'rspec-rails', '>= 2.0.1'
   gem 'annotate'
-  gem 'faker'
 end
 
 group :test do
@@ -47,6 +46,8 @@ group :test do
   gem 'webrat', '>= 0.7.1'
   gem 'factory_girl_rails', '~> 4.0'
 end
+
+gem 'faker'
 
 #For foreigner key constraints. 
 #       Unfortunately, it doesn't have cascading updates from what I can ascertain.
