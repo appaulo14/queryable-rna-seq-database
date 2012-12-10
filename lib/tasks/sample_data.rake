@@ -78,6 +78,11 @@ def make_fpkm_samples
   #Get arrays of all the genes and transcripts to use for random selection
   all_genes = Gene.all
   all_transcripts = Transcript.all
+  #Create some random sample names
+  random_sample_names = []
+  5.times do |n|
+    random_sample_names << Faker::Lorem.word
+  end
   #Create 500 fpkm samples with random values
   500.times do |n|
     fpkm_hi = rand(0.0..62000.0)
@@ -85,7 +90,7 @@ def make_fpkm_samples
     fpkm = rand(fpkm_lo..fpkm_hi)
     random_status = FpkmSample::POSSIBLE_STATUSES.sample
     FpkmSample.create!(:transcript => all_transcripts.sample,
-                       :sample_name => Faker::Lorem.word,
+                       :sample_name => random_sample_names.sample,
                        :fpkm => fpkm, 
                        :fpkm_hi => fpkm_hi, 
                        :fpkm_lo => fpkm_lo, 
@@ -98,7 +103,7 @@ def make_fpkm_samples
     fpkm = rand(fpkm_lo..fpkm_hi)
     random_status = FpkmSample::POSSIBLE_STATUSES.sample
     FpkmSample.create!(:gene => all_genes.sample,
-                       :sample_name => Faker::Lorem.word,
+                       :sample_name => random_sample_names.sample,
                        :fpkm => fpkm, 
                        :fpkm_hi => fpkm_hi, 
                        :fpkm_lo => fpkm_lo, 
@@ -127,7 +132,7 @@ def make_differential_expression_tests
   all_transcripts = Transcript.all
   all_fpkm_samples = FpkmSample.all
   #Create 500 differnetial expresssion tests with random values
-  500.times do |n|
+  5000.times do |n|
     #Get two random fpkm samples, but make sure they're not the same one
     while (true)
       random_fpkm_sample_1 = all_fpkm_samples.sample
@@ -145,7 +150,7 @@ def make_differential_expression_tests
                                        :q_value => rand(0.0..1.0))
   end
   #Create 500 differential expresssion tests with random values
-  500.times do |n|
+  5000.times do |n|
     #Get two random fpkm samples, but make sure they're not the same one
     while (true)
       random_fpkm_sample_1 = all_fpkm_samples.sample
@@ -179,7 +184,7 @@ def make_go_terms
 end
 
 def make_gene_has_go_terms
-  print 'Populating gene has go terms table...'
+  print 'Populating gene_has_go_terms table...'
   #Get arrays of all the genes and go terms to use for random selection
   all_genes = Gene.all
   all_go_terms = GoTerm.all
