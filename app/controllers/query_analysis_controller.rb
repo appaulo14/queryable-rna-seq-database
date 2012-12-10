@@ -2,6 +2,8 @@ class QueryAnalysisController < ApplicationController
     include Blast_Query
     require 'query_analysis/upload_trinity_with_edger_transcripts_and_genes.rb'
     require 'query_analysis/query_diff_exp_transcripts.rb'
+    
+    before_filter :authenticate_user!
 
     def upload_main_menu
         debugger if ENV['RAILS_DEBUG'] == "true"
@@ -70,24 +72,13 @@ class QueryAnalysisController < ApplicationController
 
     def query_diff_exp_transcripts
       #@datasets = Dataset.find_all_by_user_id(current_user.id)
-      #debugger
-      @qdet = Query_Diff_Exp_Transcripts.new(:dataset => params[:dataset])
-      if (request.post?)
-          @samples = ['Sample 1','Sample 2', 'Sample 3']
-          #<th>Transcript</th><th>Transcript description</th><th>GO terms</th><th>P-value</th><th>FDR</th>
-          @search_results =
-          [
-              {
-                  :transcript => "transcript name",
-                  :transcript_description => "transcript description",
-                  :go_terms => "go terms",
-                  :p_value  => "p value",
-                  :fdr      => "fdr",
-                  :sample_1 => "sample 1",
-                  :sample_2 => "sample 2",
-                  :sample_3 => "sample 3"
-              }
-          ]
+      if (not params[:dataset_id].nil?)
+        dataset = Dataset.find_by_id(params[:dataset_id]) 
+        @qdet = Query_Diff_Exp_Transcripts.new(:dataset => dataset)
+      else
+        dataset = Dataset.find_by_user_id(current_user.id)
+        @qdet = Query_Diff_Exp_Transcripts.new(:dataset => dataset)
+        #@qdet.set_and_initialize_attributes(params[:
       end
     end
 

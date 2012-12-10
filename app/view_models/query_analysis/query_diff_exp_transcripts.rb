@@ -47,7 +47,6 @@ class Query_Diff_Exp_Transcripts
     Dataset.find_all_by_user_id(current_user.id).each do |ds|
       self.available_datasets << [ds.name, ds.id]
     end
-    #TODO: Set samples to compare
     #Set default values for the relavent blank attributes
     self.dataset = available_datasets.first if dataset.blank?
     self.fdr_or_pvalue = 'p_value' if fdr_or_pvalue.blank?
@@ -62,12 +61,12 @@ class Query_Diff_Exp_Transcripts
     end
     self.transcript_length_value = '0' if transcript_length_value.blank?
     self.filter_by_transcript_name = false if filter_by_transcript_name.blank?
-    #TODO: Set available samples for comparison
-    self.available_samples_for_comparison = ['tom','dick','harry']
+    #Set available samples for comparison
+    self.available_samples_for_comparison = 
+        Dataset.joins(:transcripts => :fpkm_samples).
+        where(:id => self.dataset.id).pluck('fpkm_samples.sample_name').uniq
     self.sample_1 = self.available_samples_for_comparison[0]
     self.sample_2 = self.available_samples_for_comparison[1]
-    Dataset.joins(:transcripts => :fpkm_samples).
-    where(:id => dataset.id).select('sample_name, fpkm_samples.id')
   end
   
   def query()
@@ -84,12 +83,10 @@ class Query_Diff_Exp_Transcripts
         :transcripts => [:differential_expression_tests, :genes]
       ).
       where(
-        'id' => current_user.id,
+        'datasets.id' => current_user.id,
         'fpkm_samples.sample_name'=> [self.sample_1,self.sample_2]
       ).
-      select(select_string)
-    
-                    
+      select(select_string)             
     search_results = []
     query_results.each do |query_result|
       gene = Gene.find_by_id(query_result.gene_id)

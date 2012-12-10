@@ -1,9 +1,10 @@
+<%= render 'shared/error_messages', :object => @qdet %>
 <script type='text/javascript' src='query_diff_exp_transcripts.js' ></script>
 <%= form_for(@qdet, :url => 'query_diff_exp_transcripts') do |qdet| %>
   <h1>Please select your differential expression search options</h1>
   <p>
     <%= qdet.label :dataset, "Dataset to query" %>
-    <%= qdet.select :dataset, options_for_select(@qdet.available_datasets, @qdet.dataset) %><br/>
+    <%= qdet.select :dataset, options_for_select(@qdet.available_datasets, @qdet.dataset.id) %><br/>
     <%= #qdet.label :samples_to_compare, "Samples to compare" 
     %>
     <%= #qdet.select :samples_to_compare, options_for_select(@qdet.available_samples_for_comparison) 
