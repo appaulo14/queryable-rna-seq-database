@@ -66,17 +66,46 @@ class Query_Diff_Exp_Transcripts
     self.available_samples_for_comparison = ['tom','dick','harry']
     self.sample_1 = self.available_samples_for_comparison[0]
     self.sample_2 = self.available_samples_for_comparison[1]
-    Dataset.joins(:transcripts => :fpkm_samples).where(:id => 1).select('sample_name, fpkm_samples.id')
+    Dataset.joins(:transcripts => :fpkm_samples).
+    where(:id => dataset.id).select('sample_name, fpkm_samples.id')
   end
   
   def query()
-    query = Dataset.joins(:transcripts => [:fpkm_samples, :differential_expression_tests]).
-      where('id' => current_user.id,'fpkm_samples.sample_name'=> [self.sample_1,self.sample_2])
-    query_results = query.select('sample_name, fpkm_samples.id')
+    return if not self.valid?
+    select_string = 'transcripts.name_from_program as transcript_name,' +
+                    'genes.id as gene_id,' +
+                    'differential_expression_tests.p_value,' +
+                    'differential_expression_tests.fdr,' +
+                    'differential_expression_tests.log_fold_change,' +
+                    'differential_expression_tests.sample_1_id,' +
+                    'differential_expression_tests.sample_2_id'
+    query_results = 
+      Dataset.joins(
+        :transcripts => [:differential_expression_tests, :genes]
+      ).
+      where(
+        'id' => current_user.id,
+        'fpkm_samples.sample_name'=> [self.sample_1,self.sample_2]
+      ).
+      select(select_string)
+    
+                    
     search_results = []
-    query_results.each do |qr_row|
-      search_result.transcript_name = query_row.name_from_program
-      
+    query_results.each do |query_result|
+      gene = Gene.find_by_id(query_result.gene_id)
+      sample_1_fpkm = FpkmSample.find_by_id(query_result.sample_1_id).fpkm
+      sample_2_fpkm = FpkmSample.find_by_id(query_result.sample_1_id).fpkm
+      search_result ={}
+      search_result[:transcript_name] = query_result.name_from_program
+      search_result[:gene_name] = gene.name_from_program
+      search_result[:go_ids] = gene.go_terms.pluck('id')
+      search_result[:p_value] = query_result.p_value
+      search_result[:fdr] = query_result.fdr
+      search_result[:sample_1] = self.sample_1
+      search_result[:sample_2] = self.sample_2
+      search_result[:sample_1_fpkm] = 
+      search_result[:log_fold_change] = query_result.log_fold_change
+      search_results << search_result
     end
   end
   
