@@ -71,14 +71,26 @@ class QueryAnalysisController < ApplicationController
     end
 
     def query_diff_exp_transcripts
-      #@datasets = Dataset.find_all_by_user_id(current_user.id)
-      if (not params[:dataset_id].nil?)
-        dataset = Dataset.find_by_id(params[:dataset_id]) 
-        @qdet = Query_Diff_Exp_Transcripts.new(:dataset => dataset)
-      else
-        dataset = Dataset.find_by_user_id(current_user.id)
-        @qdet = Query_Diff_Exp_Transcripts.new(:dataset => dataset)
-        #@qdet.set_and_initialize_attributes(params[:
+      #Create the view model, giving the current user
+      @qdet = Query_Diff_Exp_Transcripts.new(current_user)
+      #Which type of request was received?
+      if request.get?
+        #If the dataset_id parameter makes the view model invalid, 
+        #    don't use the dataset_id parameter
+        @qdet.set_attributes_and_defaults(:dataset_id => params[:dataset_id])
+        if not @qdet.valid?
+          @qdet.set_attributes_and_defaults(:dataset_id => nil)
+        end
+      elsif request.post?
+        #Fill in the inputs from the view
+        @qdet.set_attributes_and_defaults(params[:query_diff_exp_transcripts])
+        # If valid, query and return results; otherwise return failure
+        if @qdet.valid?
+          @qdet.query!()
+          flash[:success] = "Success"
+        else
+          flash[:success]="Failure"
+        end
       end
     end
 

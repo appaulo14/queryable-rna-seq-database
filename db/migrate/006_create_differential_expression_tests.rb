@@ -19,10 +19,10 @@ class CreateDifferentialExpressionTests < ActiveRecord::Migration
       else
         throw NotImplementedError.new("Unknown adapter type '#{adapter_type}'")
       end
-      t.string :test_status
-      t.decimal :log_fold_change
+      t.string :test_status, :null => false
+      t.decimal :log_fold_change, :null => false
       t.decimal :p_value, :null => false
-      t.decimal :q_value, :null => false
+      t.decimal :fdr, :null => false
 
       t.timestamps
     end

@@ -70,10 +70,10 @@ CREATE TABLE differential_expression_tests (
     fpkm_sample_2_id bigint NOT NULL,
     gene_id bigint,
     transcript_id bigint,
-    test_status character varying(255),
-    log_fold_change numeric,
+    test_status character varying(255) NOT NULL,
+    log_fold_change numeric NOT NULL,
     p_value numeric NOT NULL,
-    q_value numeric NOT NULL,
+    fdr numeric NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );

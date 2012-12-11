@@ -16,7 +16,7 @@
 #
 
 class DifferentialExpressionTest < ActiveRecord::Base
-  attr_accessible  :log_fold_change, :p_value, :q_value, :fpkm_sample_1, 
+  attr_accessible  :log_fold_change, :p_value, :fdr, :fpkm_sample_1, 
                    :fpkm_sample_2, :test_status, :transcript, :gene
   
   POSSIBLE_TEST_STATUSES = ['NOTEST','LOWDATA','HIDATA','FAIL']

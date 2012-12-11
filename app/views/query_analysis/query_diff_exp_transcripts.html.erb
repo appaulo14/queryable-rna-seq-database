@@ -3,8 +3,8 @@
 <%= form_for(@qdet, :url => 'query_diff_exp_transcripts') do |qdet| %>
   <h1>Please select your differential expression search options</h1>
   <p>
-    <%= qdet.label :dataset, "Dataset to query" %>
-    <%= qdet.select :dataset, options_for_select(@qdet.available_datasets, @qdet.dataset.id) %><br/>
+    <%= qdet.label :dataset_id, "Dataset to query" %>
+    <%= qdet.select :dataset_id, options_for_select(@qdet.names_and_ids_for_available_datasets, @qdet.dataset_id) %><br/>
     <%= #qdet.label :samples_to_compare, "Samples to compare" 
     %>
     <%= #qdet.select :samples_to_compare, options_for_select(@qdet.available_samples_for_comparison) 

@@ -115,6 +115,8 @@ describe Upload_Trinity_With_EdgeR_Transcripts_And_Genes do
 #         transcript.gene.name_from_program.should match(name_from_transcript)
 #       end
 #     end
+    
+    it 'should set all test statuses to "Not available with Trinity"'
 
     it 'should have go terms'
   

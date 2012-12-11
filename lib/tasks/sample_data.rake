@@ -147,7 +147,7 @@ def make_differential_expression_tests
                                        :test_status => random_test_status,
                                        :log_fold_change => rand(0.0..1.0),
                                        :p_value => rand(0.0..1.0),
-                                       :q_value => rand(0.0..1.0))
+                                       :fdr => rand(0.0..1.0))
   end
   #Create 500 differential expresssion tests with random values
   5000.times do |n|
@@ -165,7 +165,7 @@ def make_differential_expression_tests
                                        :test_status => random_test_status,
                                        :log_fold_change => rand(0.0..1.0),
                                        :p_value => rand(0.0..1.0),
-                                       :q_value => rand(0.0..1.0))
+                                       :fdr => rand(0.0..1.0))
   end
   puts 'Done'
 end
