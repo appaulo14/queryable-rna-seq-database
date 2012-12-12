@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+  $('#query_results_table').stupidtable();
   //Ensure the filter parameters are at their correct state or being 
   //    enabled or disabled by running their changed events.
   filter_by_go_names_checked_changed();

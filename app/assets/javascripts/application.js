@@ -12,4 +12,5 @@
 //
 //= require jquery_ujs
 //= require jquery.qtip
+//= require stupidtable.min
 //= require_tree .

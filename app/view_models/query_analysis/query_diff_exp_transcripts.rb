@@ -81,15 +81,15 @@ class Query_Diff_Exp_Transcripts
                     'genes.id as gene_id,' +
                     'differential_expression_tests.p_value,' +
                     'differential_expression_tests.fdr,' +
-                    'differential_expression_tests.log_fold_change,' +
+                    'differential_expression_tests.log_fold_change as logfc,' +
                     'differential_expression_tests.fpkm_sample_1_id,' +
                     'differential_expression_tests.fpkm_sample_2_id '
     query_results = 
       Dataset.joins(
-        :transcripts => [:differential_expression_tests, :gene]
+        :transcripts => [:differential_expression_tests, :gene, :fpkm_samples]
       ).
       where(
-        'datasets.id' => @current_user.id,
+        'datasets.id' => @dataset_id,
         'fpkm_samples.sample_name' => [@sample_1,@sample_2]
       ).
       select(select_string) 
@@ -97,18 +97,19 @@ class Query_Diff_Exp_Transcripts
     @search_results = []
     query_results.each do |query_result|
       gene = Gene.find_by_id(query_result.gene_id)
-      sample_1_fpkm = FpkmSample.find_by_id(query_result.sample_1_id).fpkm
-      sample_2_fpkm = FpkmSample.find_by_id(query_result.sample_1_id).fpkm
+      sample_1_fpkm = FpkmSample.find_by_id(query_result.fpkm_sample_1_id).fpkm
+      sample_2_fpkm = FpkmSample.find_by_id(query_result.fpkm_sample_1_id).fpkm
       search_result ={}
-      search_result[:transcript_name] = query_result.name_from_program
+      search_result[:transcript_name] = query_result.transcript_name
       search_result[:gene_name] = gene.name_from_program
       search_result[:go_ids] = gene.go_terms.pluck('id')
       search_result[:p_value] = query_result.p_value
       search_result[:fdr] = query_result.fdr
-      search_result[:sample_1] = @sample_1
-      search_result[:sample_2] = @sample_2
-      search_result[:sample_1_fpkm] = 
-      search_result[:log_fold_change] = query_result.log_fold_change
+      search_result[:sample_1_name] = @sample_1
+      search_result[:sample_2_name] = @sample_2
+      search_result[:sample_1_fpkm] =  sample_1_fpkm
+      search_result[:sample_2_fpkm] =  sample_2_fpkm
+      search_result[:log_fold_change] = query_result.logfc
       @search_results << search_result
     end
     #Mark the search results as viewable
