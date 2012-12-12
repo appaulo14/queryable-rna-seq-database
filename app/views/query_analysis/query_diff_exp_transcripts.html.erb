@@ -62,19 +62,20 @@
 
 <% if @qdet.show_search_results? %>
   <p><%= @qdet.search_results.length %> results found for <em><b><%= @qdet.sample_1 %></b> vs <b><%= @qdet.sample_2 %></b></em></p>
+  <p id="sorting_by">Sorting by none</p>
   <table border="1" id="query_results_table">
       <thead>
           <tr>
-              <th data-sort='string'>Transcript</th>
-              <th data-sort='string'>Associated gene</th>
-              <th data-sort='string'>GO IDs</th>
-              <th data-sort='float'>P-value</th>
-              <th data-sort='float'>FDR</th>
+              <th data-sort='string'>Transcript&nbsp;<%= image_tag('up_and_down_arrows.png', :class=>'goat') %></th>
+              <th data-sort='string'>Associated gene&nbsp;<%= image_tag('up_and_down_arrows.png') %></th>
+              <th data-sort='string'>GO IDs&nbsp;<%= image_tag('up_and_down_arrows.png') %></th>
+              <th data-sort='float'>P-value&nbsp;<%= image_tag('up_and_down_arrows.png') %></th>
+              <th data-sort='float'>FDR&nbsp;<%= image_tag('up_and_down_arrows.png') %></th>
               <!--<th>Sample 1 Name</th>
               <th>Sample 2 Name</th>-->
-              <th data-sort='float'><%= @qdet.sample_1 %> FPKM</th>
-              <th data-sort='float'><%= @qdet.sample_2 %> FPKM</th>
-              <th data-sort='float'>Log Fold Change</th>
+              <th data-sort='float'><%= @qdet.sample_1 %> FPKM&nbsp;<%= image_tag('up_and_down_arrows.png') %></th>
+              <th data-sort='float'><%= @qdet.sample_2 %> FPKM&nbsp;<%= image_tag('up_and_down_arrows.png') %></th>
+              <th data-sort='float'>Log Fold Change&nbsp;<%= image_tag('up_and_down_arrows.png') %></th>
           </tr>
       </thead>
       <tbody>

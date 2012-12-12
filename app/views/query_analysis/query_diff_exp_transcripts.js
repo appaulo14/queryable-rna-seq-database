@@ -1,5 +1,24 @@
 jQuery(document).ready(function($) {
-  $('#query_results_table').stupidtable();
+  //Set up table sorting
+  var query_results_table = $('#query_results_table').stupidtable();
+
+    query_results_table.bind('beforetablesort', function (event, data) {
+      // data.column - the index of the column sorted after a click
+      // data.direction - the sorting direction (either asc or desc)
+      $("#sorting_by").text("Sorting by " + data.column)
+    });
+
+//     table.bind('aftertablesort', function (event, data) {
+//       var th = $(this).find("th");
+//       th.find(".arrow").remove();
+//       var arrow = data.direction === "asc" ? "&uarr;" : "&darr;";
+//       th.eq(data.column).append('<span class="arrow">' + arrow +'</span>');
+//     });
+// 
+//     $("tr").slice(1).click(function(){
+//       $(".awesome").removeClass("awesome");
+//       $(this).addClass("awesome");
+//     });
   //Ensure the filter parameters are at their correct state or being 
   //    enabled or disabled by running their changed events.
   filter_by_go_names_checked_changed();
