@@ -33,7 +33,6 @@
   </p>
   <br/>
   <h2>Query filtering options</h2>
-  <!--TODO: Have these enable/disabled based on whether the check boxes are clicked -->
   <p>
     <div>
         <%= qdet.check_box(:filter_by_go_names) %>
@@ -62,20 +61,19 @@
 
 <% if @qdet.show_search_results? %>
   <p><%= @qdet.search_results.length %> results found for <em><b><%= @qdet.sample_1 %></b> vs <b><%= @qdet.sample_2 %></b></em></p>
-  <p id="sorting_by">Sorting by none</p>
   <table border="1" id="query_results_table">
       <thead>
           <tr>
-              <th data-sort='string'>Transcript&nbsp;<%= image_tag('up_and_down_arrows.png', :class=>'goat') %></th>
-              <th data-sort='string'>Associated gene&nbsp;<%= image_tag('up_and_down_arrows.png') %></th>
-              <th data-sort='string'>GO IDs&nbsp;<%= image_tag('up_and_down_arrows.png') %></th>
-              <th data-sort='float'>P-value&nbsp;<%= image_tag('up_and_down_arrows.png') %></th>
-              <th data-sort='float'>FDR&nbsp;<%= image_tag('up_and_down_arrows.png') %></th>
+              <th data-sort='string'>Transcript&nbsp;<%= neutral_sort_arrow %></th>
+              <th data-sort='string'>Associated gene&nbsp;<%= neutral_sort_arrow %></th>
+              <th data-sort='string'>GO IDs&nbsp;<%= neutral_sort_arrow %></th>
+              <th data-sort='float'>P-value&nbsp;<%= neutral_sort_arrow %></th>
+              <th data-sort='float'>FDR&nbsp;<%= neutral_sort_arrow %></th>
               <!--<th>Sample 1 Name</th>
               <th>Sample 2 Name</th>-->
-              <th data-sort='float'><%= @qdet.sample_1 %> FPKM&nbsp;<%= image_tag('up_and_down_arrows.png') %></th>
-              <th data-sort='float'><%= @qdet.sample_2 %> FPKM&nbsp;<%= image_tag('up_and_down_arrows.png') %></th>
-              <th data-sort='float'>Log Fold Change&nbsp;<%= image_tag('up_and_down_arrows.png') %></th>
+              <th data-sort='float'><%= @qdet.sample_1 %> FPKM&nbsp;<%= neutral_sort_arrow %></th>
+              <th data-sort='float'><%= @qdet.sample_2 %> FPKM&nbsp;<%= neutral_sort_arrow %></th>
+              <th data-sort='float'>Log Fold Change&nbsp;<%= neutral_sort_arrow %></th>
           </tr>
       </thead>
       <tbody>
@@ -89,7 +87,7 @@
                   <td><%= search_result[:gene_name] %></td>
                   <td>
                     <% if search_result[:go_ids].empty? == false %>
-                      <% search_result[:go_ids].each do |go_id| %>
+                      <% search_result[:go_ids].sort.each do |go_id| %>
                         <%= link_to(go_id, "http://amigo.geneontology.org/cgi-bin/amigo/term_details?term=#{go_id}") %>
                       <% end %>
                     <% else %>

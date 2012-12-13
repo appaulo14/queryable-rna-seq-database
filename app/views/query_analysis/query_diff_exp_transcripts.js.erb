@@ -1,24 +1,24 @@
 jQuery(document).ready(function($) {
-  //Set up table sorting
+  //Set up table sorting using Stupid Table: 
+  //    https://github.com/joequery/Stupid-Table-Plugin
   var query_results_table = $('#query_results_table').stupidtable();
-
-    query_results_table.bind('beforetablesort', function (event, data) {
-      // data.column - the index of the column sorted after a click
-      // data.direction - the sorting direction (either asc or desc)
-      $("#sorting_by").text("Sorting by " + data.column)
-    });
-
-//     table.bind('aftertablesort', function (event, data) {
-//       var th = $(this).find("th");
-//       th.find(".arrow").remove();
-//       var arrow = data.direction === "asc" ? "&uarr;" : "&darr;";
-//       th.eq(data.column).append('<span class="arrow">' + arrow +'</span>');
-//     });
-// 
-//     $("tr").slice(1).click(function(){
-//       $(".awesome").removeClass("awesome");
-//       $(this).addClass("awesome");
-//     });
+  query_results_table.bind('aftertablesort', aftertablesort);
+  function aftertablesort(event, data) {
+    var th = $(this).find("th");
+    //Set all to neutral sort arrows first
+    th.find(".sort_arrow").remove();
+    th.append('<%= neutral_sort_arrow %>');
+    //Use an up or down arrow to show the sorting column, depending on
+    //  whether it is sorted in ascending order or descending order
+    if (data.direction == 'asc'){
+      th.find('.sort_arrow').get(data.column).outerHTML = '';
+      th.get(data.column).innerHTML += '<%= ascending_sort_arrow %>';
+    }
+    else{
+      th.find('.sort_arrow').get(data.column).outerHTML = '';
+      th.get(data.column).innerHTML += '<%= descending_sort_arrow %>';
+    }
+  }
   //Ensure the filter parameters are at their correct state or being 
   //    enabled or disabled by running their changed events.
   filter_by_go_names_checked_changed();
