@@ -1,19 +1,3 @@
-# require 'sinatra'
-# class ApiApp < Sinatra::Base
-#     get '/' do
-#     end
-# 
-#     get '/endpoint' do
-#     end
-# 
-#     post '/endpoint' do
-#     end
-# 
-#     get '/get_sequence' do
-#     end
-# end
-
-
 RnaSeqAnalysisPipeline::Application.routes.draw do
   devise_for :users
 
@@ -138,6 +122,8 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
     
     get  'query_analysis/ajax_test'
     post 'query_analysis/ajax_test'
+    
+    get 'query_analysis/get_diff_exp_transcripts_file'
 
 #     SequenceServer::App.init
 #     #match '/sequenceserver' => SequenceServer::App, :anchor => false

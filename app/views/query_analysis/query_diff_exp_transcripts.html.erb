@@ -80,9 +80,9 @@
           <% @qdet.search_results.each do |search_result| %>
               <tr>
                   <td>
-                    <%= search_result[:transcript_name] 
+                    <a href="#"><%= search_result[:transcript_name] 
                     #link_to(search_result.transcript_name, get_transcripts_path(:dataset=>@qdet.dataset,:name=>search_result.transcript_name))
-                    %>
+                    %></a>
                   </td>
                   <td><%= search_result[:gene_name] %></td>
                   <td>

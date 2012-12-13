@@ -93,6 +93,10 @@ class QueryAnalysisController < ApplicationController
         end
       end
     end
+    
+    def get_diff_exp_transcripts_file
+      render :text => "Good morning!\n"*10_000, :content_type => 'text/plain'
+    end
 
     def query_diff_exp_genes
     end
