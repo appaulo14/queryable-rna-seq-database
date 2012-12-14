@@ -103,6 +103,8 @@ class QueryAnalysisController < ApplicationController
       dataset_id = params[:dataset_id]
       transcript_names = params[:transcript_names].split(',')
       #TODO: Validate user
+      #TODO: MAYBE create version for genes
+      #TODO: MAYBE make this singular?
       #Get the transcripts from the parameters
       transcripts = Transcript.where(:dataset_id => dataset_id, 
                                      :name_from_program => transcript_names)

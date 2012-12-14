@@ -38,11 +38,13 @@
         <%= qdet.check_box(:filter_by_go_names) %>
         <%= qdet.label(:go_names, "GO Names (for associated genes) (separated by commas)") %>
         <%= qdet.text_field(:go_names) %>
+        <%= link_to('Browse GO Terms','http://amigo.geneontology.org/cgi-bin/amigo/browse.cgi', :target => '_blank') %>
     </div>
     <div>
         <%= qdet.check_box(:filter_by_go_ids) %>
         <%= qdet.label(:go_ids, "GO IDs (for associated genes) (separated by commas)") %>
         <%= qdet.text_field(:go_ids) %>
+        <%= link_to('Browse GO Terms','http://amigo.geneontology.org/cgi-bin/amigo/browse.cgi', :target => '_blank') %>
     </div>
     <div>
         <%= qdet.check_box(:filter_by_transcript_length) %>
