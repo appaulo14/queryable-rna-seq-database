@@ -97,6 +97,27 @@ class QueryAnalysisController < ApplicationController
     def get_diff_exp_transcripts_file
       render :text => "Good morning!\n"*10_000, :content_type => 'text/plain'
     end
+    
+    def get_transcript_fastas
+      #Get the parameters
+      dataset_id = params[:dataset_id]
+      transcript_names = params[:transcript_names].split(',')
+      #TODO: Validate user
+      #Get the transcripts from the parameters
+      transcripts = Transcript.where(:dataset_id => dataset_id, 
+                                     :name_from_program => transcript_names)
+      #Create the fasta string
+      fastas_string = ''
+      transcripts.each do |t|
+        fastas_string += ">#{t.fasta_description}\n#{t.fasta_sequence}\n"
+      end
+      #Render to the user
+      if fastas_string.blank?
+        render :text => 'No transcripts found', :content_type => 'text/plain'
+      else
+        render :text => fastas_string, :content_type => 'text/plain'
+      end
+    end
 
     def query_diff_exp_genes
     end

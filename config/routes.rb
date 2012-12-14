@@ -124,6 +124,8 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
     post 'query_analysis/ajax_test'
     
     get 'query_analysis/get_diff_exp_transcripts_file'
+    
+    get 'query_analysis/get_transcript_fastas'
 
 #     SequenceServer::App.init
 #     #match '/sequenceserver' => SequenceServer::App, :anchor => false

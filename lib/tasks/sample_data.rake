@@ -54,21 +54,27 @@ def make_transcripts
   #Get arrays of all the datasets and genes to use for random selection
   all_datasets = Dataset.all
   all_genes = Gene.all
-  #Create 1000 transcripts with random datasets and genes
-  1000.times do |n|
-    #Create a random fasta sequence
-    nucleotide_counts = {'a' => rand(10),
-                         'c' => rand(21),
-                         'g' => rand(31),
-                         't' => rand(15)}
-    random_fasta_sequence = Bio::Sequence::NA.randomize(nucleotide_counts)
-    #Create the transcript
-    transcript = 
-        Transcript.create!(:dataset => all_datasets.sample,
-                           :gene => all_genes.sample,
-                           :fasta_sequence => random_fasta_sequence,
-                           :name_from_program => "Transcript_#{n}",
-                           :fasta_description => Faker::Lorem.sentence)
+  #For each dataset, creating 1000 transcripts with 
+  #     random genes from the datasets
+  Dataset.all.each do |ds|
+    1000.times do |n|
+      #Create a random fasta sequence
+      nucleotide_counts = {'a' => rand(10),
+                          'c' => rand(21),
+                          'g' => rand(31),
+                          't' => rand(15)}
+      random_fasta_sequence = Bio::Sequence::NA.randomize(nucleotide_counts)
+      random_gene = ds.genes.sample
+      fasta_description = 
+          "Transcript #{n} gene=#{random_gene.name_from_program}"
+      #Create the transcript
+      transcript = 
+          Transcript.create!(:dataset => ds,
+                            :gene => random_gene,
+                            :fasta_sequence => random_fasta_sequence,
+                            :name_from_program => "Transcript #{n}",
+                            :fasta_description => fasta_description)
+    end
   end
   puts 'Done'
 end
