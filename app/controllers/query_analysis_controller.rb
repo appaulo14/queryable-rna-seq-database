@@ -98,24 +98,48 @@ class QueryAnalysisController < ApplicationController
       render :text => "Good morning!\n"*10_000, :content_type => 'text/plain'
     end
     
-    def get_transcript_fastas
+    def get_transcript_fasta
       #Get the parameters
       dataset_id = params[:dataset_id]
-      transcript_names = params[:transcript_names].split(',')
+      transcript_name = params[:transcript_name]
+      dataset = Dataset.find_by_id(datased_id)
+      #Validate user
+      if (not dataset.nil? and dataset.user_id != current_user.id)
+        render :text => 'You do not have permission to access tihs dataset', 
+               :content_type => 'text/plain'
+      end
+      #Get the transcripts from the parameters
+      transcript = Transcript.where(:dataset_id => dataset_id, 
+                                    :name_from_program => transcript_name)[0]
+      #Create the fasta string
+      if (transcript.blank?)
+        render :text => 'No transcripts found', :content_type => 'text/plain'
+      else
+        fasta_string = ">#{transcript.fasta_description}\n"
+        fasta_string += "#{transcript.fasta_sequence}\n"
+        render :text => fasta_string, :content_type => 'text/plain'
+      end
+    end
+    
+    def get_gene_fastas
+      #Get the parameters
+      dataset_id = params[:dataset_id]
+      gene_name = params[:gene_name]
       #TODO: Validate user
       #TODO: MAYBE create version for genes
       #TODO: MAYBE make this singular?
       #Get the transcripts from the parameters
-      transcripts = Transcript.where(:dataset_id => dataset_id, 
-                                     :name_from_program => transcript_names)
-      #Create the fasta string
+      gene = Gene.where(:dataset_id => dataset_id, 
+                        :name_from_program => gene_name)[0]
+      #Create the fasta string from the gene's transcripts
       fastas_string = ''
-      transcripts.each do |t|
+      gene.transcripts.each do |t|
         fastas_string += ">#{t.fasta_description}\n#{t.fasta_sequence}\n"
       end
       #Render to the user
       if fastas_string.blank?
-        render :text => 'No transcripts found', :content_type => 'text/plain'
+        render :text => 'No transcripts found for this gene', 
+               :content_type => 'text/plain'
       else
         render :text => fastas_string, :content_type => 'text/plain'
       end
