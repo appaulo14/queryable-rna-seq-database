@@ -64,9 +64,13 @@
   </p>
   <p><%= submit_tag("Search") %></p>
 <% end %>
-
+<!--Section for the query results-->
 <% if @qdet.show_search_results? %>
   <p><%= @qdet.search_results.length %> results found for <em><b><%= @qdet.sample_1 %></b> vs <b><%= @qdet.sample_2 %></b></em></p>
+  <p id="downloadify">
+      You must have Flash 10 installed to download this file.
+  </p>
+  <!--Table containing the query results-->
   <table border="1" id="query_results_table">
       <thead>
           <tr>

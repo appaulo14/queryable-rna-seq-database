@@ -112,6 +112,7 @@ function set_up_events_for_filter_parameters(){
       $('#query_diff_exp_transcripts_transcript_name').attr("disabled", "disabled");
     }
   }
+}
   
   
 /*
@@ -121,16 +122,18 @@ function set_up_events_for_filter_parameters(){
 function set_up_downloadify_for_query_results_downloading(){
   Downloadify.create('downloadify',{
     filename: function(){
-            return document.getElementById('filename').value;
+            //return document.getElementById('filename').value;
+            return 'query_diff_exp_transcripts.txt';
     },
     data: function(){ 
-            return document.getElementById('data').value;
+            //return document.getElementById('data').value;
+            return 'hello world';
     },
     onComplete: function(){ alert('Your File Has Been Saved!'); },
     onCancel: function(){ alert('You have cancelled the saving of this file.'); },
     onError: function(){ alert('You must put something in the File Contents or there will be nothing to save!'); },
-    swf: 'https://0.0.0.0:3000/assets/downloadify.swf',
-    downloadImage: 'https://raw.github.com/dcneiner/Downloadify/master/images/download.png',
+    swf: "<%= asset_path 'downloadify/downloadify.swf' %>",
+    downloadImage: "<%= asset_path 'downloadify/download.png' %>",
     width: 100,
     height: 30,
     transparent: true,
