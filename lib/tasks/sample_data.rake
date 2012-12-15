@@ -54,26 +54,31 @@ def make_transcripts
   #Get arrays of all the datasets and genes to use for random selection
   all_datasets = Dataset.all
   all_genes = Gene.all
-  #For each dataset, creating 1000 transcripts with 
-  #     random genes from the datasets
+  #Make a transcript counter used for naming transcripts
+  transcript_count = 1
+  #Loop through all the datasets, giving all the genes in the dataset a 
+  #     random number of transcripts
   Dataset.all.each do |ds|
-    1000.times do |n|
-      #Create a random fasta sequence
-      nucleotide_counts = {'a' => rand(10),
-                          'c' => rand(21),
-                          'g' => rand(31),
-                          't' => rand(15)}
-      random_fasta_sequence = Bio::Sequence::NA.randomize(nucleotide_counts)
-      random_gene = ds.genes.sample
-      fasta_description = 
-          "Transcript #{n} gene=#{random_gene.name_from_program}"
-      #Create the transcript
-      transcript = 
-          Transcript.create!(:dataset => ds,
-                            :gene => random_gene,
-                            :fasta_sequence => random_fasta_sequence,
-                            :name_from_program => "Transcript #{n}",
-                            :fasta_description => fasta_description)
+    ds.genes.each do |gene|
+      rand(1..6).times do |n|
+        #Create the transcript name
+        transcript_name = "Transcript #{transcript_count}"
+        transcript_count += 1
+        #Create a random fasta description and sequence
+        fasta_description = "#{transcript_name} gene=#{gene.name_from_program}"
+        nucleotide_counts = {'a' => rand(40..100),
+                            'c' => rand(30..61),
+                            'g' => rand(30..71),
+                            't' => rand(20..55)}
+        random_fasta_sequence = Bio::Sequence::NA.randomize(nucleotide_counts)
+        #Create the transcript
+        transcript = 
+            Transcript.create!(:dataset => ds,
+                              :gene => gene,
+                              :fasta_sequence => random_fasta_sequence,
+                              :name_from_program => transcript_name,
+                              :fasta_description => fasta_description)
+      end
     end
   end
   puts 'Done'

@@ -36,13 +36,13 @@
   <p>
     <div>
         <%= qdet.check_box(:filter_by_go_names) %>
-        <%= qdet.label(:go_names, "GO Names (for associated genes) (separated by commas)") %>
+        <%= qdet.label(:go_names, "GO Names (for associated genes) (separated by semicolons)") %>
         <%= qdet.text_field(:go_names) %>
         <%= link_to('Browse GO Terms','http://amigo.geneontology.org/cgi-bin/amigo/browse.cgi', :target => '_blank') %>
     </div>
     <div>
         <%= qdet.check_box(:filter_by_go_ids) %>
-        <%= qdet.label(:go_ids, "GO IDs (for associated genes) (separated by commas)") %>
+        <%= qdet.label(:go_ids, "GO IDs (for associated genes) (separated by semicolons)") %>
         <%= qdet.text_field(:go_ids) %>
         <%= link_to('Browse GO Terms','http://amigo.geneontology.org/cgi-bin/amigo/browse.cgi', :target => '_blank') %>
     </div>
@@ -67,12 +67,10 @@
       <thead>
           <tr>
               <th data-sort='string'>Transcript&nbsp;<%= neutral_sort_arrow %></th>
-              <th data-sort='string'>Associated gene&nbsp;<%= neutral_sort_arrow %></th>
+              <th data-sort='string'>Associated Gene&nbsp;<%= neutral_sort_arrow %></th>
               <th data-sort='string'>GO IDs&nbsp;<%= neutral_sort_arrow %></th>
               <th data-sort='float'>P-value&nbsp;<%= neutral_sort_arrow %></th>
               <th data-sort='float'>FDR&nbsp;<%= neutral_sort_arrow %></th>
-              <!--<th>Sample 1 Name</th>
-              <th>Sample 2 Name</th>-->
               <th data-sort='float'><%= @qdet.sample_1 %> FPKM&nbsp;<%= neutral_sort_arrow %></th>
               <th data-sort='float'><%= @qdet.sample_2 %> FPKM&nbsp;<%= neutral_sort_arrow %></th>
               <th data-sort='float'>Log Fold Change&nbsp;<%= neutral_sort_arrow %></th>
@@ -82,15 +80,15 @@
           <% @qdet.search_results.each do |search_result| %>
               <tr>
                   <td>
-                    <a href="#"><%= search_result[:transcript_name] 
-                    #link_to(search_result.transcript_name, get_transcripts_path(:dataset=>@qdet.dataset,:name=>search_result.transcript_name))
-                    %></a>
+                    <%= link_to_fasta_sequence_for_transcript(@qdet.dataset_id, search_result[:transcript_name]) %>
                   </td>
-                  <td><%= search_result[:gene_name] %></td>
+                  <td>
+                    <%= link_to_fasta_sequences_for_gene(@qdet.dataset_id, search_result[:gene_name]) %>
+                  </td>
                   <td>
                     <% if search_result[:go_ids].empty? == false %>
                       <% search_result[:go_ids].sort.each do |go_id| %>
-                        <%= link_to(go_id, "http://amigo.geneontology.org/cgi-bin/amigo/term_details?term=#{go_id}") %>
+                        <%= link_to(go_id, "http://amigo.geneontology.org/cgi-bin/amigo/term_details?term=#{go_id}", :target => '_blank') %>
                       <% end %>
                     <% else %>
                       No GO ids found.
@@ -98,8 +96,6 @@
                   </td>
                   <td><%= search_result[:p_value] %></td>
                   <td><%= search_result[:fdr] %></td>
-                  <!--<td><%= search_result[:sample_1_name] %></td>
-                  <td><%= search_result[:sample_2_name] %></td>-->
                   <td><%= search_result[:sample_1_fpkm] %></td>
                   <td><%= search_result[:sample_2_fpkm] %></td>
                   <td><%= search_result[:log_fold_change] %></td>
