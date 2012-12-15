@@ -1,6 +1,14 @@
 jQuery(document).ready(function($) {
-  //Set up table sorting using Stupid Table: 
-  //    https://github.com/joequery/Stupid-Table-Plugin
+  set_table_table_sorting();
+  set_up_events_for_filter_parameters();
+  set_up_downloadify_for_query_results_downloading();
+});
+
+/*
+ *   Set up table sorting using Stupid Table: 
+ *   https://github.com/joequery/Stupid-Table-Plugin
+ */
+function set_table_table_sorting(){
   var query_results_table = $('#query_results_table').stupidtable();
   query_results_table.bind('aftertablesort', aftertablesort);
   function aftertablesort(event, data) {
@@ -19,6 +27,12 @@ jQuery(document).ready(function($) {
       th.get(data.column).innerHTML += '<%= descending_sort_arrow %>';
     }
   }
+}
+
+/*
+ *   Set up the events for the filter parameters
+ */
+function set_up_events_for_filter_parameters(){
   //Ensure the filter parameters are at their correct state or being 
   //    enabled or disabled by running their changed events.
   filter_by_go_names_checked_changed();
@@ -98,4 +112,28 @@ jQuery(document).ready(function($) {
       $('#query_diff_exp_transcripts_transcript_name').attr("disabled", "disabled");
     }
   }
-});
+  
+  
+/*
+ *   Set up Downloadify to allow the user to download their table results 
+ *   as a text file.
+ */
+function set_up_downloadify_for_query_results_downloading(){
+  Downloadify.create('downloadify',{
+    filename: function(){
+            return document.getElementById('filename').value;
+    },
+    data: function(){ 
+            return document.getElementById('data').value;
+    },
+    onComplete: function(){ alert('Your File Has Been Saved!'); },
+    onCancel: function(){ alert('You have cancelled the saving of this file.'); },
+    onError: function(){ alert('You must put something in the File Contents or there will be nothing to save!'); },
+    swf: 'https://0.0.0.0:3000/assets/downloadify.swf',
+    downloadImage: 'https://raw.github.com/dcneiner/Downloadify/master/images/download.png',
+    width: 100,
+    height: 30,
+    transparent: true,
+    append: false
+  });
+}

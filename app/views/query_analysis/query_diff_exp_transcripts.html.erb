@@ -1,5 +1,9 @@
 <%= render 'shared/error_messages', :object => @qdet %>
 <script type='text/javascript' src='query_diff_exp_transcripts.js' ></script>
+<%= javascript_include_tag 'downloadify/swfobject.js' %>
+<%= javascript_include_tag 'downloadify/downloadify.min.js' %>
+<!--<script type="text/javascript" src="https://raw.github.com/dcneiner/Downloadify/master/js/swfobject.js"></script>
+<script type="text/javascript" src="https://raw.github.com/dcneiner/Downloadify/master/js/downloadify.min.js"></script>-->
 <%= form_for(@qdet, :url => 'query_diff_exp_transcripts') do |qdet| %>
   <h1>Please select your differential expression search options</h1>
   <p>
