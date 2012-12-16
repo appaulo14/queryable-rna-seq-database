@@ -1,2 +1,186 @@
-<h1>QueryAnalysis#query_transcript_isoforms</h1>
-<p>Find me in app/views/query_analysis/query_transcript_isoforms.html.erb</p>
+<%= render 'shared/error_messages', :object => @qti %>
+<script type='text/javascript' src='query_transcript_isoforms.js' ></script>
+<%= javascript_include_tag 'downloadify/swfobject.js' %>
+<%= javascript_include_tag 'downloadify/downloadify.min.js' %>
+<%= form_for(@qti, :url => 'query_transcript_isoforms') do |qti| %>
+  <h1>Please select your novel isoforms and other transcript classification search options</h1>
+  <p>
+    <%= qti.label :dataset_id, "Dataset to query" %>
+    <%= qti.select :dataset_id, options_for_select(@qti.names_and_ids_for_available_datasets, @qti.dataset_id) %><br/>
+    <%= #qti.label :samples_to_compare, "Samples to compare" 
+    %>
+    <%= #qti.select :samples_to_compare, options_for_select(@qti.available_samples_for_comparison) 
+    %>
+    <%= label :samples_to_compare, "Samples to compare" %>
+    <%= qti.select :sample_1, options_for_select(@qti.available_samples_for_comparison,@qti.sample_1)  %> 
+    vs 
+    <%= qti.select :sample_2, options_for_select(@qti.available_samples_for_comparison,@qti.sample_2) %>
+  </p>
+  <p>
+    <% @qti.available_samples_for_comparison.each do |sample| %>
+      <% qti.check_box "#{sample}" %>
+      <% qti.label "#{sample}" %>
+    <% end %>
+  </p>
+  <p>
+    <div>
+        <%= label(:fdr_or_pvalue, "Filter By:") %>
+        <%= qti.radio_button(:fdr_or_pvalue, :p_value) %>
+        <%= qti.label(:filter_by_p_value, "P-value") %>
+        <%= qti.radio_button(:fdr_or_pvalue, :fdr) %>
+        <%= qti.label(:filter_by_fdr, "FDR") %>
+    </div>
+    <div>
+        <%= qti.label(:cutoff, "Select cutoff:") %>
+        <!--<%= #qti.select(:cutoff, options_for_select([['0.01', 0.01], ['0.005', 0.005],['0.001', 0.001],['0.0001', 0.0001],['0.00001', 0.00001],['Other', 'Other']],'Other'))
+        %>
+        <%= #qti.label(:other_cutoff_value, "Enter Value:") 
+        %>-->
+        <%= qti.text_field(:cutoff, {:size=>10}) %>
+    </div>
+  </p>
+  <br/>
+  <h2>Query filtering options</h2>
+  <p>
+    <div>
+        <table>
+        <tr>
+          <td>
+            <%= qti.check_box(:filter_by_class_codes) %>
+            <%= qti.label(:class_codes, "Class codes:\t") %>
+          </td>
+          <td class='rounded-corners sub-section' style='padding-right:10px'>
+            <%= qti.check_box(:class_code_equal) %>
+            <%= qti.label(:class_code_equal, '=') %>
+          </td>
+          <td class='rounded-corners sub-section' style='padding-right:10px'>
+            <%= qti.check_box(:class_code_c) %>
+            <%= qti.label(:class_code_c, 'c') %>
+          </td>
+          <td class='rounded-corners sub-section' style='padding-right:10px'>
+            <%= qti.check_box(:class_code_j) %>
+            <%= qti.label(:class_code_j, 'j') %>
+          </td>
+          <td class='rounded-corners sub-section' style='padding-right:10px'>
+            <%= qti.check_box(:class_code_e) %>
+            <%= qti.label(:class_code_e, 'e') %>
+          </td>
+          <td class='rounded-corners sub-section' style='padding-right:10px'>
+            <%= qti.check_box(:class_code_i) %>
+            <%= qti.label(:class_code_i, 'i') %>
+          </td>
+          <td class='rounded-corners sub-section' style='padding-right:10px'>
+            <%= qti.check_box(:class_code_o) %>
+            <%= qti.label(:class_code_o, 'o') %>
+          </td>
+          <td class='rounded-corners sub-section' style='padding-right:10px'>
+            <%= qti.check_box(:class_code_p) %>
+            <%= qti.label(:class_code_p, 'p') %>
+          </td>
+          <td class='rounded-corners sub-section' style='padding-right:10px'>
+            <%= qti.check_box(:class_code_r) %>
+            <%= qti.label(:class_code_r, 'r') %>
+          </td>
+          <td class='rounded-corners sub-section' style='padding-right:10px'>
+            <%= qti.check_box(:class_code_u) %>
+            <%= qti.label(:class_code_u, 'u') %>
+          </td>
+          <td class='rounded-corners sub-section' style='padding-right:10px'>
+            <%= qti.check_box(:class_code_x) %>
+            <%= qti.label(:class_code_x, 'x') %>
+          </td>
+          <td class='rounded-corners sub-section' style='padding-right:10px'>
+            <%= qti.check_box(:class_code_s) %>
+            <%= qti.label(:class_code_s, 's') %>
+          </td>
+          <td class='rounded-corners sub-section' style='padding-right:10px'>
+            <%= qti.check_box(:class_code_dot) %>
+            <%= qti.label(:class_code_dot, '.') %>
+          </td>
+          <td>
+            <%= link_to('See Class Code Definitions','http://cufflinks.cbcb.umd.edu/manual.html#class_codes', :target => '_blank') %>
+          </td>
+        </tr>
+        </table>
+    </div>
+    <div>
+        <%= qti.check_box(:filter_by_go_names) %>
+        <%= qti.label(:go_names, "GO Names (for associated genes) (separated by semicolons)") %>
+        <%= qti.text_field(:go_names) %>
+        <%= link_to('Browse GO Terms','http://amigo.geneontology.org/cgi-bin/amigo/browse.cgi', :target => '_blank') %>
+    </div>
+    <div>
+        <%= qti.check_box(:filter_by_go_ids) %>
+        <%= qti.label(:go_ids, "GO IDs (for associated genes) (separated by semicolons)") %>
+        <%= qti.text_field(:go_ids) %>
+        <%= link_to('Browse GO Terms','http://amigo.geneontology.org/cgi-bin/amigo/browse.cgi', :target => '_blank') %>
+    </div>
+    <div>
+        <%= qti.check_box(:filter_by_transcript_length) %>
+        <%= label(:transcript_length, "Transcript length") %>
+        <%= qti.select(:transcript_length_comparison_sign, options_for_select(['>','>=','<','=<','='],'>')) %>
+        <%= qti.text_field(:transcript_length_value) %>
+    </div>
+    <div>
+        <%= qti.check_box(:filter_by_transcript_name) %>
+        <%= qti.label(:transcript_name, "Transcript name:") %>
+        <%= qti.text_field(:transcript_name) %>
+    </div>
+  </p>
+  <p><%= submit_tag("Query", :disable_with => "Querying...") %></p>
+<% end %>
+<!--Section for the query results-->
+<% if @qti.show_results? %>
+  <p><%= @qti.results.length %> results found for <em><b><%= @qti.sample_1 %></b> vs <b><%= @qti.sample_2 %></b></em></p>
+  <p id="downloadify">
+      You must have Flash 10 installed to download this file.
+  </p>
+  <!--Table containing the query results-->
+  <table border="1" id="query_results_table">
+      <thead>
+          <tr>
+              <th data-sort='string'>Transcript&nbsp;<%= neutral_sort_arrow %></th>
+              <th data-sort='string'>Associated Gene&nbsp;<%= neutral_sort_arrow %></th>
+              <th data-sort='string'>GO Terms&nbsp;<%= neutral_sort_arrow %></th>
+              <th data-sort='string'>Class Code&nbsp;<%= neutral_sort_arrow %></th>
+              <th data-sort='float'>Transcript length&nbsp;<%= neutral_sort_arrow %></th>
+              <th data-sort='float'>Coverage&nbsp;<%= neutral_sort_arrow %></th>
+              <% @qti.fpkm_samples.each do |fpkm_sample| %>
+                <th data-sort='float'><%= fpkm_sample.sample_name %> FPKM&nbsp;<%= neutral_sort_arrow %></th>
+                <th data-sort='float'><%= fpkm_sample.sample_name %> FPKM Lower Bound&nbsp;<%= neutral_sort_arrow %></th>
+                <th data-sort='float'><%= fpkm_sample.sample_name %> FPKM Upper Bound&nbsp;<%= neutral_sort_arrow %></th>
+                <th data-sort='float'><%= fpkm_sample.sample_name %> Quantification Status&nbsp;<%= neutral_sort_arrow %></th>
+              <% end %>
+          </tr>
+      </thead>
+      <tbody>
+          <% @qti.results.each do |result| %>
+              <tr>
+                  <td>
+                    <%= link_to_fasta_sequence_for_transcript(@qti.dataset_id, result[:transcript_name]) %>
+                  </td>
+                  <td>
+                    <%= link_to_fasta_sequences_for_gene(@qti.dataset_id, result[:gene_name]) %>
+                  </td>
+                  <td>
+                    <% if result[:go_terms].empty? == false %>
+                      <ul>
+                      <!-- Sort by ascending GO ID for the go terms-->
+                      <% result[:go_terms].sort{|a,b| a.id.gsub(/GO:/,'').to_i <=> b.id.gsub(/GO:/,'').to_i}.each do |go_term| %>
+                        <li><%= link_to_amigo_web_page_for_term("#{go_term.term} [#{go_term.id}]",go_term.id) %></li>
+                      <% end %>
+                      </ul>
+                    <% else %>
+                      No GO ids found.
+                    <% end %>
+                  </td>
+                  <td><%= result[:p_value] %></td>
+                  <td><%= result[:fdr] %></td>
+                  <td><%= result[:sample_1_fpkm] %></td>
+                  <td><%= result[:sample_2_fpkm] %></td>
+                  <td><%= result[:log_fold_change] %></td>
+              </tr>
+          <% end %>
+      </tbody>
+  </table>
+<% end %>

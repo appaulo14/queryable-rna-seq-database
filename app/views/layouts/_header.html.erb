@@ -5,17 +5,24 @@
   <nav>
     <ul>
       <% if user_signed_in? %>
-        <li><%= link_to "Home", root_path %></li>
-        <li><%= link_to "Process reads", "/processing_analysis" %></li>
-        <li><%= link_to "Upload processed dataset",
-                        "/query_analysis/upload_main_menu" %>
+        <li><%= link_to 'Home', root_path %></li>
+        <li><%= link_to 'Process reads', '/processing_analysis' %></li>
+        <li><%= link_to 'Upload processed dataset',
+                        '/query_analysis/upload_main_menu' %>
         </li>
         <li>
-          <%= link_to "Differential Expression", 
-                      "/query_analysis/query_diff_exp_transcripts" %>
+          <%= link_to 'Transcript Differential Expression', 
+                      '/query_analysis/query_diff_exp_transcripts' %>
         </li>
-        <li><%= link_to "Novel Isoforms", "#" %></li>
-        <li><%= link_to "BLAST", "/query_analysis/query_blast_db" %></li>
+        <li>
+          <%= link_to 'Gene Differential Expression', 
+                      '/query_analysis/query_diff_exp_genes' %>
+        </li>
+        <li>
+          <%= link_to 'Transcript Isoforms', 
+                      '/query_analysis/query_transcript_isoforms' %>
+        </li>
+        <li><%= link_to 'BLAST', '/query_analysis/query_blast_db' %></li>
         <li>
           <%= link_to('Edit registration', edit_user_registration_path) %>
         </li>
@@ -24,7 +31,7 @@
                       :method => :delete) %>
         </li>
       <% else %>
-        <li><%= link_to "Home", root_path %></li>
+        <li><%= link_to 'Home', root_path %></li>
         <li><%= link_to('Login', new_user_session_path)  %></li>
         <li><%= link_to('Register', new_user_registration_path)  %></li>
       <% end %>

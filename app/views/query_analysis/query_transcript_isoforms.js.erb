@@ -1,0 +1,223 @@
+jQuery(document).ready(function($) {
+  set_up_reload_on_dataset_changed();
+  set_table_table_sorting();
+  set_up_events_for_filter_parameters();
+  set_up_downloadify_for_query_results_downloading();
+});
+
+/*
+ *    Reload when a new dataset is selected 
+ *    from the select element so the the samples for the
+ *    newly selected dataset can be loaded.
+ */
+function set_up_reload_on_dataset_changed(){
+  dataset_select = $('#query_transcript_isoforms_dataset_id');
+  dataset_select.change(selected_dataset_changed);
+  function selected_dataset_changed(){
+    window.location = 'query_transcript_isoforms?dataset_id=' + 
+      dataset_select.val();
+  }
+}
+
+/*
+ *   Set up table sorting using Stupid Table: 
+ *   https://github.com/joequery/Stupid-Table-Plugin
+ */
+function set_table_table_sorting(){
+  var query_results_table = $('#query_results_table').stupidtable();
+  query_results_table.bind('aftertablesort', aftertablesort);
+  function aftertablesort(event, data) {
+    var th = $(this).find("th");
+    //Set all to neutral sort arrows first
+    th.find(".sort_arrow").remove();
+    th.append('<%= neutral_sort_arrow %>');
+    //Use an up or down arrow to show the sorting column, depending on
+    //  whether it is sorted in ascending order or descending order
+    if (data.direction == 'asc'){
+      th.find('.sort_arrow').get(data.column).outerHTML = '';
+      th.get(data.column).innerHTML += '<%= ascending_sort_arrow %>';
+    }
+    else{
+      th.find('.sort_arrow').get(data.column).outerHTML = '';
+      th.get(data.column).innerHTML += '<%= descending_sort_arrow %>';
+    }
+  }
+}
+
+/*
+ *   Set up the events for the filter parameters
+ */
+function set_up_events_for_filter_parameters(){
+  //Ensure the filter parameters are at their correct state or being 
+  //    enabled or disabled by running their changed events.
+  filter_by_class_code_checked_changed();
+  filter_by_go_names_checked_changed();
+  filter_by_go_ids_checked_changed();
+  filter_by_transcript_name_checked_changed();
+  filter_by_transcript_length_checked_changed();
+  //Bind the events for enabling/disabling the filter elements based on 
+  //    whether or not the check box is clicked.
+  $('#query_transcript_isoforms_filter_by_class_codes').change(filter_by_class_code_checked_changed);
+  $('#query_transcript_isoforms_filter_by_go_names').change(filter_by_go_names_checked_changed);
+  $('#query_transcript_isoforms_filter_by_go_ids').change(filter_by_go_ids_checked_changed);
+  $('#query_transcript_isoforms_filter_by_transcript_length').change(filter_by_transcript_length_checked_changed);
+  $('#query_transcript_isoforms_filter_by_transcript_name').change(filter_by_transcript_name_checked_changed);
+}
+
+/*
+ * Enable/disabled the class codes check boxes based on whether
+ *    the Filter by Class Codes check box is checked
+*/
+function filter_by_class_code_checked_changed(){
+  if ($('#query_transcript_isoforms_filter_by_class_codes').is(':checked')){
+    $('#query_transcript_isoforms_class_code_equal').removeAttr("disabled");
+    $('#query_transcript_isoforms_class_code_c').removeAttr("disabled");
+    $('#query_transcript_isoforms_class_code_j').removeAttr("disabled");
+    $('#query_transcript_isoforms_class_code_e').removeAttr("disabled");
+    $('#query_transcript_isoforms_class_code_i').removeAttr("disabled");
+    $('#query_transcript_isoforms_class_code_o').removeAttr("disabled");
+    $('#query_transcript_isoforms_class_code_p').removeAttr("disabled");
+    $('#query_transcript_isoforms_class_code_r').removeAttr("disabled");
+    $('#query_transcript_isoforms_class_code_u').removeAttr("disabled");
+    $('#query_transcript_isoforms_class_code_x').removeAttr("disabled");
+    $('#query_transcript_isoforms_class_code_s').removeAttr("disabled");
+    $('#query_transcript_isoforms_class_code_dot').removeAttr("disabled");
+  }
+  else{
+    $('#query_transcript_isoforms_class_code_equal').attr("disabled", "disabled");
+    $('#query_transcript_isoforms_class_code_c').attr("disabled", "disabled");
+    $('#query_transcript_isoforms_class_code_j').attr("disabled", "disabled");
+    $('#query_transcript_isoforms_class_code_e').attr("disabled", "disabled");
+    $('#query_transcript_isoforms_class_code_i').attr("disabled", "disabled");
+    $('#query_transcript_isoforms_class_code_o').attr("disabled", "disabled");
+    $('#query_transcript_isoforms_class_code_p').attr("disabled", "disabled");
+    $('#query_transcript_isoforms_class_code_r').attr("disabled", "disabled");
+    $('#query_transcript_isoforms_class_code_u').attr("disabled", "disabled");
+    $('#query_transcript_isoforms_class_code_x').attr("disabled", "disabled");
+    $('#query_transcript_isoforms_class_code_s').attr("disabled", "disabled");
+    $('#query_transcript_isoforms_class_code_dot').attr("disabled","disabled");
+  }
+}
+
+/*
+ * Enable/disabled the go names text box based on whether
+ *    the Filter by GO Names check box is checked
+*/
+function filter_by_go_names_checked_changed(){
+  filter_by_go_names = $('#query_transcript_isoforms_filter_by_go_names');
+  if (filter_by_go_names.is(':checked')){
+    $('#query_transcript_isoforms_go_names').removeAttr("disabled");
+  }
+  else{
+    $('#query_transcript_isoforms_go_names').attr("disabled", "disabled");
+  }
+}
+
+/*
+ * Enable/disabled the go ids text box based on whether
+ *    the Filter by GO IDs check box is checked
+*/
+function filter_by_go_ids_checked_changed(){
+  filter_by_go_ids = $('#query_transcript_isoforms_filter_by_go_ids');
+  if (filter_by_go_ids.is(':checked')){
+    $('#query_transcript_isoforms_go_ids').removeAttr("disabled");
+  }
+  else{
+    $('#query_transcript_isoforms_go_ids').attr("disabled", "disabled");
+  }
+}
+
+/*
+ * Enable/disabled the transcript length elements based on whether
+ *    the Filter by Transcript Length check box is checked
+*/
+function filter_by_transcript_length_checked_changed(){
+  filter_by_transcript_length = 
+    $('#query_transcript_isoforms_filter_by_transcript_length');
+  transcript_length_comparison_sign = 
+    $('#query_transcript_isoforms_transcript_length_comparison_sign');
+  transcript_length_value = 
+    $('#query_transcript_isoforms_transcript_length_value');
+  if (filter_by_transcript_length.is(':checked')){
+    transcript_length_comparison_sign.removeAttr("disabled");
+    transcript_length_value.removeAttr("disabled");
+  }
+  else{
+    transcript_length_comparison_sign.attr("disabled", "disabled");
+    transcript_length_value.attr("disabled", "disabled");
+  }
+}
+
+/*
+ * Enable/disabled the transcript name text box based on whether
+ *    the Filter by Transcript Name check box is checked
+*/
+function filter_by_transcript_name_checked_changed(){
+  filter_by_transcript_name = 
+    $('#query_transcript_isoforms_filter_by_transcript_name');
+  if (filter_by_transcript_name.is(':checked')){
+    $('#query_transcript_isoforms_transcript_name').removeAttr("disabled");
+  }
+  else{
+    $('#query_transcript_isoforms_transcript_name').attr("disabled", "disabled");
+  }
+}
+  
+  
+/*
+ *   Set up Downloadify to allow the user to download their table results 
+ *   as a text file.
+ */
+function set_up_downloadify_for_query_results_downloading(){
+  Downloadify.create('downloadify',{
+    filename: function(){return 'query_transcript_isoforms.txt';},
+    data: get_downloable_file_text,
+    onComplete: function(){ alert('Your File Has Been Saved!'); },
+    onCancel: function(){ alert('You have cancelled the saving of this file.'); },
+    onError: function(){ alert('Error!'); },
+    swf: "<%= asset_path 'downloadify/downloadify.swf' %>",
+    downloadImage: "<%= asset_path 'downloadify/download.png' %>",
+    width: 100,
+    height: 30,
+    transparent: true,
+    append: false
+  });
+}
+
+function get_downloable_file_text(){
+  output_string = '';
+  //Get the table rows
+  var query_results_table = $('#query_results_table');
+  var rows = query_results_table.find('tr');
+  //Get the header cells and write them to the output string
+  header_row = $(rows[0]);
+  header_cells = header_row.find('th');
+  for (var i=0;i<header_cells.length;i++){
+    header_cell = $(header_cells[i]);
+    output_string+=header_cell.text().trim();
+    //Add a tab to the output string if another header is after this one
+    if (i<header_cells.length-1){
+      output_string+="\t";
+    }
+  }
+  output_string+="\n";
+  //Write all the table cells to the output string.
+  //Loop through the rows
+  for (var i=1;i<rows.length;i++){
+    row = $(rows[i]);
+    table_cells = row.find('td');
+    //Loop through the cells within a row
+    for (var ii=0;ii<table_cells.length;ii++){
+      table_cell = $(table_cells[ii]);
+      //Add to the output string, removing any excessive spaces
+      output_string += table_cell.text().trim().replace(/\s{2,}/gi,'; ');
+      //Add a tab to the output string if another cell is after this one
+      if (ii<table_cells.length-1){
+        output_string+="\t";
+      }
+    }
+    output_string+="\n";
+  }
+  //Return the final output string
+  return output_string;
+}

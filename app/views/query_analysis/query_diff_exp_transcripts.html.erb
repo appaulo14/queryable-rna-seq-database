@@ -60,7 +60,7 @@
         <%= qdet.text_field(:transcript_name) %>
     </div>
   </p>
-  <p><%= submit_tag("Query") %></p>
+  <p><%= submit_tag("Query", :disable_with => "Querying...") %></p>
 <% end %>
 <!--Section for the query results-->
 <% if @qdet.show_results? %>

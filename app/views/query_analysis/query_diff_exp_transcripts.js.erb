@@ -131,7 +131,7 @@ function set_up_downloadify_for_query_results_downloading(){
     data: get_downloable_file_text,
     onComplete: function(){ alert('Your File Has Been Saved!'); },
     onCancel: function(){ alert('You have cancelled the saving of this file.'); },
-    onError: function(){ alert('You must put something in the File Contents or there will be nothing to save!'); },
+    onError: function(){ alert('Error!'); },
     swf: "<%= asset_path 'downloadify/downloadify.swf' %>",
     downloadImage: "<%= asset_path 'downloadify/download.png' %>",
     width: 100,
