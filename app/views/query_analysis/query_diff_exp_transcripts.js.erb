@@ -121,14 +121,8 @@ function set_up_events_for_filter_parameters(){
  */
 function set_up_downloadify_for_query_results_downloading(){
   Downloadify.create('downloadify',{
-    filename: function(){
-            //return document.getElementById('filename').value;
-            return 'query_diff_exp_transcripts.txt';
-    },
-    data: function(){ 
-            //return document.getElementById('data').value;
-            return 'hello world';
-    },
+    filename: function(){return 'query_diff_exp_transcripts.txt';},
+    data: get_downloable_file_text,
     onComplete: function(){ alert('Your File Has Been Saved!'); },
     onCancel: function(){ alert('You have cancelled the saving of this file.'); },
     onError: function(){ alert('You must put something in the File Contents or there will be nothing to save!'); },
@@ -139,4 +133,42 @@ function set_up_downloadify_for_query_results_downloading(){
     transparent: true,
     append: false
   });
+}
+
+function get_downloable_file_text(){
+  output_string = '';
+  //Get the table rows
+  var query_results_table = $('#query_results_table');
+  var rows = query_results_table.find('tr');
+  //Get the header cells and write them to the output string
+  header_row = $(rows[0]);
+  header_cells = header_row.find('th');
+  for (var i=0;i<header_cells.length;i++){
+    header_cell = $(header_cells[i]);
+    output_string+=header_cell.text().trim();
+    //Add a tab to the output string if another header is after this one
+    if (i<header_cells.length-1){
+      output_string+="\t";
+    }
+  }
+  output_string+="\n";
+  //Write all the table cells to the output string.
+  //Loop through the rows
+  for (var i=1;i<rows.length;i++){
+    row = $(rows[i]);
+    table_cells = row.find('td');
+    //Loop through the cells within a row
+    for (var ii=0;ii<table_cells.length;ii++){
+      table_cell = $(table_cells[ii]);
+      //Add to the output string, removing any excessive spaces
+      output_string += table_cell.text().trim().replace(/\s{2,}/gi,'; ');
+      //Add a tab to the output string if another cell is after this one
+      if (ii<table_cells.length-1){
+        output_string+="\t";
+      }
+    }
+    output_string+="\n";
+  }
+  //Return the final output string
+  return output_string;
 }

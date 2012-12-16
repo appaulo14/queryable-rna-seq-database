@@ -10,7 +10,7 @@ class Query_Diff_Exp_Transcripts
                 :filter_by_transcript_name, :transcript_name 
   attr_reader   :names_and_ids_for_available_datasets, 
                 :available_samples_for_comparison, 
-                :show_search_results, :search_results
+                :show_results, :results
   
   #For Boolean attributes, provide methods ending with a question mark 
   #  for convenience.
@@ -26,8 +26,8 @@ class Query_Diff_Exp_Transcripts
   def filter_by_transcript_name?
     return @filter_by_transcript_name
   end
-  def show_search_results?
-    return @show_search_results
+  def show_results?
+    return @show_results
   end
   
   #TODO: Add validation 
@@ -70,15 +70,15 @@ class Query_Diff_Exp_Transcripts
         where(:id => @dataset_id).pluck('fpkm_samples.sample_name').uniq
     @sample_1 = @available_samples_for_comparison[0]
     @sample_2 = @available_samples_for_comparison[1]
-    @show_search_results = false
+    @show_results = false
   end
   
   def query!()
     #Don't query if it is not valid
     return if not self.valid?
     #Create and run the query
-    select_string = 'transcripts.name_from_program as transcript_name,' +
-                    'genes.id as gene_id,' +
+    select_string = 'transcripts.id as transcript_id,' +
+                    'genes.name_from_program as gene_name,' +
                     'differential_expression_tests.p_value,' +
                     'differential_expression_tests.fdr,' +
                     'differential_expression_tests.log_fold_change as logfc,' +
@@ -94,26 +94,26 @@ class Query_Diff_Exp_Transcripts
       ).
       select(select_string) 
     #Extra the query results to form that can be put in the view
-    @search_results = []
+    @results = []
     query_results.each do |query_result|
-      gene = Gene.find_by_id(query_result.gene_id)
+      transcript = Transcript.find_by_id(query_result.transcript_id)
       sample_1_fpkm = FpkmSample.find_by_id(query_result.fpkm_sample_1_id).fpkm
       sample_2_fpkm = FpkmSample.find_by_id(query_result.fpkm_sample_1_id).fpkm
-      search_result ={}
-      search_result[:transcript_name] = query_result.transcript_name
-      search_result[:gene_name] = gene.name_from_program
-      search_result[:go_ids] = gene.go_terms.pluck('id')
-      search_result[:p_value] = query_result.p_value
-      search_result[:fdr] = query_result.fdr
-      search_result[:sample_1_name] = @sample_1
-      search_result[:sample_2_name] = @sample_2
-      search_result[:sample_1_fpkm] =  sample_1_fpkm
-      search_result[:sample_2_fpkm] =  sample_2_fpkm
-      search_result[:log_fold_change] = query_result.logfc
-      @search_results << search_result
+      result = {}
+      result[:transcript_name] = transcript.name_from_program
+      result[:gene_name] = query_result.gene_name
+      result[:go_terms] = transcript.go_terms
+      result[:p_value] = query_result.p_value
+      result[:fdr] = query_result.fdr
+      result[:sample_1_name] = @sample_1
+      result[:sample_2_name] = @sample_2
+      result[:sample_1_fpkm] =  sample_1_fpkm
+      result[:sample_2_fpkm] =  sample_2_fpkm
+      result[:log_fold_change] = query_result.logfc
+      @results << result
     end
     #Mark the search results as viewable
-    @show_search_results = true
+    @show_results = true
   end
   
   def persisted?

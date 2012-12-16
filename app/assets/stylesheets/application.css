@@ -70,7 +70,8 @@ footer nav {
 /* Links */
 
 a, a:link, a:active{
-    color: #09c;
+    /*color: #09c;*/
+    color: #000FFF;
     text-decoration: underline;
 }
   

@@ -27,6 +27,8 @@ class Transcript < ActiveRecord::Base
   has_many :differential_expression_tests#, :dependent => :destroy
   has_many :fpkm_samples#, :dependent => :destroy
   has_one :transcript_fpkm_tracking_informations
+  has_many :transcript_has_go_terms
+  has_many :go_terms, :through => :transcript_has_go_terms
   #validates_associated :job, :gene, :differential_expression_test, :fpkm_samples
   
   #Validation

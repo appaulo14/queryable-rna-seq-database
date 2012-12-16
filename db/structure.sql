@@ -136,18 +136,6 @@ ALTER SEQUENCE fpkm_samples_id_seq OWNED BY fpkm_samples.id;
 
 
 --
--- Name: gene_has_go_terms; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE gene_has_go_terms (
-    gene_id integer,
-    go_term_id character varying(255),
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
 -- Name: genes; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -280,6 +268,18 @@ CREATE TABLE transcript_fpkm_tracking_informations (
     class_code character varying(255),
     length integer,
     coverage numeric,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: transcript_has_go_terms; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE transcript_has_go_terms (
+    transcript_id integer,
+    go_term_id character varying(255),
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );

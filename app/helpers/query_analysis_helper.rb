@@ -24,4 +24,10 @@ module QueryAnalysisHelper
                    "gene_name=#{gene_name}"
     return link_to(gene_name, link_address, :target => '_blank')
   end
+  
+  def link_to_amigo_web_page_for_term(body,go_id)
+    link_address = "http://amigo.geneontology.org/" +
+                   "cgi-bin/amigo/term_details?term=#{go_id}"
+    return link_to(body, link_address, :target => '_blank')
+  end
 end

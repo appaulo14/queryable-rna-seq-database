@@ -16,7 +16,7 @@ namespace :db do
     make_transcript_fpkm_tracking_information
     make_differential_expression_tests
     make_go_terms
-    make_gene_has_go_terms
+    make_transcript_has_go_terms
   end
 end
 
@@ -194,16 +194,17 @@ def make_go_terms
   puts 'Done'
 end
 
-def make_gene_has_go_terms
-  print 'Populating gene_has_go_terms table...'
-  #Get arrays of all the genes and go terms to use for random selection
-  all_genes = Gene.all
+def make_transcript_has_go_terms
+  print 'Populating trancript_has_go_terms table...'
+  #Get arrays of all the transcripts and go terms to use for random selection
+  all_transcripts = Transcript.all
   all_go_terms = GoTerm.all
-  #Create 100,000 gene has go terms with random values
-  100_000.times do |n|
-    random_gene = all_genes.sample
+  #Create 50,000 transcript/go term associations with random values
+  50_000.times do |n|
+    random_transcript = all_transcripts.sample
     random_go_term = all_go_terms.sample
-    GeneHasGoTerm.create!(:gene => random_gene, :go_term => random_go_term)
+    TranscriptHasGoTerm.create!(:transcript => random_transcript, 
+                                :go_term => random_go_term)
   end
   puts 'Done'
 end

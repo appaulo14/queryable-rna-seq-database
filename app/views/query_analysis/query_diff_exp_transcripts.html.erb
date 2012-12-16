@@ -2,8 +2,6 @@
 <script type='text/javascript' src='query_diff_exp_transcripts.js' ></script>
 <%= javascript_include_tag 'downloadify/swfobject.js' %>
 <%= javascript_include_tag 'downloadify/downloadify.min.js' %>
-<!--<script type="text/javascript" src="https://raw.github.com/dcneiner/Downloadify/master/js/swfobject.js"></script>
-<script type="text/javascript" src="https://raw.github.com/dcneiner/Downloadify/master/js/downloadify.min.js"></script>-->
 <%= form_for(@qdet, :url => 'query_diff_exp_transcripts') do |qdet| %>
   <h1>Please select your differential expression search options</h1>
   <p>
@@ -62,11 +60,11 @@
         <%= qdet.text_field(:transcript_name) %>
     </div>
   </p>
-  <p><%= submit_tag("Search") %></p>
+  <p><%= submit_tag("Query") %></p>
 <% end %>
 <!--Section for the query results-->
-<% if @qdet.show_search_results? %>
-  <p><%= @qdet.search_results.length %> results found for <em><b><%= @qdet.sample_1 %></b> vs <b><%= @qdet.sample_2 %></b></em></p>
+<% if @qdet.show_results? %>
+  <p><%= @qdet.results.length %> results found for <em><b><%= @qdet.sample_1 %></b> vs <b><%= @qdet.sample_2 %></b></em></p>
   <p id="downloadify">
       You must have Flash 10 installed to download this file.
   </p>
@@ -85,28 +83,30 @@
           </tr>
       </thead>
       <tbody>
-          <% @qdet.search_results.each do |search_result| %>
+          <% @qdet.results.each do |result| %>
               <tr>
                   <td>
-                    <%= link_to_fasta_sequence_for_transcript(@qdet.dataset_id, search_result[:transcript_name]) %>
+                    <%= link_to_fasta_sequence_for_transcript(@qdet.dataset_id, result[:transcript_name]) %>
                   </td>
                   <td>
-                    <%= link_to_fasta_sequences_for_gene(@qdet.dataset_id, search_result[:gene_name]) %>
+                    <%= link_to_fasta_sequences_for_gene(@qdet.dataset_id, result[:gene_name]) %>
                   </td>
                   <td>
-                    <% if search_result[:go_ids].empty? == false %>
-                      <% search_result[:go_ids].sort.each do |go_id| %>
-                        <%= link_to(go_id, "http://amigo.geneontology.org/cgi-bin/amigo/term_details?term=#{go_id}", :target => '_blank') %>
+                    <% if result[:go_terms].empty? == false %>
+                      <ul>
+                      <% result[:go_terms].sort.each do |go_term| %>
+                        <li><%= link_to_amigo_web_page_for_term("#{go_term.term} [#{go_term.id}]",go_term.id) %></li>
                       <% end %>
+                      </ul>
                     <% else %>
                       No GO ids found.
                     <% end %>
                   </td>
-                  <td><%= search_result[:p_value] %></td>
-                  <td><%= search_result[:fdr] %></td>
-                  <td><%= search_result[:sample_1_fpkm] %></td>
-                  <td><%= search_result[:sample_2_fpkm] %></td>
-                  <td><%= search_result[:log_fold_change] %></td>
+                  <td><%= result[:p_value] %></td>
+                  <td><%= result[:fdr] %></td>
+                  <td><%= result[:sample_1_fpkm] %></td>
+                  <td><%= result[:sample_2_fpkm] %></td>
+                  <td><%= result[:log_fold_change] %></td>
               </tr>
           <% end %>
       </tbody>
