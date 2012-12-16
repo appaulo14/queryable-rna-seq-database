@@ -3,7 +3,7 @@
 <%= javascript_include_tag 'downloadify/swfobject.js' %>
 <%= javascript_include_tag 'downloadify/downloadify.min.js' %>
 <%= form_for(@qdet, :url => 'query_diff_exp_transcripts') do |qdet| %>
-  <h1>Please select your differential expression search options</h1>
+  <h1>Please select your transcript differential expression search options</h1>
   <p>
     <%= qdet.label :dataset_id, "Dataset to query" %>
     <%= qdet.select :dataset_id, options_for_select(@qdet.names_and_ids_for_available_datasets, @qdet.dataset_id) %><br/>
@@ -74,7 +74,7 @@
           <tr>
               <th data-sort='string'>Transcript&nbsp;<%= neutral_sort_arrow %></th>
               <th data-sort='string'>Associated Gene&nbsp;<%= neutral_sort_arrow %></th>
-              <th data-sort='string'>GO IDs&nbsp;<%= neutral_sort_arrow %></th>
+              <th data-sort='string'>GO Terms&nbsp;<%= neutral_sort_arrow %></th>
               <th data-sort='float'>P-value&nbsp;<%= neutral_sort_arrow %></th>
               <th data-sort='float'>FDR&nbsp;<%= neutral_sort_arrow %></th>
               <th data-sort='float'><%= @qdet.sample_1 %> FPKM&nbsp;<%= neutral_sort_arrow %></th>
@@ -94,7 +94,8 @@
                   <td>
                     <% if result[:go_terms].empty? == false %>
                       <ul>
-                      <% result[:go_terms].sort.each do |go_term| %>
+                      <!-- Sort by ascending GO ID for the go terms-->
+                      <% result[:go_terms].sort{|a,b| a.id.gsub(/GO:/,'').to_i <=> b.id.gsub(/GO:/,'').to_i}.each do |go_term| %>
                         <li><%= link_to_amigo_web_page_for_term("#{go_term.term} [#{go_term.id}]",go_term.id) %></li>
                       <% end %>
                       </ul>

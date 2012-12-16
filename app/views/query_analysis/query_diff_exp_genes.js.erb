@@ -11,10 +11,10 @@ jQuery(document).ready(function($) {
  *    newly selected dataset can be loaded.
  */
 function set_up_reload_on_dataset_changed(){
-  dataset_select = $('#query_diff_exp_transcripts_dataset_id');
+  dataset_select = $('#query_diff_exp_genes_dataset_id');
   dataset_select.change(selected_dataset_changed);
   function selected_dataset_changed(){
-    window.location = 'query_diff_exp_transcripts?dataset_id=' + 
+    window.location = 'query_diff_exp_genes?dataset_id=' + 
       dataset_select.val();
   }
 }
@@ -52,70 +52,46 @@ function set_up_events_for_filter_parameters(){
   //    enabled or disabled by running their changed events.
   filter_by_go_names_checked_changed();
   filter_by_go_ids_checked_changed();
-  filter_by_transcript_name_checked_changed();
-  filter_by_transcript_length_checked_changed();
+  filter_by_gene_name_checked_changed();
   //Enable/disabled the go names text box based on whether
   //    the Filter by GO Names check box is checked
-  filter_by_go_names = $('#query_diff_exp_transcripts_filter_by_go_names');
+  filter_by_go_names = $('#query_diff_exp_genes_filter_by_go_names');
   filter_by_go_names.change(filter_by_go_names_checked_changed);
   function filter_by_go_names_checked_changed(){
-    filter_by_go_names = $('#query_diff_exp_transcripts_filter_by_go_names');
+    filter_by_go_names = $('#query_diff_exp_genes_filter_by_go_names');
     if (filter_by_go_names.is(':checked')){
-      $('#query_diff_exp_transcripts_go_names').removeAttr("disabled");
+      $('#query_diff_exp_genes_go_names').removeAttr("disabled");
     }
     else{
-      $('#query_diff_exp_transcripts_go_names').attr("disabled", "disabled");
+      $('#query_diff_exp_genes_go_names').attr("disabled", "disabled");
     }
   }
   //Enable/disabled the GO IDs text box based on whether
   //    the Filter by GO IDs check box is checked
-  filter_by_go_ids = $('#query_diff_exp_transcripts_filter_by_go_ids');
+  filter_by_go_ids = $('#query_diff_exp_genes_filter_by_go_ids');
     filter_by_go_ids.change(filter_by_go_ids_checked_changed);
   function filter_by_go_ids_checked_changed(){
-    filter_by_go_ids = $('#query_diff_exp_transcripts_filter_by_go_ids');
+    filter_by_go_ids = $('#query_diff_exp_genes_filter_by_go_ids');
     if (filter_by_go_ids.is(':checked')){
-      $('#query_diff_exp_transcripts_go_ids').removeAttr("disabled");
+      $('#query_diff_exp_genes_go_ids').removeAttr("disabled");
     }
     else{
-      $('#query_diff_exp_transcripts_go_ids').attr("disabled", "disabled");
-    }
-  }
-  //Enable/disabled the transcript length select element and text box and 
-  //    based on whether the Filter by Transcript length check box is checked
-  filter_by_transcript_length = 
-    $('#query_diff_exp_transcripts_filter_by_transcript_length');
-    filter_by_transcript_length.change(
-      filter_by_transcript_length_checked_changed
-    );
-  function filter_by_transcript_length_checked_changed(){
-    filter_by_transcript_length = 
-      $('#query_diff_exp_transcripts_filter_by_transcript_length');
-    transcript_length_comparison_sign = 
-      $('#query_diff_exp_transcripts_transcript_length_comparison_sign');
-    transcript_length_value = 
-      $('#query_diff_exp_transcripts_transcript_length_value');
-    if (filter_by_transcript_length.is(':checked')){
-      transcript_length_comparison_sign.removeAttr("disabled");
-      transcript_length_value.removeAttr("disabled");
-    }
-    else{
-      transcript_length_comparison_sign.attr("disabled", "disabled");
-      transcript_length_value.attr("disabled", "disabled");
+      $('#query_diff_exp_genes_go_ids').attr("disabled", "disabled");
     }
   }
   //Enable/disabled based on whether
   //    the Filter by Transcript Name check box is checked
-  filter_by_transcript_name = 
-    $('#query_diff_exp_transcripts_filter_by_transcript_name');
-  filter_by_transcript_name.change(filter_by_transcript_name_checked_changed);
-  function filter_by_transcript_name_checked_changed(){
-    filter_by_transcript_name = 
-      $('#query_diff_exp_transcripts_filter_by_transcript_name');
-    if (filter_by_transcript_name.is(':checked')){
-      $('#query_diff_exp_transcripts_transcript_name').removeAttr("disabled");
+  filter_by_gene_name = 
+    $('#query_diff_exp_genes_filter_by_gene_name');
+  filter_by_gene_name.change(filter_by_gene_name_checked_changed);
+  function filter_by_gene_name_checked_changed(){
+    filter_by_gene_name = 
+      $('#query_diff_exp_genes_filter_by_gene_name');
+    if (filter_by_gene_name.is(':checked')){
+      $('#query_diff_exp_genes_gene_name').removeAttr("disabled");
     }
     else{
-      $('#query_diff_exp_transcripts_transcript_name').attr("disabled", "disabled");
+      $('#query_diff_exp_genes_gene_name').attr("disabled", "disabled");
     }
   }
 }
@@ -127,7 +103,7 @@ function set_up_events_for_filter_parameters(){
  */
 function set_up_downloadify_for_query_results_downloading(){
   Downloadify.create('downloadify',{
-    filename: function(){return 'query_diff_exp_transcripts.txt';},
+    filename: function(){return 'query_diff_exp_genes.txt';},
     data: get_downloable_file_text,
     onComplete: function(){ alert('Your File Has Been Saved!'); },
     onCancel: function(){ alert('You have cancelled the saving of this file.'); },

@@ -104,7 +104,8 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
     get 'query_analysis/query_diff_exp_transcripts'
     post 'query_analysis/query_diff_exp_transcripts'
 
-    get 'query_analysis/query_diff_exp_genes'
+    get  'query_analysis/query_diff_exp_genes'
+    post 'query_analysis/query_diff_exp_genes'
 
     get 'query_analysis/query_transcript_isoforms'
 

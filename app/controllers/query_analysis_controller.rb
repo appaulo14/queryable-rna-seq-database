@@ -2,6 +2,7 @@ class QueryAnalysisController < ApplicationController
     include Blast_Query
     require 'query_analysis/upload_trinity_with_edger_transcripts_and_genes.rb'
     require 'query_analysis/query_diff_exp_transcripts.rb'
+    require 'query_analysis/query_diff_exp_genes.rb'
     require 'query_analysis/get_gene_fastas.rb'
     require 'query_analysis/get_transcript_fasta.rb'
     
@@ -143,6 +144,27 @@ class QueryAnalysisController < ApplicationController
     end
 
     def query_diff_exp_genes
+      #Create the view model, giving the current user
+      @qdeg = Query_Diff_Exp_Genes.new(current_user)
+      #Which type of request was received?
+      if request.get?
+        #If the dataset_id parameter makes the view model invalid, 
+        #    ignore the dataset_id parameter
+        @qdeg.set_attributes_and_defaults(:dataset_id => params[:dataset_id])
+        if not @qdeg.valid?
+          @qdeg.set_attributes_and_defaults(:dataset_id => nil)
+        end
+      elsif request.post?
+        #Fill in the inputs from the view
+        @qdeg.set_attributes_and_defaults(params[:query_diff_exp_genes])
+        # If valid, query and return results; otherwise return failure
+        if @qdeg.valid?
+          @qdeg.query!()
+          flash[:success] = "Success"
+        else
+          flash[:success]="Failure"
+        end
+      end
     end
 
     def query_transcript_isoforms

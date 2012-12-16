@@ -1,2 +1,113 @@
-<h1>QueryAnalysis#query_diff_exp_genes</h1>
-<p>Find me in app/views/query_analysis/query_diff_exp_genes.html.erb</p>
+<%= render 'shared/error_messages', :object => @qdeg %>
+<script type='text/javascript' src='query_diff_exp_genes.js' ></script>
+<%= javascript_include_tag 'downloadify/swfobject.js' %>
+<%= javascript_include_tag 'downloadify/downloadify.min.js' %>
+<%= form_for(@qdeg, :url => 'query_diff_exp_genes') do |qdeg| %>
+  <h1>Please select your differential gene expression search options</h1>
+  <p>
+    <%= qdeg.label :dataset_id, "Dataset to query" %>
+    <%= qdeg.select :dataset_id, options_for_select(@qdeg.names_and_ids_for_available_datasets, @qdeg.dataset_id) %><br/>
+    <%= #qdeg.label :samples_to_compare, "Samples to compare" 
+    %>
+    <%= #qdeg.select :samples_to_compare, options_for_select(@qdeg.available_samples_for_comparison) 
+    %>
+    <%= label :samples_to_compare, "Samples to compare" %>
+    <%= qdeg.select :sample_1, options_for_select(@qdeg.available_samples_for_comparison,@qdeg.sample_1)  %> 
+    vs 
+    <%= qdeg.select :sample_2, options_for_select(@qdeg.available_samples_for_comparison,@qdeg.sample_2) %>
+  </p>
+  <p>
+    <div>
+        <%= label(:fdr_or_pvalue, "Filter By:") %>
+        <%= qdeg.radio_button(:fdr_or_pvalue, :p_value) %>
+        <%= qdeg.label(:filter_by_p_value, "P-value") %>
+        <%= qdeg.radio_button(:fdr_or_pvalue, :fdr) %>
+        <%= qdeg.label(:filter_by_fdr, "FDR") %>
+    </div>
+    <div>
+        <%= qdeg.label(:cutoff, "Select cutoff:") %>
+        <!--<%= #qdeg.select(:cutoff, options_for_select([['0.01', 0.01], ['0.005', 0.005],['0.001', 0.001],['0.0001', 0.0001],['0.00001', 0.00001],['Other', 'Other']],'Other'))
+        %>
+        <%= #qdeg.label(:other_cutoff_value, "Enter Value:") 
+        %>-->
+        <%= qdeg.text_field(:cutoff, {:size=>10}) %>
+    </div>
+  </p>
+  <br/>
+  <h2>Query filtering options</h2>
+  <p>
+    <div>
+        <%= qdeg.check_box(:filter_by_go_names) %>
+        <%= qdeg.label(:go_names, "GO Names (for associated genes) (separated by semicolons)") %>
+        <%= qdeg.text_field(:go_names) %>
+        <%= link_to('Browse GO Terms','http://amigo.geneontology.org/cgi-bin/amigo/browse.cgi', :target => '_blank') %>
+    </div>
+    <div>
+        <%= qdeg.check_box(:filter_by_go_ids) %>
+        <%= qdeg.label(:go_ids, "GO IDs (for associated genes) (separated by semicolons)") %>
+        <%= qdeg.text_field(:go_ids) %>
+        <%= link_to('Browse GO Terms','http://amigo.geneontology.org/cgi-bin/amigo/browse.cgi', :target => '_blank') %>
+    </div>
+    <div>
+        <%= qdeg.check_box(:filter_by_gene_name) %>
+        <%= qdeg.label(:gene_name, "Gene name:") %>
+        <%= qdeg.text_field(:gene_name) %>
+    </div>
+  </p>
+  <p><%= submit_tag("Query") %></p>
+<% end %>
+<!--Section for the query results-->
+<% if @qdeg.show_results? %>
+  <p><%= @qdeg.results.length %> results found for <em><b><%= @qdeg.sample_1 %></b> vs <b><%= @qdeg.sample_2 %></b></em></p>
+  <p id="downloadify">
+      You must have Flash 10 installed to download this file.
+  </p>
+  <!--Table containing the query results-->
+  <table border="1" id="query_results_table">
+      <thead>
+          <tr>
+              <th data-sort='string'>Gene&nbsp;<%= neutral_sort_arrow %></th>
+              <th data-sort='string'>Associated Transcripts&nbsp;<%= neutral_sort_arrow %></th>
+              <th data-sort='string'>GO Terms&nbsp;<%= neutral_sort_arrow %></th>
+              <th data-sort='float'>P-value&nbsp;<%= neutral_sort_arrow %></th>
+              <th data-sort='float'>FDR&nbsp;<%= neutral_sort_arrow %></th>
+              <th data-sort='float'><%= @qdeg.sample_1 %> FPKM&nbsp;<%= neutral_sort_arrow %></th>
+              <th data-sort='float'><%= @qdeg.sample_2 %> FPKM&nbsp;<%= neutral_sort_arrow %></th>
+              <th data-sort='float'>Log Fold Change&nbsp;<%= neutral_sort_arrow %></th>
+          </tr>
+      </thead>
+      <tbody>
+          <% @qdeg.results.each do |result| %>
+              <tr>
+                  <td>
+                    <%= link_to_fasta_sequences_for_gene(@qdeg.dataset_id, result[:gene_name]) %>
+                  </td>
+                  <td>
+                    <ul>
+                    <% result[:transcript_names].sort.each do |transcript_name| %>
+                      <li><%= link_to_fasta_sequence_for_transcript(@qdeg.dataset_id, transcript_name) %></li>
+                    <% end %>
+                    </ul>
+                  </td>
+                  <td>
+                    <% if result[:go_terms].empty? == false %>
+                      <ul>
+                      <!-- Sort by ascending GO ID for the go terms-->
+                      <% result[:go_terms].sort{|a,b| a.id.gsub(/GO:/,'').to_i <=> b.id.gsub(/GO:/,'').to_i}.each do |go_term| %>
+                        <li><%= link_to_amigo_web_page_for_term("#{go_term.term} [#{go_term.id}]",go_term.id) %></li>
+                      <% end %>
+                      </ul>
+                    <% else %>
+                      No GO ids found.
+                    <% end %>
+                  </td>
+                  <td><%= result[:p_value] %></td>
+                  <td><%= result[:fdr] %></td>
+                  <td><%= result[:sample_1_fpkm] %></td>
+                  <td><%= result[:sample_2_fpkm] %></td>
+                  <td><%= result[:log_fold_change] %></td>
+              </tr>
+          <% end %>
+      </tbody>
+  </table>
+<% end %>
