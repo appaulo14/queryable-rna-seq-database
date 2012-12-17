@@ -3,7 +3,7 @@ class Query_Diff_Exp_Transcripts
   include ActiveModel::Conversion
   extend ActiveModel::Naming
   
-  attr_accessor :dataset_id, :samples_to_compare, :sample_1, :sample_2,
+  attr_accessor :dataset_id, :sample_1, :sample_2,
                 :fdr_or_pvalue, :cutoff, :filter_by_go_names, :go_names,
                 :filter_by_go_ids, :go_ids, :filter_by_transcript_length, 
                 :transcript_length_comparison_sign, :transcript_length_value,
@@ -93,7 +93,7 @@ class Query_Diff_Exp_Transcripts
         'fpkm_samples.sample_name' => [@sample_1,@sample_2]
       ).
       select(select_string) 
-    #Extra the query results to form that can be put in the view
+    #Extract the query results to form that can be put in the view
     @results = []
     query_results.each do |query_result|
       #Do a few more minor queries to get the data in the needed format

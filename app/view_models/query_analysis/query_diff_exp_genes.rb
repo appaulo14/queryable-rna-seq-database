@@ -81,7 +81,7 @@ class Query_Diff_Exp_Genes
         'fpkm_samples.sample_name' => [@sample_1,@sample_2]
       ).
       select(select_string) 
-    #Extra the query results to form that can be put in the view
+    #Extract the query results to form that can be put in the view
     @results = []
     query_results.each do |query_result|
       #Do a few more minor queries to get the data in the needed format

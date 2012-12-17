@@ -3,8 +3,8 @@ class Query_Transcript_Isoforms
   include ActiveModel::Conversion
   extend ActiveModel::Naming
   
-  attr_accessor :dataset_id, :samples_to_compare, :sample_1, :sample_2,
-                :fdr_or_pvalue, :cutoff, :filter_by_class_codes, :class_codes,
+  attr_accessor :dataset_id, :sample,
+                :fdr_or_pvalue, :cutoff, :filter_by_class_codes,
                 :class_code_equal, :class_code_c, :class_code_j, :class_code_e,
                 :class_code_i, :class_code_o, :class_code_p, :class_code_r,
                 :class_code_u, :class_code_x, :class_code_s, :class_code_dot,
@@ -75,12 +75,7 @@ class Query_Transcript_Isoforms
     @available_samples_for_comparison = 
         Dataset.joins(:transcripts => :fpkm_samples).
         where(:id => @dataset_id).pluck('fpkm_samples.sample_name').uniq
-    @sample_1 = @available_samples_for_comparison[0]
-    @sample_2 = @available_samples_for_comparison[1]
     @show_results = false
-    #Set available class codes for filtering
-    @available_class_codes = 
-        TranscriptFpkmTrackingInformation::POSSIBLE_CLASS_CODES
   end
   
   def query!()
@@ -89,39 +84,39 @@ class Query_Transcript_Isoforms
     #Create and run the query
     select_string = 'transcripts.id as transcript_id,' +
                     'genes.name_from_program as gene_name,' +
-                    'differential_expression_tests.p_value,' +
-                    'differential_expression_tests.fdr,' +
-                    'differential_expression_tests.log_fold_change as logfc,' +
-                    'differential_expression_tests.fpkm_sample_1_id,' +
-                    'differential_expression_tests.fpkm_sample_2_id '
+                    'transcript_fpkm_tracking_informations.class_code,' +
+                    'transcript_fpkm_tracking_informations.length,' +
+                    'transcript_fpkm_tracking_informations.coverage,' +
+                    'fpkm_samples.fpkm,' +
+                    'fpkm_samples.fpkm_lo,' +
+                    'fpkm_samples.fpkm_hi,' +
+                    'fpkm_samples.status'
     query_results = 
       Dataset.joins(
-        :transcripts => [:differential_expression_tests, :gene, :fpkm_samples]
+        :transcripts => [:transcript_fpkm_tracking_information, :gene, :fpkm_samples]
       ).
       where(
         'datasets.id' => @dataset_id,
-        'fpkm_samples.sample_name' => [@sample_1,@sample_2]
+        'fpkm_samples.sample_name' => @sample
       ).
       select(select_string) 
-    #Extra the query results to form that can be put in the view
+    #Extract the query results to form that can be put in the view
     @results = []
     query_results.each do |query_result|
       #Do a few more minor queries to get the data in the needed format
       transcript = Transcript.find_by_id(query_result.transcript_id)
-      sample_1_fpkm = FpkmSample.find_by_id(query_result.fpkm_sample_1_id).fpkm
-      sample_2_fpkm = FpkmSample.find_by_id(query_result.fpkm_sample_1_id).fpkm
       #Fill in the result hash that the view will use to display the data
       result = {}
       result[:transcript_name] = transcript.name_from_program
       result[:gene_name] = query_result.gene_name
       result[:go_terms] = transcript.go_terms
-      result[:p_value] = query_result.p_value
-      result[:fdr] = query_result.fdr
-      result[:sample_1_name] = @sample_1
-      result[:sample_2_name] = @sample_2
-      result[:sample_1_fpkm] =  sample_1_fpkm
-      result[:sample_2_fpkm] =  sample_2_fpkm
-      result[:log_fold_change] = query_result.logfc
+      result[:class_code] = query_result.class_code
+      result[:transcript_length] = query_result.length
+      result[:coverage] = query_result.coverage
+      result[:fpkm] = query_result.coverage
+      result[:fpkm_lo] =  query_result.fpkm_lo
+      result[:fpkm_hi] =  query_result.fpkm_hi
+      result[:status] = query_result.status
       @results << result
     end
     #Mark the search results as viewable

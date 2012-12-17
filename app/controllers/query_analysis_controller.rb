@@ -181,7 +181,7 @@ class QueryAnalysisController < ApplicationController
         end
       elsif request.post?
         #Fill in the inputs from the view
-        @qti.set_attributes_and_defaults(params[:query_diff_exp_transcripts])
+        @qti.set_attributes_and_defaults(params[:query_transcript_isoforms])
         # If valid, query and return results; otherwise return failure
         if @qti.valid?
           @qti.query!()

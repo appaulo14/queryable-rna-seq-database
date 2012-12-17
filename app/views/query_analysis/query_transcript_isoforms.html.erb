@@ -11,16 +11,8 @@
     %>
     <%= #qti.select :samples_to_compare, options_for_select(@qti.available_samples_for_comparison) 
     %>
-    <%= label :samples_to_compare, "Samples to compare" %>
-    <%= qti.select :sample_1, options_for_select(@qti.available_samples_for_comparison,@qti.sample_1)  %> 
-    vs 
-    <%= qti.select :sample_2, options_for_select(@qti.available_samples_for_comparison,@qti.sample_2) %>
-  </p>
-  <p>
-    <% @qti.available_samples_for_comparison.each do |sample| %>
-      <% qti.check_box "#{sample}" %>
-      <% qti.label "#{sample}" %>
-    <% end %>
+    <%= label :samples_to_compare, "Select Sample" %>
+    <%= qti.select :sample, options_for_select(@qti.available_samples_for_comparison,@qti.sample)  %> 
   </p>
   <p>
     <div>
@@ -131,7 +123,7 @@
 <% end %>
 <!--Section for the query results-->
 <% if @qti.show_results? %>
-  <p><%= @qti.results.length %> results found for <em><b><%= @qti.sample_1 %></b> vs <b><%= @qti.sample_2 %></b></em></p>
+  <p><%= @qti.results.length %> results found for <em><b><%= @qti.sample %></b></em></p>
   <p id="downloadify">
       You must have Flash 10 installed to download this file.
   </p>
@@ -145,12 +137,16 @@
               <th data-sort='string'>Class Code&nbsp;<%= neutral_sort_arrow %></th>
               <th data-sort='float'>Transcript length&nbsp;<%= neutral_sort_arrow %></th>
               <th data-sort='float'>Coverage&nbsp;<%= neutral_sort_arrow %></th>
-              <% @qti.fpkm_samples.each do |fpkm_sample| %>
+              <th data-sort='float'><%= @qti.sample %> FPKM&nbsp;<%= neutral_sort_arrow %></th>
+              <th data-sort='float'><%= @qti.sample %> FPKM Lower Bound&nbsp;<%= neutral_sort_arrow %></th>
+              <th data-sort='float'><%= @qti.sample %> FPKM Upper Bound&nbsp;<%= neutral_sort_arrow %></th>
+              <th data-sort='float'><%= @qti.sample %> Quantification Status&nbsp;<%= neutral_sort_arrow %></th>
+              <!--<% FpkmSample.all.each do |fpkm_sample| %>
                 <th data-sort='float'><%= fpkm_sample.sample_name %> FPKM&nbsp;<%= neutral_sort_arrow %></th>
                 <th data-sort='float'><%= fpkm_sample.sample_name %> FPKM Lower Bound&nbsp;<%= neutral_sort_arrow %></th>
                 <th data-sort='float'><%= fpkm_sample.sample_name %> FPKM Upper Bound&nbsp;<%= neutral_sort_arrow %></th>
                 <th data-sort='float'><%= fpkm_sample.sample_name %> Quantification Status&nbsp;<%= neutral_sort_arrow %></th>
-              <% end %>
+              <% end %>-->
           </tr>
       </thead>
       <tbody>
@@ -174,11 +170,13 @@
                       No GO ids found.
                     <% end %>
                   </td>
-                  <td><%= result[:p_value] %></td>
-                  <td><%= result[:fdr] %></td>
-                  <td><%= result[:sample_1_fpkm] %></td>
-                  <td><%= result[:sample_2_fpkm] %></td>
-                  <td><%= result[:log_fold_change] %></td>
+                  <td><%= result[:class_code] %></td>
+                  <td><%= result[:transcript_length] %></td>
+                  <td><%= result[:coverage] %></td>
+                  <td><%= result[:fpkm] %></td>
+                  <td><%= result[:fpkm_lo] %></td>
+                  <td><%= result[:fpkm_hi] %></td>
+                  <td><%= result[:status] %></td>
               </tr>
           <% end %>
       </tbody>
