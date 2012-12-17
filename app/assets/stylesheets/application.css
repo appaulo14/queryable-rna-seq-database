@@ -10,6 +10,7 @@
  *
  *= require_self
  *= require qtip/jquery.qtip
+ *= require k-state/k-state
  *= require_tree .
  */
  
@@ -35,7 +36,7 @@ body {
     width: auto;
 }
 
-#header_title{
+#header_title {
     display:inline;
     vertical-align:10%;
     padding:5px;
@@ -74,17 +75,20 @@ a, a:link, a:active{
     color: #000FFF;
     text-decoration: underline;
 }
+
+a:visited {
+  color: #50017C;
+}
   
   /* Navigation */
-
-nav {
-  
-}
+  /* See http://csswizardry.com/2011/02/creating-a-pure-css-dropdown-menu/ 
+   * for a tutorial to help with the drop down menus for navigation 
+   */
 
 nav {
   background-color: white;
   padding: 0 0.7em;
-  white-space: nowrap;
+  /*white-space: nowrap;*/
   -moz-border-radius:    10px;
   -webkit-border-radius: 10px;
   border-radius:         10px;
@@ -94,13 +98,13 @@ nav {
 }
 
 nav ul {
+  background:white; 
   margin: 0;
   padding: 0;
 }
 
 nav ul li {
   list-style-type: none;
-  display: inline-block;
   padding: 0.2em 0;
 }
 
@@ -109,29 +113,32 @@ nav ul li a {
   font-weight: bold;
 }
 
-a:visited {
-  color: #50017C;
-  text-decoration: underline;
+nav ul li{
+  float:left;
+  position:relative;
+}
+nav ul a{
+  display:block;
 }
 
-nav ul li a:hover {
-  text-decoration: underline;
+/* For drop down menus in the Navigation bar */
+nav ul ul{
+  background:white; 
+  list-style:none;
+  position:absolute;
+  left:-9999px; /* From CSS Wizard (See Above): "Hide off-screen when not needed (this is more accessible than display:none;)" */
+  display:block;
 }
 
-/* Sign up button */
+/*From CSS Wizard (See Above): "Display the dropdown on hover" */
+nav ul li:hover ul{
+  left:0; /* From CSS Wizard (See Above): "Bring back on-screen when needed" */
+}
 
-/*a.signup_button {
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
-  text-align: center;
-  width: 190px;
-  color: #fff;
-  background: #006400;
-  font-size: 150%;
-  font-weight: bold;
-  padding: 20px;
-}*/
+nav ul li ul li a{
+  /* From CSS Wizard (See Above): "Stop text wrapping and creating multi-line dropdown items" */
+  white-space:nowrap; 
+}
 
 /* Round corners */
 
@@ -152,36 +159,9 @@ nav ul li a:hover {
   text-align:center;
   padding-top:20px
 }
-/* User show page */
 
 td {
     vertical-align:top
-}
-
-table.profile {
-  width: 100%;
-  margin-bottom: 0;
-}
-
-td.main {
-  width: 70%;
-  padding: 1em;
-}
-
-td.sidebar {
-  width: 30%;
-  padding: 1em;
-  vertical-align: top;
-  background: #ffc;
-}
-
-.profile img.gravatar {
-  border: 1px solid #999;
-  margin-bottom: -15px;
-}
-
-div.field, div.actions  {
-  margin-bottom: 10px;
 }
 
 .field_with_errors  {
@@ -224,95 +204,4 @@ div.field, div.actions  {
   font-size: 12px;
   list-style: square;
 }
-
-ul.users {
-  margin-top: 1em;
-}
-
-.users li {
-  list-style: none;
-}
-
-h1.micropost {
-  margin-bottom: 0.3em;
-}
-
-table.microposts {
-  margin-top: 1em;
-}
-
-table.microposts tr {
-  height: 70px;
-}
-
-table.microposts tr td.gravatar {
-  border-top: 1px solid #ccc;
-  vertical-align: top;
-  width: 50px;
-}
-
-table.microposts tr td.micropost {
-  border-top: 1px solid #ccc;
-  vertical-align: top;
-  padding-top: 10px;
-}
-
-table.microposts tr td.micropost span.timestamp {
-  display: block;
-  font-size: 85%;
-  color: #666;
-}
-
-div.user_info img {
-  padding-right: 0.1em;
-}
-
-div.user_info a {
-  text-decoration: none;
-}
-
-div.user_info span.user_name {
-  position: absolute;
-}
-
-div.user_info span.microposts {
-  font-size: 80%;
-}
-
-form.new_micropost {
-  margin-bottom: 2em;
-}
-
-form.new_micropost textarea {
-  height: 4em;
-  margin-bottom: 0;
-}
-
-//K-state style sheet
-H1 {
-font-family: Arial, Helvetica, sans-serif;
-font-weight: bold;
-font-style: italic;
-text-align: center;
-font-size: 130%;
-}
-H2 {
-font-family: Arial, Helvetica, sans-serif;
-font-weight: bold;
-font-size: 115%;
-}
-H3, H4, H5, H6 {
-font-family: Arial, Helvetica, sans-serif;
-font-weight: bold;
-}
-A.mailto {
-font-style: italic;
-}
-.accesskey {
-text-decoration: underline;
-}
-A.nounder {text-decoration: none; color: black;}
-A:focus {text-decoration: underline; color: blue;}
-A:hover {text-decoration: underline; color: blue;}
-A:active {text-decoration: underline; color: red;}
 

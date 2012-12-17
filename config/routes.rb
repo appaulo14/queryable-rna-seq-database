@@ -101,6 +101,8 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
     get 'query_analysis/upload_trinity_with_edger_genes_and_transcripts'
     post 'query_analysis/upload_trinity_with_edger_genes_and_transcripts'
 
+    get 'query_analysis/diff_exp_main_menu'
+    
     get 'query_analysis/query_diff_exp_transcripts'
     post 'query_analysis/query_diff_exp_transcripts'
 
@@ -111,6 +113,8 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
     post 'query_analysis/query_transcript_isoforms'
 
     get 'query_analysis/query_gene_isoforms'
+    
+    get 'query_analysis/blast_main_menu'
 
     get  'query_analysis/query_blast_db'
     get  'query_analysis/query_blast_db_2'

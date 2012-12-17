@@ -3,7 +3,7 @@
 <%= javascript_include_tag 'downloadify/swfobject.js' %>
 <%= javascript_include_tag 'downloadify/downloadify.min.js' %>
 <%= form_for(@qdeg, :url => 'query_diff_exp_genes') do |qdeg| %>
-  <h1>Please select your differential gene expression search options</h1>
+  <h1>Please select your gene differential expression search options</h1>
   <p>
     <%= qdeg.label :dataset_id, "Dataset to query" %>
     <%= qdeg.select :dataset_id, options_for_select(@qdeg.names_and_ids_for_available_datasets, @qdeg.dataset_id) %><br/>

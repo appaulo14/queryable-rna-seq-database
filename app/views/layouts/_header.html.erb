@@ -10,19 +10,31 @@
         <li><%= link_to 'Upload processed dataset',
                         '/query_analysis/upload_main_menu' %>
         </li>
-        <li>
-          <%= link_to 'Transcript Differential Expression', 
-                      '/query_analysis/query_diff_exp_transcripts' %>
-        </li>
-        <li>
-          <%= link_to 'Gene Differential Expression', 
-                      '/query_analysis/query_diff_exp_genes' %>
+        <li><%= link_to 'Differential Expression', 
+                        '/query_analysis/diff_exp_main_menu' %>
+          <ul>
+            <li>
+              <%= link_to 'Transcript Differential Expression', 
+                          '/query_analysis/query_diff_exp_transcripts' %>
+            </li>
+            <li>
+              <%= link_to 'Gene Differential Expression', 
+                          '/query_analysis/query_diff_exp_genes' %>
+            </li>
+          </ul>
         </li>
         <li>
           <%= link_to 'Transcript Isoforms', 
                       '/query_analysis/query_transcript_isoforms' %>
         </li>
-        <li><%= link_to 'BLAST', '/query_analysis/query_blast_db' %></li>
+        <li><%= link_to 'BLAST', 
+                        '/query_analysis/blast_main_menu' %>
+          <ul>
+            <li><%= link_to 'BLASTN', '/query_analysis/blastn' %></li>
+            <li><%= link_to 'TBLASTN', '/query_analysis/tblastn' %></li>
+            <li><%= link_to 'TBLASTX', '/query_analysis/tblastx' %></li>
+          </ul>
+        </li>
         <li>
           <%= link_to('Edit registration', edit_user_registration_path) %>
         </li>
