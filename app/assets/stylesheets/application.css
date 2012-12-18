@@ -122,7 +122,8 @@ nav ul a{
 }
 
 /* For drop down menus in the Navigation bar */
-nav ul ul{
+/*nav ul ul*/
+.drop-down-menu{
   background:white; 
   list-style:none;
   position:absolute;
@@ -130,7 +131,7 @@ nav ul ul{
   display:block;
 }
 
-#l2{
+.drop-down-sub-menu{
   background:white; 
   list-style:none;
   position:absolute;
@@ -139,13 +140,14 @@ nav ul ul{
 }
 
 /*From CSS Wizardry (See Above): "Display the dropdown on hover" */
-nav ul li:hover ul{
+nav ul li:hover .drop-down-menu{
   left:0; /* From CSS Wizardry (See Above): "Bring back on-screen when needed" */
+  z-index:9999;
 }
 
-nav ul li:hover ul li:hover #l2{
-  left:170px; /* From CSS Wizardry (See Above): "Bring back on-screen when needed" */
-  top:0px;
+nav ul li:hover ul li:hover .drop-down-sub-menu{
+  left:100%; /* From CSS Wizardry (See Above): "Bring back on-screen when needed" */
+  top:0px;  
 }
 
 /*nav ul li ul li a*/
