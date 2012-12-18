@@ -130,13 +130,13 @@ nav ul ul{
   display:block;
 }
 
-/*From CSS Wizard (See Above): "Display the dropdown on hover" */
+/*From CSS Wizardry (See Above): "Display the dropdown on hover" */
 nav ul li:hover ul{
-  left:0; /* From CSS Wizard (See Above): "Bring back on-screen when needed" */
+  left:0; /* From CSS Wizardry (See Above): "Bring back on-screen when needed" */
 }
 
 nav ul li ul li a{
-  /* From CSS Wizard (See Above): "Stop text wrapping and creating multi-line dropdown items" */
+  /* From CSS Wizardry (See Above): "Stop text wrapping and creating multi-line dropdown items" */
   white-space:nowrap; 
 }
 

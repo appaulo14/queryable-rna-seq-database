@@ -1,0 +1,36 @@
+jQuery(document).ready(function($) {
+  //Ensure that the fasta selection elements are in their correct state 
+  //    of being enabled or disabled by running the change event
+  fasta_input_radio_button_changed();
+  //Bind the events for the fasta selection radio buttons.
+  $('#blastn_query_use_fasta_sequence_or_file_use_fasta_sequence').change(fasta_input_radio_button_changed);
+  $('#blastn_query_use_fasta_sequence_or_file_use_fasta_file').change(fasta_input_radio_button_changed)
+});
+
+function fasta_input_radio_button_changed(){
+  fasta_file_radio_button = 
+    $('#blastn_query_use_fasta_sequence_or_file_use_fasta_file');
+  fasta_sequence_radio_button = 
+    $('#blastn_query_use_fasta_sequence_or_file_use_fasta_sequence');
+  if (fasta_sequence_radio_button.is(':checked')){
+    $('#blastn_query_fasta_sequence').removeAttr("disabled");
+    $('#blastn_query_fasta_file').attr("disabled", "disabled");
+  }
+  else{
+    $('#blastn_query_fasta_sequence').attr("disabled", "disabled");
+    $('#blastn_query_fasta_file').removeAttr("disabled");
+  }
+}
+
+function fasta_file_radio_button_selected(){
+}
+
+function clear_sequence(){
+    var fasta_text_area = document.getElementById("blast_query_fasta_sequence");
+//         var subsequence_from = document.getElementById("subsequence_from");
+//         var subsequence_to = document.getElementById("subsequence_to");
+//         subsequence_from.value='';
+//         subsequence_to.value='';
+    fasta_text_area.value='';
+    fasta_text_area.focus();
+}

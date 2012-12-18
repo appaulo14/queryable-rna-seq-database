@@ -9,6 +9,15 @@
         <li><%= link_to 'Process reads', '/processing_analysis' %></li>
         <li><%= link_to 'Upload processed dataset',
                         '/query_analysis/upload_main_menu' %>
+          <ul>
+            <li><%= link_to 'Trinity with EdgeR', '#' %>
+              <ul>
+                <li><%= link_to 'Genes and Transcripts', '#' %></li>
+                <li><%= link_to 'Transcripts Only', '#' %></li>
+              </ul>
+            </li>
+            <li><%= link_to 'Cuffdiff', '#' %></li>
+          </ul>
         </li>
         <li><%= link_to 'Differential Expression', 
                         '/query_analysis/diff_exp_main_menu' %>

@@ -1,3 +1,4 @@
+<script type='text/javascript' src='blastn.js'></script>
 <%= render 'shared/error_messages', :object => @blastn_query %>
 <%= form_for(@blastn_query,{:url => "blastn"}) do |bq| %>
   <%= #render 'blast_generic_args', :bq => bq 
@@ -89,15 +90,3 @@
 
     <p><%= button_tag("Clear Sequence", :onclick=>"clear_sequence();", :type=>"button") %> <%= submit_tag("BLAST", :disable_with => "BLASTing...") %></p>
 <% end %>
-
-<script type="text/javascript">
-    function clear_sequence(){
-        var fasta_text_area = document.getElementById("blast_query_fasta_sequence");
-    //         var subsequence_from = document.getElementById("subsequence_from");
-    //         var subsequence_to = document.getElementById("subsequence_to");
-    //         subsequence_from.value='';
-    //         subsequence_to.value='';
-        fasta_text_area.value='';
-        fasta_text_area.focus();
-    }
-</script>

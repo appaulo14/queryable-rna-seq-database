@@ -44,7 +44,10 @@ class Blastn_Query #< Blast_Query::Base
       @reward = 1 if @reward.blank?
       @penalty = -2 if @penalty.blank?
       @use_soft_masking = true if @use_soft_masking.blank?
-      @use_lowercase_masking = falsee if @use_lowercase_masking.blank?
+      @use_lowercase_masking = false if @use_lowercase_masking.blank?
+      if @use_fasta_sequence_or_file.blank?
+        @use_fasta_sequence_or_file = :use_fasta_sequence
+      end
     end
     
     def query()

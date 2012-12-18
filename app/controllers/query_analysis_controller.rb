@@ -217,15 +217,17 @@ class QueryAnalysisController < ApplicationController
     def blastn
         if request.get?
             @blastn_query = Blastn_Query.new(current_user)
+            @blastn_query.set_attributes_and_defaults()
         elsif request.post?
-            @blastn_query = Blastn_Query.new(current_user)
-            @blastn_query.set_attributes_and_defaults(params[:blastn_query])
-            debugger if ENV['RAILS_DEBUG'] == "true"
-            if @blastn_query.valid?
-                flash[:success] = "Success"
-            else
-                flash[:success]="Failure"
-            end
+          debugger
+          @blastn_query = Blastn_Query.new(current_user)
+          @blastn_query.set_attributes_and_defaults(params[:blastn_query])
+          debugger if ENV['RAILS_DEBUG'] == "true"
+          if @blastn_query.valid?
+              flash[:success] = "Success"
+          else
+              flash[:success]="Failure"
+          end
         end
     end
 
