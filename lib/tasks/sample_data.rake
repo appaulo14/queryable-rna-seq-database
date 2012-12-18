@@ -1,5 +1,6 @@
 require 'faker'
 require 'bio'
+require 'tempfile'
 
 namespace :db do
   desc "Fill database with sample data"
@@ -12,6 +13,7 @@ namespace :db do
     make_datasets
     make_genes
     make_transcripts
+    make_blast_databases
     make_fpkm_samples
     make_transcript_fpkm_tracking_information
     make_differential_expression_tests
@@ -32,7 +34,10 @@ end
 def make_datasets
   print 'Populating datasets...'
   10.times do |n|
-    Dataset.create!(:user => @user, :name => Faker::Lorem.word)
+    Dataset.create!(:user => @user, 
+                    :name => Faker::Lorem.word,
+                    #The Blast database will actually be created later
+                    :blast_db_location => "db/blast_databases/#{n}_db")
   end
   puts 'Done'
 end
@@ -62,7 +67,7 @@ def make_transcripts
     ds.genes.each do |gene|
       rand(1..6).times do |n|
         #Create the transcript name
-        transcript_name = "Transcript #{transcript_count}"
+        transcript_name = "Transcript_#{transcript_count}"
         transcript_count += 1
         #Create a random fasta description and sequence
         fasta_description = "#{transcript_name} gene=#{gene.name_from_program}"
@@ -74,12 +79,35 @@ def make_transcripts
         #Create the transcript
         transcript = 
             Transcript.create!(:dataset => ds,
-                              :gene => gene,
-                              :fasta_sequence => random_fasta_sequence,
-                              :name_from_program => transcript_name,
-                              :fasta_description => fasta_description)
+                               :gene => gene,
+                               :fasta_sequence => random_fasta_sequence,
+                               :name_from_program => transcript_name,
+                               :fasta_description => fasta_description)
       end
     end
+  end
+  puts 'Done'
+end
+
+def make_blast_databases
+  print 'Populating blast databases...'
+  Dataset.all.each do |ds|
+    #Create a temporary file to use to create the blast database
+    tmpfasta = Tempfile.new('tmpfasta')
+    #Write all the fastas for the dataset to the temporary file
+    ds.transcripts.each do |transcript|
+      tmpfasta.write(">#{transcript.fasta_description}\n")
+      tmpfasta.write("#{transcript.fasta_sequence}\n")
+    end
+    tmpfasta.rewind
+    tmpfasta.close
+    #Create the blast database file for the dataset and save its location
+    success = system("makeblastdb -in #{tmpfasta.path} -title #{ds.id}_db " +
+                     "-out #{ds.blast_db_location}-hash_index -dbtype nucl " +
+                     "-parse_seqids")
+    exit if success == false
+    #Close and unlink the temporary file when finished
+    tmpfasta.unlink
   end
   puts 'Done'
 end

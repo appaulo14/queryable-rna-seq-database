@@ -3,21 +3,12 @@
 <%= form_for(@blastn_query,{:url => "blastn"}) do |bq| %>
   <%= #render 'blast_generic_args', :bq => bq 
   %>
-  <h2>Enter a Query Sequence</h2>
-<!--Enter or upload fasta sequence-->
+  <h2>Choose Data Set to Search Using Blastn's Megablast</h2>
   <p>
-    <%= label(:use_fasta_sequence_or_file, 'Use Fasta Sequence or File?') %>
-    <div>
-      <%= bq.radio_button(:use_fasta_sequence_or_file, :use_fasta_sequence) %>
-      <%= bq.label :fasta_sequence, "Enter sequence below in FASTA format" %><br/>
-      <%= bq.text_area :fasta_sequence, {:cols=>80, :rows => 6} %><br/>
-    </div>
-    <div>
-      <%= bq.radio_button(:use_fasta_sequence_or_file, :use_fasta_file) %>
-      <%= bq.label :fasta_file, "Or load it from disk" %><br/>
-      <%= bq.file_field :fasta_file %><br/>
-    </div>
+      <%= label(:select_dataset, "Dataset:") %>
+      <%= select_tag(:select_program, options_for_select([['Mus musculus 8.10.2012', '72'],['Mus musculus 5.11.2012', '64'],['Rattus norvegicus 18','45']],'72')) %>
   </p>
+  <hr/>
   <!--Select a subsequence of the fasta to use-->
   <!--<p>
   Set subsequence: 
@@ -25,15 +16,22 @@
       %>
       <%= #bq.label :subsequence_to, "To" %><%= bq.text_field :subsequence_to
       %>
-  </p>-->
-  <p><%= button_tag("Clear Sequence", :onclick=>"clear_sequence();", :type=>"button") %> <%= submit_tag("Search") %></p>
-  <hr/>
-  <h2>Choose Data Set to Search</h2>
-  <p>
-      <%= label(:select_dataset, "Dataset:") %>
-      <%= select_tag(:select_program, options_for_select([['Mus musculus 8.10.2012', '72'],['Mus musculus 5.11.2012', '64'],['Rattus norvegicus 18','45']],'72')) %>
-  </p>
-  <hr/>
+  -->
+  <h2>Enter a Query Sequence</h2>
+<!--Enter or upload fasta sequence-->
+    <p>
+      <div>
+        <%= bq.radio_button(:use_fasta_sequence_or_file, :use_fasta_sequence) %>
+        <%= bq.label :fasta_sequence, "Enter sequence below in FASTA format" %><br/>
+        <%= bq.text_area :fasta_sequence, {:cols=>80, :rows => 6} %><br/>
+      </div>
+      <div>
+        <%= bq.radio_button(:use_fasta_sequence_or_file, :use_fasta_file) %>
+        <%= bq.label :fasta_file, "Or load it from disk" %><br/>
+        <%= bq.file_field :fasta_file %><br/>
+      </div>
+    </p>
+    <hr/>
   <h2>Alogirthm settings</h2>
   <p>
       The query sequence is filtered for low complexity regions by default.<br/>
@@ -43,7 +41,8 @@
   </p>
   <p>
       <!--<label for="e_value">Expect (e-value)</label><%= select_tag(:e_evalue, options_for_select([[0.0001, 0.0001],[0.01, 0.01],[1,1],[10,10],[100,100],[1000,1000]],10)) %>-->
-      <%= bq.label :e_value, "Expect threshold (e-value)" %><%= bq.text_field :e_value %>
+      <%= bq.label :e_value, "Expect threshold (e-value)" %>
+      <%= bq.text_field :e_value, :size => 10 %>
       <%= #bq.check_box :perform_ungapped_alignment 
       %>
       <%= #bq.label :perform_ungapped_alignment, "Perform ungapped alignment?" 
@@ -52,32 +51,50 @@
   <div>
       <!--<label for="cost_to_open_gap">Cost to open a gap [Integer]</label>
       <%= text_field_tag(:cost_to_open_gap,5) %>-->
-      <%= bq.label :gap_open_penalty, "Cost to open a gap [Integer]" %>
-      <%= bq.text_field :gap_open_penalty %>
+      <%= #bq.label :gap_open_penalty, "Cost to open a gap [Integer]" 
+      %>
+      <%= #bq.text_field :gap_open_penalty 
+      %>
   </div>
   <div>
       <!--<label for="cost_to_extend_gap">Cost to extend a gap [Integer]</label>
       <%= text_field_tag(:cost_to_extend_gap,2) %>-->
-      <%= bq.label :gap_extension_penalty, "Cost to extend a gap [Integer]" %>
-      <%= bq.text_field :gap_extension_penalty %>
+      <%= #bq.label :gap_extension_penalty, "Cost to extend a gap [Integer]" 
+      %>
+      <%= #bq.text_field :gap_extension_penalty 
+      %>
   </div>
   <div>
       <!--<label for="mismatch_penalty">Penalty for a mismatch in the blast portion of run [Integer]</label>
       <%= text_field_tag(:mismatch_penalty,-3) %>-->
-      <%= bq.label :penalty, "Penalty for a mismatch in the blast portion of run [Integer]" %>
-      <%= bq.text_field :penalty %>
+      <%= #bq.label :penalty, "Penalty for a mismatch in the blast portion of run [Integer]" 
+      %>
+      <%= #bq.text_field :penalty 
+      %>
   </div>
   <div>
       <!--<label for="match_reward">Reward for a match in the blast portion of run [Integer]</label>
       <%= text_field_tag(:match_reward,1) %>-->
-      <%= bq.label :reward, "Reward for a match in the blast portion of run [Integer]" %>
-      <%= bq.text_field :reward %>
+      <%= #bq.label :reward, "Reward for a match in the blast portion of run [Integer]" 
+      %>
+      <%= #bq.text_field :reward 
+      %>
+  </div>
+  <div>
+    <%= bq.label :match_and_mismatch_scores, "Match/mismatch scores" %>
+    <%= bq.select :match_and_mismatch_scores, options_for_select(@blastn_query.available_match_and_mismatch_scores,
+        @blastn_query.match_and_mismatch_scores) %>
+  </div>
+  <div>
+    <%= bq.label :gap_costs, "Gap costs" %>
+    <%= bq.select :gap_costs, options_for_select(@blastn_query.available_gap_costs,
+        @blastn_query.gap_costs) %>
   </div>
   <div>
       <!--<label for="word_size">Word size, default is 11 for blastn, 3 for other programs.</label>
       <%= text_field_tag(:word_size,"3 or 11") %>-->
       <%= bq.label :word_size, "Word size [Integer]" %>
-      <%= bq.text_field :word_size %>
+      <%= bq.text_field :word_size, :size => 5 %>
   </div>
 
   <div>
@@ -88,5 +105,5 @@
           bq.object.num_alignments) %>
   </div>
 
-    <p><%= button_tag("Clear Sequence", :onclick=>"clear_sequence();", :type=>"button") %> <%= submit_tag("BLAST", :disable_with => "BLASTing...") %></p>
+    <p><%= button_tag 'Reset', :type => 'reset' %> <%= submit_tag("BLAST", :disable_with => "BLASTing...") %></p>
 <% end %>

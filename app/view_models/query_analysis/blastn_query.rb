@@ -7,9 +7,11 @@ class Blastn_Query #< Blast_Query::Base
   attr_accessor :fasta_sequence, :num_alignments, :e_value,
                 :word_size, :reward, :use_fasta_sequence_or_file,
                 :penalty, :gap_open_penalty, :gap_extension_penalty,
-                :use_soft_masking, :use_lowercase_masking
+                :use_soft_masking, :use_lowercase_masking, :gap_costs,
+                :match_and_mismatch_scores
     
-    attr_reader :available_databases
+    attr_reader :available_datasets, :available_match_and_mismatch_scores,
+                :available_gap_costs
     
     #For Boolean attributes, provide methods ending with a question mark 
     #  for convenience.
@@ -21,11 +23,40 @@ class Blastn_Query #< Blast_Query::Base
       return @use_lowercase_masking
     end
     
+    #Declare Constants
+    AVAILABLE_MATCH_AND_MISMATCH_SCORES = {
+      '1,-2' => {:match => 1, :mismatch => -2},
+      '1,-3' => {:match => 1, :mismatch => -3},
+      '1,-4' => {:match => 1, :mismatch => -4},
+      '2,-3' => {:match => 2, :mismatch => -3},
+      '4,-5' => {:match => 4, :mismatch => -5},
+      '1,-1' => {:match => 1, :mismatch => -1},
+    }
+    
+    AVAILABLE_GAP_COSTS = {
+      'Linear' => :linear,
+      'Existence: 5, Extension: 2' => {:existence => 5, :extention => 2},
+      'Existence: 2, Extension: 2' => {:existence => 2, :extention => 2},
+      'Existence: 1, Extension: 2' => {:existence => 1, :extention => 2},
+      'Existence: 0, Extension: 2' => {:existence => 0, :extention => 2},
+      'Existence: 3, Extension: 1' => {:existence => 3, :extention => 1},
+      'Existence: 2, Extension: 1' => {:existence => 2, :extention => 1},
+      'Existence: 1, Extension: 1' => {:existence => 1, :extention => 1},
+    }
+    
     #TODO: Add validation 
     validate :user_has_permission_to_access_dataset
     
-    def initialize(user)
-      @current_user = user
+    def initialize(current_user)
+      #Set the current user
+      @current_user = current_user
+      #Set available datasets
+      all_datasets_for_user = Dataset.find_all_by_user_id(@current_user)
+      @available_datasets = all_datasets_for_user.map{|ds| [ds.name, ds.id]}
+      #Set available match/mismatch scores
+      @available_match_and_mismatch_scores = AVAILABLE_MATCH_AND_MISMATCH_SCORES.keys
+      #Set available gap costs
+      @available_gap_costs = AVAILABLE_GAP_COSTS.keys
     end
   
     def set_attributes_and_defaults(attributes = {})
@@ -50,10 +81,17 @@ class Blastn_Query #< Blast_Query::Base
       end
     end
     
-    def query()
-        #Filter by low complexity and soft masking map to soft masking due to
-        #       http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.blastn_application_o/?report=objectonly
-        #       and http://www.ncbi.nlm.nih.gov/BLAST/blastcgihelp.shtml#filter
+    def blast!()
+      #Don't query if it is not valid
+      return if not self.valid?
+      #Filter by low complexity and soft masking map to soft masking due to
+      #       http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.blastn_application_o/?report=objectonly
+      #       and http://www.ncbi.nlm.nih.gov/BLAST/blastcgihelp.shtml#filter
+      #Run Blastn
+      #system('blastn ')
+      #Format and add the graphical summary to the blast output
+      #system('')
+      
     end
     
     def persisted?

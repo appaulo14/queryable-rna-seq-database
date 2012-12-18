@@ -12,6 +12,7 @@ class CreateDatasets < ActiveRecord::Migration
           throw NotImplementedError.new("Unknown adapter type '#{adapter_type}'")
       end
       t.string :name, :null => false
+      t.string :blast_db_location, :null => false
       t.integer :user_id, :null => false
 
       t.timestamps

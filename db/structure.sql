@@ -35,6 +35,7 @@ SET default_with_oids = false;
 CREATE TABLE datasets (
     id bigint NOT NULL,
     name character varying(255) NOT NULL,
+    blast_db_location character varying(255) NOT NULL,
     user_id integer NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL

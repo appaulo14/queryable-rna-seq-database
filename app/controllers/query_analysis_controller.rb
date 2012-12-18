@@ -100,11 +100,12 @@ class QueryAnalysisController < ApplicationController
     end
     
     def get_diff_exp_transcripts_file
-      text = ''
-      100_000.times do |n|
-        text += "Good morning!\n"
-      end
-      render :text => text, :content_type => 'text/plain'
+#       text = ''
+#       100_000.times do |n|
+#         text += "Good morning!\n"
+#       end
+#       render :text => text, :content_type => 'text/plain'
+      render :file => '/media/sf_MSE_Project/Workshop_Of_Paul/BLAST/outputs/searchio.html'
     end
     
     def get_transcript_fasta

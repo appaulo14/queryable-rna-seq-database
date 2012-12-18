@@ -26,6 +26,20 @@
 #  updated_at        :datetime         not null
 #
 
+# == Schema Information
+#
+# Table name: transcripts
+#
+#  id                :integer          not null, primary key
+#  dataset_id        :integer          not null
+#  gene_id           :integer
+#  fasta_sequence    :text
+#  name_from_program :string(255)      not null
+#  fasta_description :string(255)
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#
+
 class Transcript < ActiveRecord::Base
     attr_accessible :gene, :dataset, :fasta_sequence, :name_from_program, 
                     :fasta_description

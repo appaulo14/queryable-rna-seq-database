@@ -132,6 +132,8 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
     get 'query_analysis/get_transcript_fasta'
     
     get 'query_analysis/get_gene_fastas'
+    
+    get 'query_analysis/get_diff_exp_transcripts_file'
 
 #     SequenceServer::App.init
 #     #match '/sequenceserver' => SequenceServer::App, :anchor => false
