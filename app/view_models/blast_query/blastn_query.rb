@@ -1,33 +1,46 @@
 module Blast_Query
-class Blastn_Query < Blast_Query::Base
-    attr_accessor :program
+class Blastn_Query #< Blast_Query::Base
+    attr_accessor :fasta_sequence, :num_alignments, :e_value,
+                  :word_size, :reward,
+                  :penalty, :gap_open_penalty, :gap_extension_penalty,
+                  :use_soft_masking, :use_lowercase_masking
     
-    def initialize(attributes = {})
-        #Load in any values from the form
-        attributes.each do |name, value|
-            send("#{name}=", value)
-        end
-        #Set default values
-        #Defaults taken from http://www.ncbi.nlm.nih.gov/books/NBK1763/#CmdLineAppsManual.Appendix_C_Options_for
-        if (self.word_size.nil?)
-            self.word_size = 11
-        end
-        if (self.gap_open_penalty.nil?)
-            self.gap_open_penalty = 5
-        end
-        if (self.gap_extension_penalty.nil?)
-            self.gap_extension_penalty = 2
-        end
-        if (self.mismatch_penalty.nil?)
-            self.mismatch_penalty = -3
-        end
-        if self.match_reward.nil?
-            self.match_reward = 2
-        end
-        
-        if (self.soft_masking.nil?)
-            self.soft_masking = true
-        end
+    attr_reader :available_databases
+    
+    #For Boolean attributes, provide methods ending with a question mark 
+    #  for convenience.
+    def use_soft_masking?
+      return @use_soft_masking
+    end
+    
+    def use_lowercase_masking?
+      return @use_lowercase_masking
+    end
+    
+    #TODO: Add validation 
+    validate :user_has_permission_to_access_dataset
+    
+    def initialize(user)
+      @current_user = user
+    end
+  
+    def set_attributes_and_defaults(attributes = {})
+      #Load in any values from the form
+      attributes.each do |name, value|
+          send("#{name}=", value)
+      end
+      #Set default values for Megablast, which is the only blastn program we will use
+      #Defaults taken from http://www.ncbi.nlm.nih.gov/books/NBK1763/#CmdLineAppsManual.Appendix_C_Options_for
+      # and http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.blastn_application_o/?report=objectonly
+      @num_alignments = 250 if @num_alignments.blank?
+      @e_value = 10.0 if @e_value.blank?
+      @word_size = 28 if @word_size.blank?
+      @gap_open_penalty = 0 if @gap_open_penalty.blank?
+      @gap_extension_penalty = nil
+      @reward = 1 if @reward.blank?
+      @penalty = -2 if @penalty.blank?
+      @use_soft_masking = true if @use_soft_masking.blank?
+      @use_lowercase_masking = falsee if @use_lowercase_masking.blank?
     end
     
     def query()
