@@ -130,12 +130,26 @@ nav ul ul{
   display:block;
 }
 
+#l2{
+  background:white; 
+  list-style:none;
+  position:absolute;
+  left:-9999px; /* From CSS Wizard (See Above): "Hide off-screen when not needed (this is more accessible than display:none;)" */
+  display:block;
+}
+
 /*From CSS Wizardry (See Above): "Display the dropdown on hover" */
 nav ul li:hover ul{
   left:0; /* From CSS Wizardry (See Above): "Bring back on-screen when needed" */
 }
 
-nav ul li ul li a{
+nav ul li:hover ul li:hover #l2{
+  left:170px; /* From CSS Wizardry (See Above): "Bring back on-screen when needed" */
+  top:0px;
+}
+
+/*nav ul li ul li a*/
+nav a{
   /* From CSS Wizardry (See Above): "Stop text wrapping and creating multi-line dropdown items" */
   white-space:nowrap; 
 }
