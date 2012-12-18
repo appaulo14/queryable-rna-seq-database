@@ -1,9 +1,13 @@
-module Blast_Query
 class Blastn_Query #< Blast_Query::Base
-    attr_accessor :fasta_sequence, :num_alignments, :e_value,
-                  :word_size, :reward,
-                  :penalty, :gap_open_penalty, :gap_extension_penalty,
-                  :use_soft_masking, :use_lowercase_masking
+  include ActiveModel::Validations
+  include ActiveModel::Conversion
+  extend ActiveModel::Naming
+  
+  #TODO: Describe meaning of these?
+  attr_accessor :fasta_sequence, :num_alignments, :e_value,
+                :word_size, :reward, :use_fasta_sequence_or_file,
+                :penalty, :gap_open_penalty, :gap_extension_penalty,
+                :use_soft_masking, :use_lowercase_masking
     
     attr_reader :available_databases
     
@@ -48,5 +52,12 @@ class Blastn_Query #< Blast_Query::Base
         #       http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.blastn_application_o/?report=objectonly
         #       and http://www.ncbi.nlm.nih.gov/BLAST/blastcgihelp.shtml#filter
     end
-end
+    
+    def persisted?
+      return false
+    end
+    
+    private
+    def user_has_permission_to_access_dataset
+    end
 end
