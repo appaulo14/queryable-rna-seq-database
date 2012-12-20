@@ -4,7 +4,19 @@ jQuery(document).ready(function($) {
   fasta_input_radio_button_changed();
   //Bind the events for the fasta selection radio buttons.
   $('#blastn_query_use_fasta_sequence_or_file_use_fasta_sequence').change(fasta_input_radio_button_changed);
-  $('#blastn_query_use_fasta_sequence_or_file_use_fasta_file').change(fasta_input_radio_button_changed)
+  $('#blastn_query_use_fasta_sequence_or_file_use_fasta_file').change(fasta_input_radio_button_changed);
+//   $.getJSON('get_gap_costs_for_match_and_match_scores', function(data) {
+//     var items = [];
+// 
+//     $.each(data, function(key, val) {
+//       items.push('<li id="' + key + '">' + val + '</li>');
+//     });
+// 
+//     $('<ul/>', {
+//       'class': 'my-new-list',
+//       html: items.join('')
+//     }).appendTo('body');
+//   });
 });
 
 function fasta_input_radio_button_changed(){

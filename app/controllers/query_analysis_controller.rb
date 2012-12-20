@@ -28,12 +28,13 @@ class QueryAnalysisController < ApplicationController
     end
     
     def ajax_test
-      @name = params[:name]
-      @goats = ['tom','dick','harry'] if @goats.nil?
-      if (request.post?)
-        @goats << params[:add_goat]
-      end
-      render :text => open('/media/sf_MSE_Project/Workshop_Of_Paul/BLAST/outputs/Query_1.png', "rb").read
+#       @name = params[:name]
+#       @goats = ['tom','dick','harry'] if @goats.nil?
+#       if (request.post?)
+#         @goats << params[:add_goat]
+#       end
+      render :json => Blastn_Query.new(current_user)
+      #render :text => open('/media/sf_MSE_Project/Workshop_Of_Paul/BLAST/outputs/Query_1.png', "rb").read
     end
     
     def upload_trinity_with_edger_genes_and_transcripts
@@ -231,6 +232,12 @@ class QueryAnalysisController < ApplicationController
               flash[:success]="Failure"
           end
         end
+    end
+    
+    def get_gap_costs_for_match_and_match_scores
+      @blastn_query = Blastn_Query.new(current_user)
+      @blastn_query.set_attributes_and_defaults()
+      render :json => @blastn_query.available_gap_costs
     end
 
     def tblastn

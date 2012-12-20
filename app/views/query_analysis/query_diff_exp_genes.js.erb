@@ -30,16 +30,16 @@ function set_table_table_sorting(){
     var th = $(this).find("th");
     //Set all to neutral sort arrows first
     th.find(".sort_arrow").remove();
-    th.append('<%= neutral_sort_arrow %>');
+    th.append('<%= j neutral_sort_arrow %>');
     //Use an up or down arrow to show the sorting column, depending on
     //  whether it is sorted in ascending order or descending order
     if (data.direction == 'asc'){
       th.find('.sort_arrow').get(data.column).outerHTML = '';
-      th.get(data.column).innerHTML += '<%= ascending_sort_arrow %>';
+      th.get(data.column).innerHTML += '<%= j ascending_sort_arrow %>';
     }
     else{
       th.find('.sort_arrow').get(data.column).outerHTML = '';
-      th.get(data.column).innerHTML += '<%= descending_sort_arrow %>';
+      th.get(data.column).innerHTML += '<%= j descending_sort_arrow %>';
     }
   }
 }
@@ -108,8 +108,8 @@ function set_up_downloadify_for_query_results_downloading(){
     onComplete: function(){ alert('Your File Has Been Saved!'); },
     onCancel: function(){ alert('You have cancelled the saving of this file.'); },
     onError: function(){ alert('Error!'); },
-    swf: "<%= asset_path 'downloadify/downloadify.swf' %>",
-    downloadImage: "<%= asset_path 'downloadify/download.png' %>",
+    swf: "<%= j asset_path 'downloadify/downloadify.swf' %>",
+    downloadImage: "<%= j asset_path 'downloadify/download.png' %>",
     width: 100,
     height: 30,
     transparent: true,

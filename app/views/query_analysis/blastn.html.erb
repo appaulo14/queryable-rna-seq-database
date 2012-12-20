@@ -101,8 +101,8 @@
       <!--<label for="number_of_alignments_to_show">Number of alignments to show (B) [Integer]</label>
       <%= text_field_tag(:number_of_alignments_to_show,100) %>-->
       <%= bq.label :num_alignments, "Number of alignments to show" %>
-      <%= bq.select :num_alignments, options_for_select([0,10,50,100,250,500],
-          bq.object.num_alignments) %>
+      <%= bq.select :num_alignments, options_for_select(@blastn_query.available_num_alignments,
+          @blastn_query.num_alignments) %>
   </div>
 
     <p><%= button_tag 'Reset', :type => 'reset' %> <%= submit_tag("BLAST", :disable_with => "BLASTing...") %></p>

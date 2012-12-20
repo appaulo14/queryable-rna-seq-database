@@ -11,7 +11,7 @@ class Blastn_Query #< Blast_Query::Base
                 :match_and_mismatch_scores
     
     attr_reader :available_datasets, :available_match_and_mismatch_scores,
-                :available_gap_costs
+                :available_gap_costs, :available_num_alignments
     
     #For Boolean attributes, provide methods ending with a question mark 
     #  for convenience.
@@ -34,14 +34,37 @@ class Blastn_Query #< Blast_Query::Base
     }
     
     AVAILABLE_GAP_COSTS = {
-      'Linear' => {:existence => 0, :extention => 0},
-      'Existence: 5, Extension: 2' => {:existence => 5, :extention => 2},
-      'Existence: 2, Extension: 2' => {:existence => 2, :extention => 2},
-      'Existence: 1, Extension: 2' => {:existence => 1, :extention => 2},
-      'Existence: 0, Extension: 2' => {:existence => 0, :extention => 2},
-      'Existence: 3, Extension: 1' => {:existence => 3, :extention => 1},
-      'Existence: 2, Extension: 1' => {:existence => 2, :extention => 1},
-      'Existence: 1, Extension: 1' => {:existence => 1, :extention => 1},
+      '1, -2' => {
+        'Linear' => {:existence => 0, :extention => 0},
+        'Existence: 5, Extension: 2' => {:existence => 5, :extention => 2},
+        'Existence: 2, Extension: 2' => {:existence => 2, :extention => 2},
+        'Existence: 1, Extension: 2' => {:existence => 1, :extention => 2},
+        'Existence: 0, Extension: 2' => {:existence => 0, :extention => 2},
+        'Existence: 3, Extension: 1' => {:existence => 3, :extention => 1},
+        'Existence: 2, Extension: 1' => {:existence => 2, :extention => 1},
+        'Existence: 1, Extension: 1' => {:existence => 1, :extention => 1}, 
+      },
+      '1,-3' => {
+        'Linear' => {:existence => 0, :extention => 0},
+        'Existence: 5, Extension: 2' => {:existence => 5, :extention => 2},
+        'Existence: 2, Extension: 2' => {:existence => 2, :extention => 2},
+        'Existence: 1, Extension: 2' => {:existence => 1, :extention => 2},
+        'Existence: 0, Extension: 2' => {:existence => 0, :extention => 2},
+        'Existence: 2, Extension: 1' => {:existence => 2, :extention => 1},
+        'Existence: 1, Extension: 1' => {:existence => 1, :extention => 1},      
+      },
+      '1,-4' => {
+        'Linear' => {:existence => 0, :extention => 0},
+        'Existence: 5, Extension: 2' => {:existence => 5, :extention => 2},
+        'Existence: 2, Extension: 2' => {:existence => 2, :extention => 2},
+        'Existence: 1, Extension: 2' => {:existence => 1, :extention => 2},
+        'Existence: 0, Extension: 2' => {:existence => 0, :extention => 2},
+        'Existence: 2, Extension: 1' => {:existence => 2, :extention => 1},
+        'Existence: 1, Extension: 1' => {:existence => 1, :extention => 1},      
+      },
+      '2,-3' => {},
+      '4,-5' => {},
+      '1,-1' => {},
     }
     
     #TODO: Add validation 
@@ -57,6 +80,8 @@ class Blastn_Query #< Blast_Query::Base
       @available_match_and_mismatch_scores = AVAILABLE_MATCH_AND_MISMATCH_SCORES.keys
       #Set available gap costs
       @available_gap_costs = AVAILABLE_GAP_COSTS.keys
+      #Set the available options for the number of alignments
+      @available_num_alignments = [0,10,50,100,250,500]
     end
   
     def set_attributes_and_defaults(attributes = {})
