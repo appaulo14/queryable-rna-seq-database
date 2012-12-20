@@ -160,7 +160,7 @@ class Blastn_Query #< Blast_Query::Base
              "-out #{blast_output_xml.path} " +
              "-evalue #{@e_value} -word_size #{@word_size} " +
              "-num_alignments #{@num_alignments} " +
-             "-show_gis -html "#-outfmt '5' "
+             "-show_gis -outfmt '5' "
       if @use_soft_masking == '0'
         blastn_execution_string += '-soft_masking false ' 
       else
@@ -179,13 +179,14 @@ class Blastn_Query #< Blast_Query::Base
       blastn_execution_string += "-reward #{match} -penalty #{mismatch}"
       #TODO: Decide how to handle failures
       system(blastn_execution_string)
-      return blast_output_xml.path
       #Format and add the graphical summary to the blast output
-      #blast_output_html = Tempfile.new('blastn')
-      #blast_output_html.close
-      #system("perl lib/tasks/render_blast_output_with_graphics.pl #{blast_output_xml.path} #{blast_output_html.path}")
-      #TODO: Figure out how to return this
-      #return blast_output_html.path
+      blast_output_html = Tempfile.new('blastn')
+      blast_output_html.close
+      basename = File.basename(blast_output_html)
+      system("perl lib/tasks/render_blast_output_with_graphics.pl #{blast_output_xml.path} #{blast_output_html.path} #{basename}")
+      X.create!(:dataset_id => @dataset_id, :basename => basename, :blast_output_html_path => blast_output_html.path)
+      return blast_output_html.path
+      #TODO; Delete files?
     end
     
     def persisted?

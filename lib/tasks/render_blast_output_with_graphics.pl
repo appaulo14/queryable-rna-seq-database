@@ -8,18 +8,19 @@ use Bio::Graphics;
 use Bio::SearchIO;
 use Bio::SeqFeature::Generic;
 use Bio::SearchIO::Writer::HTMLResultWriter;
-my $input_file = shift or die "Usage: render_blast4.pl <blast file> <output_file>\n";
-my $output_file = shift or die "Usage: render_blast4.pl <blast file> <output_file>\n";
+my $input_file_path = shift or die "Usage: render_blast4.pl <blast file> <output_file> <basename>\n";
+my $output_file_path = shift or die "Usage: render_blast4.pl <blast file> <output_file> <basename>\n";
+my $basename = shift or die "Usage: render_blast4.pl <blast file> <output_file> <basename>\n";
 
 my $searchio = Bio::SearchIO->new(
-    -file   => $input_file,
+    -file   => $input_file_path,
     -format => 'blastxml'
 ) or die "parse failed";
 
 my $writerhtml = new Bio::SearchIO::Writer::HTMLResultWriter();
 my $outhtml    = new Bio::SearchIO(
     -writer => $writerhtml,
-    -file   => ">$output_file"
+    -file   => ">$output_file_path"
 );
 
 #Loop through all the search results
@@ -82,7 +83,6 @@ do {
 
     #Add the hits to the track
     foreach my $hit (@hits) {
-        #next unless $hit->significance < 1E-20;
         my $feature = Bio::SeqFeature::Generic->new(
             -score        => $hit->raw_score,
             -display_name => $hit->name,
@@ -96,7 +96,7 @@ do {
     
     #Write the graphical summary for the query to a .png file
     my $query_name = $result->query_name;
-    open my $fh, ">", "$query_name.png" or die;
+    open my $fh, ">", "$output_file_path" + "_" + "$query_name.png" or die;
     print $fh $panel->png;
     close $fh;
     
@@ -123,7 +123,7 @@ do {
     my $graphical_summary_html =
         '<h3 style="text-align:center">Graphical Summary</h3>'
       . '<p style="text-align:center"><img src="'
-      . "$query_name.png"
+      . "get_blast_graphical_summary&basename=$basename&image_name=$query_name"
       . '" usemap="'
       . $query_name . 'map'
       . '" /></p>';

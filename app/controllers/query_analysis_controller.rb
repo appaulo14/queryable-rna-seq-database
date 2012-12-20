@@ -227,7 +227,9 @@ class QueryAnalysisController < ApplicationController
           debugger if ENV['RAILS_DEBUG'] == "true"
           if @blastn_query.valid?
               flash[:success] = "Success"
-              render :file => @blastn_query.blast!
+              blast_results_file_path = @blastn_query.blast!
+              render :file => blast_results_file_path
+              File.delete(blast_results_file_path)
           else
               flash[:success]="Failure"
           end
@@ -241,6 +243,18 @@ class QueryAnalysisController < ApplicationController
         :match_and_mismatch_scores => match_and_mismatch_scores
       )
       render :json => @blastn_query.available_gap_costs
+    end
+    
+    def get_blast_graphical_summary
+      basename = params[:basename]
+      image_name = params[:image_name]
+      x = X.find_by_basename(basename)
+      dataset = Dataset.find_by_id(x.dataset_id)
+      return if dataset.user_id != current_user.id
+      image_file_path = "#{x.blast_output_html_path}_#{image_name}"
+      render :text => open(image_file_path, "rb").read
+      File.delete(image_file_path)
+      x.delete()
     end
 
     def tblastn
