@@ -2,12 +2,12 @@ class Blastn_Query #< Blast_Query::Base
   include ActiveModel::Validations
   include ActiveModel::Conversion
   extend ActiveModel::Naming
+  require 'tempfile'
   
   #TODO: Describe meaning of these?
-  attr_accessor :fasta_sequence, :num_alignments, :e_value,
-                :word_size, :reward, :use_fasta_sequence_or_file,
-                :penalty, :gap_open_penalty, :gap_extension_penalty,
-                :use_soft_masking, :use_lowercase_masking, :gap_costs,
+  attr_accessor :dataset_id, :fasta_sequence, :fasta_file, :num_alignments, :e_value,
+                :word_size, :use_fasta_sequence_or_file, :use_soft_masking, 
+                :use_lowercase_masking, :gap_costs,
                 :match_and_mismatch_scores
     
     attr_reader :available_datasets, :available_match_and_mismatch_scores,
@@ -34,7 +34,7 @@ class Blastn_Query #< Blast_Query::Base
     }
     
     AVAILABLE_GAP_COSTS = {
-      'Linear' => :linear,
+      'Linear' => {:existence => 0, :extention => 0},
       'Existence: 5, Extension: 2' => {:existence => 5, :extention => 2},
       'Existence: 2, Extension: 2' => {:existence => 2, :extention => 2},
       'Existence: 1, Extension: 2' => {:existence => 1, :extention => 2},
@@ -67,7 +67,8 @@ class Blastn_Query #< Blast_Query::Base
       #Set default values for Megablast, which is the only blastn program we will use
       #Defaults taken from http://www.ncbi.nlm.nih.gov/books/NBK1763/#CmdLineAppsManual.Appendix_C_Options_for
       # and http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.blastn_application_o/?report=objectonly
-      @num_alignments = 250 if @num_alignments.blank?
+      @dataset_id = @available_datasets.first[1]
+      @num_alignments = 100 if @num_alignments.blank?
       @e_value = 10.0 if @e_value.blank?
       @word_size = 28 if @word_size.blank?
       @gap_open_penalty = 0 if @gap_open_penalty.blank?
@@ -88,10 +89,47 @@ class Blastn_Query #< Blast_Query::Base
       #       http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.blastn_application_o/?report=objectonly
       #       and http://www.ncbi.nlm.nih.gov/BLAST/blastcgihelp.shtml#filter
       #Run Blastn
-      #system('blastn ')
+      if @use_fasta_sequence_or_file == 'use_fasta_sequence'
+        query_input_file = Tempfile.new('blastn_query')
+        query_input_file.write(@fasta_sequence)
+        query_input_file.close
+      else
+        query_input_file = @fasta_file.tempfile
+      end
+      blast_output_xml = Tempfile.new('blastn')
+      blast_output_xml.close
+      dataset = Dataset.find_by_id(@dataset_id)
+      blastn_execution_string = "blastn -query #{query_input_file.path} " +
+             "-db #{dataset.blast_db_location} " +
+             "-out #{blast_output_xml.path} " +
+             "-evalue #{@e_value} -word_size #{@word_size} " +
+             "-num_alignments #{@num_alignments} " +
+             "-show_gis -html "#-outfmt '5' "
+      if @use_soft_masking == '0'
+        blastn_execution_string += '-soft_masking false ' 
+      else
+        blastn_execution_string += '-soft_masking true '
+      end
+      if @use_lowercase_masking == '1'
+        blastn_execution_string += '-lcase_masking '
+      end
+      gapopen = AVAILABLE_GAP_COSTS[@gap_costs][:existence]
+      gapextend = AVAILABLE_GAP_COSTS[@gap_costs][:extention]
+      blastn_execution_string += "-gapopen #{gapopen} -gapextend #{gapextend} "
+      selected_match_and_mismatch_scores = 
+        AVAILABLE_MATCH_AND_MISMATCH_SCORES[@match_and_mismatch_scores]
+      match = selected_match_and_mismatch_scores[:match]
+      mismatch = selected_match_and_mismatch_scores[:mismatch]
+      blastn_execution_string += "-reward #{match} -penalty #{mismatch}"
+      #TODO: Decide how to handle failures
+      system(blastn_execution_string)
+      return blast_output_xml.path
       #Format and add the graphical summary to the blast output
-      #system('')
-      
+      #blast_output_html = Tempfile.new('blastn')
+      #blast_output_html.close
+      #system("perl lib/tasks/render_blast_output_with_graphics.pl #{blast_output_xml.path} #{blast_output_html.path}")
+      #TODO: Figure out how to return this
+      #return blast_output_html.path
     end
     
     def persisted?

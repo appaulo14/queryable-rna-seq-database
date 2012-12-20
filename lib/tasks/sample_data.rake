@@ -103,7 +103,7 @@ def make_blast_databases
     tmpfasta.close
     #Create the blast database file for the dataset and save its location
     success = system("makeblastdb -in #{tmpfasta.path} -title #{ds.id}_db " +
-                     "-out #{ds.blast_db_location}-hash_index -dbtype nucl " +
+                     "-out #{ds.blast_db_location} -hash_index -dbtype nucl " +
                      "-parse_seqids")
     exit if success == false
     #Close and unlink the temporary file when finished

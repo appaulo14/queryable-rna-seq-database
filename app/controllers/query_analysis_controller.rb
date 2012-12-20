@@ -33,6 +33,7 @@ class QueryAnalysisController < ApplicationController
       if (request.post?)
         @goats << params[:add_goat]
       end
+      render :text => open('/media/sf_MSE_Project/Workshop_Of_Paul/BLAST/outputs/Query_1.png', "rb").read
     end
     
     def upload_trinity_with_edger_genes_and_transcripts
@@ -220,12 +221,12 @@ class QueryAnalysisController < ApplicationController
             @blastn_query = Blastn_Query.new(current_user)
             @blastn_query.set_attributes_and_defaults()
         elsif request.post?
-          debugger
           @blastn_query = Blastn_Query.new(current_user)
           @blastn_query.set_attributes_and_defaults(params[:blastn_query])
           debugger if ENV['RAILS_DEBUG'] == "true"
           if @blastn_query.valid?
               flash[:success] = "Success"
+              render :file => @blastn_query.blast!
           else
               flash[:success]="Failure"
           end

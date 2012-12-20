@@ -5,8 +5,8 @@
   %>
   <h2>Choose Data Set to Search Using Blastn's Megablast</h2>
   <p>
-      <%= label(:select_dataset, "Dataset:") %>
-      <%= select_tag(:select_program, options_for_select([['Mus musculus 8.10.2012', '72'],['Mus musculus 5.11.2012', '64'],['Rattus norvegicus 18','45']],'72')) %>
+      <%= label(:dataset_id, "Dataset:") %>
+      <%= select_tag(:dataset_id, options_for_select(@blastn_query.available_datasets,@blastn_query.dataset_id)) %>
   </p>
   <hr/>
   <!--Select a subsequence of the fasta to use-->
