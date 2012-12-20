@@ -28,4 +28,5 @@ class Dataset < ActiveRecord::Base
   belongs_to :user
   has_many :genes
   has_many :transcripts
+  has_many :blast_graphical_summary_locators
 end

@@ -184,7 +184,11 @@ class Blastn_Query #< Blast_Query::Base
       blast_output_html.close
       basename = File.basename(blast_output_html)
       system("perl lib/tasks/render_blast_output_with_graphics.pl #{blast_output_xml.path} #{blast_output_html.path} #{basename}")
-      X.create!(:dataset_id => @dataset_id, :basename => basename, :blast_output_html_path => blast_output_html.path)
+      BlastGraphicalSummaryLocator.create!(
+        :dataset => dataset, 
+        :basename => basename, 
+        :html_output_file_path => blast_output_html.path
+      )
       return blast_output_html.path
       #TODO; Delete files?
     end

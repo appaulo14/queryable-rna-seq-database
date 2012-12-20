@@ -96,7 +96,7 @@ do {
     
     #Write the graphical summary for the query to a .png file
     my $query_name = $result->query_name;
-    open my $fh, ">", "$output_file_path" + "_" + "$query_name.png" or die;
+    open my $fh, ">", "$output_file_path" . "_" . "$query_name.png" or die;
     print $fh $panel->png;
     close $fh;
     
@@ -108,7 +108,6 @@ do {
         ( my $feature, my $x1, my $y1, my $x2, my $y2, my $track ) = @{$box};
         if ( scalar( grep { $_->name eq $feature->display_name } @hits ) ) {
             my $display_name = $feature->display_name;
-            print "display name = $display_name\n";
             $image_map_html .=
                 '<area shape="rect" coords="'
               . "$x1,$y1,$x2,$y2"
@@ -123,7 +122,7 @@ do {
     my $graphical_summary_html =
         '<h3 style="text-align:center">Graphical Summary</h3>'
       . '<p style="text-align:center"><img src="'
-      . "get_blast_graphical_summary&basename=$basename&image_name=$query_name"
+      . "get_blast_graphical_summary?basename=$basename&image_name=$query_name"
       . '" usemap="'
       . $query_name . 'map'
       . '" /></p>';
