@@ -5,20 +5,16 @@ jQuery(document).ready(function($) {
   //Bind the events for the fasta selection radio buttons.
   $('#blastn_query_use_fasta_sequence_or_file_use_fasta_sequence').change(fasta_input_radio_button_changed);
   $('#blastn_query_use_fasta_sequence_or_file_use_fasta_file').change(fasta_input_radio_button_changed);
-//   $.getJSON('get_gap_costs_for_match_and_match_scores', function(data) {
-//     var items = [];
-// 
-//     $.each(data, function(key, val) {
-//       items.push('<li id="' + key + '">' + val + '</li>');
-//     });
-// 
-//     $('<ul/>', {
-//       'class': 'my-new-list',
-//       html: items.join('')
-//     }).appendTo('body');
-//   });
+  //Bind the event to update the gap costs drop down list 
+  //    when match and mismatch scores drop down list changes
+  $('#blastn_query_match_and_mismatch_scores').change(match_and_mismatch_scores_selection_changed);
 });
 
+/*
+ * Enable/Disable certain elements based on whether 
+ *      the user has selected the radio button for the fasta sequence
+ *      or the fasta file.
+ */
 function fasta_input_radio_button_changed(){
   fasta_file_radio_button = 
     $('#blastn_query_use_fasta_sequence_or_file_use_fasta_file');
@@ -34,7 +30,30 @@ function fasta_input_radio_button_changed(){
   }
 }
 
-function fasta_file_radio_button_selected(){
+/*
+ * When the match and mismatch scores drop down list changes,
+ *      launch an Ajax request to get the new gap costs to use 
+ *      for updating the gap costs drop down list.
+ */
+function match_and_mismatch_scores_selection_changed(){
+  match_and_mismatch_scores = $('#blastn_query_match_and_mismatch_scores').val();
+  request_string = 'get_blastn_gap_costs_for_match_and_match_scores' +
+                   '?match_and_mismatch_scores=' + match_and_mismatch_scores
+  $.getJSON(request_string, replace_gap_costs);
+}
+
+/*
+ * Update the gap costs drop down list when the 
+ *      match and mismatch scores drop down list changes
+ */
+function replace_gap_costs(new_gap_costs){
+  gap_costs_select = $('#blastn_query_gap_costs');
+  gap_costs_select.html('');
+  for (i = 0; i<new_gap_costs.length; i++){
+    new_gap_cost = new_gap_costs[i];
+    option_html = '<option value="' + new_gap_cost + '">' + new_gap_cost + '</option>';
+    gap_costs_select.append(option_html);
+  }     
 }
 
 function clear_sequence(){

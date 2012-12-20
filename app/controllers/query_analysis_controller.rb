@@ -234,9 +234,12 @@ class QueryAnalysisController < ApplicationController
         end
     end
     
-    def get_gap_costs_for_match_and_match_scores
+    def get_blastn_gap_costs_for_match_and_match_scores
       @blastn_query = Blastn_Query.new(current_user)
-      @blastn_query.set_attributes_and_defaults()
+      match_and_mismatch_scores = params[:match_and_mismatch_scores]
+      @blastn_query.set_attributes_and_defaults(
+        :match_and_mismatch_scores => match_and_mismatch_scores
+      )
       render :json => @blastn_query.available_gap_costs
     end
 

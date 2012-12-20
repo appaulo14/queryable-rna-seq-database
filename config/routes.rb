@@ -135,7 +135,7 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
     
     get 'query_analysis/get_diff_exp_transcripts_file'
     
-    get 'query_analysis/get_gap_costs_for_match_and_match_scores'
+    get 'query_analysis/get_blastn_gap_costs_for_match_and_match_scores'
 
 #     SequenceServer::App.init
 #     #match '/sequenceserver' => SequenceServer::App, :anchor => false
