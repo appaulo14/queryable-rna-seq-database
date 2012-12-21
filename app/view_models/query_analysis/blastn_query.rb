@@ -144,7 +144,8 @@ class Blastn_Query #< Blast_Query::Base
       #Filter by low complexity and soft masking map to soft masking due to
       #       http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.blastn_application_o/?report=objectonly
       #       and http://www.ncbi.nlm.nih.gov/BLAST/blastcgihelp.shtml#filter
-      #Run Blastn
+      #If given a fasta sequence, write it to a temporary file so that it 
+      # can be inputted into blastn
       if @use_fasta_sequence_or_file == 'use_fasta_sequence'
         query_input_file = Tempfile.new('blastn_query')
         query_input_file.write(@fasta_sequence)
@@ -152,12 +153,15 @@ class Blastn_Query #< Blast_Query::Base
       else
         query_input_file = @fasta_file.tempfile
       end
-      blast_output_xml = Tempfile.new('blastn')
-      blast_output_xml.close
+      #Create a temporary file to store the blast output in xml format
+      blast_xml_output_file = Tempfile.new('blastn')
+      blast_xml_output_file.close
+      #Create the blastn execution string that will be run on the command line,
+      # including calculating all the options
       dataset = Dataset.find_by_id(@dataset_id)
       blastn_execution_string = "blastn -query #{query_input_file.path} " +
              "-db #{dataset.blast_db_location} " +
-             "-out #{blast_output_xml.path} " +
+             "-out #{blast_xml_output_file.path} " +
              "-evalue #{@e_value} -word_size #{@word_size} " +
              "-num_alignments #{@num_alignments} " +
              "-show_gis -outfmt '5' "
@@ -178,19 +182,25 @@ class Blastn_Query #< Blast_Query::Base
       mismatch = selected_match_and_mismatch_scores[:mismatch]
       blastn_execution_string += "-reward #{match} -penalty #{mismatch}"
       #TODO: Decide how to handle failures
+      #Execute blastn
       system(blastn_execution_string)
-      #Format and add the graphical summary to the blast output
-      blast_output_html = Tempfile.new('blastn')
-      blast_output_html.close
-      basename = File.basename(blast_output_html)
-      system("perl lib/tasks/render_blast_output_with_graphics.pl #{blast_output_xml.path} #{blast_output_html.path} #{basename}")
+      #Create a temporary file to store the final blast page, containing images and html
+      blast_html_output_file = Tempfile.new('blastn')
+      blast_html_output_file.close
+      #Run a perl script to format and add the graphical summary to the blast output
+      basename = File.basename(blast_html_output_file)
+      system("perl lib/tasks/render_blast_output_with_graphics.pl " +
+             "#{blast_xml_output_file.path} " +
+             "#{blast_html_output_file.path} #{basename}")
+      #Save the location of the blast output files so that the graphical 
+      # summaries can be retrieved
       BlastGraphicalSummaryLocator.create!(
         :dataset => dataset, 
         :basename => basename, 
-        :html_output_file_path => blast_output_html.path
+        :html_output_file_path => blast_html_output_file.path
       )
-      return blast_output_html.path
-      #TODO; Delete files?
+      #Return the result
+      return blast_html_output_file.path
     end
     
     def persisted?

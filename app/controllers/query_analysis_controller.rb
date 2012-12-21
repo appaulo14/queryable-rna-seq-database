@@ -227,9 +227,12 @@ class QueryAnalysisController < ApplicationController
           debugger if ENV['RAILS_DEBUG'] == "true"
           if @blastn_query.valid?
               flash[:success] = "Success"
+              #Run the blast query and get the file path of the result
               blast_results_file_path = @blastn_query.blast!
+              #Send the result to the user
               render :file => blast_results_file_path
-              #File.delete(blast_results_file_path)
+              #Delete the result file since it is no longer needed
+              File.delete(blast_results_file_path)
           else
               flash[:success]="Failure"
           end
@@ -246,15 +249,25 @@ class QueryAnalysisController < ApplicationController
     end
     
     def get_blast_graphical_summary
+      #Get the parameters
       basename = params[:basename]
-      image_name = params[:image_name]
-      bgsl = BlastGraphicalSummaryLocator .find_by_basename(basename)
+      graphical_summary_name = params[:graphical_summary_name]
+      #Retrieve the graphical summary record using the basename
+      bgsl = BlastGraphicalSummaryLocator.find_by_basename(basename)
+      #Validate that the user has permission to access this graphical summary
       dataset = Dataset.find_by_id(bgsl.dataset_id)
       return if dataset.user_id != current_user.id
-      image_file_path = "#{bgsl.html_output_file_path}_#{image_name}.png"
-      render :text => open(image_file_path, "rb").read
-#       File.delete(image_file_path)
-#       bgsl.delete()
+      #Get the path of the graphical summary
+      graphical_summary_file_path = 
+        "#{bgsl.html_output_file_path}_#{graphical_summary_name}.png"
+      render :text => open(graphical_summary_file_path, "rb").read
+      #Delete the graphical summary file
+      File.delete(graphical_summary_file_path)
+      #Delete the database record if no other image files are 
+      # left to be retreived
+      if Dir.glob("#{bgsl.html_output_file_path}_*").empty?
+        bgsl.delete()
+      end
     end
 
     def tblastn

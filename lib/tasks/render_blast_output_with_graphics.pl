@@ -8,6 +8,7 @@ use Bio::Graphics;
 use Bio::SearchIO;
 use Bio::SeqFeature::Generic;
 use Bio::SearchIO::Writer::HTMLResultWriter;
+use IO::File;
 my $input_file_path = shift or die "Usage: render_blast4.pl <blast file> <output_file> <basename>\n";
 my $output_file_path = shift or die "Usage: render_blast4.pl <blast file> <output_file> <basename>\n";
 my $basename = shift or die "Usage: render_blast4.pl <blast file> <output_file> <basename>\n";
@@ -96,9 +97,12 @@ do {
     
     #Write the graphical summary for the query to a .png file
     my $query_name = $result->query_name;
-    open my $fh, ">", "$output_file_path" . "_" . "$query_name.png" or die;
+    #my $fh, '>', "$output_file_path" . "_" . "$query_name.png" or die;
+    my $image_name = "$output_file_path" . "_" . "$query_name.png";
+    #Give the file special secure permissions
+    my $fh = IO::File->new($image_name,O_WRONLY|O_CREAT,0600) or die "$!\n";
     print $fh $panel->png;
-    close $fh;
+    $fh->close();
     
     #Add the HTML to insert the graphical summary into the results page, 
     #   along with the HTML for the image map
@@ -122,7 +126,8 @@ do {
     my $graphical_summary_html =
         '<h3 style="text-align:center">Graphical Summary</h3>'
       . '<p style="text-align:center"><img src="'
-      . "get_blast_graphical_summary?basename=$basename&image_name=$query_name"
+      . "get_blast_graphical_summary?basename=$basename"
+      . "&graphical_summary_name=$query_name"
       . '" usemap="'
       . $query_name . 'map'
       . '" /></p>';
