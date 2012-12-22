@@ -7,6 +7,7 @@ class QueryAnalysisController < ApplicationController
     require 'query_analysis/get_gene_fastas.rb'
     require 'query_analysis/get_transcript_fasta.rb'
     require 'query_analysis/blastn_query.rb'
+    require 'query_analysis/tblastn_query.rb'
     
     before_filter :authenticate_user!
 
@@ -272,9 +273,9 @@ class QueryAnalysisController < ApplicationController
 
     def tblastn
         if request.get?
-            @tblastn_query = Blast_Query::Tblastn_Query.new()
+            @tblastn_query = Tblastn_Query.new()
         elsif request.post?
-            @tblastn_query = Blast_Query::Tblastn_Query.new(params[:tblastn_query])
+            @tblastn_query = Tblastn_Query.new(params[:tblastn_query])
             debugger if ENV['RAILS_DEBUG'] == "true"
             if @tblastn_query.valid?
                 flash[:success] = "Success"

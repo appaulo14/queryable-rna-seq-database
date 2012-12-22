@@ -176,6 +176,11 @@ nav a{
   padding-top:20px
 }
 
+.sub-section-heading-2{
+  font-size:1.0em;
+  font-weight:bold;
+}
+
 td {
     vertical-align:top
 }

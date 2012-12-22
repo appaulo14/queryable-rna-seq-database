@@ -32,78 +32,44 @@
       </div>
     </p>
     <hr/>
-  <h2>Alogirthm settings</h2>
-  <p>
-      The query sequence is filtered for low complexity regions by default.<br/>
-      Filter
-      <%= bq.check_box :use_soft_masking %> <%= bq.label :use_soft_masking, "Mask for lookup table only" %>
-      <%= bq.check_box :use_lowercase_masking %> <%= bq.label :use_lowercase_masking, "Mask lowercase letters" %>
-  </p>
-  <p>
-      <!--<label for="e_value">Expect (e-value)</label><%= select_tag(:e_evalue, options_for_select([[0.0001, 0.0001],[0.01, 0.01],[1,1],[10,10],[100,100],[1000,1000]],10)) %>-->
-      <%= bq.label :e_value, "Expect threshold (e-value)" %>
-      <%= bq.text_field :e_value, :size => 10 %>
-      <%= #bq.check_box :perform_ungapped_alignment 
-      %>
-      <%= #bq.label :perform_ungapped_alignment, "Perform ungapped alignment?" 
-      %>
-  </p>
-  <div>
-      <!--<label for="cost_to_open_gap">Cost to open a gap [Integer]</label>
-      <%= text_field_tag(:cost_to_open_gap,5) %>-->
-      <%= #bq.label :gap_open_penalty, "Cost to open a gap [Integer]" 
-      %>
-      <%= #bq.text_field :gap_open_penalty 
-      %>
+  <h2>Algorithm settings</h2>
+  
+  <div class='sub-section rounded-corners' style='padding:5px'>
+    <p class='sub-section-heading-2'>General Parameters</p>
+    <div>
+        <%= bq.label :num_alignments, "Number of alignments to show" %>
+        <%= bq.select :num_alignments, options_for_select(@blastn_query.available_num_alignments,
+            @blastn_query.num_alignments) %>
+    </div>
+    <p>
+        <%= bq.label :e_value, "Expect threshold (e-value)" %>
+        <%= bq.text_field :e_value, :size => 10 %>
+    </p>
+    <div>
+        <%= bq.label :word_size, "Word size [Integer]" %>
+        <%= bq.text_field :word_size, :size => 5 %>
+    </div>
   </div>
-  <div>
-      <!--<label for="cost_to_extend_gap">Cost to extend a gap [Integer]</label>
-      <%= text_field_tag(:cost_to_extend_gap,2) %>-->
-      <%= #bq.label :gap_extension_penalty, "Cost to extend a gap [Integer]" 
-      %>
-      <%= #bq.text_field :gap_extension_penalty 
-      %>
-  </div>
-  <div>
-      <!--<label for="mismatch_penalty">Penalty for a mismatch in the blast portion of run [Integer]</label>
-      <%= text_field_tag(:mismatch_penalty,-3) %>-->
-      <%= #bq.label :penalty, "Penalty for a mismatch in the blast portion of run [Integer]" 
-      %>
-      <%= #bq.text_field :penalty 
-      %>
-  </div>
-  <div>
-      <!--<label for="match_reward">Reward for a match in the blast portion of run [Integer]</label>
-      <%= text_field_tag(:match_reward,1) %>-->
-      <%= #bq.label :reward, "Reward for a match in the blast portion of run [Integer]" 
-      %>
-      <%= #bq.text_field :reward 
-      %>
-  </div>
-  <div>
+  <br/>
+  <div class='sub-section rounded-corners' style='padding:5px'>
+    <p class='sub-section-heading-2'>Scoring Parameters</p>
     <%= bq.label :match_and_mismatch_scores, "Match/mismatch scores" %>
     <%= bq.select :match_and_mismatch_scores, options_for_select(@blastn_query.available_match_and_mismatch_scores,
         @blastn_query.match_and_mismatch_scores) %>
+    <div>
+      <%= bq.label :gap_costs, "Gap costs" %>
+      <%= bq.select :gap_costs, options_for_select(@blastn_query.available_gap_costs,
+          @blastn_query.gap_costs) %>
+    </div>
   </div>
-  <div>
-    <%= bq.label :gap_costs, "Gap costs" %>
-    <%= bq.select :gap_costs, options_for_select(@blastn_query.available_gap_costs,
-        @blastn_query.gap_costs) %>
+  <br/>
+  <div class='sub-section rounded-corners' style='padding:5px'>
+    <p class='sub-section-heading-2'>Filters and Masking</p>
+    <p>
+        <%= bq.check_box :filter_low_complexity_regions %> <%= bq.label :filter_low_complexity_regions, "Filter low complexity regions" %><br/>
+        <%= bq.check_box :use_soft_masking %> <%= bq.label :use_soft_masking, "Mask for lookup table only" %><br/>
+        <%= bq.check_box :use_lowercase_masking %> <%= bq.label :use_lowercase_masking, "Mask lowercase letters" %><br/>
+    </p>
   </div>
-  <div>
-      <!--<label for="word_size">Word size, default is 11 for blastn, 3 for other programs.</label>
-      <%= text_field_tag(:word_size,"3 or 11") %>-->
-      <%= bq.label :word_size, "Word size [Integer]" %>
-      <%= bq.text_field :word_size, :size => 5 %>
-  </div>
-
-  <div>
-      <!--<label for="number_of_alignments_to_show">Number of alignments to show (B) [Integer]</label>
-      <%= text_field_tag(:number_of_alignments_to_show,100) %>-->
-      <%= bq.label :num_alignments, "Number of alignments to show" %>
-      <%= bq.select :num_alignments, options_for_select(@blastn_query.available_num_alignments,
-          @blastn_query.num_alignments) %>
-  </div>
-
     <p><%= button_tag 'Reset', :type => 'reset' %> <%= submit_tag("BLAST", :disable_with => "BLASTing...") %></p>
 <% end %>

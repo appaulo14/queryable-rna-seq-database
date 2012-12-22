@@ -1,4 +1,4 @@
-class Blastn_Query #< Blast_Query::Base
+class TBlastn_Query #< Blast_Query::Base
   include ActiveModel::Validations
   include ActiveModel::Conversion
   extend ActiveModel::Naming
@@ -8,12 +8,11 @@ class Blastn_Query #< Blast_Query::Base
   attr_accessor :dataset_id, :fasta_sequence, :fasta_file, :num_alignments, :e_value,
                 :word_size, :use_fasta_sequence_or_file, :use_soft_masking, 
                 :use_lowercase_masking, :gap_costs,
-                :match_and_mismatch_scores, :filter_low_complexity_regions,
-                :genetic_code
+                :match_and_mismatch_scores, :compositional_adjustment
     
     attr_reader :available_datasets, :available_match_and_mismatch_scores,
                 :available_gap_costs, :available_num_alignments,
-                :available_genetic_codes
+                :available_compositional_adjustments
     
     #Declare Constants
     AVAILABLE_MATCH_AND_MISMATCH_SCORES = {
@@ -99,6 +98,25 @@ class Blastn_Query #< Blast_Query::Base
       @available_match_and_mismatch_scores = AVAILABLE_MATCH_AND_MISMATCH_SCORES.keys
       #Set the available options for the number of alignments
       @available_num_alignments = [0,10,50,100,250,500]
+      @available_genetic_codes = [['Standard (1)',1],
+                                  ['Vertebrate Mitochondrial (2)', 2],
+                                  ['Yeast Mitochondrial (3)',3],
+                                  ['Mold Mitochondrial (4)',4],
+                                  ['Invertebrate Mitochondrial (5)',5],
+                                  ['Ciliate Nuclear (6)',6],
+                                  ['Echinoderm Mitochondrial (9)',9],
+                                  ['Euplotid Nuclear (10)',10],
+                                  ['Bacterial (11)',11],
+                                  ['Alternative Yeast Nuclear (12)',12],
+                                  ['Ascidian Mitochondrial (13)',13],
+                                  ['Flatworm Mitochondrial (14)',14],
+                                  ['Blepharisma Macronuclear (15)',15]]
+      @available_compositional_adjustments = [
+        ['No adjustment', 0],
+        ['Composition-based statistics', 1],
+        ['Conditional compostional score matrix adjustment', 2],
+        ['Universal compositional score matrix adjustment', 3]
+      ]
     end
   
     def set_attributes_and_defaults(attributes = {})
@@ -119,9 +137,6 @@ class Blastn_Query #< Blast_Query::Base
       @penalty = -2 if @penalty.blank?
       @use_soft_masking = true if @use_soft_masking.blank?
       @use_lowercase_masking = false if @use_lowercase_masking.blank?
-      if @filter_low_complexity_regions.blank?
-        @filter_low_complexity_regions = true
-      end
       if @use_fasta_sequence_or_file.blank?
         @use_fasta_sequence_or_file = :use_fasta_sequence
       end
@@ -167,11 +182,6 @@ class Blastn_Query #< Blast_Query::Base
       end
       if @use_lowercase_masking == '1'
         blastn_execution_string += '-lcase_masking '
-      end
-      if @filter_low_complexity_regions == '1'
-        blastn_execution_string += "-dust 'yes' "
-      else
-        blastn_execution_string += "-dust 'no' "
       end
       gapopen = AVAILABLE_GAP_COSTS[@match_and_mismatch_scores][@gap_costs][:existence]
       gapextend = AVAILABLE_GAP_COSTS[@match_and_mismatch_scores][@gap_costs][:extention]

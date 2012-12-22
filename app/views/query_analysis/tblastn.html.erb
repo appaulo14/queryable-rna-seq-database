@@ -1,10 +1,73 @@
 <%= render 'shared/error_messages', :object => @tblastn_query %>
+<script type='text/javascript' src='tblastn.js'></script>
 <%= form_for(@tblastn_query,{:url => "tblastn"}) do |bq| %>
-    <%= render 'blast_generic_args', :bq => bq %>
-    <h2>TBlastn-specific settings</h2>
+  <p>
+      <%= label(:dataset_id, "Dataset:") %>
+      <%= select_tag(:dataset_id, options_for_select(@tblastn_query.available_datasets,@tblastn_query.dataset_id)) %>
+  </p>
+  <hr/>
+  -->
+  <h2>Enter a Query Sequence</h2>
+<!--Enter or upload fasta sequence-->
+    <p>
+      <div>
+        <%= bq.radio_button(:use_fasta_sequence_or_file, :use_fasta_sequence) %>
+        <%= bq.label :fasta_sequence, "Enter sequence below in FASTA format" %><br/>
+        <%= bq.text_area :fasta_sequence, {:cols=>80, :rows => 6} %><br/>
+      </div>
+      <div>
+        <%= bq.radio_button(:use_fasta_sequence_or_file, :use_fasta_file) %>
+        <%= bq.label :fasta_file, "Or load it from disk" %><br/>
+        <%= bq.file_field :fasta_file %><br/>
+      </div>
+    </p>
+    <hr/>
+  <h2>Algorithm settings</h2>
+  
+  <div class='sub-section rounded-corners' style='padding:5px'>
+    <p class='sub-section-heading-2'>General Parameters</p>
+    <div>
+        <%= bq.label :num_alignments, "Number of alignments to show" %>
+        <%= bq.select :num_alignments, options_for_select(@tblastn_query.available_num_alignments,
+            @tblastn_query.num_alignments) %>
+    </div>
+    <p>
+        <%= bq.label :e_value, "Expect threshold (e-value)" %>
+        <%= bq.text_field :e_value, :size => 10 %>
+    </p>
+    <div>
+        <%= bq.label :word_size, "Word size [Integer]" %>
+        <%= bq.text_field :word_size, :size => 5 %>
+    </div>
+    <div>
+      <%= bq.label :database_genetic_codes, "Database genetic codes" %>
+      <%= bq.select :database_genetic_codes, options_for_select(@tblastn_query.available_genetic_codes,@tblastn_query.genetic_code) %>
+    </div>
+  </div>
+  <br/>
+  <div class='sub-section rounded-corners' style='padding:5px'>
+    <p class='sub-section-heading-2'>Scoring Parameters</p>
     <%= bq.label :matrix, "Matrix" %><%= bq.select :matrix, options_for_select(['PAM30','PAM70','BLOSUM80','BLOSUM62','BLOSUM45'],
-        bq.object.matrix) %>
-    <%= bq.label :database_genetic_codes, "Database genetic codes" %>
-    <%= bq.select :database_genetic_codes, options_for_select([['Standard (1)',1],['Vertebrate Mitochondrial (2)', 2],['Yeast Mitochondrial (3)',3],['Mold Mitochondrial (4)',4],['Invertebrate Mitochondrial (5)',5],['Ciliate Nuclear (6)',6],['Echinoderm Mitochondrial (9)',9],['Euplotid Nuclear (10)',10],['Bacterial (11)',11],['Alternative Yeast Nuclear (12)',12],['Ascidian Mitochondrial (13)',13],['Flatworm Mitochondrial (14)',14],['Blepharisma Macronuclear (15)',15]],bq.object.database_genetic_codes) %>
-    <p><%= button_tag("Clear Sequence", :onclick=>"clear_sequence();", :type=>"button") %> <%= submit_tag("Search") %></p>
+          bq.object.matrix) %>
+    <div>
+      <%= bq.label :gap_costs, "Gap costs" %>
+      <%= bq.select :gap_costs, options_for_select(@tblastn_query.available_gap_costs,
+          @tblastn_query.gap_costs) %>
+    </div>
+    <div>
+      <%= bq.label :compositional_adjustment, "Compositional Adjustments" %>
+        <%= bq.select :compositional_adjustment, options_for_select(@tblastn_query.available_compositional_adjustments,
+            @tblastn_query.compositional_adjustment) %>
+    </div>
+  </div>
+  <br/>
+  <div class='sub-section rounded-corners' style='padding:5px'>
+    <p class='sub-section-heading-2'>Filters and Masking</p>
+    <p>
+        <%= bq.check_box :filter_low_complexity_regions %> <%= bq.label :filter_low_complexity_regions, "Filter low complexity regions" %><br/>
+        <%= bq.check_box :use_soft_masking %> <%= bq.label :use_soft_masking, "Mask for lookup table only" %><br/>
+        <%= bq.check_box :use_lowercase_masking %> <%= bq.label :use_lowercase_masking, "Mask lowercase letters" %><br/>
+    </p>
+  </div>
+    <p><%= button_tag 'Reset', :type => 'reset' %> <%= submit_tag("BLAST", :disable_with => "BLASTing...") %></p>
 <% end %>
