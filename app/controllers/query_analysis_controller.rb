@@ -241,12 +241,14 @@ class QueryAnalysisController < ApplicationController
     end
     
     def get_blastn_gap_costs_for_match_and_match_scores
+      #Calculate the new gap costs from the match and mismatch scores 
       @blastn_query = Blastn_Query.new(current_user)
       match_and_mismatch_scores = params[:match_and_mismatch_scores]
       @blastn_query.set_attributes_and_defaults(
         :match_and_mismatch_scores => match_and_mismatch_scores
       )
-      render :json => @blastn_query.available_gap_costs
+      #Render the new gap costs
+      render :partial => 'gap_costs', :locals => {:object => @blastn_query}
     end
     
     def get_blast_graphical_summary
@@ -276,14 +278,29 @@ class QueryAnalysisController < ApplicationController
             @tblastn_query = Tblastn_Query.new(current_user)
             @tblastn_query.set_attributes_and_defaults()
         elsif request.post?
-            @tblastn_query = Tblastn_Query.new()
+            @tblastn_query = Tblastn_Query.new(current_user)
             @tblastn_query.set_attributes_and_defaults(params[:tblastn_query])
             debugger if ENV['RAILS_DEBUG'] == "true"
             if @tblastn_query.valid?
-                flash[:success] = "Success"
+              flash[:success] = "Success"
+              #Run the blast query and get the file path of the result
+              blast_results_file_path = @tblastn_query.blast!
+              #Send the result to the user
+              render :file => blast_results_file_path
+              #Delete the result file since it is no longer needed
+              File.delete(blast_results_file_path)
             else
                 flash[:success]="Failure"
             end
         end
+    end
+    
+    def get_tblastn_gap_costs_for_matrix
+      #Calculate the new gap costs from the match and mismatch scores 
+      @tblastn_query = Tblastn_Query.new(current_user)
+      matrix = params[:matrix]
+      @tblastn_query.set_attributes_and_defaults(:matrix => matrix)
+      #Render the new gap costs
+      render :partial => 'gap_costs', :locals => {:object => @tblastn_query}
     end
 end

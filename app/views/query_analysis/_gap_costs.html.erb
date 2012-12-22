@@ -1,0 +1,5 @@
+<%= fields_for object do |bq| %>
+  <%= bq.label :gap_costs, "Gap costs" %>
+  <%= bq.select :gap_costs, options_for_select(bq.object.available_gap_costs,
+      bq.object.gap_costs) %>
+<% end %>

@@ -8,12 +8,10 @@ class Blastn_Query #< Blast_Query::Base
   attr_accessor :dataset_id, :fasta_sequence, :fasta_file, :num_alignments, :e_value,
                 :word_size, :use_fasta_sequence_or_file, :use_soft_masking, 
                 :use_lowercase_masking, :gap_costs,
-                :match_and_mismatch_scores, :filter_low_complexity_regions,
-                :genetic_code
+                :match_and_mismatch_scores, :filter_low_complexity_regions
     
     attr_reader :available_datasets, :available_match_and_mismatch_scores,
-                :available_gap_costs, :available_num_alignments,
-                :available_genetic_codes
+                :available_gap_costs, :available_num_alignments
     
     #Declare Constants
     AVAILABLE_MATCH_AND_MISMATCH_SCORES = {
@@ -137,8 +135,8 @@ class Blastn_Query #< Blast_Query::Base
       @available_gap_costs = 
         AVAILABLE_GAP_COSTS[@match_and_mismatch_scores].keys
       #Set default gap cost based on available gap costs
-      if @gap_cost.blank? or not @available_gap_costs.include?(@gap_cost)
-        @gap_cost = AVAILABLE_GAP_COST_DEFAULTS[@match_and_mismatch_scores]
+      if @gap_costs.blank? or not @available_gap_costs.include?(@gap_costs)
+        @gap_costs = AVAILABLE_GAP_COST_DEFAULTS[@match_and_mismatch_scores]
       end
     end
     

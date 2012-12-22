@@ -57,16 +57,14 @@
     <%= bq.select :match_and_mismatch_scores, options_for_select(@blastn_query.available_match_and_mismatch_scores,
         @blastn_query.match_and_mismatch_scores) %>
     <div>
-      <%= bq.label :gap_costs, "Gap costs" %>
-      <%= bq.select :gap_costs, options_for_select(@blastn_query.available_gap_costs,
-          @blastn_query.gap_costs) %>
+      <%= render :partial => 'gap_costs', :locals => {:object => @blastn_query} %>
     </div>
   </div>
   <br/>
   <div class='sub-section rounded-corners' style='padding:5px'>
     <p class='sub-section-heading-2'>Filters and Masking</p>
     <p>
-        <%= bq.check_box :filter_low_complexity_regions %> <%= bq.label :filter_low_complexity_regions, "Filter low complexity regions" %><br/>
+        <%= bq.check_box :filter_low_complexity_regions %><%= bq.label :filter_low_complexity_regions, "Filter low complexity regions" %><br/>
         <%= bq.check_box :use_soft_masking %> <%= bq.label :use_soft_masking, "Mask for lookup table only" %><br/>
         <%= bq.check_box :use_lowercase_masking %> <%= bq.label :use_lowercase_masking, "Mask lowercase letters" %><br/>
     </p>

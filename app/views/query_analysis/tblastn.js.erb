@@ -1,0 +1,51 @@
+jQuery(document).ready(function($) {
+  //Ensure that the fasta selection elements are in their correct state 
+  //    of being enabled or disabled by running the change event 
+  fasta_input_radio_button_changed();
+  //Bind the events for the fasta selection radio buttons.
+  $('#tblastn_query_use_fasta_sequence_or_file_use_fasta_sequence').change(fasta_input_radio_button_changed);
+  $('#tblastn_query_use_fasta_sequence_or_file_use_fasta_file').change(fasta_input_radio_button_changed);
+  //Bind the event to update the gap costs drop down list 
+  //    when match and mismatch scores drop down list changes
+  $('#tblastn_query_matrix').change(matrix_selection_changed);
+});
+
+/*
+ * Enable/Disable certain elements based on whether 
+ *      the user has selected the radio button for the fasta sequence
+ *      or the fasta file.
+ */
+function fasta_input_radio_button_changed(){
+  fasta_file_radio_button = 
+    $('#tblastn_query_use_fasta_sequence_or_file_use_fasta_file');
+  fasta_sequence_radio_button = 
+    $('#tblastn_query_use_fasta_sequence_or_file_use_fasta_sequence');
+  if (fasta_sequence_radio_button.is(':checked')){
+    $('#tblastn_query_fasta_sequence').removeAttr("disabled");
+    $('#tblastn_query_fasta_file').attr("disabled", "disabled");
+  }
+  else{
+    $('#tblastn_query_fasta_sequence').attr("disabled", "disabled");
+    $('#tblastn_query_fasta_file').removeAttr("disabled");
+  }
+}
+
+/*
+ * When the match and mismatch scores drop down list changes,
+ *      launch an Ajax request to get the new gap costs to use 
+ *      for updating the gap costs drop down list.
+ */
+function matrix_selection_changed(){
+  matrix = $('#tblastn_query_matrix').val();
+  request_string = 'get_tblastn_gap_costs_for_matrix' +
+                   '?matrix=' + matrix
+  $.get(request_string, replace_gap_costs);
+}
+
+/*
+ * Update the gap costs drop down list when the 
+ *      match and mismatch scores drop down list changes
+ */
+function replace_gap_costs(new_gap_costs){
+   $('#tblastn_query_gap_costs').parent().html(new_gap_costs);
+}

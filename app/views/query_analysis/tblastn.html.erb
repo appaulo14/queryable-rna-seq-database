@@ -51,9 +51,7 @@
       <%= bq.select :matrix, options_for_select(@tblastn_query.available_matrices,
             @tblastn_query.matrix) %>
     <div>
-      <%= bq.label :gap_costs, "Gap costs" %>
-      <%= bq.select :gap_costs, options_for_select(@tblastn_query.available_gap_costs,
-          @tblastn_query.gap_costs) %>
+      <%= render :partial => 'gap_costs', :locals => {:object => @tblastn_query} %>
     </div>
     <div>
       <%= bq.label :compositional_adjustment, "Compositional Adjustments" %>

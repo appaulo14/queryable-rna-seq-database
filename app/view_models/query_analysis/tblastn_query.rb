@@ -134,8 +134,6 @@ class Tblastn_Query #< Blast_Query::Base
       #Set available datasets
       all_datasets_for_user = Dataset.find_all_by_user_id(@current_user)
       @available_datasets = all_datasets_for_user.map{|ds| [ds.name, ds.id]}
-      #Set available match/mismatch scores
-      @available_match_and_mismatch_scores = AVAILABLE_MATCH_AND_MISMATCH_SCORES.keys
       #Set the available options for the number of alignments
       @available_num_alignments = [0,10,50,100,250,500]
       @available_genetic_codes = [['Standard (1)',1],
@@ -187,8 +185,8 @@ class Tblastn_Query #< Blast_Query::Base
       end
       #Set available gap costs for the given matrix
       @available_gap_costs = AVAILABLE_GAP_COSTS[@matrix].keys
-      if @gap_cost.blank? or not @available_gap_costs.include(@gap_cost)
-        @gap_cost = AVAILABLE_GAP_COST_DEFAULTS[@matrix]
+      if @gap_costs.blank? or not @available_gap_costs.include?(@gap_costs)
+        @gap_costs = AVAILABLE_GAP_COST_DEFAULTS[@matrix]
       end
     end
     
@@ -208,38 +206,42 @@ class Tblastn_Query #< Blast_Query::Base
         query_input_file = @fasta_file.tempfile
       end
       #Create a temporary file to store the blast output in xml format
-      blast_xml_output_file = Tempfile.new('blastn')
+      blast_xml_output_file = Tempfile.new('tblastn')
       blast_xml_output_file.close
       #Create the blastn execution string that will be run on the command line,
       # including calculating all the options
       dataset = Dataset.find_by_id(@dataset_id)
-      blastn_execution_string = "blastn -query #{query_input_file.path} " +
+      tblastn_execution_string = "tblastn -query #{query_input_file.path} " +
              "-db #{dataset.blast_db_location} " +
              "-out #{blast_xml_output_file.path} " +
              "-evalue #{@e_value} -word_size #{@word_size} " +
              "-num_alignments #{@num_alignments} " +
              "-show_gis -outfmt '5' "
       if @use_soft_masking == '0'
-        blastn_execution_string += '-soft_masking false ' 
+        tblastn_execution_string += '-soft_masking false ' 
       else
-        blastn_execution_string += '-soft_masking true '
+        tblastn_execution_string += '-soft_masking true '
       end
       if @use_lowercase_masking == '1'
-        blastn_execution_string += '-lcase_masking '
+        tblastn_execution_string += '-lcase_masking '
       end
-      gapopen = AVAILABLE_GAP_COSTS[@match_and_mismatch_scores][@gap_costs][:existence]
-      gapextend = AVAILABLE_GAP_COSTS[@match_and_mismatch_scores][@gap_costs][:extention]
-      blastn_execution_string += "-gapopen #{gapopen} -gapextend #{gapextend} "
-      selected_match_and_mismatch_scores = 
-        AVAILABLE_MATCH_AND_MISMATCH_SCORES[@match_and_mismatch_scores]
-      match = selected_match_and_mismatch_scores[:match]
-      mismatch = selected_match_and_mismatch_scores[:mismatch]
-      blastn_execution_string += "-reward #{match} -penalty #{mismatch}"
+      if @filter_low_complexity_regions == '1'
+        tblastn_execution_string += "-seg 'yes' "
+      else
+        tblastn_execution_string += "-seg 'no' "
+      end
+      gapopen = AVAILABLE_GAP_COSTS[@matrix][@gap_costs][:existence]
+      gapextend = AVAILABLE_GAP_COSTS[@matrix][@gap_costs][:extention]
+      tblastn_execution_string += "-gapopen #{gapopen} -gapextend #{gapextend} "
+      tblastn_execution_string += "-matrix #{@matrix} "
+      tblastn_execution_string += 
+        "-comp_based_stats #{@compositional_adjustment} "
+      tblastn_execution_string += "-db_gencode #{@genetic_code}"
       #TODO: Decide how to handle failures
       #Execute blastn
-      system(blastn_execution_string)
+      system(tblastn_execution_string)
       #Create a temporary file to store the final blast page, containing images and html
-      blast_html_output_file = Tempfile.new('blastn')
+      blast_html_output_file = Tempfile.new('tblastn')
       blast_html_output_file.close
       #Run a perl script to format and add the graphical summary to the blast output
       basename = File.basename(blast_html_output_file)

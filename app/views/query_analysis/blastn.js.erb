@@ -31,7 +31,7 @@ function fasta_input_radio_button_changed(){
 }
 
 /*
- * When the match and mismatch scores drop down list changes,
+ * When the match and mismatch scores drop down list changes, 
  *      launch an Ajax request to get the new gap costs to use 
  *      for updating the gap costs drop down list.
  */
@@ -39,7 +39,7 @@ function match_and_mismatch_scores_selection_changed(){
   match_and_mismatch_scores = $('#blastn_query_match_and_mismatch_scores').val();
   request_string = 'get_blastn_gap_costs_for_match_and_match_scores' +
                    '?match_and_mismatch_scores=' + match_and_mismatch_scores
-  $.getJSON(request_string, replace_gap_costs);
+  $.get(request_string, replace_gap_costs);
 }
 
 /*
@@ -47,21 +47,5 @@ function match_and_mismatch_scores_selection_changed(){
  *      match and mismatch scores drop down list changes
  */
 function replace_gap_costs(new_gap_costs){
-  gap_costs_select = $('#blastn_query_gap_costs');
-  gap_costs_select.html('');
-  for (i = 0; i<new_gap_costs.length; i++){
-    new_gap_cost = new_gap_costs[i];
-    option_html = '<option value="' + new_gap_cost + '">' + new_gap_cost + '</option>';
-    gap_costs_select.append(option_html);
-  }     
-}
-
-function clear_sequence(){
-    var fasta_text_area = document.getElementById("blast_query_fasta_sequence");
-//         var subsequence_from = document.getElementById("subsequence_from");
-//         var subsequence_to = document.getElementById("subsequence_to");
-//         subsequence_from.value='';
-//         subsequence_to.value='';
-    fasta_text_area.value='';
-    fasta_text_area.focus();
+   $('#blastn_query_gap_costs').parent().html(new_gap_costs);
 }
