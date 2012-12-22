@@ -1,12 +1,12 @@
 <%= render 'shared/error_messages', :object => @tblastn_query %>
 <script type='text/javascript' src='tblastn.js'></script>
 <%= form_for(@tblastn_query,{:url => "tblastn"}) do |bq| %>
+  <h2>Choose Data Set to Search Using TBlastn</h2>
   <p>
       <%= label(:dataset_id, "Dataset:") %>
       <%= select_tag(:dataset_id, options_for_select(@tblastn_query.available_datasets,@tblastn_query.dataset_id)) %>
   </p>
   <hr/>
-  -->
   <h2>Enter a Query Sequence</h2>
 <!--Enter or upload fasta sequence-->
     <p>
@@ -40,15 +40,16 @@
         <%= bq.text_field :word_size, :size => 5 %>
     </div>
     <div>
-      <%= bq.label :database_genetic_codes, "Database genetic codes" %>
-      <%= bq.select :database_genetic_codes, options_for_select(@tblastn_query.available_genetic_codes,@tblastn_query.genetic_code) %>
+      <%= bq.label :genetic_code, "Genetic Code" %>
+      <%= bq.select :genetic_code, options_for_select(@tblastn_query.available_genetic_codes,@tblastn_query.genetic_code) %>
     </div>
   </div>
   <br/>
   <div class='sub-section rounded-corners' style='padding:5px'>
     <p class='sub-section-heading-2'>Scoring Parameters</p>
-    <%= bq.label :matrix, "Matrix" %><%= bq.select :matrix, options_for_select(['PAM30','PAM70','BLOSUM80','BLOSUM62','BLOSUM45'],
-          bq.object.matrix) %>
+      <%= bq.label :matrix, "Matrix" %>
+      <%= bq.select :matrix, options_for_select(@tblastn_query.available_matrices,
+            @tblastn_query.matrix) %>
     <div>
       <%= bq.label :gap_costs, "Gap costs" %>
       <%= bq.select :gap_costs, options_for_select(@tblastn_query.available_gap_costs,

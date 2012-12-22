@@ -273,9 +273,11 @@ class QueryAnalysisController < ApplicationController
 
     def tblastn
         if request.get?
-            @tblastn_query = Tblastn_Query.new()
+            @tblastn_query = Tblastn_Query.new(current_user)
+            @tblastn_query.set_attributes_and_defaults()
         elsif request.post?
-            @tblastn_query = Tblastn_Query.new(params[:tblastn_query])
+            @tblastn_query = Tblastn_Query.new()
+            @tblastn_query.set_attributes_and_defaults(params[:tblastn_query])
             debugger if ENV['RAILS_DEBUG'] == "true"
             if @tblastn_query.valid?
                 flash[:success] = "Success"

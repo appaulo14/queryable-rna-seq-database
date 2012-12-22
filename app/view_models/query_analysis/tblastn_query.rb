@@ -1,4 +1,4 @@
-class TBlastn_Query #< Blast_Query::Base
+class Tblastn_Query #< Blast_Query::Base
   include ActiveModel::Validations
   include ActiveModel::Conversion
   extend ActiveModel::Naming
@@ -7,81 +7,121 @@ class TBlastn_Query #< Blast_Query::Base
   #TODO: Describe meaning of these?
   attr_accessor :dataset_id, :fasta_sequence, :fasta_file, :num_alignments, :e_value,
                 :word_size, :use_fasta_sequence_or_file, :use_soft_masking, 
-                :use_lowercase_masking, :gap_costs,
-                :match_and_mismatch_scores, :compositional_adjustment
+                :use_lowercase_masking, :filter_low_complexity_regions,
+                :gap_costs, :genetic_code,
+                :matrix, :compositional_adjustment
     
-    attr_reader :available_datasets, :available_match_and_mismatch_scores,
+    attr_reader :available_datasets, :available_matrices,
                 :available_gap_costs, :available_num_alignments,
-                :available_compositional_adjustments
+                :available_compositional_adjustments, 
+                :available_genetic_codes
     
     #Declare Constants
-    AVAILABLE_MATCH_AND_MISMATCH_SCORES = {
-      '1,-2' => {:match => 1, :mismatch => -2},
-      '1,-3' => {:match => 1, :mismatch => -3},
-      '1,-4' => {:match => 1, :mismatch => -4},
-      '2,-3' => {:match => 2, :mismatch => -3},
-      '4,-5' => {:match => 4, :mismatch => -5},
-      '1,-1' => {:match => 1, :mismatch => -1},
+    AVAILABLE_GAP_COST_DEFAULTS = {
+      'PAM30' => 'Existence: 9, Extension: 1',
+      'PAM70' => 'Existence: 10, Extension: 1',
+      'PAM250' =>  'Existence: 14, Extension: 2',
+      'BLOSUM80' => 'Existence: 10, Extension: 1',
+      'BLOSUM62' => 'Existence: 11, Extension: 1',
+      'BLOSUM45' => 'Existence: 15, Extension: 2',
+      'BLOSUM50' => 'Existence: 13, Extension: 2',
+      'BLOSUM90' => 'Existence: 10, Extension: 1',
     }
     
     AVAILABLE_GAP_COSTS = {
-      '1,-2' => {
-        'Linear' => {:existence => 0, :extention => 0},
-        'Existence: 5, Extension: 2' => {:existence => 5, :extention => 2},
-        'Existence: 2, Extension: 2' => {:existence => 2, :extention => 2},
-        'Existence: 1, Extension: 2' => {:existence => 1, :extention => 2},
-        'Existence: 0, Extension: 2' => {:existence => 0, :extention => 2},
-        'Existence: 3, Extension: 1' => {:existence => 3, :extention => 1},
-        'Existence: 2, Extension: 1' => {:existence => 2, :extention => 1},
-        'Existence: 1, Extension: 1' => {:existence => 1, :extention => 1}, 
-      },
-      '1,-3' => {
-        'Linear' => {:existence => 0, :extention => 0},
-        'Existence: 5, Extension: 2' => {:existence => 5, :extention => 2},
-        'Existence: 2, Extension: 2' => {:existence => 2, :extention => 2},
-        'Existence: 1, Extension: 2' => {:existence => 1, :extention => 2},
-        'Existence: 0, Extension: 2' => {:existence => 0, :extention => 2},
-        'Existence: 2, Extension: 1' => {:existence => 2, :extention => 1},
-        'Existence: 1, Extension: 1' => {:existence => 1, :extention => 1},      
-      },
-      '1,-4' => {
-        'Linear' => {:existence => 0, :extention => 0},
-        'Existence: 5, Extension: 2' => {:existence => 5, :extention => 2},
-        'Existence: 2, Extension: 2' => {:existence => 2, :extention => 2},
-        'Existence: 1, Extension: 2' => {:existence => 1, :extention => 2},
-        'Existence: 0, Extension: 2' => {:existence => 0, :extention => 2},
-        'Existence: 2, Extension: 1' => {:existence => 2, :extention => 1},
-        'Existence: 1, Extension: 1' => {:existence => 1, :extention => 1},      
-      },
-      '2,-3' => {
-        'Linear' => {:existence => 0, :extention => 0},
-        'Existence: 4, Extension: 4' => {:existence => 4, :extention => 4},
-        'Existence: 2, Extension: 4' => {:existence => 2, :extention => 4}, 
-        'Existence: 0, Extension: 4' => {:existence => 0, :extention => 4},
-        'Existence: 3, Extension: 3' => {:existence => 3, :extention => 3},
+      'PAM30' => {
+        'Existence: 7, Extension: 2' => {:existence => 7, :extention => 2},
         'Existence: 6, Extension: 2' => {:existence => 6, :extention => 2},
         'Existence: 5, Extension: 2' => {:existence => 5, :extention => 2},
-        'Existence: 4, Extension: 2' => {:existence => 4, :extention => 2},
-        'Existence: 2, Extension: 2' => {:existence => 2, :extention => 2},
+        'Existence: 10, Extension: 1' => {:existence => 10, :extention => 1},
+        'Existence: 9, Extension: 1' => {:existence => 9, :extention => 1},
+        'Existence: 8, Extension: 1' => {:existence => 8, :extention => 1},
       },
-      '4,-5' => {
-        'Linear' => {:existence => 0, :extention => 0},
-        'Existence: 12, Extension: 8' => {:existence => 12, :extention => 8},
-        'Existence: 6, Extension: 5' => {:existence => 6, :extention => 5},
-        'Existence: 5, Extension: 5' => {:existence => 5, :extention => 5},
-        'Existence: 4, Extension: 5' => {:existence => 4, :extention => 5},
-        'Existence: 3, Extension: 5' => {:existence => 3, :extention => 5},
+      'PAM70' => {
+        'Existence: 8, Extension: 2' => {:existence => 8, :extention => 2},
+        'Existence: 7, Extension: 2' => {:existence => 7, :extention => 2},
+        'Existence: 6, Extension: 2' => {:existence => 6, :extention => 2},
+        'Existence: 11, Extension: 1' => {:existence => 11, :extention => 1},
+        'Existence: 10, Extension: 1' => {:existence => 10, :extention => 1},
+        'Existence: 9, Extension: 1' => {:existence => 9, :extention => 1},
       },
-      '1,-1' => {
-        'Linear' => {:existence => 0, :extention => 0},
-        'Existence: 5, Extension: 2' => {:existence => 5, :extention => 2},
-        'Existence: 3, Extension: 2' => {:existence => 3, :extention => 2},
-        'Existence: 2, Extension: 2' => {:existence => 2, :extention => 2},
-        'Existence: 1, Extension: 2' => {:existence => 1, :extention => 2},
-        'Existence: 0, Extension: 2' => {:existence => 0, :extention => 2},
-        'Existence: 4, Extension: 1' => {:existence => 4, :extention => 1},
-        'Existence: 3, Extension: 1' => {:existence => 3, :extention => 1},
-        'Existence: 2, Extension: 1' => {:existence => 2, :extention => 1},
+      'PAM250' => {
+        'Existence: 15, Extension: 3' => {:existence => 15, :extention => 3},
+        'Existence: 14, Extension: 3' => {:existence => 14, :extention => 3},   
+        'Existence: 13, Extension: 3' => {:existence => 13, :extention => 3},   
+        'Existence: 12, Extension: 3' => {:existence => 12, :extention => 3},   
+        'Existence: 11, Extension: 3' => {:existence => 11, :extention => 3},   
+        'Existence: 17, Extension: 2' => {:existence => 17, :extention => 2},   
+        'Existence: 16, Extension: 2' => {:existence => 16, :extention => 2},   
+        'Existence: 15, Extension: 2' => {:existence => 15, :extention => 2},   
+        'Existence: 14, Extension: 2' => {:existence => 14, :extention => 2},   
+        'Existence: 13, Extension: 2' => {:existence => 13, :extention => 2},   
+        'Existence: 21, Extension: 1' => {:existence => 21, :extention => 1},   
+        'Existence: 20, Extension: 1' => {:existence => 20, :extention => 1},   
+        'Existence: 19, Extension: 1' => {:existence => 19, :extention => 1},   
+        'Existence: 18, Extension: 1' => {:existence => 18, :extention => 1},   
+        'Existence: 17, Extension: 1' => {:existence => 17, :extention => 1},   
+      },
+      'BLOSUM80' => {
+        'Existence: 8, Extension: 2' => {:existence => 8, :extention => 2},
+        'Existence: 7, Extension: 2' => {:existence => 7, :extention => 2},
+        'Existence: 6, Extension: 2' => {:existence => 6, :extention => 2},
+        'Existence: 11, Extension: 1' => {:existence => 11, :extention => 1},
+        'Existence: 10, Extension: 1' => {:existence => 10, :extention => 1},
+        'Existence: 9, Extension: 1' => {:existence => 9, :extention => 1},
+      },
+      'BLOSUM62' => {
+        'Existence: 11, Extension: 2' => {:existence => 11, :extention => 2},
+        'Existence: 10, Extension: 2' => {:existence => 10, :extention => 2},
+        'Existence: 9, Extension: 2' => {:existence => 9, :extention => 2},
+        'Existence: 8, Extension: 2' => {:existence => 8, :extention => 2},
+        'Existence: 7, Extension: 2' => {:existence => 7, :extention => 2},
+        'Existence: 6, Extension: 2' => {:existence => 6, :extention => 2},
+        'Existence: 13, Extension: 1' => {:existence => 13, :extention => 1},
+        'Existence: 12, Extension: 1' => {:existence => 12, :extention => 1},
+        'Existence: 11, Extension: 1' => {:existence => 11, :extention => 1},
+        'Existence: 10, Extension: 1' => {:existence => 10, :extention => 1},
+        'Existence: 9, Extension: 1' => {:existence => 9, :extention => 1},
+      },
+      'BLOSUM45' => {
+        'Existence: 13, Extension: 3' => {:existence => 13, :extention => 3},
+        'Existence: 12, Extension: 3' => {:existence => 12, :extention => 3},
+        'Existence: 11, Extension: 3' => {:existence => 11, :extention => 3},
+        'Existence: 10, Extension: 3' => {:existence => 10, :extention => 3},
+        'Existence: 15, Extension: 2' => {:existence => 15, :extention => 2},
+        'Existence: 14, Extension: 2' => {:existence => 14, :extention => 2},
+        'Existence: 13, Extension: 2' => {:existence => 13, :extention => 2},
+        'Existence: 12, Extension: 2' => {:existence => 12, :extention => 2},
+        'Existence: 19, Extension: 1' => {:existence => 19, :extention => 1},
+        'Existence: 18, Extension: 1' => {:existence => 18, :extention => 1},
+        'Existence: 17, Extension: 1' => {:existence => 17, :extention => 1},
+        'Existence: 16, Extension: 1' => {:existence => 16, :extention => 1},
+      },
+      'BLOSUM50' =>{
+        'Existence: 13, Extension: 3' => {:existence => 13, :extention => 3},
+        'Existence: 12, Extension: 3' => {:existence => 12, :extention => 3},
+        'Existence: 11, Extension: 3' => {:existence => 11, :extention => 3},
+        'Existence: 10, Extension: 3' => {:existence => 10, :extention => 3},
+        'Existence: 9, Extension: 3' => {:existence => 9, :extention => 3},
+        'Existence: 16, Extension: 2' => {:existence => 16, :extention => 2},
+        'Existence: 15, Extension: 2' => {:existence => 15, :extention => 2},
+        'Existence: 14, Extension: 2' => {:existence => 14, :extention => 2},
+        'Existence: 13, Extension: 2' => {:existence => 13, :extention => 2},
+        'Existence: 12, Extension: 2' => {:existence => 12, :extention => 2},
+        'Existence: 19, Extension: 1' => {:existence => 19, :extention => 1},
+        'Existence: 18, Extension: 1' => {:existence => 18, :extention => 1},
+        'Existence: 17, Extension: 1' => {:existence => 17, :extention => 1},
+        'Existence: 16, Extension: 1' => {:existence => 16, :extention => 1},
+        'Existence: 15, Extension: 1' => {:existence => 15, :extention => 1},
+      },
+      'BLOSUM90' =>{
+        'Existence: 9, Extension: 2' => {:existence => 9, :extention => 2},
+        'Existence: 8, Extension: 2' => {:existence => 8, :extention => 2},
+        'Existence: 7, Extension: 2' => {:existence => 7, :extention => 2},
+        'Existence: 6, Extension: 2' => {:existence => 6, :extention => 2},
+        'Existence: 11, Extension: 1' => {:existence => 11, :extention => 1},
+        'Existence: 10, Extension: 1' => {:existence => 10, :extention => 1},
+        'Existence: 9, Extension: 1' => {:existence => 9, :extention => 1},
       },
     }
     
@@ -117,6 +157,8 @@ class TBlastn_Query #< Blast_Query::Base
         ['Conditional compostional score matrix adjustment', 2],
         ['Universal compositional score matrix adjustment', 3]
       ]
+      @available_matrices = ['PAM30','PAM70','PAM250','BLOSUM80',
+                             'BLOSUM62','BLOSUM45','BLOSUM80']
     end
   
     def set_attributes_and_defaults(attributes = {})
@@ -130,22 +172,24 @@ class TBlastn_Query #< Blast_Query::Base
       @dataset_id = @available_datasets.first[1]
       @num_alignments = 100 if @num_alignments.blank?
       @e_value = 10.0 if @e_value.blank?
-      @word_size = 28 if @word_size.blank?
-      @gap_open_penalty = 0 if @gap_open_penalty.blank?
-      @gap_extension_penalty = nil
-      @reward = 1 if @reward.blank?
-      @penalty = -2 if @penalty.blank?
-      @use_soft_masking = true if @use_soft_masking.blank?
+      @word_size = 3 if @word_size.blank?
+      @compositional_adjustment = 2
+      @use_soft_masking = false if @use_soft_masking.blank?
       @use_lowercase_masking = false if @use_lowercase_masking.blank?
+      if @filter_low_complexity_regions.blank?
+        @filter_low_complexity_regions = true
+      end
       if @use_fasta_sequence_or_file.blank?
         @use_fasta_sequence_or_file = :use_fasta_sequence
       end
-      if @match_and_mismatch_scores.blank?
-        @match_and_mismatch_scores = @available_match_and_mismatch_scores.first 
+      if @matrix.blank?
+        @matrix = 'BLOSUM62'
       end
-      #Set available gap costs for the given match and mismatch scores
-      @available_gap_costs = 
-        AVAILABLE_GAP_COSTS[@match_and_mismatch_scores].keys
+      #Set available gap costs for the given matrix
+      @available_gap_costs = AVAILABLE_GAP_COSTS[@matrix].keys
+      if @gap_cost.blank? or not @available_gap_costs.include(@gap_cost)
+        @gap_cost = AVAILABLE_GAP_COST_DEFAULTS[@matrix]
+      end
     end
     
     def blast!()
@@ -157,7 +201,7 @@ class TBlastn_Query #< Blast_Query::Base
       #If given a fasta sequence, write it to a temporary file so that it 
       # can be inputted into blastn
       if @use_fasta_sequence_or_file == 'use_fasta_sequence'
-        query_input_file = Tempfile.new('blastn_query')
+        query_input_file = Tempfile.new('tblastn_query')
         query_input_file.write(@fasta_sequence)
         query_input_file.close
       else

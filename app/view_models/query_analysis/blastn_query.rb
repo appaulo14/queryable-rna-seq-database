@@ -25,6 +25,15 @@ class Blastn_Query #< Blast_Query::Base
       '1,-1' => {:match => 1, :mismatch => -1},
     }
     
+    AVAILABLE_GAP_COST_DEFAULTS = {
+      '1,-2' => 'Linear',
+      '1,-3' => 'Linear',
+      '1,-4' => 'Linear',
+      '2,-3' => 'Linear',
+      '4,-5' => 'Linear',
+      '1,-1' => 'Existence: 5, Extension: 2',
+    }
+    
     AVAILABLE_GAP_COSTS = {
       '1,-2' => {
         'Linear' => {:existence => 0, :extention => 0},
@@ -113,10 +122,6 @@ class Blastn_Query #< Blast_Query::Base
       @num_alignments = 100 if @num_alignments.blank?
       @e_value = 10.0 if @e_value.blank?
       @word_size = 28 if @word_size.blank?
-      @gap_open_penalty = 0 if @gap_open_penalty.blank?
-      @gap_extension_penalty = nil
-      @reward = 1 if @reward.blank?
-      @penalty = -2 if @penalty.blank?
       @use_soft_masking = true if @use_soft_masking.blank?
       @use_lowercase_masking = false if @use_lowercase_masking.blank?
       if @filter_low_complexity_regions.blank?
@@ -131,6 +136,10 @@ class Blastn_Query #< Blast_Query::Base
       #Set available gap costs for the given match and mismatch scores
       @available_gap_costs = 
         AVAILABLE_GAP_COSTS[@match_and_mismatch_scores].keys
+      #Set default gap cost based on available gap costs
+      if @gap_cost.blank? or not @available_gap_costs.include?(@gap_cost)
+        @gap_cost = AVAILABLE_GAP_COST_DEFAULTS[@match_and_mismatch_scores]
+      end
     end
     
     def blast!()
