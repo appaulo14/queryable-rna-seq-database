@@ -63,10 +63,11 @@ module RnaSeqAnalysisPipeline
     # Enable the asset pipeline
     config.assets.enabled = true
     
-    config.assets.initialize_on_precompile = true
+    #Don't pre-compile assets because it causes problems when using devise with heroku
+    config.assets.initialize_on_precompile = false
 
     # Version of your assets, change this if you want to expire all your assets
-    config.assets.version = '1.3'
+    config.assets.version = '1.2'
     
     #Use numbered migrations instead of timestamped migrations
     config.active_record.timestamped_migrations = false
