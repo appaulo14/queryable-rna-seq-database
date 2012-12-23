@@ -12,4 +12,6 @@
 //
 //= require qtip/jquery.qtip
 //= require Stupid-Table-Plugin/stupidtable.min
+//= require downloadify/swfobject
+//= require downloadify/downloadify.min
 //= require_tree .
