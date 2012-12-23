@@ -1,0 +1,29 @@
+jQuery(document).ready(function($) {
+  //Ensure that the fasta selection elements are in their correct state 
+  //    of being enabled or disabled by running the change event 
+  fasta_input_radio_button_changed();
+  //Bind the events for the fasta selection radio buttons.
+  $('#tblastx_query_use_fasta_sequence_or_file_use_fasta_sequence').change(fasta_input_radio_button_changed);
+  $('#tblastx_query_use_fasta_sequence_or_file_use_fasta_file').change(fasta_input_radio_button_changed);
+});
+
+/*
+ * Enable/Disable certain elements based on whether 
+ *      the user has selected the radio button for the fasta sequence
+ *      or the fasta file.
+ */
+function fasta_input_radio_button_changed(){
+  fasta_file_radio_button = 
+    $('#tblastx_query_use_fasta_sequence_or_file_use_fasta_file');
+  fasta_sequence_radio_button = 
+    $('#tblastx_query_use_fasta_sequence_or_file_use_fasta_sequence');
+  if (fasta_sequence_radio_button.is(':checked')){
+    $('#tblastx_query_fasta_sequence').removeAttr("disabled");
+    $('#tblastx_query_fasta_file').attr("disabled", "disabled");
+  }
+  else{
+    $('#tblastx_query_fasta_sequence').attr("disabled", "disabled");
+    $('#tblastx_query_fasta_file').removeAttr("disabled");
+  }
+}
+ 

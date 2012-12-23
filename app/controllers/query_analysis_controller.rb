@@ -8,6 +8,7 @@ class QueryAnalysisController < ApplicationController
     require 'query_analysis/get_transcript_fasta.rb'
     require 'query_analysis/blastn_query.rb'
     require 'query_analysis/tblastn_query.rb'
+    require 'query_analysis/tblastx_query.rb'
     
     before_filter :authenticate_user!
 
@@ -303,4 +304,26 @@ class QueryAnalysisController < ApplicationController
       #Render the new gap costs
       render :partial => 'gap_costs', :locals => {:object => @tblastn_query}
     end
+    
+    def tblastx
+      if request.get?
+            @tblastx_query = Tblastx_Query.new(current_user)
+            @tblastx_query.set_attributes_and_defaults()
+      elsif request.post?
+          @tblastx_query = Tblastx_Query.new(current_user)
+          @tblastx_query.set_attributes_and_defaults(params[:tblastx_query])
+          debugger if ENV['RAILS_DEBUG'] == "true"
+          if @tblastx_query.valid?
+            flash[:success] = "Success"
+            #Run the blast query and get the file path of the result
+            blast_results_file_path = @tblastx_query.blast!
+            #Send the result to the user
+            render :file => blast_results_file_path
+            #Delete the result file since it is no longer needed
+            File.delete(blast_results_file_path)
+          else
+              flash[:success]="Failure"
+          end
+      end
+  end
 end

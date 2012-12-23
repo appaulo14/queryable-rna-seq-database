@@ -156,7 +156,7 @@ class Tblastn_Query #< Blast_Query::Base
         ['Universal compositional score matrix adjustment', 3]
       ]
       @available_matrices = ['PAM30','PAM70','PAM250','BLOSUM80',
-                             'BLOSUM62','BLOSUM45','BLOSUM80']
+                             'BLOSUM62','BLOSUM45','BLOSUM90']
     end
   
     def set_attributes_and_defaults(attributes = {})
@@ -172,6 +172,7 @@ class Tblastn_Query #< Blast_Query::Base
       @e_value = 10.0 if @e_value.blank?
       @word_size = 3 if @word_size.blank?
       @compositional_adjustment = 2
+      @genetic_code = 1
       @use_soft_masking = false if @use_soft_masking.blank?
       @use_lowercase_masking = false if @use_lowercase_masking.blank?
       if @filter_low_complexity_regions.blank?

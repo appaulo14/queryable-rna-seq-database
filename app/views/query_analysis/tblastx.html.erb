@@ -1,0 +1,64 @@
+<%= render 'shared/error_messages', :object => @tblastx_query %>
+<script type='text/javascript' src='tblastx.js'></script>
+<%= form_for(@tblastx_query,{:url => "tblastx"}) do |bq| %>
+  <h2>Choose Data Set to Search Using TBlastn</h2>
+  <p>
+      <%= label(:dataset_id, "Dataset:") %>
+      <%= select_tag(:dataset_id, options_for_select(@tblastx_query.available_datasets,@tblastx_query.dataset_id)) %>
+  </p>
+  <hr/>
+  <h2>Enter a Query Sequence</h2>
+<!--Enter or upload fasta sequence-->
+    <p>
+      <div>
+        <%= bq.radio_button(:use_fasta_sequence_or_file, :use_fasta_sequence) %>
+        <%= bq.label :fasta_sequence, "Enter sequence below in FASTA format" %><br/>
+        <%= bq.text_area :fasta_sequence, {:cols=>80, :rows => 6} %><br/>
+      </div>
+      <div>
+        <%= bq.radio_button(:use_fasta_sequence_or_file, :use_fasta_file) %>
+        <%= bq.label :fasta_file, "Or load it from disk" %><br/>
+        <%= bq.file_field :fasta_file %><br/>
+      </div>
+    </p>
+    <hr/>
+  <h2>Algorithm settings</h2>
+  
+  <div class='sub-section rounded-corners' style='padding:5px'>
+    <p class='sub-section-heading-2'>General Parameters</p>
+    <div>
+        <%= bq.label :num_alignments, "Number of alignments to show" %>
+        <%= bq.select :num_alignments, options_for_select(@tblastx_query.available_num_alignments,
+            @tblastx_query.num_alignments) %>
+    </div>
+    <p>
+        <%= bq.label :e_value, "Expect threshold (e-value)" %>
+        <%= bq.text_field :e_value, :size => 10 %>
+    </p>
+    <div>
+        <%= bq.label :word_size, "Word size [Integer]" %>
+        <%= bq.text_field :word_size, :size => 5 %>
+    </div>
+    <div>
+      <%= bq.label :genetic_code, "Genetic Code" %>
+      <%= bq.select :genetic_code, options_for_select(@tblastx_query.available_genetic_codes,@tblastx_query.genetic_code) %>
+    </div>
+  </div>
+  <br/>
+  <div class='sub-section rounded-corners' style='padding:5px'>
+    <p class='sub-section-heading-2'>Scoring Parameters</p>
+      <%= bq.label :matrix, "Matrix" %>
+      <%= bq.select :matrix, options_for_select(@tblastx_query.available_matrices,
+            @tblastx_query.matrix) %>
+  </div>
+  <br/>
+  <div class='sub-section rounded-corners' style='padding:5px'>
+    <p class='sub-section-heading-2'>Filters and Masking</p>
+    <p>
+        <%= bq.check_box :filter_low_complexity_regions %> <%= bq.label :filter_low_complexity_regions, "Filter low complexity regions" %><br/>
+        <%= bq.check_box :use_soft_masking %> <%= bq.label :use_soft_masking, "Mask for lookup table only" %><br/>
+        <%= bq.check_box :use_lowercase_masking %> <%= bq.label :use_lowercase_masking, "Mask lowercase letters" %><br/>
+    </p>
+  </div>
+    <p><%= button_tag 'Reset', :type => 'reset' %> <%= submit_tag("BLAST", :disable_with => "BLASTing...") %></p>
+<% end %>

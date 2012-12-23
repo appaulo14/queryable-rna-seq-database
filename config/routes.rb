@@ -137,7 +137,10 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
     
     get 'query_analysis/get_blastn_gap_costs_for_match_and_match_scores'
     
-    get '/query_analysis/get_tblastn_gap_costs_for_matrix'
+    get 'query_analysis/get_tblastn_gap_costs_for_matrix'
+    
+    get 'query_analysis/tblastx'
+    post 'query_analysis/tblastx'
     
     get 'query_analysis/get_blast_graphical_summary'
 
