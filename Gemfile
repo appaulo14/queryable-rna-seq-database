@@ -28,7 +28,7 @@ end
 #    to the lastest version when updating this
 gem 'jquery-rails', '2.1.3'
 
-gem 'heroku'
+#gem 'heroku'
 
 gem 'activerecord-tableless', '>= 1.0.1'
 
