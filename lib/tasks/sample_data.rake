@@ -92,7 +92,7 @@ end
 def make_blast_databases
   print 'Populating blast databases...'
   #Make the blast databases directory if it does not exist
-  if not Dir.exists('db/blast_databases')
+  if not Dir.exists?('db/blast_databases')
     Dir.mdkir('db/blast_databases')
   end
   Dataset.all.each do |ds|
