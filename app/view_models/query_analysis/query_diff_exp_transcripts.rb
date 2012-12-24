@@ -99,7 +99,7 @@ class Query_Diff_Exp_Transcripts
       #Do a few more minor queries to get the data in the needed format
       transcript = Transcript.find_by_id(query_result.transcript_id)
       sample_1_fpkm = FpkmSample.find_by_id(query_result.fpkm_sample_1_id).fpkm
-      sample_2_fpkm = FpkmSample.find_by_id(query_result.fpkm_sample_1_id).fpkm
+      sample_2_fpkm = FpkmSample.find_by_id(query_result.fpkm_sample_2_id).fpkm
       #Fill in the result hash that the view will use to display the data
       result = {}
       result[:transcript_name] = transcript.name_from_program

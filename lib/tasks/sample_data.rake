@@ -8,6 +8,7 @@ namespace :db do
     Rake::Task['db:drop'].invoke
     Rake::Task['db:create'].invoke
     Rake::Task['db:migrate'].invoke
+    print 'Populating'
     #Generate the data
     make_users
     make_datasets
