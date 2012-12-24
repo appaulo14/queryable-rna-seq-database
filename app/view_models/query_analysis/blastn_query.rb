@@ -197,7 +197,7 @@ class Blastn_Query #< Blast_Query::Base
       blast_html_output_file.close
       #Run a perl script to format and add the graphical summary to the blast output
       basename = File.basename(blast_html_output_file)
-      system("PERL5LIB=lib/perl perl bin/render_blast_output_with_graphics.pl " +
+      system("perl bin/render_blast_output_with_graphics.pl " +
              "#{blast_xml_output_file.path} " +
              "#{blast_html_output_file.path} #{basename}")
       #Save the location of the blast output files so that the graphical 
