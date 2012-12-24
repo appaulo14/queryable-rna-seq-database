@@ -161,7 +161,8 @@ class Blastn_Query #< Blast_Query::Base
       #Create the blastn execution string that will be run on the command line,
       # including calculating all the options
       dataset = Dataset.find_by_id(@dataset_id)
-      blastn_execution_string = "blastn -query #{query_input_file.path} " +
+      blastn_execution_string = "bin/blast/bin/blastn " +
+             "-query #{query_input_file.path} " +
              "-db #{dataset.blast_db_location} " +
              "-out #{blast_xml_output_file.path} " +
              "-evalue #{@e_value} -word_size #{@word_size} " +
@@ -196,7 +197,7 @@ class Blastn_Query #< Blast_Query::Base
       blast_html_output_file.close
       #Run a perl script to format and add the graphical summary to the blast output
       basename = File.basename(blast_html_output_file)
-      system("perl lib/tasks/render_blast_output_with_graphics.pl " +
+      system("perl bin/render_blast_output_with_graphics.pl " +
              "#{blast_xml_output_file.path} " +
              "#{blast_html_output_file.path} #{basename}")
       #Save the location of the blast output files so that the graphical 
