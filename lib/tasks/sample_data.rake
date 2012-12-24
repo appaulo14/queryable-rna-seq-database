@@ -102,7 +102,8 @@ def make_blast_databases
     tmpfasta.rewind
     tmpfasta.close
     #Create the blast database file for the dataset and save its location
-    success = system("makeblastdb -in #{tmpfasta.path} -title #{ds.id}_db " +
+    success = system("bin/blast/bin/makeblastdb " +
+                     "-in #{tmpfasta.path} -title #{ds.id}_db " +
                      "-out #{ds.blast_db_location} -hash_index -dbtype nucl " +
                      "-parse_seqids")
     exit if success == false
