@@ -3,7 +3,7 @@
 # This is code example 4 in the Graphics-HOWTO from
 #       http://www.bioperl.org/wiki/HOWTO:Graphics
 use strict;
-use lib "lib/bioperl/lib/perl5";
+use lib "lib/perl/lib/perl5";
 use Bio::Graphics;
 use Bio::SearchIO;
 use Bio::SeqFeature::Generic;

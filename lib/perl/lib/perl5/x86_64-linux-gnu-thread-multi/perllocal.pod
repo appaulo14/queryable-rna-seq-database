@@ -1,0 +1,22 @@
+=head2 Mon Dec 24 01:38:37 2012: C<Module> L<XML::SAX|XML::SAX>
+
+=over 4
+
+=item *
+
+C<installed into: /home/pawl/Ruby_Workshop/rails_projects/rna-seq-analysis-pipeline/lib/perl/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.99>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
