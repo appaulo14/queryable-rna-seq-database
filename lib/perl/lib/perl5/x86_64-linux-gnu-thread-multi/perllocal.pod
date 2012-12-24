@@ -64,3 +64,25 @@ C<EXE_FILES: >
 
 =back
 
+=head2 Mon Dec 24 11:59:39 2012: C<Module> L<GD|GD>
+
+=over 4
+
+=item *
+
+C<installed into: /home/pawl/Ruby_Workshop/rails_projects/rna-seq-analysis-pipeline/lib/perl/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 2.46>
+
+=item *
+
+C<EXE_FILES: bdf_scripts/bdf2gdfont.pl>
+
+=back
+
