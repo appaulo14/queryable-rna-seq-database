@@ -20,3 +20,25 @@ C<EXE_FILES: >
 
 =back
 
+=head2 Mon Dec 24 02:08:46 2012: C<Module> L<XML::SAX::Base|XML::SAX::Base>
+
+=over 4
+
+=item *
+
+C<installed into: /home/pawl/Ruby_Workshop/rails_projects/rna-seq-analysis-pipeline/lib/perl/lib/perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 1.08>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
