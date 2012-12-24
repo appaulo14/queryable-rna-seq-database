@@ -14,14 +14,7 @@
 /db/*.sqlite3
 
 #Ignore blast databases
-/db/blast_databases/*.nhr
-/db/blast_databases/*.nin
-/db/blast_databases/*.nog
-/db/blast_databases/*.nsd
-/db/blast_databases/*.nsi
-/db/blast_databases/*.nsq
-/db/blast_databases/*.nhd
-/db/blast_databases/*.nhi
+/db/blast_databases/*
 
 # Ignore all logfiles and tempfiles.
 /log/*.log

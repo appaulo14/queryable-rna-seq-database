@@ -91,6 +91,10 @@ end
 
 def make_blast_databases
   print 'Populating blast databases...'
+  #Make the blast databases directory if it does not exist
+  if not Dir.exists('db/blast_databases')
+    Dir.mdkir('db/blast_databases')
+  end
   Dataset.all.each do |ds|
     #Create a temporary file to use to create the blast database
     tmpfasta = Tempfile.new('tmpfasta')
