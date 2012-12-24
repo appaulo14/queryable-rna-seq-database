@@ -10,7 +10,7 @@
  *
  *= require_self
  *= require qtip/jquery.qtip
- *= require k-state/k-state
+ *= require ksu/k-state
  *= require_tree .
  */
  
