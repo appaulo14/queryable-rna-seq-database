@@ -6,6 +6,10 @@ class CreateTranscriptHasGoTerm < ActiveRecord::Migration
 
       t.timestamps
     end
+    #This is a workaround because rails can't do string or multiple 
+    #   primary keys by default
+    execute('ALTER TABLE transcript_has_go_terms ' +
+            'ADD PRIMARY KEY (transcript_id,go_term_id);')
   end
   
   def down

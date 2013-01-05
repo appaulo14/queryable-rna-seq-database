@@ -3,14 +3,14 @@ class Query_Diff_Exp_Transcripts
   include ActiveModel::Conversion
   extend ActiveModel::Naming
   
-  attr_accessor :dataset_id, :sample_1, :sample_2,
+  attr_accessor :dataset_id, :sample_comparison_id_pair,
                 :fdr_or_pvalue, :cutoff, :filter_by_go_names, :go_names,
                 :filter_by_go_ids, :go_ids, :filter_by_transcript_length, 
                 :transcript_length_comparison_sign, :transcript_length_value,
                 :filter_by_transcript_name, :transcript_name 
   attr_reader   :names_and_ids_for_available_datasets, 
-                :available_samples_for_comparison, 
-                :show_results, :results
+                :available_sample_comparisons, 
+                :show_results, :results, :sample_1_name, :sample_2_name
   
   #For Boolean attributes, provide methods ending with a question mark 
   #  for convenience.
@@ -32,7 +32,7 @@ class Query_Diff_Exp_Transcripts
   
   #TODO: Add validation 
   validate :user_has_permission_to_access_dataset
-  validate :sample_is_not_compared_against_itself
+  validate :user_has_permission_to_access_comparison
   
   def initialize(user)
     @current_user = user
@@ -65,11 +65,18 @@ class Query_Diff_Exp_Transcripts
     @transcript_length_value = '0' if transcript_length_value.blank?
     @filter_by_transcript_name = false if filter_by_transcript_name.blank?
     #Set available samples for comparison
-    @available_samples_for_comparison = 
-        Dataset.joins(:transcripts => :fpkm_samples).
-        where(:id => @dataset_id).pluck('fpkm_samples.sample_name').uniq
-    @sample_1 = @available_samples_for_comparison[0]
-    @sample_2 = @available_samples_for_comparison[1]
+    @available_sample_comparisons = []
+    sample_comparisons_query = SampleComparison.joins(:sample_1,:sample_2).
+        where('samples.dataset_id' => @dataset_id).
+        select('samples.name as sample_1_name, '+
+               'sample_2s_sample_comparisons.name as sample_2_name, ' +
+               'samples.id as sample_1_id, ' +
+               'sample_2s_sample_comparisons.id as sample_2_id')
+    sample_comparisons_query.each do |scq|
+      display_text = "#{scq.sample_1_name} vs #{scq.sample_2_name}"
+      value = "#{scq.sample_1_id},#{scq.sample_2_id}"
+      @available_sample_comparisons << [display_text, value]
+    end
     @show_results = false
   end
   
@@ -77,41 +84,40 @@ class Query_Diff_Exp_Transcripts
     #Don't query if it is not valid
     return if not self.valid?
     #Create and run the query
-    select_string = 'transcripts.id as transcript_id,' +
-                    'genes.name_from_program as gene_name,' +
-                    'differential_expression_tests.p_value,' +
-                    'differential_expression_tests.fdr,' +
-                    'differential_expression_tests.log_fold_change as logfc,' +
-                    'differential_expression_tests.fpkm_sample_1_id,' +
-                    'differential_expression_tests.fpkm_sample_2_id '
-    query_results = 
-      Dataset.joins(
-        :transcripts => [:differential_expression_tests, :gene, :fpkm_samples]
+    sample_ids = @sample_comparison_id_pair.split(',')
+    sample_1 = Sample.find_by_id(sample_ids[0])
+    sample_2 = Sample.find_by_id(sample_ids[1])
+    query_results = DifferentialExpressionTest.joins(
+        [:fpkm_sample_1,:fpkm_sample_2]
       ).
-      where(
-        'datasets.id' => @dataset_id,
-        'fpkm_samples.sample_name' => [@sample_1,@sample_2]
+      where('fpkm_samples.sample_id' => sample_1.id,
+        'fpkm_sample_2s_differential_expression_tests.sample_id' => sample_2.id,
+        'differential_expression_tests.gene_id' => nil
       ).
-      select(select_string) 
-    #Extract the query results to form that can be put in the view
+      select(
+        'differential_expression_tests.transcript_id, ' +
+        'differential_expression_tests.p_value, ' +
+        'differential_expression_tests.fdr, ' +
+        'differential_expression_tests.log_fold_change, ' +
+        'fpkm_samples.fpkm as sample_1_fpkm, ' +
+        'fpkm_sample_2s_differential_expression_tests.fpkm as sample_2_fpkm'
+      )
+    #Extract the query results to a form that can be put in the view
+    @sample_1_name = sample_1.name
+    @sample_2_name = sample_2.name
     @results = []
     query_results.each do |query_result|
-      #Do a few more minor queries to get the data in the needed format
-      transcript = Transcript.find_by_id(query_result.transcript_id)
-      sample_1_fpkm = FpkmSample.find_by_id(query_result.fpkm_sample_1_id).fpkm
-      sample_2_fpkm = FpkmSample.find_by_id(query_result.fpkm_sample_2_id).fpkm
       #Fill in the result hash that the view will use to display the data
+      transcript = Transcript.find_by_id(query_result.transcript_id)
       result = {}
-      result[:transcript_name] = transcript.name_from_program
-      result[:gene_name] = query_result.gene_name
-      result[:go_terms] = transcript.go_terms
-      result[:p_value] = query_result.p_value
-      result[:fdr] = query_result.fdr
-      result[:sample_1_name] = @sample_1
-      result[:sample_2_name] = @sample_2
-      result[:sample_1_fpkm] =  sample_1_fpkm
-      result[:sample_2_fpkm] =  sample_2_fpkm
-      result[:log_fold_change] = query_result.logfc
+      result[:transcript_name] = transcript.name_from_program #det.transcript.name_from_program
+      result[:gene_name] = transcript.gene.name_from_program #det.transcript.gene.name_from_program
+      result[:go_terms] = transcript.go_terms #det.transcript.go_terms
+      result[:p_value] = query_result.p_value #det.p_value
+      result[:fdr] = query_result.fdr #det.fdr
+      result[:sample_1_fpkm] =  query_result.sample_1_fpkm   #det.fpkm_sample_1.fpkm
+      result[:sample_2_fpkm] =  query_result.sample_2_fpkm   #det.fpkm_sample_2.fpkm
+      result[:log_fold_change] = query_result.log_fold_change     #det.logfc
       @results << result
     end
     #Mark the search results as viewable
@@ -126,6 +132,6 @@ class Query_Diff_Exp_Transcripts
   def user_has_permission_to_access_dataset
   end
   
-  def sample_is_not_compared_against_itself
+  def user_has_permission_to_access_comparison
   end
 end

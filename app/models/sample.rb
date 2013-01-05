@@ -9,8 +9,11 @@
 #  updated_at :datetime         not null
 #
 
-require 'spec_helper'
-
-describe Sample do
-  pending "add some examples to (or delete) #{__FILE__}"
+class Sample < ActiveRecord::Base
+  attr_accessible :dataset, :name
+  
+  belongs_to :dataset
+  has_many :fpkm_samples
+  has_many :sample_comparisons
+  has_many :samples, :through => :sample_comparisons
 end

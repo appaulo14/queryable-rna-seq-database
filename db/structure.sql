@@ -120,7 +120,7 @@ CREATE TABLE fpkm_samples (
     id bigint NOT NULL,
     gene_id bigint,
     transcript_id bigint,
-    sample_name character varying(255) NOT NULL,
+    sample_id bigint NOT NULL,
     fpkm numeric NOT NULL,
     fpkm_hi numeric,
     fpkm_lo numeric,
@@ -265,6 +265,50 @@ ALTER SEQUENCE jobs_id_seq OWNED BY jobs.id;
 
 
 --
+-- Name: sample_comparisons; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE sample_comparisons (
+    sample_1_id integer NOT NULL,
+    sample_2_id integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: samples; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE samples (
+    id bigint NOT NULL,
+    name character varying(255),
+    dataset_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: samples_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE samples_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: samples_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE samples_id_seq OWNED BY samples.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -292,8 +336,8 @@ CREATE TABLE transcript_fpkm_tracking_informations (
 --
 
 CREATE TABLE transcript_has_go_terms (
-    transcript_id integer,
-    go_term_id character varying(255),
+    transcript_id integer NOT NULL,
+    go_term_id character varying(255) NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -421,6 +465,13 @@ ALTER TABLE ONLY jobs ALTER COLUMN id SET DEFAULT nextval('jobs_id_seq'::regclas
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY samples ALTER COLUMN id SET DEFAULT nextval('samples_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY transcripts ALTER COLUMN id SET DEFAULT nextval('transcripts_id_seq'::regclass);
 
 
@@ -496,11 +547,35 @@ ALTER TABLE ONLY jobs
 
 
 --
+-- Name: sample_comparisons_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY sample_comparisons
+    ADD CONSTRAINT sample_comparisons_pkey PRIMARY KEY (sample_1_id, sample_2_id);
+
+
+--
+-- Name: samples_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY samples
+    ADD CONSTRAINT samples_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: transcript_fpkm_tracking_informations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY transcript_fpkm_tracking_informations
     ADD CONSTRAINT transcript_fpkm_tracking_informations_pkey PRIMARY KEY (transcript_id);
+
+
+--
+-- Name: transcript_has_go_terms_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY transcript_has_go_terms
+    ADD CONSTRAINT transcript_has_go_terms_pkey PRIMARY KEY (transcript_id, go_term_id);
 
 
 --
@@ -597,6 +672,14 @@ ALTER TABLE ONLY fpkm_samples
 
 
 --
+-- Name: fpkm_samples_samples_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY fpkm_samples
+    ADD CONSTRAINT fpkm_samples_samples_fk FOREIGN KEY (sample_id) REFERENCES samples(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
 -- Name: fpkm_samples_transcripts_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -659,6 +742,10 @@ INSERT INTO schema_migrations (version) VALUES ('13');
 INSERT INTO schema_migrations (version) VALUES ('14');
 
 INSERT INTO schema_migrations (version) VALUES ('15');
+
+INSERT INTO schema_migrations (version) VALUES ('16');
+
+INSERT INTO schema_migrations (version) VALUES ('17');
 
 INSERT INTO schema_migrations (version) VALUES ('2');
 

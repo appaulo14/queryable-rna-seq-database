@@ -3,7 +3,7 @@ class Query_Transcript_Isoforms
   include ActiveModel::Conversion
   extend ActiveModel::Naming
   
-  attr_accessor :dataset_id, :sample,
+  attr_accessor :dataset_id, :sample_id,
                 :fdr_or_pvalue, :cutoff, :filter_by_class_codes,
                 :class_code_equal, :class_code_c, :class_code_j, :class_code_e,
                 :class_code_i, :class_code_o, :class_code_p, :class_code_r,
@@ -13,8 +13,8 @@ class Query_Transcript_Isoforms
                 :transcript_length_comparison_sign, :transcript_length_value,
                 :filter_by_transcript_name, :transcript_name 
   attr_reader   :names_and_ids_for_available_datasets, 
-                :available_samples_for_comparison, :available_class_codes,
-                :show_results, :results, :fpkm_samples
+                :available_samples, :available_class_codes,
+                :show_results, :results, :fpkm_samples, :sample_name
   
   #For Boolean attributes, provide methods ending with a question mark 
   #  for convenience.
@@ -72,9 +72,11 @@ class Query_Transcript_Isoforms
     @transcript_length_value = '0' if transcript_length_value.blank?
     @filter_by_transcript_name = false if filter_by_transcript_name.blank?
     #Set available samples for comparison
-    @available_samples_for_comparison = 
-        Dataset.joins(:transcripts => :fpkm_samples).
-        where(:id => @dataset_id).pluck('fpkm_samples.sample_name').uniq
+    ds = Dataset.find_by_id(@dataset_id)
+    @available_samples = []
+    ds.samples.each do |sample|
+      @available_samples << [sample.name, sample.id]
+    end
     @show_results = false
   end
   
@@ -97,10 +99,11 @@ class Query_Transcript_Isoforms
       ).
       where(
         'datasets.id' => @dataset_id,
-        'fpkm_samples.sample_name' => @sample
+        'fpkm_samples.sample_id' => @sample_id
       ).
       select(select_string) 
     #Extract the query results to form that can be put in the view
+    @sample_name = Sample.find_by_id(@sample_id).name
     @results = []
     query_results.each do |query_result|
       #Do a few more minor queries to get the data in the needed format

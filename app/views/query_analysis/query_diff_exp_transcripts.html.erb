@@ -7,15 +7,17 @@
   <h1>Please select your transcript differential expression search options</h1>
   <p>
     <%= qdet.label :dataset_id, "Dataset to query" %>
-    <%= qdet.select :dataset_id, options_for_select(@qdet.names_and_ids_for_available_datasets, @qdet.dataset_id) %><br/>
+    <%= qdet.select :dataset_id, 
+      options_for_select(@qdet.names_and_ids_for_available_datasets, 
+        @qdet.dataset_id) %><br/>
     <%= #qdet.label :samples_to_compare, "Samples to compare" 
     %>
     <%= #qdet.select :samples_to_compare, options_for_select(@qdet.available_samples_for_comparison) 
     %>
-    <%= label :samples_to_compare, "Samples to compare" %>
-    <%= qdet.select :sample_1, options_for_select(@qdet.available_samples_for_comparison,@qdet.sample_1)  %> 
-    vs 
-    <%= qdet.select :sample_2, options_for_select(@qdet.available_samples_for_comparison,@qdet.sample_2) %>
+    <%= label :sample_comparison_id_pair, "Samples to compare" %>
+    <%= qdet.select :sample_comparison_id_pair, 
+      options_for_select(@qdet.available_sample_comparisons,
+        @qdet.sample_comparison_id_pair)  %> 
   </p>
   <p>
     <div>
@@ -65,7 +67,14 @@
 <% end %>
 <!--Section for the query results-->
 <% if @qdet.show_results? %>
-  <p><%= @qdet.results.length %> results found for <em><b><%= @qdet.sample_1 %></b> vs <b><%= @qdet.sample_2 %></b></em></p>
+  <p>
+    <%= @qdet.results.length %> results found for 
+    <em><b>
+      <%= @qdet.sample_1_name %>
+      </b> vs <b>
+      <%= @qdet.sample_2_name %>
+    </b></em>
+  </p>
   <p id="downloadify">
       You must have Flash 10 installed to download this file.
   </p>
@@ -78,8 +87,8 @@
               <th data-sort='string'>GO Terms&nbsp;<%= neutral_sort_arrow %></th>
               <th data-sort='float'>P-value&nbsp;<%= neutral_sort_arrow %></th>
               <th data-sort='float'>FDR&nbsp;<%= neutral_sort_arrow %></th>
-              <th data-sort='float'><%= @qdet.sample_1 %> FPKM&nbsp;<%= neutral_sort_arrow %></th>
-              <th data-sort='float'><%= @qdet.sample_2 %> FPKM&nbsp;<%= neutral_sort_arrow %></th>
+              <th data-sort='float'><%= @qdet.sample_1_name %> FPKM&nbsp;<%= neutral_sort_arrow %></th>
+              <th data-sort='float'><%= @qdet.sample_2_name %> FPKM&nbsp;<%= neutral_sort_arrow %></th>
               <th data-sort='float'>Log Fold Change&nbsp;<%= neutral_sort_arrow %></th>
           </tr>
       </thead>

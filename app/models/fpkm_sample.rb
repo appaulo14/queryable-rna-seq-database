@@ -5,23 +5,7 @@
 #  id            :integer          not null, primary key
 #  gene_id       :integer
 #  transcript_id :integer
-#  sample_name   :string(255)      not null
-#  fpkm          :decimal(, )      not null
-#  fpkm_hi       :decimal(, )
-#  fpkm_lo       :decimal(, )
-#  status        :string(255)
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#
-
-# == Schema Information
-#
-# Table name: fpkm_samples
-#
-#  id            :integer          not null, primary key
-#  gene_id       :integer
-#  transcript_id :integer
-#  sample_name   :string(255)      not null
+#  sample_id     :integer          not null
 #  fpkm          :decimal(, )      not null
 #  fpkm_hi       :decimal(, )
 #  fpkm_lo       :decimal(, )
@@ -32,12 +16,13 @@
 
 class FpkmSample < ActiveRecord::Base
   attr_accessible :gene, :transcript, :fpkm, :fpkm_hi, :fpkm_lo, :status, 
-                  :sample_name
+                  :sample
   POSSIBLE_STATUSES = ['NOTEST','LOWDATA','HIDATA','FAIL']
   
   #Associations
   belongs_to :transcript
   belongs_to :gene
+  belongs_to :sample
   
   #Validation
 #   validates :sample_number, :presence => true,

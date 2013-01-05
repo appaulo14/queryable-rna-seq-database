@@ -5,7 +5,7 @@
 #  id            :integer          not null, primary key
 #  gene_id       :integer
 #  transcript_id :integer
-#  sample_name   :string(255)      not null
+#  sample_id     :integer          not null
 #  fpkm          :decimal(, )      not null
 #  fpkm_hi       :decimal(, )
 #  fpkm_lo       :decimal(, )
