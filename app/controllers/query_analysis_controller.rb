@@ -221,12 +221,14 @@ class QueryAnalysisController < ApplicationController
     end
 
     def blastn2
+      #TODO: ADD links in the results page for genes, and transcripts and the fastas of those?
       f = File.open('/media/sf_MSE_Project/Workshop_Of_Paul/BLAST/outputs/NM_000041.2_query.xml')
       xml_string = ''
       while not f.eof?
         xml_string += f.readline
       end
       f.close()
+      @program = :blastn
       @blast_report = Bio::Blast::Report.new(xml_string,'xmlparser')
     end
     

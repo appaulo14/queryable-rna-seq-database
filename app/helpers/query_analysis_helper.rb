@@ -30,4 +30,10 @@ module QueryAnalysisHelper
                    "cgi-bin/amigo/term_details?term=#{go_id}"
     return link_to(body, link_address, :target => '_blank')
   end
+  
+  def link_to_ncbi_search_for(search_term)
+    link_address = "http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?" +
+                   "db=nucleotide&cmd=search&term=#{search_term}"
+    return link_to search_term, link_address         
+  end
 end
