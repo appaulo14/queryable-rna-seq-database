@@ -1,0 +1,56 @@
+<!--Version-->
+<%= @blast_report.version %>
+<!--Reference-->
+<%= link_to 'Reference', 'http://www.ncbi.nlm.nih.gov/pubmed/9254694?dopt=Citation' %>
+<%= @blast_report.reference %>
+<!--Database-->
+Database:
+<%= @blast_report.db %>
+<% @blast_report.iterations.each do |iteration| %>
+Results for <%= iteration.query_id %>
+  <b>Query=</b><%= @blast_report.query_id %>
+  length = <%= @blast_report.query_len %>
+  <h3>Sequences producing significant alignments</h3>
+  <table>
+    <% iteration.hits.each do |hit| %>
+      <tr>
+        <td><%= hit.hit_id %> <%= hit.target_def %></td>
+        <td><%= hit.bit_score %></td>
+        <td><%= hit.evalue %></td>
+      </tr>
+    <% end %>
+  </table>
+  <% iteration.hits.each do |hit| %>
+    <div id="Iteration-<%= iteration.num %>,Hit-<%= hit.num %>">
+      &gt;<%= hit.hit_id %> &nbsp;&nbsp; <%= hit.target_def %></div>
+      <div>length=<%= hit.len %>
+        <% hit.hsps.each do |hsp| %>
+          <div>score expect</div>
+          <div>identity=</div>
+        <% end %>
+      </div>
+      <div style="font-family:monospace">
+      <% hit.hsps.each do |hsp| %>
+        <div>Query: <%= hsp.query_from %> <%= hsp.qseq %> <%= hsp.query_to %> </div>
+        <div><%=hsp.midline %></div>
+        <div>Subject: <%=hsp.hit_from %> <%= hsp.hseq %> <%= hsp.hit_to %></div>
+      <% end %>
+      </div>
+  <% end %>
+<% end %>
+<h2>Statistics</h2>
+<%= @blast_report.db %>
+<%= @blast_report.db_len %>
+<%= @blast_report.db_num %>
+<%= @blast_report.eff_space %>
+<%= @blast_report.entropy %>
+<%= @blast_report.expect %>
+<%= @blast_report.filter %>
+<%= @blast_report.gap_extend %>
+<%= @blast_report.gap_open %>
+<%= @blast_report.inclusion %>
+<%= @blast_report.kappa %>
+<%= @blast_report.lambda %>
+<%= @blast_report.matrix %>
+<%= @blast_report.sc_match %>
+<%= @blast_report.sc_mismatch %>

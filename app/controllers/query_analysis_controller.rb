@@ -1,5 +1,6 @@
 class QueryAnalysisController < ApplicationController
     include Blast_Query
+    require 'bio'
     require 'query_analysis/upload_trinity_with_edger_transcripts_and_genes.rb'
     require 'query_analysis/query_diff_exp_transcripts.rb'
     require 'query_analysis/query_transcript_isoforms.rb'
@@ -219,6 +220,16 @@ class QueryAnalysisController < ApplicationController
         end
     end
 
+    def blastn2
+      f = File.open('/media/sf_MSE_Project/Workshop_Of_Paul/BLAST/outputs/NM_000041.2_query.xml')
+      xml_string = ''
+      while not f.eof?
+        xml_string += f.readline
+      end
+      f.close()
+      @blast_report = Bio::Blast::Report.new(xml_string,'xmlparser')
+    end
+    
     def blastn
         if request.get?
             @blastn_query = Blastn_Query.new(current_user)

@@ -122,6 +122,8 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
 
     get  'query_analysis/blastn'
     post 'query_analysis/blastn'
+    
+    get 'query_analysis/blastn2'
 
     get  'query_analysis/tblastn'
     post 'query_analysis/tblastn'
