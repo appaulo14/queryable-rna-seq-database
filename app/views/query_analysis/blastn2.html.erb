@@ -19,181 +19,193 @@
   <% end %>
 </table>
 <!-- Loop through the result iterations -->
-<% @blast_report.iterations.each do |iteration| %>
-<!-- Display some information about the iteration -->
-<h1>Results for <%= iteration.query_id %></h1>
-  <!--Display the graphical summary -->
-  <h4 style="text-align:center">Graphical Summary</h4>
-  <div style="width:50%;margin:0 auto;background-color:white">
-      <!-- Display the color-keyed alignment scores -->
-      <table style="width:100%"><tr>
-        <td style="text-align:center"><b>Color key alignment scores</b></td>
-      </tr></table>
-      <table style="width:100%;font-weight:bold;color:white;text-align:center"><tr>
-        <td style="width:20%;background-color:black;">&lt;40</td>
-        <td style="width:20%;background-color:blue;">40-50</td>
-        <td style="width:20%;background-color:lime;">50-80</td>
-        <td style="width:20%;background-color:magenta;">80-200</td>
-        <td style="width:20%;background-color:red;">&gt;=200</td>
-      </tr></table>
-      <!-- Display the query length ruler -->
-      <table style="width:100%;height:10px;background-color:red"><tr>
-      <td style="text-align:center;font-weight:bold;">Query</td>
-      </tr></table>
-      <table style="width:100%;margin:0 auto;border:0;padding:0">
-        <tr style="height:15px">
-          <% (0..6).each do |n| %>
-            <td style="width:1%;text-align:center;">
-              <%= image_tag 'black.png', :style => 'width:4px;height:100%' %>
-            </td>
-            <td></td>
-            <td style="width:13%;"><td>
-          <% end %>
-        </tr>
-        <tr>
-          <% (0..6).each do |n| %>
-            <td style="width:1%;"><%= 200 * n %></td>
-            <td></td>
-            <td style="width:13%;"></td>
-            <td></td>
-          <% end %>
-        </tr>
-      </table>
-      <!-- Display the alignment of the hits to the query -->
-      <table style="width:100%"><tr>
-        <td style="width:40%;background-color:blue"></td>
-        <td style="width:60%;background-color:red"></td>
-      </tr></table>
-      <table style="width:100%"><tr>
-        <td></td>
-        <td style="width:10%;background-color:red;" title="goat"><a href="#" style="width:100%"><!--<img src="red.png" style="width:100%;height:2px"/>--></a></td>
-      </tr></table>
-    </div>
-  <!-- Display some general information about the query -->
-  <p>
-    <b>Query=</b><%= @blast_report.query_def %><br/>
-    Length = <%= @blast_report.query_len %>
-  </p>
-  <!-- Display sequences producing significant alignments in the iteration -->
-  <table class="sub-section rounded-corners">
-    <thead>
-      <tr>
-        <td style="font-weight:bold">Sequences producing significant alignments</td>
-        <th style="padding:10px">Score (bits)</th>
-        <th style="padding:10px">E value</th>        
-      </tr>
-    </thead>
-    <tbody>
-      <% iteration.hits.each do |hit| %>
-        <tr>
-          <td>
-            <%= link_to_ncbi_search_for hit.hit_id %> <%= hit.target_def %>
-          </td>
-          <td style="text-align:center">
-            <%= link_to hit.bit_score.round(2).to_s, "#Iteration-#{iteration.num},Hit-#{hit.num}" %>
-          </td>
-          <td style="text-align:center">
-            <%= hit.evalue %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-  <br/>
-  <br/>
-  <!-- Loop through each hit in the iteration -->
-  <% iteration.hits.each do |hit| %>
-    <div id="Iteration-<%= iteration.num %>,Hit-<%= hit.num %>">
-      <!-- Display some basic information about the hit -->
-      &gt;<%= link_to_ncbi_search_for hit.hit_id %> <%= hit.target_def %>
-      <div>Length=<%= hit.len %></div>
-      <!-- Loop through the hsps -->
-      <% hit.hsps.each do |hsp| %>
-        <!-- Display some basic information about the hsp -->
-        <p style="margin-left:25px">
-          Score= <%= hsp.bit_score.round(2) %> bits (<%= hsp.score %>), Expect = <%= hsp.evalue %></br>
-          <% percent_identity = (hsp.identity.to_f/hsp.align_len.to_f*100).round %>
-          <% percent_gaps = (hsp.gaps.to_f/hsp.align_len.to_f*100).round %>
-          Identities=<%= hsp.identity %>/<%= hsp.align_len %> (<%= percent_identity %>%), 
-          Gaps=<%= hsp.gaps %>/<%= hsp.align_len %> (<%= percent_gaps %>%)<br/>
-          <!-- Display strand or frame info depending on what type of blast this is -->
-          <% if @program == :blastn %>
-            <% query_strand = (hsp.query_frame > 0) ? 'Plus' : 'Minus' %>
-            <% hit_strand = (hsp.hit_frame > 0) ? 'Plus' : 'Minus' %>
-            Strand = <%= query_strand %>/<%= hit_strand %><br/>
-          <% elsif @prorgam == :blastx or @progarm == :tblastx or @program == :tblastn %>
-            Frame = <%= '%+d' % hsp.query_frame %>/<%= '%+d' % hsp.hit_frame %><br/>
-          <% end %>
-        </p>
-        <!-- Display the alignment for the hsp -->
-        <table style="font-family:monospace">
-          <% (0..(hsp.midline.length/60.0).ceil-1).each do |n| %>
-            <% seq_range = (n*60)..(n*60)+59 %>
-            <% query_to = hsp.query_from+(60*n)+hsp.qseq[seq_range].length-1 %>
-            <% hit_to = hsp.hit_from+(60*n)+hsp.hseq[seq_range].length-1 %>
-            <tr><td style="white-space:nowrap">Query: <%= hsp.query_from+(60*n) %></td><td><%= hsp.qseq[seq_range] %> <%= query_to %></td></tr>
-            <tr><td>&nbsp;</td><td style="white-space:pre"><%= hsp.midline[seq_range] %></pre></td></tr>
-            <tr><td style="white-space:nowrap">Sbjct: <%= hsp.hit_from+(60*n) %></td><td><%= hsp.hseq[seq_range] %> <%= hit_to %></td></tr>
-            <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-            <!--<pre style="margin:1em 0px">Query: <%= hsp.query_from+(60*n) %><%= hsp.qseq[seq_range] %> <%= query_to %></pre>
-            <pre style="margin:1em 0px"><%= hsp.midline[seq_range] %></pre>
-            <pre style="margin:1em 0px">Sbjct: <%= hsp.hit_from+(60*n) %><%= hsp.hseq[seq_range] %> <%= hit_to %></pre>-->
-          <% end %>
+<% @blast_report.reports.each do |report| %>
+  <% report.iterations.each do |iteration| %>
+    <!-- Display some information about the iteration -->
+    <h1>Results for <%= iteration.query_id %></h1>
+    <!--Display the graphical summary -->
+    <h4 style="text-align:center">Graphical Summary</h4>
+    <div style="width:50%;margin:0 auto;background-color:white">
+        <!-- Display the color-keyed alignment scores -->
+        <table style="width:100%"><tr>
+          <td style="text-align:center"><b>Color key alignment scores</b></td>
+        </tr></table>
+        <table style="width:100%;font-weight:bold;color:white;text-align:center"><tr>
+          <td style="width:20%;background-color:black;">&lt;40</td>
+          <td style="width:20%;background-color:blue;">40-50</td>
+          <td style="width:20%;background-color:lime;">50-80</td>
+          <td style="width:20%;background-color:magenta;">80-200</td>
+          <td style="width:20%;background-color:red;">&gt;=200</td>
+        </tr></table>
+        <!-- Display the query length ruler -->
+        <table style="width:100%;height:10px;background-color:red"><tr>
+        <td style="text-align:center;font-weight:bold;">Query</td>
+        </tr></table>
+        <table style="width:100%;margin:0 auto;border:0;padding:0">
+          <tr style="height:15px">
+            <% (0..6).each do |n| %>
+              <td style="width:1%;text-align:center;">
+                <%= image_tag 'black.png', :style => 'width:4px;height:100%' %>
+              </td>
+              <td></td>
+              <td style="width:13%;"><td>
+            <% end %>
+          </tr>
+          <tr>
+            <% (0..6).each do |n| %>
+              <td style="width:1%;"><%= (iteration.query_len/7) * n %></td>
+              <td></td>
+              <td style="width:13%;"></td>
+              <td></td>
+            <% end %>
+          </tr>
         </table>
-      <% end %>
-      <!-- Display the statistics for the iteration -->
-      <table class="sub-section rounded-corners">
-        <caption style="font-weight:bold">Query Statistics</caption>
-        <thead>
-          <th>Parameter</th>
-          <th>Value</th>
-        </thead>
-        <tbody>
-            <tr>
-              <td>Number of sequences in database:</td>
-              <td style="text-align:center">
-                <%= iteration.statistics['db-num'] %>
-              </td>
-            </tr>
-            <tr>
-              <td>Database length:</td>
-              <td style="text-align:center">
-                <%= iteration.statistics['db-len'] %>
-              </td>
-            </tr>
-            <tr>
-              <td>Effective search space:</td>
-              <td style="text-align:center">
-                <%= iteration.statistics['eff-space'] %>
-              </td>
-            </tr>
-            <tr>
-              <td>Entropy:</td>
-              <td style="text-align:center">
-                <%= iteration.statistics['entropy'] %>
-              </td>
-            </tr>
-            <tr>
-              <td>HSP Length:</td>
-              <td style="text-align:center">
-                <%= iteration.statistics['hsp-len'] %>
-              </td>
-            </tr>
-            <tr>
-              <td>Kappa:</td>
-              <td style="text-align:center">
-                <%= iteration.statistics['kappa'] %>
-              </td>
-            </tr>
-            <tr>
-              <td>Lamba:</td>
-              <td style="text-align:center">
-                <%= iteration.statistics['lambda'] %>
-              </td>
-            </tr>
-        </tbody>
-      </table>
-    </div>
+        <!-- Graphically display the alignment of the hits to the query -->
+        <% iteration.hits.each do |hit| %>
+          <table style="width:100%"><tr>
+            <td>
+              <% w1 = ((hit.query_start-1)/(hit.query_len/100.0)).floor %>
+              <% w2 = (hit.query_end - hit.query_start + 1)/(hit.query_len/100.0) %>
+              <% w3 = (100 - w2 - w1).floor %>
+              <% tooltip = ">#{hit.hit_id} #{hit.target_def}\n" +
+                           "Bit score=#{hit.bit_score} E-value=#{hit.evalue}" %>
+              <% color = get_color_for_score(hit.bit_score) %>
+              <% if w1 > 0 %>
+                <%= image_tag('white.png', :style => "width:#{w1}%;height:5px") %>
+              <% end %>
+              <a href="<%= "#Iteration-#{iteration.num},Hit-#{hit.num}" %>">
+                <%= image_tag "#{color}.png", :style => "width:#{w2}%;height:5px", :title => tooltip %>
+              </a>
+              <% if w3 > 0 %>
+                <%= image_tag 'white.png', :style => "width:#{w3}%;height:5px" %>
+              <% end %>
+            </td>
+          </tr></table>
+        <% end %>
+      </div>
+    <!-- Display some general information about the query -->
+    <p>
+      <b>Query=</b><%= @blast_report.query_def %><br/>
+      Length = <%= @blast_report.query_len %>
+    </p>
+    <!-- Display sequences producing significant alignments in the iteration -->
+    <table class="sub-section rounded-corners">
+      <thead>
+        <tr>
+          <td style="font-weight:bold">Sequences producing significant alignments</td>
+          <th style="padding:10px">Score (bits)</th>
+          <th style="padding:10px">E value</th>        
+        </tr>
+      </thead>
+      <tbody>
+        <% iteration.hits.each do |hit| %>
+          <tr>
+            <td>
+              <%= link_to_ncbi_search_for hit.hit_id %> <%= hit.target_def %>
+            </td>
+            <td style="text-align:center">
+              <%= link_to hit.bit_score.round(2).to_s, "#Iteration-#{iteration.num},Hit-#{hit.num}" %>
+            </td>
+            <td style="text-align:center">
+              <%= hit.evalue %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <br/>
+    <br/>
+    <!-- Loop through each hit in the iteration -->
+    <% iteration.hits.each do |hit| %>
+      <div id="Iteration-<%= iteration.num %>,Hit-<%= hit.num %>">
+        <!-- Display some basic information about the hit -->
+        &gt;<%= link_to_ncbi_search_for hit.hit_id %> <%= hit.target_def %>
+        <div>Length=<%= hit.len %></div>
+        <!-- Loop through the hsps -->
+        <% hit.hsps.each do |hsp| %>
+          <!-- Display some basic information about the hsp -->
+          <p style="margin-left:25px">
+            Score= <%= hsp.bit_score.round(2) %> bits (<%= hsp.score %>), Expect = <%= hsp.evalue %></br>
+            <% percent_identity = (hsp.identity.to_f/hsp.align_len.to_f*100).round %>
+            <% percent_gaps = (hsp.gaps.to_f/hsp.align_len.to_f*100).round %>
+            Identities=<%= hsp.identity %>/<%= hsp.align_len %> (<%= percent_identity %>%), 
+            Gaps=<%= hsp.gaps %>/<%= hsp.align_len %> (<%= percent_gaps %>%)<br/>
+            <!-- Display strand or frame info depending on what type of blast this is -->
+            <% if @program == :blastn %>
+              <% query_strand = (hsp.query_frame > 0) ? 'Plus' : 'Minus' %>
+              <% hit_strand = (hsp.hit_frame > 0) ? 'Plus' : 'Minus' %>
+              Strand = <%= query_strand %>/<%= hit_strand %><br/>
+            <% elsif @prorgam == :blastx or @progarm == :tblastx or @program == :tblastn %>
+              Frame = <%= '%+d' % hsp.query_frame %>/<%= '%+d' % hsp.hit_frame %><br/>
+            <% end %>
+          </p>
+          <!-- Display the alignment for the hsp -->
+          <table style="font-family:monospace">
+            <% (0..(hsp.midline.length/60.0).ceil-1).each do |n| %>
+              <% seq_range = (n*60)..(n*60)+59 %>
+              <% query_to = hsp.query_from+(60*n)+hsp.qseq[seq_range].length-1 %>
+              <% hit_to = hsp.hit_from+(60*n)+hsp.hseq[seq_range].length-1 %>
+              <tr><td style="white-space:nowrap">Query: <%= hsp.query_from+(60*n) %></td><td><%= hsp.qseq[seq_range] %> <%= query_to %></td></tr>
+              <tr><td>&nbsp;</td><td style="white-space:pre"><%= hsp.midline[seq_range] %></pre></td></tr>
+              <tr><td style="white-space:nowrap">Sbjct: <%= hsp.hit_from+(60*n) %></td><td><%= hsp.hseq[seq_range] %> <%= hit_to %></td></tr>
+              <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+            <% end %>
+          </table>
+        <% end %>
+      </div>
+    <% end %>
+    <!-- Display the statistics for the iteration -->
+    <table class="sub-section rounded-corners">
+      <caption style="font-weight:bold">Query Statistics</caption>
+      <thead>
+        <th>Parameter</th>
+        <th>Value</th>
+      </thead>
+      <tbody>
+          <tr>
+            <td>Number of sequences in database:</td>
+            <td style="text-align:center">
+              <%= iteration.statistics['db-num'] %>
+            </td>
+          </tr>
+          <tr>
+            <td>Database length:</td>
+            <td style="text-align:center">
+              <%= iteration.statistics['db-len'] %>
+            </td>
+          </tr>
+          <tr>
+            <td>Effective search space:</td>
+            <td style="text-align:center">
+              <%= iteration.statistics['eff-space'] %>
+            </td>
+          </tr>
+          <tr>
+            <td>Entropy:</td>
+            <td style="text-align:center">
+              <%= iteration.statistics['entropy'] %>
+            </td>
+          </tr>
+          <tr>
+            <td>HSP Length:</td>
+            <td style="text-align:center">
+              <%= iteration.statistics['hsp-len'] %>
+            </td>
+          </tr>
+          <tr>
+            <td>Kappa:</td>
+            <td style="text-align:center">
+              <%= iteration.statistics['kappa'] %>
+            </td>
+          </tr>
+          <tr>
+            <td>Lamba:</td>
+            <td style="text-align:center">
+              <%= iteration.statistics['lambda'] %>
+            </td>
+          </tr>
+      </tbody>
+    </table>
     <hr/>
   <% end %>
 <% end %>

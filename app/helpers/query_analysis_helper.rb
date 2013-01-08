@@ -36,4 +36,19 @@ module QueryAnalysisHelper
                    "db=nucleotide&cmd=search&term=#{search_term}"
     return link_to search_term, link_address         
   end
+  
+  def get_color_for_score(score)
+    if score < 40
+      color = 'black'
+    elsif score >= 40 && score < 50
+      color = 'blue'
+    elsif score >= 50 && score < 80
+      color = 'lime'
+    elsif score >= 80 && score < 200
+      color = 'magenta'
+    elsif score >= 200
+      color = 'red'
+    end
+    return color
+  end
 end
