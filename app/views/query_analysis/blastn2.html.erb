@@ -22,6 +22,54 @@
 <% @blast_report.iterations.each do |iteration| %>
 <!-- Display some information about the iteration -->
 <h1>Results for <%= iteration.query_id %></h1>
+  <!--Display the graphical summary -->
+  <h4 style="text-align:center">Graphical Summary</h4>
+  <div style="width:50%;margin:0 auto;background-color:white">
+      <!-- Display the color-keyed alignment scores -->
+      <table style="width:100%"><tr>
+        <td style="text-align:center"><b>Color key alignment scores</b></td>
+      </tr></table>
+      <table style="width:100%;font-weight:bold;color:white;text-align:center"><tr>
+        <td style="width:20%;background-color:black;">&lt;40</td>
+        <td style="width:20%;background-color:blue;">40-50</td>
+        <td style="width:20%;background-color:lime;">50-80</td>
+        <td style="width:20%;background-color:magenta;">80-200</td>
+        <td style="width:20%;background-color:red;">&gt;=200</td>
+      </tr></table>
+      <!-- Display the query length ruler -->
+      <table style="width:100%;height:10px;background-color:red"><tr>
+      <td style="text-align:center;font-weight:bold;">Query</td>
+      </tr></table>
+      <table style="width:100%;margin:0 auto;border:0;padding:0">
+        <tr style="height:15px">
+          <% (0..6).each do |n| %>
+            <td style="width:1%;text-align:center;">
+              <%= image_tag 'black.png', :style => 'width:4px;height:100%' %>
+            </td>
+            <td></td>
+            <td style="width:13%;"><td>
+          <% end %>
+        </tr>
+        <tr>
+          <% (0..6).each do |n| %>
+            <td style="width:1%;"><%= 200 * n %></td>
+            <td></td>
+            <td style="width:13%;"></td>
+            <td></td>
+          <% end %>
+        </tr>
+      </table>
+      <!-- Display the alignment of the hits to the query -->
+      <table style="width:100%"><tr>
+        <td style="width:40%;background-color:blue"></td>
+        <td style="width:60%;background-color:red"></td>
+      </tr></table>
+      <table style="width:100%"><tr>
+        <td></td>
+        <td style="width:10%;background-color:red;" title="goat"><a href="#" style="width:100%"><!--<img src="red.png" style="width:100%;height:2px"/>--></a></td>
+      </tr></table>
+    </div>
+  <!-- Display some general information about the query -->
   <p>
     <b>Query=</b><%= @blast_report.query_def %><br/>
     Length = <%= @blast_report.query_len %>
