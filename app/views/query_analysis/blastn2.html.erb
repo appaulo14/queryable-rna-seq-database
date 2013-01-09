@@ -38,34 +38,43 @@
           <td style="width:20%;background-color:red;">&gt;=200</td>
         </tr></table>
         <!-- Display the query length ruler -->
-        <table style="width:100%;height:10px;background-color:red"><tr>
+        <% _1_percent = iteration.query_len/100.0 %>
+        <% _25_percent = _1_percent * 25.0 %>
+        <% _50_percent = _1_percent * 50.0 %>
+        <% _75_percent = _1_percent * 75.0 %>
+        <% _100_percent = _1_percent * 100.0 %>
+        <% spacer = 24 %>
+        <% marks = [1, _25_percent, _50_percent, _75_percent,_100_percent] %>
+        <table style="width:96.6%;height:10px;background-color:red"><tr>
         <td style="text-align:center;font-weight:bold;">Query</td>
         </tr></table>
         <table style="width:100%;margin:0 auto;border:0;padding:0">
           <tr style="height:15px">
-            <% (0..6).each do |n| %>
+            <% marks.each do |mark| %>
               <td style="width:1%;text-align:center;">
                 <%= image_tag 'black.png', :style => 'width:4px;height:100%' %>
               </td>
               <td></td>
-              <td style="width:13%;"><td>
+              <% if mark != marks.last %>
+                <td style="width:<%= spacer %>%;"><td>
+              <% end %> 
             <% end %>
           </tr>
           <tr>
-            <% (0..6).each do |n| %>
-              <td style="width:1%;"><%= (iteration.query_len/7) * n %></td>
+            <% marks.each do |mark| %>
+              <td style="width:1%;"><%= mark %></td>
               <td></td>
-              <td style="width:13%;"></td>
+              <td style="<%= spacer %>%;"></td>
               <td></td>
             <% end %>
           </tr>
         </table>
         <!-- Graphically display the alignment of the hits to the query -->
         <% iteration.hits.each do |hit| %>
-          <table style="width:100%"><tr>
+          <table style="width:98%"><tr>
             <td>
-              <% w1 = ((hit.query_start-1)/(hit.query_len/100.0)).floor %>
-              <% w2 = (hit.query_end - hit.query_start + 1)/(hit.query_len/100.0) %>
+              <% w1 = (hit.query_start == 1 ) ? 0 : (hit.query_start/_1_percent-1)  %>
+              <% w2 = (hit.query_end/_1_percent) - w1 - 1 %>
               <% w3 = (100 - w2 - w1).floor %>
               <% tooltip = ">#{hit.hit_id} #{hit.target_def}\n" +
                            "Bit score=#{hit.bit_score} E-value=#{hit.evalue}" %>
@@ -76,17 +85,17 @@
               <a href="<%= "#Iteration-#{iteration.num},Hit-#{hit.num}" %>">
                 <%= image_tag "#{color}.png", :style => "width:#{w2}%;height:5px", :title => tooltip %>
               </a>
-              <% if w3 > 0 %>
+              <!--<% if w3 > 0 %>
                 <%= image_tag 'white.png', :style => "width:#{w3}%;height:5px" %>
-              <% end %>
+              <% end %>-->
             </td>
           </tr></table>
         <% end %>
       </div>
     <!-- Display some general information about the query -->
     <p>
-      <b>Query=</b><%= @blast_report.query_def %><br/>
-      Length = <%= @blast_report.query_len %>
+      <b>Query=</b><%= report.query_def %><br/>
+      Length = <%= report.query_len %>
     </p>
     <!-- Display sequences producing significant alignments in the iteration -->
     <table class="sub-section rounded-corners">
