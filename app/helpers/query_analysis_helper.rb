@@ -31,6 +31,7 @@ module QueryAnalysisHelper
     return link_to(body, link_address, :target => '_blank')
   end
   
+  ### Blast Helpers 
   def link_to_ncbi_search_for(search_term)
     link_address = "http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?" +
                    "db=nucleotide&cmd=search&term=#{search_term}"
@@ -50,5 +51,59 @@ module QueryAnalysisHelper
       color = 'red'
     end
     return color
+  end
+  
+  def get_start_width_percent(hsp)
+    return (hsp.query_from == 1 ) ? 0 : (hsp.query_from/_1_percent-1)
+  end
+  
+  def get_end_width_percent(hsp)
+    return (hit.query_to/_1_percent) - get_start_width_percent(hsp) - 1
+  end
+  
+  #Get tooltip for hsps in the graphical summary
+  def get_tooltip(hit, hsp)
+    return ">#{hit.hit_id} #{hit.target_def}\nBit score=#{hit.bit_score} E-value=#{hit.evalue}"
+  end
+  
+  def get_hsps_infos_to_display_for_hit(hit)
+#     #Loop through the hsps in the hit, determining which hsps to display
+#     hsps_infos_to_display = [] 
+#     display_start_width_percent = 0
+#     display_end_width_percent = 0
+#     hit.hsps.each do |hsp|
+#       swp = get_start_width_percent(hsp)
+#       ewp = get_end_width_percent(hsp)
+#       if (hsps_infos_to_display.empty?)
+#         display_start_width_percent = swp
+#         display_end_width_percent = ewp
+#         hsps_infos_to_display << {:hsp => hsp, 
+#                                   :start_width_percent => swp,
+#                                   :end_width_percent => ewp} 
+#       elsif (display_start_width_percent > hsp.query_from and 
+#              display_end_width_percent < hsp.query_to)
+#         display_start_width_percent = swp
+#         display_end_width_percent = ewp
+#         hsps_infos_to_display << {:hsp => hsp, 
+#                                   :start_width_percent => swp,
+#                                   :end_width_percent => ewp} 
+#       elsif (display_start_width_percent > hsp.query_from)
+#         display_start_width_percent = swp
+#         hsps_infos_to_display << {:hsp => hsp, 
+#                                   :start_width_percent => swp,
+#                                   :end_width_percent => ewp} 
+#       elsif (display_end_width_percent < hsp.query_to)
+#         display_end_width_percent = ewp
+#         hsps_infos_to_display << {:hsp => hsp, 
+#                                   :start_width_percent => swp,
+#                                   :end_width_percent => ewp} 
+#       end
+#     end
+#   end
+#   #Sort the hsps to display in the order that they will be displayed from 
+#   #     left to right
+#   sorted_hsps_infos_to_display = hsps_infos_to_display.sort!{|a,b| a[:start_width_percent] <=> b[:start_width_percent]}
+#   #Return the final sorted results
+#   return sorted_hsps_infos_to_display
   end
 end

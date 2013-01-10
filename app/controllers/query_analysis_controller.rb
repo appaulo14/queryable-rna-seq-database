@@ -222,7 +222,8 @@ class QueryAnalysisController < ApplicationController
 
     def blastn2
       #TODO: ADD links in the results page for genes, and transcripts and the fastas of those?
-      f = File.open('/media/sf_MSE_Project/Workshop_Of_Paul/BLAST/outputs/5_XML_Blast_output')
+      f = File.open('/media/sf_MSE_Project/Workshop_Of_Paul/BLAST/outputs/NM_000041.2_query.xml')
+      #f = File.open('/media/sf_MSE_Project/Workshop_Of_Paul/BLAST/outputs/5_XML_Blast_output')
       xml_string = ''
       while not f.eof?
         xml_string += f.readline
