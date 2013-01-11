@@ -192,23 +192,7 @@ class Blastn_Query #< Blast_Query::Base
       #TODO: Decide how to handle failures
       #Execute blastn
       system(blastn_execution_string)
-      #Create a temporary file to store the final blast page, containing images and html
-      blast_html_output_file = Tempfile.new('blastn')
-      blast_html_output_file.close
-      #Run a perl script to format and add the graphical summary to the blast output
-      basename = File.basename(blast_html_output_file)
-      system("perl bin/render_blast_output_with_graphics.pl " +
-             "#{blast_xml_output_file.path} " +
-             "#{blast_html_output_file.path} #{basename}")
-      #Save the location of the blast output files so that the graphical 
-      # summaries can be retrieved
-      BlastGraphicalSummaryLocator.create!(
-        :dataset => dataset, 
-        :basename => basename, 
-        :html_output_file_path => blast_html_output_file.path
-      )
-      #Return the result
-      return blast_html_output_file.path
+      return blast_xml_output_file.path
     end
     
     def persisted?

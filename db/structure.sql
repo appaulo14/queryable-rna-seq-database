@@ -29,19 +29,6 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: blast_graphical_summary_locators; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE blast_graphical_summary_locators (
-    basename character varying(255) NOT NULL,
-    html_output_file_path text NOT NULL,
-    dataset_id integer NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
 -- Name: datasets; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -483,14 +470,6 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 
 
 --
--- Name: blast_graphical_summary_locators_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY blast_graphical_summary_locators
-    ADD CONSTRAINT blast_graphical_summary_locators_pkey PRIMARY KEY (basename);
-
-
---
 -- Name: datasets_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -616,14 +595,6 @@ CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (v
 
 
 --
--- Name: blast_graphical_summary_locators_datasets_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY blast_graphical_summary_locators
-    ADD CONSTRAINT blast_graphical_summary_locators_datasets_fk FOREIGN KEY (dataset_id) REFERENCES datasets(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
 -- Name: datasets_users_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -738,8 +709,6 @@ INSERT INTO schema_migrations (version) VALUES ('11');
 INSERT INTO schema_migrations (version) VALUES ('12');
 
 INSERT INTO schema_migrations (version) VALUES ('13');
-
-INSERT INTO schema_migrations (version) VALUES ('14');
 
 INSERT INTO schema_migrations (version) VALUES ('15');
 

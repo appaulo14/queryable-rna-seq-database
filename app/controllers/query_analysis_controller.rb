@@ -244,7 +244,7 @@ class QueryAnalysisController < ApplicationController
       f.close()
       @program = :blastn
       @blast_report = Bio::Blast::Report.new(xml_string,'xmlparser')
-      render 'blastn2'
+      render :file => 'query_analysis/blast_results'
     end
     
     def blastn
@@ -259,10 +259,19 @@ class QueryAnalysisController < ApplicationController
               flash[:success] = "Success"
               #Run the blast query and get the file path of the result
               blast_results_file_path = @blastn_query.blast!
+              #Parse the xml into Blast reports
+              f = File.open(blast_results_file_path)
+              xml_string = ''
+              while not f.eof?
+                xml_string += f.readline
+              end
+              f.close()
+              @program = :blastn
+              @blast_report = Bio::Blast::Report.new(xml_string,'xmlparser')
               #Send the result to the user
-              render :file => blast_results_file_path
+              render :file => 'query_analysis/blast_results'
               #Delete the result file since it is no longer needed
-              File.delete(blast_results_file_path)
+              #File.delete(blast_results_file_path)
           else
               flash[:success]="Failure"
           end
@@ -279,28 +288,6 @@ class QueryAnalysisController < ApplicationController
       #Render the new gap costs
       render :partial => 'gap_costs', :locals => {:object => @blastn_query}
     end
-    
-    def get_blast_graphical_summary
-      #Get the parameters
-      basename = params[:basename]
-      graphical_summary_name = params[:graphical_summary_name]
-      #Retrieve the graphical summary record using the basename
-      bgsl = BlastGraphicalSummaryLocator.find_by_basename(basename)
-      #Validate that the user has permission to access this graphical summary
-      dataset = Dataset.find_by_id(bgsl.dataset_id)
-      return if dataset.user_id != current_user.id
-      #Get the path of the graphical summary
-      graphical_summary_file_path = 
-        "#{bgsl.html_output_file_path}_#{graphical_summary_name}.png"
-      render :text => open(graphical_summary_file_path, "rb").read
-      #Delete the graphical summary file
-      File.delete(graphical_summary_file_path)
-      #Delete the database record if no other image files are 
-      # left to be retreived
-      if Dir.glob("#{bgsl.html_output_file_path}_*").empty?
-        bgsl.delete()
-      end
-    end
 
     def tblastn
         if request.get?
@@ -314,10 +301,19 @@ class QueryAnalysisController < ApplicationController
               flash[:success] = "Success"
               #Run the blast query and get the file path of the result
               blast_results_file_path = @tblastn_query.blast!
+              #Parse the xml into Blast reports
+              f = File.open(blast_results_file_path)
+              xml_string = ''
+              while not f.eof?
+                xml_string += f.readline
+              end
+              f.close()
+              @program = :tblastn
+              @blast_report = Bio::Blast::Report.new(xml_string,'xmlparser')
               #Send the result to the user
-              render :file => blast_results_file_path
+              render :file => 'query_analysis/blast_results'
               #Delete the result file since it is no longer needed
-              File.delete(blast_results_file_path)
+              #File.delete(blast_results_file_path)
             else
                 flash[:success]="Failure"
             end
@@ -345,10 +341,19 @@ class QueryAnalysisController < ApplicationController
             flash[:success] = "Success"
             #Run the blast query and get the file path of the result
             blast_results_file_path = @tblastx_query.blast!
+            #Parse the xml into Blast reports
+            f = File.open(blast_results_file_path)
+            xml_string = ''
+            while not f.eof?
+              xml_string += f.readline
+            end
+            f.close()
+            @program = :tblastx
+            @blast_report = Bio::Blast::Report.new(xml_string,'xmlparser')
             #Send the result to the user
-            render :file => blast_results_file_path
+            render :file => 'query_analysis/blast_results'
             #Delete the result file since it is no longer needed
-            File.delete(blast_results_file_path)
+            #File.delete(blast_results_file_path)
           else
               flash[:success]="Failure"
           end

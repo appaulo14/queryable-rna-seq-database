@@ -66,44 +66,7 @@ module QueryAnalysisHelper
     return ">#{hit.hit_id} #{hit.target_def}\nBit score=#{hit.bit_score} E-value=#{hit.evalue}"
   end
   
-  def get_hsps_infos_to_display_for_hit(hit)
-#     #Loop through the hsps in the hit, determining which hsps to display
-#     hsps_infos_to_display = [] 
-#     display_start_width_percent = 0
-#     display_end_width_percent = 0
-#     hit.hsps.each do |hsp|
-#       swp = get_start_width_percent(hsp)
-#       ewp = get_end_width_percent(hsp)
-#       if (hsps_infos_to_display.empty?)
-#         display_start_width_percent = swp
-#         display_end_width_percent = ewp
-#         hsps_infos_to_display << {:hsp => hsp, 
-#                                   :start_width_percent => swp,
-#                                   :end_width_percent => ewp} 
-#       elsif (display_start_width_percent > hsp.query_from and 
-#              display_end_width_percent < hsp.query_to)
-#         display_start_width_percent = swp
-#         display_end_width_percent = ewp
-#         hsps_infos_to_display << {:hsp => hsp, 
-#                                   :start_width_percent => swp,
-#                                   :end_width_percent => ewp} 
-#       elsif (display_start_width_percent > hsp.query_from)
-#         display_start_width_percent = swp
-#         hsps_infos_to_display << {:hsp => hsp, 
-#                                   :start_width_percent => swp,
-#                                   :end_width_percent => ewp} 
-#       elsif (display_end_width_percent < hsp.query_to)
-#         display_end_width_percent = ewp
-#         hsps_infos_to_display << {:hsp => hsp, 
-#                                   :start_width_percent => swp,
-#                                   :end_width_percent => ewp} 
-#       end
-#     end
-#   end
-#   #Sort the hsps to display in the order that they will be displayed from 
-#   #     left to right
-#   sorted_hsps_infos_to_display = hsps_infos_to_display.sort!{|a,b| a[:start_width_percent] <=> b[:start_width_percent]}
-#   #Return the final sorted results
-#   return sorted_hsps_infos_to_display
-  end
+ def get_unique_hit_id(report,iteration,hit)
+   return "Report-#{report.query_id},Iteration-#{iteration.num},Hit-#{hit.num}"
+ end
 end

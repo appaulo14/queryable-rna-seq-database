@@ -54,11 +54,6 @@ class AddForeignKeys < ActiveRecord::Migration
             'ADD CONSTRAINT fpkm_samples_samples_fk ' + 
             'FOREIGN KEY (sample_id) REFERENCES samples (id) ' + 
             'ON UPDATE CASCADE ON DELETE CASCADE;')
-    #Blast Graphical Summary Locator foreign key(s)
-    execute('ALTER TABLE blast_graphical_summary_locators ' +
-            'ADD CONSTRAINT blast_graphical_summary_locators_datasets_fk ' + 
-            'FOREIGN KEY (dataset_id) REFERENCES datasets (id) ' + 
-            'ON UPDATE CASCADE ON DELETE CASCADE;')
   end
 
   def down
