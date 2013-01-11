@@ -71,11 +71,17 @@
         </table>
         <!-- Graphically display the alignment of the hits to the query -->
         <% iteration.hits.each do |hit| %>
-          <div style="background-color:white;height:25px;">
+          <div style="background-color:white;height:35px;">
             <% z_index = 9999 %>
+<!--             <span style="font-size:10pt;color:red;font-weight:bold">Hit=<%= hit.hit_id %></span> -->
             <% hit.hsps.each do |hsp| %>
-              <table style="width:48%;position:absolute;z-index:<%= z_index %>;left:25.7%"><tr>
-                <td>
+              <table style="width:48%;position:absolute;z-index:<%= z_index %>;left:25.7%">
+                <caption style="font-size:10pt;color:red;text-align:left">
+                  <a href="<%= "#Iteration-#{iteration.num},Hit-#{hit.num}" %>">
+                    Hit=<%= hit.hit_id %>
+                  </a>
+                </caption>
+                <tr><td>
                   <% w1 = (hsp.query_from == 1 ) ? 0 : (hsp.query_from/_1_percent-1)  %>
                   <% w2 = (hsp.query_to/_1_percent) - w1 - 1 %>
                   <% tooltip = ">#{hit.hit_id} #{hit.target_def}\n" +
@@ -86,11 +92,11 @@
                     <%= image_tag('white.png', :style => "width:#{w1}%;height:5px;opacity:0;filter:alpha(opacity=0);") %>
                   <% end %>-->
                   <a href="<%= "#Iteration-#{iteration.num},Hit-#{hit.num}" %>">
-                    <% image_style = "width:#{w2}%;height:5px;border:1px solid black;position:absolute;left:#{w1}%" %>
+                    <% image_style = "width:#{w2}%;height:5px;border:3px outset gray;position:absolute;left:#{w1}%" %>
                     <%= image_tag "#{color}.png", :style => image_style, :title => tooltip %>
                   </a>
-                </td>
-              </tr></table>
+                </td></tr>
+              </table>
               <% z_index-=1 %>
             <% end %>
           </div>
