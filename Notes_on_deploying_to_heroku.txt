@@ -1,0 +1,13 @@
+#Set config.assets.initialize_on_precompile = false in application.rb
+#Set config.assets.precompile += %w( *.js, *.css ) in environment/production.rb
+#Set config.serve_static_assets = true in environment/production.rb
+#Maybe set config.assets.compile = true in environment/production.rb
+RAILS_ENV=production rake db:create db:schema:load
+rake assets:precompile
+git push heroku
+heroku db:push #This might give an error, but it will still clear the database
+heroku run rake db:small_populate #Use this if heroku db:push does not work
+#Because the blast databases are on a read-only filesystem on Heroku
+heroku db:pull
+rake db:make_blast_databases
+ 
