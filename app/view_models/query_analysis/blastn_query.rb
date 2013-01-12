@@ -10,8 +10,9 @@ class Blastn_Query #< Blast_Query::Base
                 :use_lowercase_masking, :gap_costs,
                 :match_and_mismatch_scores, :filter_low_complexity_regions
     
-    attr_reader :available_datasets, :available_match_and_mismatch_scores,
-                :available_gap_costs, :available_num_alignments
+    attr_reader :available_datasets, :available_word_sizes, 
+                :available_match_and_mismatch_scores, :available_gap_costs,
+                :available_num_alignments
     
     #Declare Constants
     AVAILABLE_MATCH_AND_MISMATCH_SCORES = {
@@ -102,6 +103,8 @@ class Blastn_Query #< Blast_Query::Base
       #Set available datasets
       all_datasets_for_user = Dataset.find_all_by_user_id(@current_user)
       @available_datasets = all_datasets_for_user.map{|ds| [ds.name, ds.id]}
+      #Set the available word sizes
+      @available_word_sizes = [16,20,24,28,32,48,64,128,256]
       #Set available match/mismatch scores
       @available_match_and_mismatch_scores = AVAILABLE_MATCH_AND_MISMATCH_SCORES.keys
       #Set the available options for the number of alignments

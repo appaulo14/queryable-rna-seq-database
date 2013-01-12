@@ -35,14 +35,14 @@ $(document).ready(function()
                             }
                     },
                     position: {
-                            my: 'left center', // Use the corner...
-                            at: 'right center' // ...and opposite corner
+                            my: 'left center',
+                            at: 'right center' 
                     },
                     show: {
-                            event: 'click', // Don't specify a show event...
-                            ready: false // ... but show the tooltip when ready
+                            event: 'click', 
+                            ready: false
                     },
-                    hide: false, // Don't specify a hide event either!
+                    hide: false,
                     style: {
                             classes: 'qtip-shadow qtip-' + 'dark'
                     }

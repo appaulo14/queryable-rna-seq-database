@@ -8,6 +8,8 @@ jQuery(document).ready(function($) {
   //Bind the event to update the gap costs drop down list 
   //    when match and mismatch scores drop down list changes
   $('#blastn_query_match_and_mismatch_scores').change(match_and_mismatch_scores_selection_changed);
+  //Create the text for the help qtips
+  create_qtips();
 });
 
 /*
@@ -48,4 +50,109 @@ function match_and_mismatch_scores_selection_changed(){
  */
 function replace_gap_costs(new_gap_costs){
    $('#blastn_query_gap_costs').parent().html(new_gap_costs);
+}
+
+function create_qtips(){
+  //Declare variables
+  var elements = [];
+  var titles = [];
+  var texts = [];
+  //Tooltip for the Blastn/Megablast title at the top of the page
+  elements[10] = 'blastn_megablast_qtip';
+  titles[10] = 'Enter Nucleic Acid Sequences';
+  href = 'http://en.wikipedia.org/wiki/FASTA_format';
+  texts[10] = 'Optimized for highly similar sequences, the Megablast ' +
+              'program of Blastn searches a nucleotide database using a ' +
+              'nucleotide query.';
+  //Tooltip for Fasta input 
+  elements[9] = 'fasta_sequence_qtip';
+  titles[9] = 'Enter Nucleic Acid Sequences';
+  href = 'http://en.wikipedia.org/wiki/FASTA_format';
+  texts[9] = 'Enter or paste one or more nucleic acid sequences in ' +
+             '<a target="_blank" href="' + href + '">Fasta format.</a>';
+  //Tooltip for Dataset id
+  elements[8] = 'dataset_id_qtip';
+  titles[8] = 'Dataset';
+  texts[8] = 'The nucleotide database to search using the ' +
+             'nucleotide query entered below.';
+  //Tooltip for Number of Alignments to Show
+  elements[0] = 'num_alignments_qtip';
+  titles[0] = 'Number of Alignments to Show';
+  texts[0] = 'Maximum number of aligned sequences to display ' +
+             '(the actual number of alignments may be greater than this).';
+  //Tooltip for E-Value
+  elements[1] = 'evalue_qtip';
+  titles[1] = 'E-value';
+  texts[1] = 'Expected number of chance matches in a random model. ' +
+             '<a target="_blank" href="http://www.ncbi.nlm.nih.gov/BLAST/blastcgihelp.shtml#expect">' +
+             'more...</a>';
+  //Tooltip for Word size
+  elements[2] = 'word_size_qtip';
+  titles[2] = 'Word size';
+  href = 'http://www.ncbi.nlm.nih.gov/BLAST/blastcgihelp.shtml#wordsize';
+  texts[2] = 'The length of the seed that initiates an alignment. ' +
+             '<a target="_blank" href="' + href + '">' +
+             'more...</a>';
+  //Tooltip for match and mismatch scores
+  elements[3] = 'match_and_mismatch_scores_qtip';
+  titles[3] = 'Match and Mismatch scores';
+  href = 'http://www.ncbi.nlm.nih.gov/BLAST/blastcgihelp.shtml#Reward-penalty';
+  texts[3] = 'Reward and penalty for matching and mismatching bases. ' +
+             '<a target="_blank" href="' + href +'">' +
+             'more...</a>';
+  //Tooltip for gap costs
+  elements[4] = 'gap_costs_qtip';
+  titles[4] = 'Gap Costs';
+  href = 'http://www.ncbi.nlm.nih.gov/BLAST/blastcgihelp.shtml#Reward-penalty';
+  texts[4] = 'Cost to create and extend a gap in an alignment. ' +
+             '<a target="_blank" href="' + href +'">' +
+             'more...</a>';
+  //Tooltip for Filter low complexity regions
+  elements[5] = 'filter_low_complexity_regions_qtip';
+  titles[5] = 'Filter Low Complexity Regions';
+  href = 'http://www.ncbi.nlm.nih.gov/BLAST/blastcgihelp.shtml#filter';
+  texts[5] = 'Mask regions of low compositional complexity that may cause ' +
+             'spurious or misleading results. ' +
+             '<a target="_blank" href="' + href + '">' +
+             'more...</a>';
+  //Tooltip for mask for lookup table only 
+  elements[6] = 'use_soft_masking_qtip';
+  titles[6] = 'Mask For Lookup Table Only';
+  href = 'http://www.ncbi.nlm.nih.gov/BLAST/blastcgihelp.shtml#Filter_Mask';
+  texts[6] = 'Mask query while producing seeds used to scan database, but not for extensions. '+
+             '<a target="_blank" href="' + href + '">' +
+             'more...</a>';
+  //Tooltip for mask lowercase letters
+  elements[7] = 'use_lowercase_masking_qtip';
+  titles[7] = 'Mask Lowercase Letters';
+  href = 'http://www.ncbi.nlm.nih.gov/BLAST/blastcgihelp.shtml#Mask_Lower';
+  texts[7] = 'Mask any letters that were lower-case in the FASTA input. '+
+             '<a target="_blank" href="' + href + '">' +
+             'more...</a>';
+    
+  for (var i = 0; i < elements.length; i++){
+    $('#' + elements[i])
+          .removeData('qtip') 
+          .qtip({
+                  content: {
+                          text: texts[i], 
+                          title: {
+                                  text: titles[i],
+                                  button: true
+                          }
+                  },
+                  position: {
+                          my: 'left center',
+                          at: 'right center' 
+                  },
+                  show: {
+                          event: 'click', 
+                          ready: false
+                  },
+                  hide: false,
+                  style: {
+                          classes: 'qtip-shadow qtip-' + 'light'
+                  }
+          });
+  }
 }
