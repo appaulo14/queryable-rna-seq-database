@@ -2,7 +2,7 @@
 <!--Version Information-->
 <p style="font-weight:bold"><%= @blast_report.version %></p>
 <!--Reference Information-->
-<%= link_to 'Reference:', 'http://www.ncbi.nlm.nih.gov/pubmed/9254694?dopt=Citation' %><br/>
+<%= link_to 'Reference:', 'http://www.ncbi.nlm.nih.gov/pubmed/9254694?dopt=Citation', :target => "_blank" %><br/>
 <div style="width:30%"><%= @blast_report.reference %></div>
 <!--Database Information-->
 <p>Database:<br/>
@@ -104,7 +104,9 @@
       </div>
     <!-- Display some general information about the query -->
     <p>
-      <b>Query=</b><%= report.query_def %><br/>
+      <b>
+        <a target="_blank" href="http://www.ncbi.nlm.nih.gov/books/NBK62051/def-item/blast_glossary.query/?report=objectonly">Query</a>
+        = </b><%= report.query_def %><br/>
       Length = <%= report.query_len %>
     </p>
     <!-- Display sequences producing significant alignments in the iteration -->
@@ -112,8 +114,16 @@
       <thead>
         <tr>
           <td style="font-weight:bold">Sequences producing significant alignments</td>
-          <th style="padding:10px">Score (bits)</th>
-          <th style="padding:10px">E value</th>        
+          <th style="padding:10px">
+            <a  target="_blank" href="http://www.ncbi.nlm.nih.gov/books/NBK62051/def-item/blast_glossary.bit_score/?report=objectonly">
+              Score (bits)
+            </a>
+          </th>
+          <th style="padding:10px">
+            <a  target="_blank" href="http://www.ncbi.nlm.nih.gov/books/NBK62051/def-item/blast_glossary.E_value/?report=objectonly">
+              E value
+            </a>
+          </th>        
         </tr>
       </thead>
       <tbody>
@@ -144,12 +154,20 @@
         <% hit.hsps.each do |hsp| %>
           <!-- Display some basic information about the hsp -->
           <p style="margin-left:25px">
-            HSP number: <%= hsp.num %><br/>
-            Score= <%= hsp.bit_score.round(2) %> bits (<%= hsp.score %>), Expect = <%= hsp.evalue %></br>
+            <a target="_blank" href="http://www.ncbi.nlm.nih.gov/books/NBK62051/def-item/blast_glossary.HSP/?report=objectonly">
+            HSP</a> number: <%= hsp.num %><br/>
+            <a target="_blank" href="http://www.ncbi.nlm.nih.gov/books/NBK62051/def-item/blast_glossary.bit_score/?report=objectonly">
+              Bit Score</a> = <%= hsp.bit_score.round(2) %> bits, 
+            <a target="_blank" href="http://www.ncbi.nlm.nih.gov/books/NBK62051/def-item/blast_glossary.raw_score/?report=objectonly">
+              Raw Score</a> = <%= hsp.score %>,
+            <a  target="_blank" href="http://www.ncbi.nlm.nih.gov/books/NBK62051/def-item/blast_glossary.E_value/?report=objectonly">
+              Expect</a> = <%= hsp.evalue %></br>
             <% percent_identity = (hsp.identity.to_f/hsp.align_len.to_f*100).round %>
             <% percent_gaps = (hsp.gaps.to_f/hsp.align_len.to_f*100).round %>
-            Identities=<%= hsp.identity %>/<%= hsp.align_len %> (<%= percent_identity %>%), 
-            Gaps=<%= hsp.gaps %>/<%= hsp.align_len %> (<%= percent_gaps %>%)<br/>
+            <a target="_blank" href="http://www.ncbi.nlm.nih.gov/books/NBK62051/def-item/blast_glossary.identity/?report=objectonly">
+              Identities</a>=<%= hsp.identity %>/<%= hsp.align_len %> (<%= percent_identity %>%), 
+            <a target="_blank" href="http://www.ncbi.nlm.nih.gov/books/NBK62051/def-item/blast_glossary.gap/?report=objectonly">
+              Gaps</a>=<%= hsp.gaps %>/<%= hsp.align_len %> (<%= percent_gaps %>%)<br/>
             <!-- Display strand or frame info depending on what type of blast this is -->
             <% if @program == :blastn %>
               <% query_strand = (hsp.query_frame > 0) ? 'Plus' : 'Minus' %>
@@ -201,25 +219,39 @@
             </td>
           </tr>
           <tr>
-            <td>Entropy:</td>
+            <td>
+              <a  target="_blank" href="http://www.ncbi.nlm.nih.gov/books/NBK62051/def-item/blast_glossary.H/?report=objectonly">
+                Entropy:
+              </a>
+            </td>
             <td style="text-align:center">
               <%= iteration.statistics['entropy'] %>
             </td>
           </tr>
           <tr>
-            <td>HSP Length:</td>
+            <td>
+              <a target="_blank" href="http://www.ncbi.nlm.nih.gov/books/NBK62051/def-item/blast_glossary.HSP/?report=objectonly">
+                HSP</a> Length:</td>
             <td style="text-align:center">
               <%= iteration.statistics['hsp-len'] %>
             </td>
           </tr>
           <tr>
-            <td>Kappa:</td>
+            <td>
+              <a  target="_blank" href="http://www.ncbi.nlm.nih.gov/books/NBK62051/def-item/blast_glossary.K/?report=objectonly">
+                Kappa:
+              </a>
+            </td>
             <td style="text-align:center">
               <%= iteration.statistics['kappa'] %>
             </td>
           </tr>
           <tr>
-            <td>Lamba:</td>
+            <td>
+              <a target="_blank" href="http://www.ncbi.nlm.nih.gov/books/NBK62051/def-item/blast_glossary.lambda/?report=objectonly">
+                Lamba:
+              </a>
+            </td>
             <td style="text-align:center">
               <%= iteration.statistics['lambda'] %>
             </td>
