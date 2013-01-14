@@ -10,8 +10,8 @@ class Tblastx_Query #< Blast_Query::Base
                 :use_lowercase_masking, :filter_low_complexity_regions,
                 :genetic_code, :matrix
     
-    attr_reader :available_datasets, :available_matrices,
-                :available_num_alignments,
+    attr_reader :available_datasets, :available_word_sizes,
+                :available_matrices, :available_num_alignments,
                 :available_genetic_codes
     
     #TODO: Add validation 
@@ -40,6 +40,7 @@ class Tblastx_Query #< Blast_Query::Base
                                   ['Blepharisma Macronuclear (15)',15]]
       @available_matrices = ['PAM30','PAM70','PAM250','BLOSUM80',
                              'BLOSUM62','BLOSUM45','BLOSUM90']
+      @available_word_sizes = [2,3]
     end
   
     def set_attributes_and_defaults(attributes = {})
@@ -109,7 +110,7 @@ class Tblastx_Query #< Blast_Query::Base
         tblastx_execution_string += "-seg 'no' "
       end
       tblastx_execution_string += "-matrix #{@matrix} "
-      tblastx_execution_string += "-db_gencode #{@genetic_code} "
+      tblastx_execution_string += "-query_gencode #{@genetic_code} "
       #TODO: Decide how to handle failures
       #Execute tblastx
       system(tblastx_execution_string)

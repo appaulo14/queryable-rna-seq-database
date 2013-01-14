@@ -65,7 +65,7 @@
     <%= bq.label :match_and_mismatch_scores, "Match/mismatch scores" %>
     <%= bq.select :match_and_mismatch_scores, options_for_select(@blastn_query.available_match_and_mismatch_scores,
         @blastn_query.match_and_mismatch_scores) %>
-    <%= image_tag('question_mark.png', :id=>'match_and_mismatch_scores_qtip')%>
+    <%= image_tag('question_mark.png', :id=>'match_and_mismatch_scores_qtip') %>
     <div>
       <%= render :partial => 'gap_costs', :locals => {:object => @blastn_query} %>
       <%= image_tag('question_mark.png', :id=>'gap_costs_qtip')%>
@@ -85,3 +85,19 @@
   </div>
     <p><%= button_tag 'Reset', :type => 'reset' %> <%= submit_tag("BLAST", :disable_with => "BLASTing...") %></p>
 <% end %>
+
+<br/>
+<div>
+  <div class='sub-section-heading-2'>References</div>
+  <ol>
+    <li id="reference_1">
+      National Center for Biotechnology Information, "Standard Nucleotide BLAST", Jan. 2013;<br/>
+      <% href = 'http://blast.ncbi.nlm.nih.gov/Blast.cgi?PROGRAM=blastn' +
+                '&BLAST_PROGRAMS=megaBlast&PAGE_TYPE=BlastSearch' +
+                '&SHOW_DEFAULTS=on&LINK_LOC=blasthome' %>
+      <a target="_blank" href="<%= href %>">
+        http://blast.ncbi.nlm.nih.gov/Blast.cgi?PROGRAM=blastn&BLAST_PROGRAMS=megaBlast&<br/>
+        PAGE_TYPE=BlastSearch&SHOW_DEFAULTS=on&LINK_LOC=blasthome</a>.
+    </li>
+  </ol>
+</div>

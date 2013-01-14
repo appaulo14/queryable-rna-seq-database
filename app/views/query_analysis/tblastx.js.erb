@@ -5,6 +5,8 @@ jQuery(document).ready(function($) {
   //Bind the events for the fasta selection radio buttons.
   $('#tblastx_query_use_fasta_sequence_or_file_use_fasta_sequence').change(fasta_input_radio_button_changed);
   $('#tblastx_query_use_fasta_sequence_or_file_use_fasta_file').change(fasta_input_radio_button_changed);
+  //Create the text for the help qtips
+  create_qtips();
 });
 
 /*
@@ -27,3 +29,117 @@ function fasta_input_radio_button_changed(){
   }
 }
  
+function create_qtips(){
+  //Declare variables
+  var elements = [];
+  var titles = [];
+  var texts = [];
+  //Tooltip for the Blastn/Megablast title at the top of the page
+  elements[0] = 'tblastx_qtip';
+  titles[0] = 'Tblastx';
+  href = 'http://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Web&PAGE_TYPE=BlastDocs&DOC_TYPE=ProgSelectionGuide#pstab';
+  texts[0] = 'Tblastx searches a translated nucleotide database using a ' +
+             'translated nucleotide query. ' +
+              '<a target="_blank" href="' + href + '">more...</a> ' +
+              '[<a href="#reference_1">1</a>]';
+  //Tooltip for Fasta input 
+  elements[1] = 'fasta_sequence_qtip';
+  titles[1] = 'Enter Nucleic Acid Sequences';
+  href = 'http://en.wikipedia.org/wiki/FASTA_format';
+  texts[1] = 'Enter or paste one or more nucleic acid sequences in ' +
+             '<a target="_blank" href="' + href + '">Fasta format.</a> ' +
+             '[<a href="#reference_1">1</a>]';
+  //Tooltip for Dataset id
+  elements[2] = 'dataset_id_qtip';
+  titles[2] = 'Dataset';
+  texts[2] = 'The nucleotide database to search using the ' +
+             'nucleotide query entered below.';
+  //Tooltip for Number of Alignments to Show
+  elements[3] = 'num_alignments_qtip';
+  titles[3] = 'Number of Alignments to Show';
+  texts[3] = '"Maximum number of aligned sequences to display ' +
+             '(the actual number of alignments may be greater than this)." ' +
+             '[<a href="#reference_1">1</a>]';
+  //Tooltip for E-Value
+  elements[4] = 'evalue_qtip';
+  titles[4] = 'E-value';
+  texts[4] = '"Expected number of chance matches in a random model." ' +
+             '<a target="_blank" href="http://www.ncbi.nlm.nih.gov/BLAST/blastcgihelp.shtml#expect">' +
+             'more...</a> ' +
+             '[<a href="#reference_1">1</a>]';
+  //Tooltip for Word size
+  elements[5] = 'word_size_qtip';
+  titles[5] = 'Word size';
+  href = 'http://www.ncbi.nlm.nih.gov/BLAST/blastcgihelp.shtml#wordsize';
+  texts[5] = '"The length of the seed that initiates an alignment." ' +
+             '<a target="_blank" href="' + href + '">' +
+             'more...</a> ' +
+             '[<a href="#reference_1">1</a>]';
+  //Tooltip for the matrix
+  elements[6] = 'matrix_qtip';
+  titles[6] = 'Matrix';
+  href = 'http://www.ncbi.nlm.nih.gov/BLAST/blastcgihelp.shtml#Matrix';
+  texts[6] = '"Assigns a score for aligning pairs of residues, ' +
+              'and determines overall alignment score." ' +
+              '<a target="_blank" href="' + href +'">' +
+              'more...</a> ' +
+              '[<a href="#reference_1">1</a>]';
+  //Tooltip for the genetic code
+  elements[7] = 'genetic_code_qtip';
+  titles[7] = 'Genetic Code';
+  texts[7] = 'The genetic code to use to translate the query. ' +
+             '[<a href="#reference_2">2</a>]';
+   //Tooltip for Filter low complexity regions
+  elements[8] = 'filter_low_complexity_regions_qtip';
+  titles[8] = 'Filter Low Complexity Regions';
+  href = 'http://www.ncbi.nlm.nih.gov/BLAST/blastcgihelp.shtml#filter';
+  texts[8] = '"Mask regions of low compositional complexity that may cause ' +
+             'spurious or misleading results." ' +
+             '<a target="_blank" href="' + href + '">' +
+             'more...</a> ' +
+             '[<a href="#reference_1">1</a>]';
+  //Tooltip for mask for lookup table only 
+  elements[9] = 'use_soft_masking_qtip';
+  titles[9] = 'Mask For Lookup Table Only';
+  href = 'http://www.ncbi.nlm.nih.gov/BLAST/blastcgihelp.shtml#Filter_Mask';
+  texts[9] = '"Mask query while producing seeds used to scan database, ' +
+             'but not for extensions." '+
+             '<a target="_blank" href="' + href + '">' +
+             'more...</a> ' +
+             '[<a href="#reference_1">1</a>]';
+  //Tooltip for mask lowercase letters
+  elements[10] = 'use_lowercase_masking_qtip';
+  titles[10] = 'Mask Lowercase Letters';
+  href = 'http://www.ncbi.nlm.nih.gov/BLAST/blastcgihelp.shtml#Mask_Lower';
+  texts[10] = '"Mask any letters that were lower-case in the FASTA input." '+
+             '<a target="_blank" href="' + href + '">' +
+             'more...</a> ' +
+             '[<a href="#reference_1">1</a>]';
+  
+    
+  for (var i = 0; i < elements.length; i++){
+    $('#' + elements[i])
+          .removeData('qtip') 
+          .qtip({
+                  content: {
+                          text: texts[i], 
+                          title: {
+                                  text: titles[i],
+                                  button: true
+                          }
+                  },
+                  position: {
+                          my: 'left center',
+                          at: 'right center' 
+                  },
+                  show: {
+                          event: 'click', 
+                          ready: false
+                  },
+                  hide: false,
+                  style: {
+                          classes: 'qtip-shadow qtip-' + 'light'
+                  }
+          });
+  }
+}

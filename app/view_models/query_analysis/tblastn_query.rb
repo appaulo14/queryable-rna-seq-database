@@ -5,16 +5,17 @@ class Tblastn_Query #< Blast_Query::Base
   require 'tempfile'
   
   #TODO: Describe meaning of these?
-  attr_accessor :dataset_id, :fasta_sequence, :fasta_file, :num_alignments, :e_value,
+  attr_accessor :dataset_id, :fasta_sequence, :fasta_file, :num_alignments, 
+                :e_value,
                 :word_size, :use_fasta_sequence_or_file, :use_soft_masking, 
                 :use_lowercase_masking, :filter_low_complexity_regions,
-                :gap_costs, :genetic_code,
+                :gap_costs,
                 :matrix, :compositional_adjustment
     
-    attr_reader :available_datasets, :available_matrices,
+    attr_reader :available_datasets, :available_word_sizes,
+                :available_matrices,
                 :available_gap_costs, :available_num_alignments,
-                :available_compositional_adjustments, 
-                :available_genetic_codes
+                :available_compositional_adjustments
     
     #Declare Constants
     AVAILABLE_GAP_COST_DEFAULTS = {
@@ -136,19 +137,6 @@ class Tblastn_Query #< Blast_Query::Base
       @available_datasets = all_datasets_for_user.map{|ds| [ds.name, ds.id]}
       #Set the available options for the number of alignments
       @available_num_alignments = [0,10,50,100,250,500]
-      @available_genetic_codes = [['Standard (1)',1],
-                                  ['Vertebrate Mitochondrial (2)', 2],
-                                  ['Yeast Mitochondrial (3)',3],
-                                  ['Mold Mitochondrial (4)',4],
-                                  ['Invertebrate Mitochondrial (5)',5],
-                                  ['Ciliate Nuclear (6)',6],
-                                  ['Echinoderm Mitochondrial (9)',9],
-                                  ['Euplotid Nuclear (10)',10],
-                                  ['Bacterial (11)',11],
-                                  ['Alternative Yeast Nuclear (12)',12],
-                                  ['Ascidian Mitochondrial (13)',13],
-                                  ['Flatworm Mitochondrial (14)',14],
-                                  ['Blepharisma Macronuclear (15)',15]]
       @available_compositional_adjustments = [
         ['No adjustment', 0],
         ['Composition-based statistics', 1],
@@ -157,6 +145,7 @@ class Tblastn_Query #< Blast_Query::Base
       ]
       @available_matrices = ['PAM30','PAM70','PAM250','BLOSUM80',
                              'BLOSUM62','BLOSUM45','BLOSUM90']
+      @available_word_sizes = [2,3]
     end
   
     def set_attributes_and_defaults(attributes = {})
@@ -172,7 +161,6 @@ class Tblastn_Query #< Blast_Query::Base
       @e_value = 10.0 if @e_value.blank?
       @word_size = 3 if @word_size.blank?
       @compositional_adjustment = 2
-      @genetic_code = 1
       @use_soft_masking = false if @use_soft_masking.blank?
       @use_lowercase_masking = false if @use_lowercase_masking.blank?
       if @filter_low_complexity_regions.blank?
@@ -238,7 +226,6 @@ class Tblastn_Query #< Blast_Query::Base
       tblastn_execution_string += "-matrix #{@matrix} "
       tblastn_execution_string += 
         "-comp_based_stats #{@compositional_adjustment} "
-      tblastn_execution_string += "-db_gencode #{@genetic_code}"
       #TODO: Decide how to handle failures
       #Execute tblastn
       system(tblastn_execution_string)
