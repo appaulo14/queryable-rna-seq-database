@@ -12,8 +12,9 @@ namespace :db do
     make_users #1
     make_datasets #2
     make_genes #500
-    make_transcripts #1000
-    make_blast_databases 
+    make_transcripts_and_blast_databases
+#     make_transcripts #1000
+#     make_blast_databases 
     make_samples
     make_sample_comparisons
     make_fpkm_samples #1000
@@ -58,16 +59,54 @@ def make_genes
   puts 'Done'
 end
 
-def make_transcripts
-  print 'Populating transcripts...'
-  #Get arrays of all the datasets and genes to use for random selection
-  all_datasets = Dataset.all
-  all_genes = Gene.all
-  #Make a transcript counter used for naming transcripts
+# def make_transcripts
+#   print 'Populating transcripts...'
+#   #Get arrays of all the datasets and genes to use for random selection
+#   all_datasets = Dataset.all
+#   all_genes = Gene.all
+#   #Make a transcript counter used for naming transcripts
+#   #Loop through all the datasets, giving all the genes in the dataset a 
+#   #     random number of transcripts
+#   Dataset.all.each do |ds|
+#     transcript_count = 1
+#     ds.genes.each do |gene|
+#       rand(1..3).times do |n|
+#         #Create the transcript name
+#         transcript_name = "Transcript_#{transcript_count}"
+#         transcript_count += 1
+#         #Create a random fasta description and sequence
+#         fasta_description = "#{transcript_name} gene=#{gene.name_from_program}"
+#         nucleotide_counts = {'a' => rand(40..100),
+#                             'c' => rand(30..61),
+#                             'g' => rand(30..71),
+#                             't' => rand(20..55)}
+#         random_fasta_sequence = Bio::Sequence::NA.randomize(nucleotide_counts)
+#         #Create the transcript
+#         transcript = 
+#             Transcript.create!(:dataset => ds,
+#                                :gene => gene,
+#                                :fasta_sequence => random_fasta_sequence,
+#                                :name_from_program => transcript_name,
+#                                :fasta_description => fasta_description)
+#       end
+#     end
+#   end
+#   puts 'Done'
+# end
+
+def make_transcripts_and_blast_databases
+  print 'Populating transcripts and blast databases...'
+  #Make the blast databases directory if it does not exist
+  if not Dir.exists?('db/blast_databases')
+    Dir.mkdir('db/blast_databases')
+  end
   #Loop through all the datasets, giving all the genes in the dataset a 
   #     random number of transcripts
   Dataset.all.each do |ds|
-    transcript_count = 1
+    #Make a transcript counter used for naming transcripts
+    transcript_count = 0
+    #Create a temporary file to use to create the blast database
+    tmpfasta = Tempfile.new('tmpfasta')
     ds.genes.each do |gene|
       rand(1..3).times do |n|
         #Create the transcript name
@@ -80,46 +119,56 @@ def make_transcripts
                             'g' => rand(30..71),
                             't' => rand(20..55)}
         random_fasta_sequence = Bio::Sequence::NA.randomize(nucleotide_counts)
+        tmpfasta.write(">#{fasta_description}\n")
+        tmpfasta.write("#{random_fasta_sequence}\n")
         #Create the transcript
         transcript = 
             Transcript.create!(:dataset => ds,
                                :gene => gene,
-                               :fasta_sequence => random_fasta_sequence,
+                               :blast_seq_id => "gnl|BL_ORD_ID|#{transcript_count}",
                                :name_from_program => transcript_name,
                                :fasta_description => fasta_description)
       end
     end
-  end
-  puts 'Done'
-end
-
-def make_blast_databases
-  print 'Populating blast databases...'
-  #Make the blast databases directory if it does not exist
-  if not Dir.exists?('db/blast_databases')
-    Dir.mkdir('db/blast_databases')
-  end
-  Dataset.all.each do |ds|
-    #Create a temporary file to use to create the blast database
-    tmpfasta = Tempfile.new('tmpfasta')
-    #Write all the fastas for the dataset to the temporary file
-    ds.transcripts.each do |transcript|
-      tmpfasta.write(">#{transcript.fasta_description}\n")
-      tmpfasta.write("#{transcript.fasta_sequence}\n")
-    end
     tmpfasta.rewind
     tmpfasta.close
     #Create the blast database file for the dataset and save its location
-    success = system("bin/blast/bin/makeblastdb " +
+    is_success = system("bin/blast/bin/makeblastdb " +
                      "-in #{tmpfasta.path} -title #{ds.id}_db " +
-                     "-out #{ds.blast_db_location} -hash_index -dbtype nucl " +
-                     "-parse_seqids")
-    exit if success == false
+                     "-out #{ds.blast_db_location} -hash_index -dbtype nucl ")
+    exit if is_success == false
     #Close and unlink the temporary file when finished
     tmpfasta.unlink
   end
   puts 'Done'
 end
+
+# def make_blast_databases
+#   print 'Populating blast databases...'
+#   #Make the blast databases directory if it does not exist
+#   if not Dir.exists?('db/blast_databases')
+#     Dir.mkdir('db/blast_databases')
+#   end
+#   Dataset.all.each do |ds|
+#     #Create a temporary file to use to create the blast database
+#     tmpfasta = Tempfile.new('tmpfasta')
+#     #Write all the fastas for the dataset to the temporary file
+#     ds.transcripts.each do |transcript|
+#       tmpfasta.write(">#{transcript.fasta_description}\n")
+#       tmpfasta.write("#{transcript.fasta_sequence}\n")
+#     end
+#     tmpfasta.rewind
+#     tmpfasta.close
+#     #Create the blast database file for the dataset and save its location
+#     success = system("bin/blast/bin/makeblastdb " +
+#                      "-in #{tmpfasta.path} -title #{ds.id}_db " +
+#                      "-out #{ds.blast_db_location} -hash_index -dbtype nucl ")
+#     exit if success == false
+#     #Close and unlink the temporary file when finished
+#     tmpfasta.unlink
+#   end
+#   puts 'Done'
+# end
 
 def make_samples
   print 'Populating samples...'

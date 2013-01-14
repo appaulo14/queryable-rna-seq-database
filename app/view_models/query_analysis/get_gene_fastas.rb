@@ -28,7 +28,7 @@ class Get_Gene_Fastas
     #Get the transcripts from the parameters
     raise(ActiveRecord::RecordInvalid,self) if not self.valid?
     gene = Gene.where(:dataset_id => @dataset_id, 
-                        :name_from_program => @gene_name)[0]
+                      :name_from_program => @gene_name)[0]
     #Create the fasta string from the gene's transcripts
     @fastas_string = ''
     if gene.nil?

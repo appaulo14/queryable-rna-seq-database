@@ -34,6 +34,10 @@ class Get_Transcript_Fasta
       @fasta_string = 'No fasta sequences found.'
     else
       #Create the fasta string for the transcript
+      #TODO figure out how to handle failure
+      #Like this??: result=$?.success?
+      system("blastdbcmd -entry #{transcript.blast_seq_id}" +
+             "-db #{transcript.dataset.blast_db_location} -dbtype nucl")
       @fasta_string = ">#{transcript.fasta_description}\n" +
                       "#{transcript.fasta_sequence}\n"
     end
