@@ -19,7 +19,6 @@ class CreateTranscripts < ActiveRecord::Migration
       end
       #Add the other columns
       t.string :name_from_program, :null => false
-      t.string :fasta_description, :null => false
       t.string :blast_seq_id, :null => false
       
 

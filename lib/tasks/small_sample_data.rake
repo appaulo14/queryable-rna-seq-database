@@ -111,7 +111,6 @@ def make_transcripts_and_blast_databases
       rand(1..3).times do |n|
         #Create the transcript name
         transcript_name = "Transcript_#{transcript_count}"
-        transcript_count += 1
         #Create a random fasta description and sequence
         fasta_description = "#{transcript_name} gene=#{gene.name_from_program}"
         nucleotide_counts = {'a' => rand(40..100),
@@ -126,8 +125,8 @@ def make_transcripts_and_blast_databases
             Transcript.create!(:dataset => ds,
                                :gene => gene,
                                :blast_seq_id => "gnl|BL_ORD_ID|#{transcript_count}",
-                               :name_from_program => transcript_name,
-                               :fasta_description => fasta_description)
+                               :name_from_program => transcript_name)
+        transcript_count += 1
       end
     end
     tmpfasta.rewind

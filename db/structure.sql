@@ -339,7 +339,6 @@ CREATE TABLE transcripts (
     dataset_id bigint NOT NULL,
     gene_id bigint,
     name_from_program character varying(255) NOT NULL,
-    fasta_description character varying(255) NOT NULL,
     blast_seq_id character varying(255) NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL

@@ -2,6 +2,7 @@ class Get_Gene_Fastas
   include ActiveModel::Validations
   include ActiveModel::Conversion
   extend ActiveModel::Naming
+  require 'open3'
   
   attr_accessor :dataset_id, :gene_name
   attr_reader :fastas_string
@@ -34,9 +35,16 @@ class Get_Gene_Fastas
     if gene.nil?
       @fastas_string = 'No fasta sequences found.'
     else
+      seq_ids = []
       gene.transcripts.each do |t|
-        @fastas_string += ">#{t.fasta_description}\n#{t.fasta_sequence}\n"
+        seq_ids << t.blast_seq_id
       end
+      stdin, stdout, stderr = 
+        Open3.popen3('blastdbcmd', 
+                     '-entry',"#{seq_ids.join(',')}", 
+                     '-db',"#{gene.dataset.blast_db_location}", 
+                     '-dbtype','nucl')
+      @fastas_string = stdout.gets(nil)
     end
   end
   

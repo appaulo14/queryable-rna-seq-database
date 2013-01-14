@@ -2,6 +2,7 @@ class Get_Transcript_Fasta
   include ActiveModel::Validations
   include ActiveModel::Conversion
   extend ActiveModel::Naming
+  require 'open3'
   
   attr_accessor :dataset_id, :transcript_name
   attr_reader :fasta_string
@@ -35,11 +36,16 @@ class Get_Transcript_Fasta
     else
       #Create the fasta string for the transcript
       #TODO figure out how to handle failure
-      #Like this??: result=$?.success?
-      system("blastdbcmd -entry #{transcript.blast_seq_id}" +
-             "-db #{transcript.dataset.blast_db_location} -dbtype nucl")
-      @fasta_string = ">#{transcript.fasta_description}\n" +
-                      "#{transcript.fasta_sequence}\n"
+      stdin, stdout, stderr = 
+        Open3.popen3('blastdbcmd', 
+                     '-entry',"#{transcript.blast_seq_id}", 
+                     '-db',"#{transcript.dataset.blast_db_location}", 
+                     '-dbtype','nucl')
+      @fasta_string = stdout.gets(nil)
+#       system("blastdbcmd -entry #{transcript.blast_seq_id}" +
+#              "-db #{transcript.dataset.blast_db_location} -dbtype nucl")
+#       @fasta_string = ">#{transcript.fasta_description}\n" +
+#                       "#{transcript.fasta_sequence}\n"
     end
   end
   
