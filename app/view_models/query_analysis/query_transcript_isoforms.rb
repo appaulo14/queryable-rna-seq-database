@@ -3,6 +3,7 @@ class Query_Transcript_Isoforms
   include ActiveModel::Conversion
   extend ActiveModel::Naming
   
+  #TODO: Get rid of FDR and P-value because they're not needed
   attr_accessor :dataset_id, :sample_id,
                 :fdr_or_pvalue, :cutoff, :filter_by_class_codes,
                 :class_code_equal, :class_code_c, :class_code_j, :class_code_e,

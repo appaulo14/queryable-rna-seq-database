@@ -15,7 +15,7 @@
     <%= label :sample_id, "Select Sample" %>
     <%= qti.select :sample_id, options_for_select(@qti.available_samples,@qti.sample_id)  %> 
   </p>
-  <p>
+<!--  <p>
     <div>
         <%= label(:fdr_or_pvalue, "Filter By:") %>
         <%= qti.radio_button(:fdr_or_pvalue, :p_value) %>
@@ -25,14 +25,10 @@
     </div>
     <div>
         <%= qti.label(:cutoff, "Select cutoff:") %>
-        <!--<%= #qti.select(:cutoff, options_for_select([['0.01', 0.01], ['0.005', 0.005],['0.001', 0.001],['0.0001', 0.0001],['0.00001', 0.00001],['Other', 'Other']],'Other'))
-        %>
-        <%= #qti.label(:other_cutoff_value, "Enter Value:") 
-        %>-->
         <%= qti.text_field(:cutoff, {:size=>10}) %>
     </div>
   </p>
-  <br/>
+  <br/>-->
   <h2>Query filtering options</h2>
   <p>
     <div>
