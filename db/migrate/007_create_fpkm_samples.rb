@@ -23,7 +23,7 @@ class CreateFpkmSamples < ActiveRecord::Migration
       t.decimal :fpkm_lo
       t.string  :status
 
-      t.timestamps
+      #t.timestamps
     end
     #Add primary key using execute statement because
     #   rails can't do BIGINT primary keys

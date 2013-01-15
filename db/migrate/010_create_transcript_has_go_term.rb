@@ -4,7 +4,7 @@ class CreateTranscriptHasGoTerm < ActiveRecord::Migration
       t.integer :transcript_id
       t.string :go_term_id
 
-      t.timestamps
+      #t.timestamps
     end
     #This is a workaround because rails can't do string or multiple 
     #   primary keys by default

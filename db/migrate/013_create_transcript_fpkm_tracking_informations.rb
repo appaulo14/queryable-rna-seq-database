@@ -16,7 +16,7 @@ class CreateTranscriptFpkmTrackingInformations < ActiveRecord::Migration
       t.integer :length
       t.decimal :coverage
 
-      t.timestamps
+      #t.timestamps
     end
     
     #Add primary key using execute statement because

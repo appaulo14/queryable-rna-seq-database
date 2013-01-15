@@ -15,7 +15,7 @@ class CreateDatasets < ActiveRecord::Migration
       t.string :blast_db_location, :null => false
       t.integer :user_id, :null => false
 
-      t.timestamps
+      #t.timestamps
     end
     
     #Add primary key using execute statement because

@@ -15,7 +15,7 @@ class CreateGenes < ActiveRecord::Migration
       end
 
       t.string :name_from_program, :null => false
-      t.timestamps
+      #t.timestamps
     end
     #Add primary key using execute statement because
     #   rails can't do BIGINT primary keys

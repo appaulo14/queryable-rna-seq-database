@@ -36,9 +36,7 @@ CREATE TABLE datasets (
     id bigint NOT NULL,
     name character varying(255) NOT NULL,
     blast_db_location character varying(255) NOT NULL,
-    user_id integer NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    user_id integer NOT NULL
 );
 
 
@@ -74,9 +72,7 @@ CREATE TABLE differential_expression_tests (
     test_status character varying(255) NOT NULL,
     log_fold_change numeric NOT NULL,
     p_value numeric NOT NULL,
-    fdr numeric NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    fdr numeric NOT NULL
 );
 
 
@@ -111,9 +107,7 @@ CREATE TABLE fpkm_samples (
     fpkm numeric NOT NULL,
     fpkm_hi numeric,
     fpkm_lo numeric,
-    status character varying(255),
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    status character varying(255)
 );
 
 
@@ -143,9 +137,7 @@ ALTER SEQUENCE fpkm_samples_id_seq OWNED BY fpkm_samples.id;
 CREATE TABLE genes (
     id bigint NOT NULL,
     dataset_id bigint NOT NULL,
-    name_from_program character varying(255) NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    name_from_program character varying(255) NOT NULL
 );
 
 
@@ -174,9 +166,7 @@ ALTER SEQUENCE genes_id_seq OWNED BY genes.id;
 
 CREATE TABLE go_terms (
     id character varying(255) NOT NULL,
-    term character varying(255),
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    term character varying(255)
 );
 
 
@@ -257,9 +247,7 @@ ALTER SEQUENCE jobs_id_seq OWNED BY jobs.id;
 
 CREATE TABLE sample_comparisons (
     sample_1_id integer NOT NULL,
-    sample_2_id integer NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    sample_2_id integer NOT NULL
 );
 
 
@@ -270,9 +258,7 @@ CREATE TABLE sample_comparisons (
 CREATE TABLE samples (
     id bigint NOT NULL,
     name character varying(255),
-    dataset_id integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    dataset_id integer
 );
 
 
@@ -312,9 +298,7 @@ CREATE TABLE transcript_fpkm_tracking_informations (
     transcript_id bigint NOT NULL,
     class_code character varying(255),
     length integer,
-    coverage numeric,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    coverage numeric
 );
 
 
@@ -324,9 +308,7 @@ CREATE TABLE transcript_fpkm_tracking_informations (
 
 CREATE TABLE transcript_has_go_terms (
     transcript_id integer NOT NULL,
-    go_term_id character varying(255) NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    go_term_id character varying(255) NOT NULL
 );
 
 
@@ -339,9 +321,7 @@ CREATE TABLE transcripts (
     dataset_id bigint NOT NULL,
     gene_id bigint,
     name_from_program character varying(255) NOT NULL,
-    blast_seq_id character varying(255) NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    blast_seq_id character varying(255) NOT NULL
 );
 
 
@@ -380,8 +360,6 @@ CREATE TABLE users (
     last_sign_in_at timestamp without time zone,
     current_sign_in_ip character varying(255),
     last_sign_in_ip character varying(255),
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
     admin boolean
 );
 

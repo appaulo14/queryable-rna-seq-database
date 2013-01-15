@@ -4,7 +4,7 @@ class CreateSampleComparisons < ActiveRecord::Migration
       t.integer :sample_1_id
       t.integer :sample_2_id
 
-      t.timestamps
+      #t.timestamps
     end
     
     #This is a workaround because rails can't do string or multiple 

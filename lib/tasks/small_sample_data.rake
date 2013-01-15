@@ -8,16 +8,11 @@ namespace :db do
     Rake::Task['db:drop'].invoke
     Rake::Task['db:create'].invoke
     Rake::Task['db:migrate'].invoke
-    #Set the time zone to prevent strange errors with Heroku
-    Time.zone = TZInfo::Timezone.get('America/Chicago')
-    puts "Time zone = #{Time.zone.now}"
     #Generate the data
     make_users #1
     make_datasets #2
     make_genes #500
     make_transcripts_and_blast_databases
-#     make_transcripts #1000
-#     make_blast_databases 
     make_samples
     make_sample_comparisons
     make_fpkm_samples #1000
@@ -39,7 +34,7 @@ end
 
 def make_datasets
   print 'Populating datasets...'
-  (1..5).each do |n|
+  (1..2).each do |n|
     name = Faker::Lorem.word
     redo if not Dataset.find_by_name(name).nil?
     Dataset.create!(:user => @user, 
@@ -55,7 +50,7 @@ def make_genes
   #Get an array of all the datasets to use for random selection
   all_datasets = Dataset.all
   #Create 500 genes with random datasets
-  500.times do |n|
+  300.times do |n|
     gene = Gene.create!(:name_from_program => Faker::Name.name,
                         :dataset => all_datasets.sample)
   end

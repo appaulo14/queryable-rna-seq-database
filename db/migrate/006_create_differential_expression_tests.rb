@@ -24,7 +24,7 @@ class CreateDifferentialExpressionTests < ActiveRecord::Migration
       t.decimal :p_value, :null => false
       t.decimal :fdr, :null => false
 
-      t.timestamps
+      #t.timestamps
     end
     #Add primary key using execute statement because
     #   rails can't do non-integer primary keys

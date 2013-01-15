@@ -4,7 +4,7 @@ class CreateGoTerms < ActiveRecord::Migration
       t.string :id
       t.string :term
 
-      t.timestamps
+      #t.timestamps
     end
     
     #This is a workaround because rails can't do string primary keys 

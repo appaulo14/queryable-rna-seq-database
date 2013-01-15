@@ -15,7 +15,7 @@ class CreateSamples < ActiveRecord::Migration
       t.string :name
       t.integer :dataset_id
 
-      t.timestamps
+      #t.timestamps
     end
     
     #Add primary key using execute statement because
