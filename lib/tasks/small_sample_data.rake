@@ -8,6 +8,9 @@ namespace :db do
     Rake::Task['db:drop'].invoke
     Rake::Task['db:create'].invoke
     Rake::Task['db:migrate'].invoke
+    #Set the time zone to prevent strange errors with Heroku
+    Time.zone = TZInfo::Timezone.get('America/Chicago')
+    puts "Time zone = #{Time.zone.now}"
     #Generate the data
     make_users #1
     make_datasets #2
