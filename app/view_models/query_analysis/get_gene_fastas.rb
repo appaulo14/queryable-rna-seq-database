@@ -40,7 +40,7 @@ class Get_Gene_Fastas
         seq_ids << t.blast_seq_id
       end
       stdin, stdout, stderr = 
-        Open3.popen3('blastdbcmd', 
+        Open3.popen3('bin/blast/bin/blastdbcmd', 
                      '-entry',"#{seq_ids.join(',')}", 
                      '-db',"#{gene.dataset.blast_db_location}", 
                      '-dbtype','nucl')

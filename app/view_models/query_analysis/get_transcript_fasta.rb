@@ -37,7 +37,7 @@ class Get_Transcript_Fasta
       #Create the fasta string for the transcript
       #TODO figure out how to handle failure
       stdin, stdout, stderr = 
-        Open3.popen3('blastdbcmd', 
+        Open3.popen3('bin/blast/bin/blastdbcmd', 
                      '-entry',"#{transcript.blast_seq_id}", 
                      '-db',"#{transcript.dataset.blast_db_location}", 
                      '-dbtype','nucl')
