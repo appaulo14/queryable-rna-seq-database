@@ -107,11 +107,11 @@
                       No GO ids found.
                     <% end %>
                   </td>
-                  <td><%= result[:p_value] %></td>
+                  <td><%= "%f" % result[:p_value] %></td>
                   <td><%= result[:fdr] %></td>
-                  <td><%= result[:sample_1_fpkm] %></td>
-                  <td><%= result[:sample_2_fpkm] %></td>
-                  <td><%= result[:log_fold_change] %></td>
+                  <td><%= result[:sample_1_fpkm].to_f.round(3) %></td>
+                  <td><%= result[:sample_2_fpkm].to_f.round(3) %></td>
+                  <td><%= result[:log_fold_change].to_f.round(3) %></td>
               </tr>
           <% end %>
       </tbody>

@@ -24,5 +24,6 @@
 require 'spec_helper'
 
 describe Dataset do
+  #TODO: Ensure this can satisfy use case 8
   pending "add some examples to (or delete) #{__FILE__}"
 end
