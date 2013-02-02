@@ -3,7 +3,7 @@
 <%= javascript_include_tag 'downloadify/swfobject.js' %>
 <%= javascript_include_tag 'downloadify/downloadify.min.js' %>
 <%= javascript_include_tag 'Stupid-Table-Plugin/stupidtable.min.js' %>
-<%= form_for(@qti, :url => 'query_transcript_isoforms') do |qti| %>
+<%= form_for(@qti, :url => '/query_analysis/query_transcript_isoforms') do |qti| %>
   <h1>Please select your novel isoforms and other transcript classification search options</h1>
   <p>
     <%= qti.label :dataset_id, "Dataset to query" %>
@@ -116,7 +116,7 @@
         <%= qti.text_field(:transcript_name) %>
     </div>
   </p>
-  <p><%= submit_tag("Query", :disable_with => "Querying...") %></p>
+  <p><%= submit_tag('Query', :disable_with => 'Querying...', :id => :query) %></p>
 <% end %>
 <!--Section for the query results-->
 <% if @qti.show_results? %>

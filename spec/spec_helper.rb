@@ -16,6 +16,24 @@ RSpec.configure do |config|
   # config.mock_with :mocha
   # config.mock_with :flexmock
   # config.mock_with :rr
+  
+  def sign_in(user)
+    visit new_user_session_path
+    fill_in :email,    :with => user.email
+    fill_in :password, :with => user.password
+    click_button 'Sign In'
+  end
+  
+  def sign_in_as_nietz111()
+    visit new_user_session_path
+    fill_in :email,    :with => 'nietz111@ksu.edu'
+    fill_in :password, :with => 'cis895'
+    click_button 'Sign In'
+  end
+  
+  def sign_out()
+    visit destroy_user_session_path
+  end
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
