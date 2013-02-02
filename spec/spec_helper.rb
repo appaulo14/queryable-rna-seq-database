@@ -3,6 +3,8 @@ ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'rspec/autorun'
+require 'capybara/rspec'
+require 'capybara/rails'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -19,16 +21,16 @@ RSpec.configure do |config|
   
   def sign_in(user)
     visit new_user_session_path
-    fill_in :email,    :with => user.email
-    fill_in :password, :with => user.password
-    click_button 'Sign In'
+    fill_in :user_email,    :with => user.email
+    fill_in :user_password, :with => user.password
+    click_button('Sign In')
   end
   
   def sign_in_as_nietz111()
     visit new_user_session_path
-    fill_in :email,    :with => 'nietz111@ksu.edu'
-    fill_in :password, :with => 'cis895'
-    click_button 'Sign In'
+    find('#user_email').set('nietz111@ksu.edu')
+    find('#user_password').set('cis895')
+    click_button 'Sign in'
   end
   
   def sign_out()

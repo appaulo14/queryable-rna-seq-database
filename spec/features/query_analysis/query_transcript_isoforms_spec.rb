@@ -1,8 +1,6 @@
 require 'spec_helper'
-require 'rspec/rails'
-require 'rspec/autorun'
 
-describe 'Query Transcript Isoforms page', :js => true do
+describe 'Query Transcript Isoforms page' do
   before(:each) do
     #user = FactoryGirl.create(:user)
     #sign_in(user)
@@ -14,7 +12,12 @@ describe 'Query Transcript Isoforms page', :js => true do
   it 'should goat' do
     lambda do
       visit 'query_analysis/query_transcript_isoforms'
-      click_button
+      find_button('submit_query').click
+      all('#query_results_table tbody tr').each do |tr|
+        tr.all('td').each do |td|
+          #verify contents of each cell
+        end
+      end
       response.should have_selector("div.flash.success",
                                     :content => "Welcome")
     end.should change(User, :count).by(1)
@@ -24,4 +27,6 @@ describe 'Query Transcript Isoforms page', :js => true do
   end
   
   it 'should fail gracefully when not datasets or samples are available'
+  
+  it 'should fail gracefully when no samples are available?'
 end

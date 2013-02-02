@@ -44,8 +44,8 @@ end
 
 group :test do
   gem 'rspec',  '>= 2.0.1'
-  gem 'webrat', '>= 0.7.1'
   gem 'factory_girl_rails', '~> 4.0'
+  gem 'capybara', '2.0.2'
 end
 
 gem 'faker'
