@@ -12,6 +12,8 @@ describe 'Query Transcript Isoforms page' do
   it 'should only display datasets which belong to the user and ' +
      'have transript isoform data'
   
+  it 'should display a failure message if any of the parameters are invalid'
+  
   it 'should goat' do
     visit 'query_analysis/query_transcript_isoforms'
     find_button('submit_query').click
@@ -19,6 +21,7 @@ describe 'Query Transcript Isoforms page' do
     dataset = Dataset.find_by_id(dataset_id)
     #debugger
     all_rows = all('#query_results_table tbody tr')
+    all_rows.count.should eq(dataset.transcripts.count)
     (0..all_rows.count-1).each do |n|
       tr = all_rows[n]
       tds = tr.all('td')
@@ -31,6 +34,13 @@ describe 'Query Transcript Isoforms page' do
                                     :name_from_program => transcript_name)[0]
       gene_name = tds[1].text
       gene_name.should eq(transcript.gene.name_from_program)
+      class_code = tds[3].text
+      transcript_length = tds[4].text.to_i
+      coverage = tds[5].text.to_f.round(3)
+      fpkm = tds[6].text.to_i.round(3)
+      fpkm_lower_bound = tds[7].text.to_f.round(3)
+      fpkm_upper_bound = tds[8].text.to_f.round(3)
+      quantification_status = tds[9].text
       
       #tds.each do |td|
         
@@ -46,7 +56,9 @@ describe 'Query Transcript Isoforms page' do
 #     response.should have_selector('table')
   end
   
-  it 'should test table sorting'
+  it 'should have all the columns in the query results table be sortable'
+  
+  it 'should all the query results table to be downloadable as a text file'
   
   it 'should fail gracefully when not datasets or samples are available'
   
