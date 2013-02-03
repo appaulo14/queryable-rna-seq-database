@@ -4,10 +4,11 @@ require 'tempfile'
 
 namespace :db do
   desc "Fill database with sample data"
-  task :small_populate => :environment do
+  task :very_small_sample_data_for_testing => :environment do
     Rake::Task['db:drop'].invoke
     Rake::Task['db:create'].invoke
     Rake::Task['db:migrate'].invoke
+    Rake::Task['db:test:prepare'].invoke
     #Generate the data
     make_users #1
     make_datasets #2
@@ -34,11 +35,10 @@ end
 
 def make_datasets
   print 'Populating datasets...'
-  (1..2).each do |n|
-    name = Faker::Lorem.word
-    redo if not Dataset.find_by_name(name).nil?
+  (0..1).each do |n|
+    name = "Dataset_#{n}"
     Dataset.create!(:user => @user, 
-                    :name => Faker::Lorem.word,
+                    :name => name,
                     #The Blast database will actually be created later
                     :blast_db_location => "db/blast_databases/#{n}_db")
   end
@@ -47,12 +47,13 @@ end
 
 def make_genes
   print 'Populating genes...'
-  #Get an array of all the datasets to use for random selection
-  all_datasets = Dataset.all
-  #Create 500 genes with random datasets
-  300.times do |n|
-    gene = Gene.create!(:name_from_program => Faker::Name.name,
-                        :dataset => all_datasets.sample)
+  Dataset.all.each do |ds|
+    gene_count = 0
+    3.times do |n|
+      gene = Gene.create!(:name_from_program => "Gene_#{gene_count}",
+                          :dataset => ds)
+      gene_count += 1
+    end
   end
   puts 'Done'
 end
