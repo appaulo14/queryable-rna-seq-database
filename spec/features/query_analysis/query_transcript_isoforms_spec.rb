@@ -1,6 +1,8 @@
 require 'spec_helper'
+#require 'rails/commands'
 
 describe 'Query Transcript Isoforms page' do
+  
   before(:each) do
     #user = FactoryGirl.create(:user)
     #sign_in(user)
@@ -14,10 +16,10 @@ describe 'Query Transcript Isoforms page' do
   
   it 'should display a failure message if any of the parameters are invalid'
   
+  #TODO
   it 'should have all the columns in the query results table ' +
      'be sortable', :js => true do
     visit 'query_analysis/query_transcript_isoforms'
-    puts "HTML=" + page.html
     find_button('submit_query').click
     ths = all('#query_results_table thead tr th')
     ths[3].click
@@ -25,7 +27,14 @@ describe 'Query Transcript Isoforms page' do
     #save_and_open_page
   end
   
-  it 'should all the query results table to be downloadable as a text file'
+  it 'should should provide valid links to the Gene Ontology website ' +
+     'for each GO term', :js => true do
+    page.driver.browser.switch_to.window(page.driver.browser.window_handles.last)
+    page.find('title').text
+  end
+  
+  #TODO
+  it 'should allow the query results table to be downloadable as a text file'
   
   it 'should fail gracefully when not datasets or samples are available'
   
@@ -67,21 +76,30 @@ describe 'Query Transcript Isoforms page' do
         gene_href = URI.escape("get_gene_fastas?dataset_id=#{dataset_id}" +
                     "&gene_name=#{tds[1].text}")
         tds[1].should have_link(tds[1].text, :href => gene_href)
-        #visit(URI.escape(tds[1].find('a')[:href]))
-        #Verify the GO ids
-#         if transcript.go_terms.empty?
-#           tds[2].text.should eq('No GO ids found.')
-#         else
-#           go_ids = tds[2].text.scan(/\[(GO:\d+)\]/).flatten.sort
-#           go_ids.count.should eq(transcript.go_terms.count)
-#           sorted_go_ids = go_ids.sort
-#           (0..go_ids.count-1).each do |n|
-#             sorted_go_ids[n].should eq(transcript.go_terms[n].id)
-#           end
-#         end
-        #Verify the GO links
-        tds[2].all('a').each do |a|
-          a.click
+        tds[1].find('a').click
+        #Verify the GO terms and their links for the transcript
+        if transcript.go_terms.empty?
+          tds[2].text.should eq('No GO ids found.')
+        else
+          #Verify all the go terms by looping through them
+          go_items = tds[2].all('li')
+          (0..go_items.count-1).each do |i|
+            #Extract some variables
+            html_go_item = go_items[i].text
+            required_href = "http://amigo.geneontology.org/" +
+                            "cgi-bin/amigo/term_details?" +
+                            "term=#{transcript.go_terms[i].id}"
+            #Verify the go term
+            html_go_item.scan(transcript.go_terms[i].term).should_not be_empty
+            #Verify the go id
+            html_go_item.scan(transcript.go_terms[i].id).should_not be_empty
+            #Verify the link
+            go_link = go_items[i].find('a')
+            go_link[:href].should eq(required_href)
+            go_link.click
+            debugger
+            puts 'x'
+          end
         end
         #Verify the class code
         tds[3].text.should eq(transcript_info.class_code)
@@ -97,10 +115,10 @@ describe 'Query Transcript Isoforms page' do
         tds[8].text.to_d.round(3).should eq(fpkm_sample.fpkm_hi.round(3))
         #Verify the quantification status
         tds[9].text.should eq(fpkm_sample.status)
-          #print page.html
       end
     end
     
+    #TODO
     it 'should filter by class code ='
     
     it 'should filter by class code c'
