@@ -163,10 +163,10 @@
                   </td>
                   <td><%= result[:class_code] %></td>
                   <td><%= result[:transcript_length] %></td>
-                  <td><%= result[:coverage].to_f.round(3) %></td>
-                  <td><%= result[:fpkm].to_f.round(3) %></td>
-                  <td><%= result[:fpkm_lo].to_f.round(3) %></td>
-                  <td><%= result[:fpkm_hi].to_f.round(3) %></td>
+                  <td><%= result[:coverage].to_d.round(3) %></td>
+                  <td><%= result[:fpkm].to_d.round(3) %></td>
+                  <td><%= result[:fpkm_lo].to_d.round(3) %></td>
+                  <td><%= result[:fpkm_hi].to_d.round(3) %></td>
                   <td><%= result[:status] %></td>
               </tr>
           <% end %>

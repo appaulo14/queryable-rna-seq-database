@@ -117,7 +117,7 @@ class Query_Transcript_Isoforms
       result[:class_code] = query_result.class_code
       result[:transcript_length] = query_result.length
       result[:coverage] = query_result.coverage
-      result[:fpkm] = query_result.coverage
+      result[:fpkm] = query_result.fpkm
       result[:fpkm_lo] =  query_result.fpkm_lo
       result[:fpkm_hi] =  query_result.fpkm_hi
       result[:status] = query_result.status

@@ -19,6 +19,26 @@ RSpec.configure do |config|
   # config.mock_with :flexmock
   # config.mock_with :rr
   
+#   Capybara::Server.class_eval do
+#     def find_available_port
+#       @port = 3000
+#     end
+#   end
+  
+  
+#   Capybara.register_driver :ssl_selenium do |app|
+#     profile = Selenium::WebDriver::Firefox::Profile.new
+#     profile.assume_untrusted_certificate_issuer = false
+#     Capybara::Selenium::Driver.new(app, :profile => profile)
+#   end
+#   
+#   Capybara.default_driver = :ssl_selenium
+  
+  Capybara.run_server = false
+  
+  Capybara.server_port = 3000 
+  Capybara.app_host = "https://0.0.0.0:3000/"
+  
   def sign_in(user)
     visit new_user_session_path
     fill_in :user_email,    :with => user.email
