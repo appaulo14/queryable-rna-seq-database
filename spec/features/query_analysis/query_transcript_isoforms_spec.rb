@@ -141,58 +141,34 @@ describe 'Query Transcript Isoforms page' do
   describe 'query filtering' do
     
     #MAYBE TODO:Put the requirements that this test satisfies here??
-    it 'should show everything when no filtering options are selected' do
-      #Go to page and submit the query
+    # TODO: Try all the samples and datasets
+    it 'should not filter when no filtering is selected', :js => true do
+      #Go to page 
       visit 'query_analysis/query_transcript_isoforms'
-      find_button('submit_query').click
-      #Store the dataset and fpkm sample for later use
-      dataset_id = find('#query_transcript_isoforms_dataset_id').value
-      dataset = Dataset.find_by_id(dataset_id)
-      sample_id = find('#query_transcript_isoforms_sample_id').value
-      #Verify all the rows in the query results table by looping through them
-      all_rows = all('#query_results_table tbody tr')
-      all_rows.count.should eq(dataset.transcripts.count)
-      (0..all_rows.count-1).each do |n|
-        #Extract some variables to use below
-        tr = all_rows[n]
-        tds = tr.all('td')
-        transcript = dataset.transcripts[n]
-        transcript_info = transcript.transcript_fpkm_tracking_information
-        fpkm_sample = FpkmSample.where(:sample_id => sample_id,
-                                       :transcript_id => transcript.id)[0]
-        #Verify the transcript name
-        tds[0].text.should eq(transcript.name_from_program)
-        #Verify the gene name
-        tds[1].text.should eq(transcript.gene.name_from_program)
-        #Verify the GO terms and their links for the transcript
-        if transcript.go_terms.empty?
-          tds[2].text.should eq('No GO ids found.')
-        else
-          #Verify all the go terms by looping through them
-          go_items = tds[2].all('li')
-          (0..go_items.count-1).each do |i|
-            #Extract some variables
-            html_go_item = go_items[i].text
-            #Verify the go term
-            html_go_item.should include(transcript.go_terms[i].term)
-            #Verify the go id
-            html_go_item.should include(transcript.go_terms[i].id)
-          end
+      #Extract dataset variables for later use
+      id_for_dataset_select_tag = 'query_transcript_isoforms_dataset_id'
+      dataset_select_tag = find_by_id(id_for_dataset_select_tag)
+      #Loop through all the datasets, checking each one
+      (0..dataset_select_tag.all('option').count-1).each do |dataset_index|
+        #Select the dataset
+        dataset_option = dataset_select_tag.all('option')[dataset_index].text
+        select(dataset_option, :from => id_for_dataset_select_tag)
+        #Store the dataset for later
+        dataset_id = dataset_select_tag.value
+        dataset = Dataset.find_by_id(dataset_id)
+        #Extract sample variables for later use
+        id_for_sample_select_tag = 'query_transcript_isoforms_sample_id'
+        sample_select_tag = find_by_id(id_for_sample_select_tag)
+        #Loop through all the samples, checking each one
+        (0..sample_select_tag.all('option').count-1).each do |sample_index|
+          #Select the sample
+          sample_option = sample_select_tag.all('option')[sample_index].text
+          select(sample_option, :from => id_for_sample_select_tag)
+          #Submit the query
+          find_button('submit_query').click
+          #Verify the results
+          verify_query_results_data(dataset, dataset.transcripts)
         end
-        #Verify the class code
-        tds[3].text.should eq(transcript_info.class_code)
-        #Verify the transcript length
-        tds[4].text.to_i.should eq(transcript_info.length)
-        #Verify the coverage
-        tds[5].text.to_d.round(3).should eq(transcript_info.coverage.round(3))
-        #Verify the fpkm
-        tds[6].text.to_d.round(3).should eq(fpkm_sample.fpkm.round(3))
-        #Verfiy the fpkm lower bound
-        tds[7].text.to_d.round(3).should eq(fpkm_sample.fpkm_lo.round(3))
-        #Verify the fpkm upper bound
-        tds[8].text.to_d.round(3).should eq(fpkm_sample.fpkm_hi.round(3))
-        #Verify the quantification status
-        tds[9].text.should eq(fpkm_sample.status)
       end
     end
     
@@ -238,5 +214,58 @@ describe 'Query Transcript Isoforms page' do
     it 'should filter by less than or equal to transcript length'
     
     it 'should filter by equal to transcript length'
-  end 
+  end
+  
+  private
+  
+  def verify_query_results_data(dataset, transcripts)
+    #Store the sample for later use
+    sample_id = find('#query_transcript_isoforms_sample_id').value
+    #Verify all the rows in the query results table by looping through them
+    all_rows = all('#query_results_table tbody tr')
+    all_rows.count.should eq(transcripts.count)
+    (0..all_rows.count-1).each do |n|
+      #Extract some variables to use below
+      tr = all_rows[n]
+      tds = tr.all('td')
+      transcript = transcripts[n]
+      transcript_info = transcript.transcript_fpkm_tracking_information
+      fpkm_sample = FpkmSample.where(:sample_id => sample_id,
+                                     :transcript_id => transcript.id)[0]
+      #Verify the transcript name
+      tds[0].text.should eq(transcript.name_from_program)
+      #Verify the gene name
+      tds[1].text.should eq(transcript.gene.name_from_program)
+      #Verify the GO terms and their links for the transcript
+      if transcript.go_terms.empty?
+        tds[2].text.should eq('No GO ids found.')
+      else
+        #Verify all the go terms by looping through them
+        go_items = tds[2].all('li')
+        (0..go_items.count-1).each do |i|
+          #Extract some variables
+          html_go_item = go_items[i].text
+          #Verify the go term
+          html_go_item.should include(transcript.go_terms[i].term)
+          #Verify the go id
+          html_go_item.should include(transcript.go_terms[i].id)
+        end
+      end
+      #Verify the class code
+      tds[3].text.should eq(transcript_info.class_code)
+      #Verify the transcript length
+      tds[4].text.to_i.should eq(transcript_info.length)
+      #Verify the coverage
+      tds[5].text.to_d.round(3).should eq(transcript_info.coverage.round(3))
+      #Verify the fpkm
+      tds[6].text.to_d.round(3).should eq(fpkm_sample.fpkm.round(3))
+      #Verfiy the fpkm lower bound
+      tds[7].text.to_d.round(3).should eq(fpkm_sample.fpkm_lo.round(3))
+      #Verify the fpkm upper bound
+      tds[8].text.to_d.round(3).should eq(fpkm_sample.fpkm_hi.round(3))
+      #Verify the quantification status
+      tds[9].text.should eq(fpkm_sample.status)
+    end
+  end
+  
 end
