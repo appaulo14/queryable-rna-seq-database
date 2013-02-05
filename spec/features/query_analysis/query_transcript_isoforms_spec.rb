@@ -17,20 +17,118 @@ describe 'Query Transcript Isoforms page' do
   it 'should display a failure message if any of the parameters are invalid'
   
   #TODO
-  it 'should have all the columns in the query results table ' +
-     'be sortable', :js => true do
+#   it 'should have all the columns in the query results table ' +
+#      'be sortable', :js => true do
+#     visit 'query_analysis/query_transcript_isoforms'
+#     find_button('submit_query').click
+#     ths = all('#query_results_table thead tr th')
+#     ths[3].click
+#     all('#query_results_table tbody tr')[0].all('td')[3].text.should eq('-')
+#     #save_and_open_page
+#   end
+  
+  it 'should provide links to the Gene Ontology website for each GO term',
+      :js => true do
+    #Go to page and submit the query
     visit 'query_analysis/query_transcript_isoforms'
     find_button('submit_query').click
-    ths = all('#query_results_table thead tr th')
-    ths[3].click
-    all('#query_results_table tbody tr')[0].all('td')[3].text.should eq('-')
-    #save_and_open_page
+    #Store the dataset and fpkm sample for later use
+    dataset_id = find('#query_transcript_isoforms_dataset_id').value
+    dataset = Dataset.find_by_id(dataset_id)
+    #Verify all the rows in the query results table by looping through them
+    all_rows = all('#query_results_table tbody tr')
+    all_rows.count.should eq(dataset.transcripts.count)
+    original_window_handle = page.driver.browser.window_handles.first
+    (0..all_rows.count-1).each do |n|
+      #Extract some variables to use below
+      tr = all_rows[n]
+      tds = tr.all('td')
+      transcript = dataset.transcripts[n]
+      #Verify the GO terms and their links for the transcript
+      if transcript.go_terms.empty?
+        tds[2].text.should eq('No GO ids found.')
+      else
+        #Verify all the go terms by looping through them
+        go_items = tds[2].all('li')
+        (0..go_items.count-1).each do |i|
+          #Extract some variables
+          html_go_item = go_items[i].text
+          go_id = transcript.go_terms[i].id
+          required_href = "http://amigo.geneontology.org/" +
+                          "cgi-bin/amigo/term_details?" +
+                          "term=#{go_id}"
+          #Verify the link href is correct
+          go_link = go_items[i].find('a')
+          go_link[:href].should eq(required_href)
+          #Verify the link goes to the right place by clicking it and examining
+          #     the page's contents
+          go_link.click
+          go_link_window_handle = page.driver.browser.window_handles.last
+          page.driver.browser.switch_to.window(go_link_window_handle)
+          expected_page_title = "AmiGO: Term Details for #{go_id}"
+          page.find('title').text.should eq(expected_page_title)
+          page.driver.browser.switch_to.window(original_window_handle)
+        end
+      end
+    end
   end
   
-  it 'should should provide valid links to the Gene Ontology website ' +
-     'for each GO term', :js => true do
-    page.driver.browser.switch_to.window(page.driver.browser.window_handles.last)
-    page.find('title').text
+  it 'should provide links to each transcript fasta sequence' do
+    #Go to page and submit the query
+    visit 'query_analysis/query_transcript_isoforms'
+    find_button('submit_query').click
+    #Store the dataset id for later use
+    dataset_id = find('#query_transcript_isoforms_dataset_id').value
+    #Verify all the rows in the query results table by looping through them
+    (all('#query_results_table tbody tr')).each do |tr|
+      #Extract some variables to use below
+      tds = tr.all('td')
+      transcript = Transcript.where(:dataset_id => dataset_id,
+                                    :name_from_program => tds[0].text)[0]
+      #Verify the transcript's link looks correct
+      transcript_href = URI.escape("get_transcript_fasta?" +
+                        "dataset_id=#{dataset_id}" +
+                        "&transcript_name=#{tds[0].text}")
+      tds[0].should have_link(tds[0].text, :href => transcript_href)
+      #Verify the link goes to a page that at least looks kind of like the 
+      #    transcript's fasta
+      tds[0].find('a').click
+      transcript_fasta_regex = 
+          /\A>#{Regexp.escape(transcript.blast_seq_id)}.+\n([atcg]+\n)+\z/i
+      page.html.should match(transcript_fasta_regex)
+    end
+  end
+  
+  it "should provide a link to the fastas for the gene's transcripts" do
+    #Go to page and submit the query
+    visit 'query_analysis/query_transcript_isoforms'
+    find_button('submit_query').click
+    #Store the dataset id for later use
+    dataset_id = find('#query_transcript_isoforms_dataset_id').value
+    #Verify all the rows in the query results table by looping through them
+    all('#query_results_table tbody tr').each do |tr|
+      #Extract some variables to use below
+      tds = tr.all('td')
+      gene = Gene.where(:dataset_id => dataset_id,
+                        :name_from_program => tds[1].text)[0]
+      #Verify the gene's link looks correct
+      gene_href = URI.escape("get_gene_fastas?dataset_id=#{dataset_id}" +
+          "&gene_name=#{tds[1].text}")
+      tds[1].should have_link(tds[1].text, :href => gene_href)
+      #Verify the link goes to a page that at least looks kind of like the 
+      #    the fastas for the gene's transcripts
+      tds[1].find('a').click
+      transcript_fasta_scan_regex = 
+          />.+\n(?:[atcg]+\n)+/i
+      transcript_fastas = page.html.scan(transcript_fasta_scan_regex)
+      transcript_fastas.count.should eq(gene.transcripts.count)
+      (0..gene.transcripts.count-1).each do |i|
+        transcript = gene.transcripts[i]
+        transcript_fasta_regex = 
+          /\A>#{Regexp.escape(transcript.blast_seq_id)}.+\n([atcg]+\n)+\z/i
+        transcript_fastas[i].should match(transcript_fasta_regex)
+      end
+    end
   end
   
   #TODO
@@ -43,7 +141,7 @@ describe 'Query Transcript Isoforms page' do
   describe 'query filtering' do
     
     #MAYBE TODO:Put the requirements that this test satisfies here??
-    it 'should show everything when no filtering options are selected', :js => true do
+    it 'should show everything when no filtering options are selected' do
       #Go to page and submit the query
       visit 'query_analysis/query_transcript_isoforms'
       find_button('submit_query').click
@@ -64,19 +162,8 @@ describe 'Query Transcript Isoforms page' do
                                        :transcript_id => transcript.id)[0]
         #Verify the transcript name
         tds[0].text.should eq(transcript.name_from_program)
-        #Verify the transcript's link
-        transcript_href = URI.escape("get_transcript_fasta?" +
-                          "dataset_id=#{dataset_id}" +
-                          "&transcript_name=#{tds[0].text}")
-        tds[0].should have_link(tds[0].text, :href => transcript_href)
-        tds[0].find('a').click
         #Verify the gene name
         tds[1].text.should eq(transcript.gene.name_from_program)
-        #Verify the gene's link
-        gene_href = URI.escape("get_gene_fastas?dataset_id=#{dataset_id}" +
-                    "&gene_name=#{tds[1].text}")
-        tds[1].should have_link(tds[1].text, :href => gene_href)
-        tds[1].find('a').click
         #Verify the GO terms and their links for the transcript
         if transcript.go_terms.empty?
           tds[2].text.should eq('No GO ids found.')
@@ -86,19 +173,10 @@ describe 'Query Transcript Isoforms page' do
           (0..go_items.count-1).each do |i|
             #Extract some variables
             html_go_item = go_items[i].text
-            required_href = "http://amigo.geneontology.org/" +
-                            "cgi-bin/amigo/term_details?" +
-                            "term=#{transcript.go_terms[i].id}"
             #Verify the go term
-            html_go_item.scan(transcript.go_terms[i].term).should_not be_empty
+            html_go_item.should include(transcript.go_terms[i].term)
             #Verify the go id
-            html_go_item.scan(transcript.go_terms[i].id).should_not be_empty
-            #Verify the link
-            go_link = go_items[i].find('a')
-            go_link[:href].should eq(required_href)
-            go_link.click
-            debugger
-            puts 'x'
+            html_go_item.should include(transcript.go_terms[i].id)
           end
         end
         #Verify the class code
