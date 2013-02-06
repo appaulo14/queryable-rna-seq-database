@@ -29,11 +29,19 @@ describe 'Query Transcript Isoforms page' do
     (3..ths.count-1).each do |th_i|
       #Sort ascending
       ths[th_i].click
-      sorted_trs = trs.sort{|a,b| a.all('td')[th_i].text <=> b.all('td')[th_i].text}
+      #debugger
+      if (ths[th_i]['data-sort'] == 'string')
+        debugger
+        sorted_trs = trs.sort{|a,b| a.all('td')[th_i].text <=> b.all('td')[th_i].text}
+      elsif (ths[th_i]['data-sort'] == 'float')
+        sorted_trs = trs.sort{|a,b| a.all('td')[th_i].text.to_f <=> b.all('td')[th_i].text.to_f}
+      end
       html_trs = all('#query_results_table tbody tr')
+      html_trs.count.should eq(trs.count)
+      sorted_trs.count.should eq(trs.count)
       (0..sorted_trs.count-1).each do |tr_i|
         (3..sorted_trs[tr_i].all('td').count-1).each do |td_i|
-          #debugger
+          debugger if html_trs[tr_i].all('td')[td_i].text == "3701"
           html_trs[tr_i].all('td')[td_i].text.should eq(sorted_trs[tr_i].all('td')[td_i].text)
         end
       end
