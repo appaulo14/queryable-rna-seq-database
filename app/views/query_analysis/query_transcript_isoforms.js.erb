@@ -26,20 +26,34 @@ function set_up_reload_on_dataset_changed(){
 function set_table_table_sorting(){
   var query_results_table = $('#query_results_table').stupidtable();
   query_results_table.bind('aftertablesort', aftertablesort);
-  function aftertablesort(event, data) {
-    var th = $(this).find("th");
-    //Set all to neutral sort arrows first
-    th.find(".sort_arrow").remove();
-    th.append('<%= j neutral_sort_arrow %>');
-    //Use an up or down arrow to show the sorting column, depending on
-    //  whether it is sorted in ascending order or descending order
-    if (data.direction == 'asc'){
-      th.find('.sort_arrow').get(data.column).outerHTML = '';
-      th.get(data.column).innerHTML += '<%= j ascending_sort_arrow %>';
+}
+
+/*
+ *   Trigged callback to update the sort arrows after the 
+ *   stupid table gets sorted.
+ */
+function aftertablesort(event, data) {
+  //Loop through all the table headers
+  var ths = $(this).find("th");
+  for (var i = 0; i<ths.length;i++){
+    //Remove the old sort arrow
+    $(ths[i]).find(".sort_arrow").remove();
+    //If this is the sorted column, add an ascending or descending arrow
+    if (i == data.column){
+      //Add an ascending sort arrow if ascending
+      if (data.direction == 'asc'){
+        $(ths[i]).find(".sort_arrow").remove();
+        $(ths[i]).append('<%= j ascending_sort_arrow %>');
+      }
+      //Add a descending sort arrow if descending
+      else{
+        $(ths[i]).find(".sort_arrow").remove();
+        $(ths[i]).append('<%= j descending_sort_arrow %>');
+      }
     }
+    //If not the sorted column, add a neutral sort arrow
     else{
-      th.find('.sort_arrow').get(data.column).outerHTML = '';
-      th.get(data.column).innerHTML += '<%= j descending_sort_arrow %>';
+      $(ths[i]).append('<%= j neutral_sort_arrow %>');
     }
   }
 }
