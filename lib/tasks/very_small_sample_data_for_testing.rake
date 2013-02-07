@@ -50,7 +50,7 @@ def make_genes
   Dataset.all.each do |ds|
     gene_count = 0
     3.times do |n|
-      gene = Gene.create!(:name_from_program => "Gene_#{gene_count}",
+      gene = Gene.create!(:name_from_program => Faker::Name.name,
                           :dataset => ds)
       gene_count += 1
     end
@@ -109,7 +109,7 @@ def make_transcripts_and_blast_databases
     ds.genes.each do |gene|
       rand(1..3).times do |n|
         #Create the transcript name
-        transcript_name = "Transcript_#{transcript_count}"
+        transcript_name = Faker::Name.name
         #Create a random fasta description and sequence
         fasta_description = "#{transcript_name} gene=#{gene.name_from_program}"
         nucleotide_counts = {'a' => rand(40..100),

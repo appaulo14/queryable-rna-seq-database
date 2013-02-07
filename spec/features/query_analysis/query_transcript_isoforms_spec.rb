@@ -26,27 +26,40 @@ describe 'Query Transcript Isoforms page' do
     find_button('submit_query').click
     ths = all('#query_results_table thead tr th')
     trs = all('#query_results_table tbody tr')
-    (3..ths.count-1).each do |th_i|
+    (0..ths.count-1).each do |i|
+      next if i == 2
       #Sort ascending
-      ths[th_i].click
-      #debugger
-      if (ths[th_i]['data-sort'] == 'string')
-        debugger
-        sorted_trs = trs.sort{|a,b| a.all('td')[th_i].text <=> b.all('td')[th_i].text}
-      elsif (ths[th_i]['data-sort'] == 'float')
-        sorted_trs = trs.sort{|a,b| a.all('td')[th_i].text.to_f <=> b.all('td')[th_i].text.to_f}
-      end
-      html_trs = all('#query_results_table tbody tr')
-      html_trs.count.should eq(trs.count)
-      sorted_trs.count.should eq(trs.count)
-      (0..sorted_trs.count-1).each do |tr_i|
-        (3..sorted_trs[tr_i].all('td').count-1).each do |td_i|
-          debugger if html_trs[tr_i].all('td')[td_i].text == "3701"
-          html_trs[tr_i].all('td')[td_i].text.should eq(sorted_trs[tr_i].all('td')[td_i].text)
+      ths[i].click
+      #Verify the column is sorted in ascending order by checking that each 
+      #  cell in the column is greater than or equal to the cell in the 
+      #  row above it. 
+      previous_tr = nil
+      all('#query_results_table tbody tr').each do |tr|
+        if (not previous_tr.nil?)
+          if (ths[i]['data-sort'] == 'float')
+            tr.all('td')[i].text.to_d.should be >= previous_tr.all('td')[i].text.to_d
+          else
+            tr.all('td')[i].text.should be >= previous_tr.all('td')[i].text
+          end
         end
+        previous_tr = tr
       end
-#       #Sort descending
-#       ths[i].click
+      #Sort descending by clicking a second time
+      ths[i].click
+      #Verify the column is sorted in descending order by checking that each 
+      #  cell in the column is less than or equal to the cell in the 
+      #  row above it. 
+      previous_tr = nil
+      all('#query_results_table tbody tr').each do |tr|
+        if (not previous_tr.nil?)
+          if (ths[i]['data-sort'] == 'float')
+            tr.all('td')[i].text.to_d.should be <= previous_tr.all('td')[i].text.to_d
+          else
+            tr.all('td')[i].text.should be <= previous_tr.all('td')[i].text
+          end
+        end
+        previous_tr = tr
+      end
     end
   end
   
