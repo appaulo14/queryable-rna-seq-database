@@ -27,7 +27,8 @@ describe 'Query Transcript Isoforms page' do
     ths = all('#query_results_table thead tr th')
     trs = all('#query_results_table tbody tr')
     (0..ths.count-1).each do |i|
-      next if i == 2
+      #Skip non-sortable columns
+      next if ths[i]['data-sort'].nil?
       #Sort ascending
       ths[i].click
       #Verify the column is sorted in ascending order by checking that each 

@@ -36,6 +36,10 @@ function aftertablesort(event, data) {
   //Loop through all the table headers
   var ths = $(this).find("th");
   for (var i = 0; i<ths.length;i++){
+    //Skip this column if it is not marked as sortable
+    if ($(ths[i]).attr('data-sort') == undefined){
+      next;
+    }
     //Remove the old sort arrow
     $(ths[i]).find(".sort_arrow").remove();
     //If this is the sorted column, add an ascending or descending arrow
