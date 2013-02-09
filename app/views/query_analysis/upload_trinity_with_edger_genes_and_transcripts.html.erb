@@ -1,7 +1,7 @@
 <script src='upload_trinity_with_edger_genes_and_transcripts.js'
   type='text/javascript' ></script>
 <%= render 'shared/error_messages', :object => @upload_files %>
-<%= form_for( @upload_files,{:url => "upload_edgeR"} ) do |uf| %>
+<%= form_for( @upload_files,{:url => "upload_trinity_with_edger_genes_and_transcripts"} ) do |uf| %>
   <h2>
     Please upload your Trinity.fasta file
     <%= image_tag('question_mark.png', :id=>'trinity_fasta_tooltip') %>
@@ -15,10 +15,20 @@
     differential expression test file(s) (all_diff_expression_results.txt)
     <%= image_tag('question_mark.png', :id=>'differential_expression_tooltip')%>
   </h2>
-  <div>
-    <%= uf.label( :gene_differential_expression_file, 
-      "Gene differential expression file" ) %>
-    <%= uf.file_field( :gene_differential_expression_file ) %>
+  <div id="goat">
+    <%= #uf.label( :gene_differential_expression_file, 
+      #"Gene differential expression file" ) 
+      %>
+    <%= #uf.file_field( :gene_differential_expression_file ) 
+    %>
+    <%= file_field_tag('upload_trinity_with_edge_r_transcripts_and_genes[gene_differential_expression_file][]') %>
+    <button type="button" onclick="add_sample_upload();">I have more samples than this</button>
+    <script type="text/javascript">
+      function add_sample_upload(){
+          p = document.getElementById('goat');
+          p.innerHTML += '<%= file_field_tag("upload_trinity_with_edge_r_transcripts_and_genes[gene_differential_expression_file][]") %>';
+      }
+    </script>
   </div>
   <div>
     <%= uf.label( :transcript_differential_expression_file, 

@@ -8,8 +8,19 @@ namespace :db do
     Rake::Task['db:drop'].invoke
     Rake::Task['db:create'].invoke
     Rake::Task['db:migrate'].invoke
-    Rake::Task['db:test:prepare'].invoke
     #Generate the data
+    make_users #1
+    make_datasets #2
+    make_genes #500
+    make_transcripts_and_blast_databases
+    make_samples
+    make_sample_comparisons
+    make_fpkm_samples #1000
+    make_transcript_fpkm_tracking_information #1000
+    make_differential_expression_tests #2000
+    make_go_terms #1000
+    make_transcript_has_go_terms #1000
+    Rake::Task['db:test:prepare'].invoke
     make_users #1
     make_datasets #2
     make_genes #500
