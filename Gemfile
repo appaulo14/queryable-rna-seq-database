@@ -56,6 +56,7 @@ gem 'faker'
 #       Unfortunately, it doesn't have cascading updates from what I can ascertain.
 #gem 'foreigner'
 
+gem 'json', '1.7.7'
 
 # To use ActiveModel has_secure_password
 gem 'bcrypt-ruby', '~> 3.0.0'
