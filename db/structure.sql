@@ -35,8 +35,14 @@ SET default_with_oids = false;
 CREATE TABLE datasets (
     id bigint NOT NULL,
     name character varying(255) NOT NULL,
+    has_transcript_diff_exp boolean NOT NULL,
+    has_transcript_isoforms boolean NOT NULL,
+    has_gene_diff_exp boolean NOT NULL,
     blast_db_location character varying(255) NOT NULL,
-    user_id integer NOT NULL
+    user_id integer NOT NULL,
+    when_last_queried timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -166,79 +172,8 @@ ALTER SEQUENCE genes_id_seq OWNED BY genes.id;
 
 CREATE TABLE go_terms (
     id character varying(255) NOT NULL,
-    term character varying(255)
+    term character varying(255) NOT NULL
 );
-
-
---
--- Name: job2s; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE job2s (
-    id bigint NOT NULL,
-    eid_of_owner character varying(255),
-    current_program_display_name character varying(255),
-    workflow character varying(255),
-    current_step character varying(255),
-    next_step character varying(255),
-    number_of_samples integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: job2s_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE job2s_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: job2s_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE job2s_id_seq OWNED BY job2s.id;
-
-
---
--- Name: jobs; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE jobs (
-    id bigint NOT NULL,
-    current_job_status character varying(255),
-    current_program_status character varying(255),
-    user_id integer NOT NULL,
-    workflow_step_id integer,
-    output_files_type character varying(255),
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: jobs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE jobs_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: jobs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE jobs_id_seq OWNED BY jobs.id;
 
 
 --
@@ -258,7 +193,7 @@ CREATE TABLE sample_comparisons (
 CREATE TABLE samples (
     id bigint NOT NULL,
     name character varying(255),
-    dataset_id integer
+    dataset_id integer NOT NULL
 );
 
 
@@ -296,8 +231,8 @@ CREATE TABLE schema_migrations (
 
 CREATE TABLE transcript_fpkm_tracking_informations (
     transcript_id bigint NOT NULL,
-    class_code character varying(255),
-    length integer,
+    class_code character varying(255) NOT NULL,
+    length integer NOT NULL,
     coverage numeric
 );
 
@@ -360,6 +295,10 @@ CREATE TABLE users (
     last_sign_in_at timestamp without time zone,
     current_sign_in_ip character varying(255),
     last_sign_in_ip character varying(255),
+    name character varying(255) NOT NULL,
+    description text,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
     admin boolean
 );
 
@@ -409,20 +348,6 @@ ALTER TABLE ONLY fpkm_samples ALTER COLUMN id SET DEFAULT nextval('fpkm_samples_
 --
 
 ALTER TABLE ONLY genes ALTER COLUMN id SET DEFAULT nextval('genes_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY job2s ALTER COLUMN id SET DEFAULT nextval('job2s_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY jobs ALTER COLUMN id SET DEFAULT nextval('jobs_id_seq'::regclass);
 
 
 --
@@ -484,22 +409,6 @@ ALTER TABLE ONLY genes
 
 ALTER TABLE ONLY go_terms
     ADD CONSTRAINT go_terms_pkey PRIMARY KEY (id);
-
-
---
--- Name: job2s_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY job2s
-    ADD CONSTRAINT job2s_pkey PRIMARY KEY (id);
-
-
---
--- Name: jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY jobs
-    ADD CONSTRAINT jobs_pkey PRIMARY KEY (id);
 
 
 --
@@ -644,14 +553,6 @@ ALTER TABLE ONLY genes
 
 
 --
--- Name: jobs_users_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY jobs
-    ADD CONSTRAINT jobs_users_fk FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE RESTRICT;
-
-
---
 -- Name: transcript_fpkm_tracking_informations_transripts_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -679,6 +580,8 @@ ALTER TABLE ONLY transcripts
 -- PostgreSQL database dump complete
 --
 
+INSERT INTO schema_migrations (version) VALUES ('1');
+
 INSERT INTO schema_migrations (version) VALUES ('10');
 
 INSERT INTO schema_migrations (version) VALUES ('11');
@@ -686,12 +589,6 @@ INSERT INTO schema_migrations (version) VALUES ('11');
 INSERT INTO schema_migrations (version) VALUES ('12');
 
 INSERT INTO schema_migrations (version) VALUES ('13');
-
-INSERT INTO schema_migrations (version) VALUES ('15');
-
-INSERT INTO schema_migrations (version) VALUES ('16');
-
-INSERT INTO schema_migrations (version) VALUES ('17');
 
 INSERT INTO schema_migrations (version) VALUES ('2');
 

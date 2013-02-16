@@ -4,8 +4,6 @@
 #
 #  sample_1_id :integer          not null, primary key
 #  sample_2_id :integer          not null
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
 #
 
 class SampleComparison < ActiveRecord::Base

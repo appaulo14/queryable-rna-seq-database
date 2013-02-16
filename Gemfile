@@ -40,6 +40,8 @@ end
 group :development do
   gem 'rspec-rails', '>= 2.0.1'
   gem 'annotate'
+  gem 'railroady'
+  gem 'umlify'
 end
 
 group :test do
@@ -47,6 +49,8 @@ group :test do
   gem 'factory_girl_rails', '~> 4.0'
   gem 'capybara', '2.0.2'
   gem 'capybara-webkit'
+  gem 'railroady'
+  gem 'umlify'
   #gem 'poltergeist'
 end
 

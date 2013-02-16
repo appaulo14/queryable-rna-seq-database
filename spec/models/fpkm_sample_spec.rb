@@ -10,8 +10,6 @@
 #  fpkm_hi       :decimal(, )
 #  fpkm_lo       :decimal(, )
 #  status        :string(255)
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
 #
 
 # == Schema Information

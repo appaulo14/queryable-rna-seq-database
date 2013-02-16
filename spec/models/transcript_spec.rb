@@ -6,10 +6,7 @@
 #  dataset_id        :integer          not null
 #  gene_id           :integer
 #  name_from_program :string(255)      not null
-#  fasta_description :string(255)      not null
 #  blast_seq_id      :string(255)      not null
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
 #
 
 # == Schema Information

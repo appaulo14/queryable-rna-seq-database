@@ -1,5 +1,4 @@
 class QueryAnalysisController < ApplicationController
-    include Blast_Query
     require 'bio'
     require 'query_analysis/upload_trinity_with_edger_transcripts_and_genes.rb'
     require 'query_analysis/query_diff_exp_transcripts.rb'
@@ -24,20 +23,26 @@ class QueryAnalysisController < ApplicationController
     def welcome
     end
 
-    def upload_reference_cuffdiff
-    end
-
-    def upload_de_novo_cuffdiff
+#     def upload_reference_cuffdiff
+#     end
+# 
+#     def upload_de_novo_cuffdiff
+#     end
+    
+#     def ajax_test
+# #       @name = params[:name]
+# #       @goats = ['tom','dick','harry'] if @goats.nil?
+# #       if (request.post?)
+# #         @goats << params[:add_goat]
+# #       end
+#       render :json => Blastn_Query.new(current_user)
+#       #render :text => open('/media/sf_MSE_Project/Workshop_Of_Paul/BLAST/outputs/Query_1.png', "rb").read
+#     end
+    
+    def upload_cuffdiff
     end
     
-    def ajax_test
-#       @name = params[:name]
-#       @goats = ['tom','dick','harry'] if @goats.nil?
-#       if (request.post?)
-#         @goats << params[:add_goat]
-#       end
-      render :json => Blastn_Query.new(current_user)
-      #render :text => open('/media/sf_MSE_Project/Workshop_Of_Paul/BLAST/outputs/Query_1.png', "rb").read
+    def upload_trinity_with_edger_transcripts
     end
     
     def upload_trinity_with_edger_genes_and_transcripts
@@ -58,30 +63,30 @@ class QueryAnalysisController < ApplicationController
         end
     end
 
-    def upload_edgeR
-        if (request.get?)
-          @upload_edgeR = Upload_EdgeR.new
-        elsif (request.post?)
-          debugger if ENV['RAILS_DEBUG'] == 'true'
-          @upload_edgeR = Upload_EdgeR.new(params[:upload_edge_r])
-          if @upload_edgeR.valid?
-             @upload_edgeR.save!
-             flash[:success] = "Success"
-          else
-              flash[:success]="Failure"
-          end
-#           params.keys.each do |key|
-#               if params[key].kind_of? ActionDispatch::Http::UploadedFile
-#                   uploaded_file = params[key].tempfile
-#                   #file_to_write = Rails.root.join('tmp/file_uploads', uploaded_file.original_filename)
-#                   #File.open(file_to_write, 'wb') do |file|
-#                   #file.write(uploaded_file.read)
-#                   #TODO: Be sure to delete these files when finished
-#                   #end
-#               end
+#     def upload_edgeR
+#         if (request.get?)
+#           @upload_edgeR = Upload_EdgeR.new
+#         elsif (request.post?)
+#           debugger if ENV['RAILS_DEBUG'] == 'true'
+#           @upload_edgeR = Upload_EdgeR.new(params[:upload_edge_r])
+#           if @upload_edgeR.valid?
+#              @upload_edgeR.save!
+#              flash[:success] = "Success"
+#           else
+#               flash[:success]="Failure"
 #           end
-        end
-    end
+# #           params.keys.each do |key|
+# #               if params[key].kind_of? ActionDispatch::Http::UploadedFile
+# #                   uploaded_file = params[key].tempfile
+# #                   #file_to_write = Rails.root.join('tmp/file_uploads', uploaded_file.original_filename)
+# #                   #File.open(file_to_write, 'wb') do |file|
+# #                   #file.write(uploaded_file.read)
+# #                   #TODO: Be sure to delete these files when finished
+# #                   #end
+# #               end
+# #           end
+#         end
+#     end
 
     def query_diff_exp_transcripts
       #Create the view model, giving the current user
@@ -202,53 +207,53 @@ class QueryAnalysisController < ApplicationController
       end
     end
 
-    def query_gene_isoforms
-    end
+#     def query_gene_isoforms
+#     end
+# 
+#     def query_blast_db
+#     end
 
-    def query_blast_db
-    end
+#     def query_blast_db_2
+#         debugger if ENV['RAILS_DEBUG'] == "true"
+#         if request.get?
+#             @blast_query = Blast_Query::Base.new()
+#         elsif request.post?
+#             @blast_query = Blast_Query::Base.new(params[:blast_query])
+#             debugger if ENV['RAILS_DEBUG'] == "true"
+#             if @blast_query.valid?
+#                 flash[:success] = "Success"
+#             else
+#                 flash[:success]="Failure"
+#             end
+#         end
+#     end
 
-    def query_blast_db_2
-        debugger if ENV['RAILS_DEBUG'] == "true"
-        if request.get?
-            @blast_query = Blast_Query::Base.new()
-        elsif request.post?
-            @blast_query = Blast_Query::Base.new(params[:blast_query])
-            debugger if ENV['RAILS_DEBUG'] == "true"
-            if @blast_query.valid?
-                flash[:success] = "Success"
-            else
-                flash[:success]="Failure"
-            end
-        end
-    end
-
-    def blastn2
-      #TODO: ADD links in the results page for genes, and transcripts and the fastas of those?
-      #f = File.open('/media/sf_MSE_Project/Workshop_Of_Paul/BLAST/outputs/NM_000041.2_query.xml')
-      f = File.open('/media/sf_MSE_Project/Workshop_Of_Paul/BLAST/outputs/5_XML_Blast_output')
-      xml_string = ''
-      while not f.eof?
-        xml_string += f.readline
-      end
-      f.close()
-      @program = :blastn
-      @blast_report = Bio::Blast::Report.new(xml_string,'xmlparser')
-    end
-    
-    def blastn3
-      #TODO: ADD links in the results page for genes, and transcripts and the fastas of those?
-      f = File.open('/media/sf_MSE_Project/Workshop_Of_Paul/BLAST/outputs/NM_000041.2_query.xml')
-      #f = File.open('/media/sf_MSE_Project/Workshop_Of_Paul/BLAST/outputs/5_XML_Blast_output')
-      xml_string = ''
-      while not f.eof?
-        xml_string += f.readline
-      end
-      f.close()
-      @program = :blastn
-      @blast_report = Bio::Blast::Report.new(xml_string,'xmlparser')
-      render :file => 'query_analysis/blast_results'
-    end
+#     def blastn2
+#       #TODO: ADD links in the results page for genes, and transcripts and the fastas of those?
+#       #f = File.open('/media/sf_MSE_Project/Workshop_Of_Paul/BLAST/outputs/NM_000041.2_query.xml')
+#       f = File.open('/media/sf_MSE_Project/Workshop_Of_Paul/BLAST/outputs/5_XML_Blast_output')
+#       xml_string = ''
+#       while not f.eof?
+#         xml_string += f.readline
+#       end
+#       f.close()
+#       @program = :blastn
+#       @blast_report = Bio::Blast::Report.new(xml_string,'xmlparser')
+#     end
+#     
+#     def blastn3
+#       #TODO: ADD links in the results page for genes, and transcripts and the fastas of those?
+#       f = File.open('/media/sf_MSE_Project/Workshop_Of_Paul/BLAST/outputs/NM_000041.2_query.xml')
+#       #f = File.open('/media/sf_MSE_Project/Workshop_Of_Paul/BLAST/outputs/5_XML_Blast_output')
+#       xml_string = ''
+#       while not f.eof?
+#         xml_string += f.readline
+#       end
+#       f.close()
+#       @program = :blastn
+#       @blast_report = Bio::Blast::Report.new(xml_string,'xmlparser')
+#       render :file => 'query_analysis/blast_results'
+#     end
     
     def blastn
         if request.get?

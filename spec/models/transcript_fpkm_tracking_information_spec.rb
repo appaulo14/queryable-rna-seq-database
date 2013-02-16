@@ -6,8 +6,6 @@
 #  class_code    :string(255)
 #  length        :integer
 #  coverage      :decimal(, )
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
 #
 
 # == Schema Information

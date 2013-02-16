@@ -118,6 +118,7 @@ GEM
       rack
     rack-test (0.6.2)
       rack (>= 1.0)
+    railroady (1.1.0)
     rails (3.2.11)
       actionmailer (= 3.2.11)
       actionpack (= 3.2.11)
@@ -153,6 +154,8 @@ GEM
       rspec-core (~> 2.12.0)
       rspec-expectations (~> 2.12.0)
       rspec-mocks (~> 2.12.0)
+    ruby_parser (3.1.1)
+      sexp_processor (~> 4.1)
     rubyzip (0.9.9)
     sass (3.2.5)
     sass-rails (3.2.5)
@@ -164,6 +167,7 @@ GEM
       multi_json (~> 1.0)
       rubyzip
       websocket (~> 1.0.4)
+    sexp_processor (4.1.5)
     sprockets (2.2.2)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -178,6 +182,10 @@ GEM
     uglifier (1.3.0)
       execjs (>= 0.3.0)
       multi_json (~> 1.0, >= 1.0.2)
+    umlify (1.2.6)
+      activesupport
+      i18n
+      ruby_parser
     warden (1.2.1)
       rack (>= 1.0)
     websocket (1.0.7)
@@ -204,8 +212,10 @@ DEPENDENCIES
   json (= 1.7.7)
   mysql2
   pg
+  railroady
   rails (= 3.2.11)
   rspec (>= 2.0.1)
   rspec-rails (>= 2.0.1)
   sass-rails (~> 3.2.3)
   uglifier (>= 1.0.3)
+  umlify

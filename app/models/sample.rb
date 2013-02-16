@@ -5,8 +5,6 @@
 #  id         :integer          not null, primary key
 #  name       :string(255)
 #  dataset_id :integer
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
 #
 
 class Sample < ActiveRecord::Base

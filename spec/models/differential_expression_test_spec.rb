@@ -11,8 +11,6 @@
 #  log_fold_change  :decimal(, )      not null
 #  p_value          :decimal(, )      not null
 #  fdr              :decimal(, )      not null
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
 #
 
 # == Schema Information
