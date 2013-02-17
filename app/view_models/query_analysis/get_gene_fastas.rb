@@ -5,7 +5,6 @@ class Get_Gene_Fastas
   require 'open3'
   
   attr_accessor :dataset_id, :gene_name
-  attr_reader :fastas_string
   
   GENE_NAME_REGEX = /\A(\w|\s|\.)+\z/
   
@@ -16,8 +15,8 @@ class Get_Gene_Fastas
                         :format => { :with => GENE_NAME_REGEX }   
   validate :user_has_permission_to_access_dataset
   
-  def initialize(user)
-    @current_user = user
+  def initialize(current_user)
+    @current_user = current_user
   end
   
   def set_attributes(attributes = {})
@@ -25,15 +24,14 @@ class Get_Gene_Fastas
     @gene_name = attributes[:gene_name]
   end
   
-  def query!
+  def query
     #Get the transcripts from the parameters
     raise(ActiveRecord::RecordInvalid,self) if not self.valid?
     gene = Gene.where(:dataset_id => @dataset_id, 
                       :name_from_program => @gene_name)[0]
     #Create the fasta string from the gene's transcripts
-    @fastas_string = ''
     if gene.nil?
-      @fastas_string = 'No fasta sequences found.'
+      return 'No fasta sequences found.'
     else
       seq_ids = []
       gene.transcripts.each do |t|
@@ -44,10 +42,12 @@ class Get_Gene_Fastas
                      '-entry',"#{seq_ids.join(',')}", 
                      '-db',"#{gene.dataset.blast_db_location}", 
                      '-dbtype','nucl')
-      @fastas_string = stdout.gets(nil)
+      return stdout.gets(nil)
     end
   end
   
+  #Defines that this model does not persist in the database.
+  #     See http://railscasts.com/episodes/219-active-model?view=asciicast
   def persisted?
       return false
   end

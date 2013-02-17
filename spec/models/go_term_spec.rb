@@ -3,7 +3,7 @@
 # Table name: go_terms
 #
 #  id   :string(255)      not null, primary key
-#  term :string(255)
+#  term :string(255)      not null
 #
 
 # == Schema Information

@@ -4,7 +4,7 @@
 #
 #  id         :integer          not null, primary key
 #  name       :string(255)
-#  dataset_id :integer
+#  dataset_id :integer          not null
 #
 
 class Sample < ActiveRecord::Base

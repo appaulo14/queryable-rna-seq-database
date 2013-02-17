@@ -144,6 +144,7 @@ class Blastn_Query #< Blast_Query::Base
     end
     
     def blast!()
+      debugger
       #Don't query if it is not valid
       return if not self.valid?
       #Filter by low complexity and soft masking map to soft masking due to
@@ -198,6 +199,8 @@ class Blastn_Query #< Blast_Query::Base
       return blast_xml_output_file.path
     end
     
+    #Defines that this model does not persist in the database.
+    #     See http://railscasts.com/episodes/219-active-model?view=asciicast
     def persisted?
       return false
     end

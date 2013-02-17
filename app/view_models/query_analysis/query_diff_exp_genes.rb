@@ -4,7 +4,7 @@ class Query_Diff_Exp_Genes
   extend ActiveModel::Naming
   
   attr_accessor :dataset_id, :sample_comparison_id_pair,
-                :fdr_or_pvalue, :cutoff, :filter_by_go_names, :go_names,
+                :fdr_or_p_value, :cutoff, :filter_by_go_names, :go_names,
                 :filter_by_go_ids, :go_ids,  
                 :filter_by_gene_name, :gene_name 
   attr_reader   :names_and_ids_for_available_datasets, 
@@ -30,8 +30,8 @@ class Query_Diff_Exp_Genes
   validate :user_has_permission_to_access_dataset
   validate :sample_is_not_compared_against_itself
   
-  def initialize(user)
-    @current_user = user
+  def initialize(current_user)
+    @current_user = current_user
   end
   
   def set_attributes_and_defaults(attributes = {})
@@ -48,7 +48,7 @@ class Query_Diff_Exp_Genes
     end
     #Set default values for the relavent blank attributes
     @dataset_id = all_datasets_for_current_user.first.id if @dataset_id.blank?
-    @fdr_or_pvalue = 'p_value' if fdr_or_pvalue.blank?
+    @fdr_or_p_value = 'p_value' if fdr_or_p_value.blank?
     @cutoff = '0.05' if cutoff.blank?
     @filter_by_go_names = false if filter_by_go_names.blank?
     @filter_by_go_ids = false if filter_by_go_ids.blank?
@@ -130,6 +130,8 @@ class Query_Diff_Exp_Genes
     @show_results = true
   end
   
+  #Defines that this model does not persist in the database.
+  #     See http://railscasts.com/episodes/219-active-model?view=asciicast
   def persisted?
       return false
   end

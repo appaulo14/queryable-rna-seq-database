@@ -21,12 +21,12 @@
       %>
     <%= #uf.file_field( :gene_differential_expression_file ) 
     %>
-    <%= file_field_tag('upload_trinity_with_edge_r_transcripts_and_genes[gene_differential_expression_file][]') %>
+    <%= file_field_tag('upload_trinity_with_edge_r_transcripts_and_genes[gene_differential_expression_files][]') %>
     <button type="button" onclick="add_sample_upload();">I have more samples than this</button>
     <script type="text/javascript">
       function add_sample_upload(){
           p = document.getElementById('goat');
-          p.innerHTML += '<%= file_field_tag("upload_trinity_with_edge_r_transcripts_and_genes[gene_differential_expression_file][]") %>';
+          p.innerHTML += '<%= file_field_tag("upload_trinity_with_edge_r_transcripts_and_genes[gene_differential_expression_files][]") %>';
       }
     </script>
   </div>

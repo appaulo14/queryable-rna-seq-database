@@ -124,6 +124,8 @@ class Query_Diff_Exp_Transcripts
     @show_results = true
   end
   
+  #Defines that this model does not persist in the database.
+  #     See http://railscasts.com/episodes/219-active-model?view=asciicast
   def persisted?
       return false
   end

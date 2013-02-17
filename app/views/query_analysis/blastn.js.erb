@@ -39,7 +39,7 @@ function fasta_input_radio_button_changed(){
  */
 function match_and_mismatch_scores_selection_changed(){
   match_and_mismatch_scores = $('#blastn_query_match_and_mismatch_scores').val();
-  request_string = 'get_blastn_gap_costs_for_match_and_match_scores' +
+  request_string = 'get_blastn_gap_costs_for_match_and_mismatch_scores' +
                    '?match_and_mismatch_scores=' + match_and_mismatch_scores
   $.get(request_string, replace_gap_costs);
 }

@@ -4,8 +4,8 @@ class Upload_Trinity_With_EdgeR_Transcripts_And_Genes
   extend ActiveModel::Naming
   
   attr_accessor :trinity_fasta_file, 
-                :gene_differential_expression_file, #Array
-                :transcript_differential_expression_file, 
+                :gene_differential_expression_files, #Array
+                :transcript_differential_expression_files, 
                 :gene_fpkm_file, 
                 :transcript_fpkm_file
   
@@ -127,6 +127,8 @@ class Upload_Trinity_With_EdgeR_Transcripts_And_Genes
     File.delete(transcript_fpkm_file.tempfile.path)
   end
   
+  #Defines that this model does not persist in the database.
+  #     See http://railscasts.com/episodes/219-active-model?view=asciicast
   def persisted?
       return false
   end

@@ -112,14 +112,14 @@ class QueryAnalysisController < ApplicationController
       end
     end
     
-    def get_diff_exp_transcripts_file
-#       text = ''
-#       100_000.times do |n|
-#         text += "Good morning!\n"
-#       end
-#       render :text => text, :content_type => 'text/plain'
-      render :file => '/media/sf_MSE_Project/Workshop_Of_Paul/BLAST/outputs/searchio.html'
-    end
+#     def get_diff_exp_transcripts_file
+# #       text = ''
+# #       100_000.times do |n|
+# #         text += "Good morning!\n"
+# #       end
+# #       render :text => text, :content_type => 'text/plain'
+#       render :file => '/media/sf_MSE_Project/Workshop_Of_Paul/BLAST/outputs/searchio.html'
+#     end
     
     def get_transcript_fasta
       #Create/fill in the view model
@@ -127,8 +127,8 @@ class QueryAnalysisController < ApplicationController
       get_transcript_fasta.set_attributes(params)
       #Output based on whether the view model is valid
       if get_transcript_fasta.valid?
-        get_transcript_fasta.query!
-        render :text => get_transcript_fasta.fasta_string, 
+        
+        render :text => get_transcript_fasta.query, 
                :content_type => 'text/plain'
       else
         error_messages_string = "Error(s) found:\n"
@@ -146,8 +146,7 @@ class QueryAnalysisController < ApplicationController
       get_gene_fastas.set_attributes(params)
       #Output based on whether the view model is valid
       if get_gene_fastas.valid?
-        get_gene_fastas.query!
-        render :text => get_gene_fastas.fastas_string, 
+        render :text => get_gene_fastas.query, 
                :content_type => 'text/plain'
       else
         error_messages_string = "Error(s) found:\n"
@@ -256,37 +255,37 @@ class QueryAnalysisController < ApplicationController
 #     end
     
     def blastn
-        if request.get?
-            @blastn_query = Blastn_Query.new(current_user)
-            @blastn_query.set_attributes_and_defaults()
-        elsif request.post?
+      if request.get?
           @blastn_query = Blastn_Query.new(current_user)
-          @blastn_query.set_attributes_and_defaults(params[:blastn_query])
-          debugger if ENV['RAILS_DEBUG'] == "true"
-          if @blastn_query.valid?
-              flash[:success] = "Success"
-              #Run the blast query and get the file path of the result
-              blast_results_file_path = @blastn_query.blast!
-              #Parse the xml into Blast reports
-              f = File.open(blast_results_file_path)
-              xml_string = ''
-              while not f.eof?
-                xml_string += f.readline
-              end
-              f.close()
-              @program = :blastn
-              @blast_report = Bio::Blast::Report.new(xml_string,'xmlparser')
-              #Send the result to the user
-              render :file => 'query_analysis/blast_results'
-              #Delete the result file since it is no longer needed
-              #File.delete(blast_results_file_path)
-          else
-              flash[:success]="Failure"
-          end
+          @blastn_query.set_attributes_and_defaults()
+      elsif request.post?
+        @blastn_query = Blastn_Query.new(current_user)
+        @blastn_query.set_attributes_and_defaults(params[:blastn_query])
+        debugger if ENV['RAILS_DEBUG'] == "true"
+        if @blastn_query.valid?
+            flash[:success] = "Success"
+            #Run the blast query and get the file path of the result
+            blast_results_file_path = @blastn_query.blast!
+            #Parse the xml into Blast reports
+            f = File.open(blast_results_file_path)
+            xml_string = ''
+            while not f.eof?
+              xml_string += f.readline
+            end
+            f.close()
+            @program = :blastn
+            @blast_report = Bio::Blast::Report.new(xml_string,'xmlparser')
+            #Send the result to the user
+            render :file => 'query_analysis/blast_results'
+            #Delete the result file since it is no longer needed
+            #File.delete(blast_results_file_path)
+        else
+            flash[:success]="Failure"
         end
+      end
     end
     
-    def get_blastn_gap_costs_for_match_and_match_scores
+    def get_blastn_gap_costs_for_match_and_mismatch_scores
       #Calculate the new gap costs from the match and mismatch scores 
       @blastn_query = Blastn_Query.new(current_user)
       match_and_mismatch_scores = params[:match_and_mismatch_scores]

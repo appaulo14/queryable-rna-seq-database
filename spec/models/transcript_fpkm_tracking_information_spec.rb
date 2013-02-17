@@ -3,8 +3,8 @@
 # Table name: transcript_fpkm_tracking_informations
 #
 #  transcript_id :integer          not null, primary key
-#  class_code    :string(255)
-#  length        :integer
+#  class_code    :string(255)      not null
+#  length        :integer          not null
 #  coverage      :decimal(, )
 #
 
