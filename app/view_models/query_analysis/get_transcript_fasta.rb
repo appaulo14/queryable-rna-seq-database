@@ -44,8 +44,8 @@ class Get_Transcript_Fasta
     end
   end
   
-  #Defines that this model does not persist in the database.
-  #     See http://railscasts.com/episodes/219-active-model?view=asciicast
+  #Accoring http://railscasts.com/episodes/219-active-model?view=asciicast,
+  #     this defines that this model does not persist in the database.
   def persisted?
       return false
   end

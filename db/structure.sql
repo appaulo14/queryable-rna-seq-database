@@ -299,7 +299,7 @@ CREATE TABLE users (
     description text,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    admin boolean
+    admin boolean DEFAULT false NOT NULL
 );
 
 

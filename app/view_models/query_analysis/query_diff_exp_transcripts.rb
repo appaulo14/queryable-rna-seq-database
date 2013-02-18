@@ -77,6 +77,7 @@ class Query_Diff_Exp_Transcripts
       value = "#{scq.sample_1_id},#{scq.sample_2_id}"
       @available_sample_comparisons << [display_text, value]
     end
+    @sample_comparison_id_pair = @available_sample_comparisons[0][1]
     @show_results = false
   end
   
@@ -124,8 +125,8 @@ class Query_Diff_Exp_Transcripts
     @show_results = true
   end
   
-  #Defines that this model does not persist in the database.
-  #     See http://railscasts.com/episodes/219-active-model?view=asciicast
+  #Accoring http://railscasts.com/episodes/219-active-model?view=asciicast,
+  #     this defines that this model does not persist in the database.
   def persisted?
       return false
   end

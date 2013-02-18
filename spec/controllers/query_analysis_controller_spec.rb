@@ -1,68 +1,223 @@
 require 'spec_helper'
 
 describe QueryAnalysisController do
-
-  describe "GET 'upload_main_menu'" do
-    it "returns http success" do
+  
+  it 'should have the same routes as the ones in routes.rb' do
+    Rails.application.routes.routes.map do |route|
+      if route.defaults[:controller] == 'query_analysis'
+        get route.defaults[:action]
+      end
+    end
+  end
+  
+  describe 'GET requests for user not signed in' do
+    it "should redirect from 'upload_main_menu'" do
       get 'upload_main_menu'
-      response.should be_success
+      response.status.should eq(302)
     end
-  end
-
-  describe "GET 'upload_reference_cuffdiff'" do
-    it "returns http success" do
-      get 'upload_reference_cuffdiff'
-      response.should be_success
+    
+    it "should redirect from 'welcome'" do
+      get 'welcome'
+      response.status.should eq(302)
     end
-  end
-
-  describe "GET 'upload_de-novo_cuffdiff'" do
-    it "returns http success" do
-      get 'upload_de-novo_cuffdiff'
-      response.should be_success
+    
+    it "should redirect from 'upload_cuffdiff'" do
+      get 'upload_cuffdiff'
+      response.status.should eq(302)
     end
-  end
-
-  describe "GET 'upload_de-novo_edgeR'" do
-    it "returns http success" do
-      get 'upload_de-novo_edgeR'
-      response.should be_success
+    
+    it "should redirect from 'upload_trinity_with_edger_transcripts'" do
+      get 'upload_trinity_with_edger_transcripts'
+      response.status.should eq(302)
     end
-  end
-
-  describe "GET 'query_diff_exp_transcripts'" do
-    it "returns http success" do
+    
+    it "should redirect from 'upload_trinity_with_edger_transcripts_and_genes'" do
+      get 'upload_trinity_with_edger_transcripts_and_genes'
+      response.status.should eq(302)
+    end
+    
+    it "should redirect from 'query_diff_exp_transcripts'" do
       get 'query_diff_exp_transcripts'
-      response.should be_success
+      response.status.should eq(302)
     end
-  end
-
-  describe "GET 'query_diff_exp_genes'" do
-    it "returns http success" do
+    
+    it "should redirect from 'get_transcript_fasta'" do
+      get 'get_transcript_fasta'
+      response.status.should eq(302)
+    end
+    
+    it "should redirect from 'get_gene_fastas'" do
+      get 'get_gene_fastas'
+      response.status.should eq(302)
+    end
+    
+    it "should redirect from 'query_diff_exp_genes'" do
       get 'query_diff_exp_genes'
-      response.should be_success
+      response.status.should eq(302)
     end
-  end
-
-  describe "GET 'query_transcript_isoforms'" do
-    it "returns http success" do
+    
+    it "should redirect from 'query_transcript_isoforms'" do
       get 'query_transcript_isoforms'
-      response.should be_success
+      response.status.should eq(302)
+    end
+    
+    it "should redirect from 'blastn'" do
+      get 'blastn'
+      response.status.should eq(302)
+    end
+    
+    it "should redirect from 'get_blastn_gap_costs_for_match_and_mismatch_scores'" do
+      get 'get_blastn_gap_costs_for_match_and_mismatch_scores'
+      response.status.should eq(302)
+    end
+    
+    it "should redirect from 'tblastn'" do
+      get 'tblastn'
+      response.status.should eq(302)
+    end
+    
+    it "should redirect from 'get_tblastn_gap_costs_for_matrix'" do
+      get 'get_tblastn_gap_costs_for_matrix'
+      response.status.should eq(302)
+    end
+    
+    it "should redirect from 'tblastx'" do
+      get 'tblastx'
+      response.status.should eq(302)
     end
   end
-
-  describe "GET 'query_gene_isoforms'" do
-    it "returns http success" do
-      get 'query_gene_isoforms'
-      response.should be_success
+  
+  describe 'when user signed in' do 
+    before (:each) do
+      @user = User.first
+      sign_in @user
+    end
+      
+    describe 'GET request' do
+      it "should succeed for 'upload_main_menu'" do
+        get 'upload_main_menu'
+        response.should be_success
+      end
+      
+      it "should succeed for 'welcome'" do
+        get 'welcome'
+        response.should be_success
+      end
+      
+      it "should succeed for 'upload_cuffdiff'" do
+        get 'upload_cuffdiff'
+        response.should be_success
+      end
+      
+      it "should succeed for 'upload_trinity_with_edger_transcripts'" do
+        get 'upload_trinity_with_edger_transcripts'
+        response.should be_success
+      end
+      
+      it "should succeed for 'upload_trinity_with_edger_transcripts_and_genes'" do
+        get 'upload_trinity_with_edger_transcripts_and_genes'
+        response.should be_success
+      end
+      
+      it "should succeed for 'query_diff_exp_transcripts'" do
+        get 'query_diff_exp_transcripts'
+        response.should be_success
+      end
+      
+      it "should succeed for 'get_transcript_fasta'" do
+        get 'get_transcript_fasta'
+        response.should be_success
+      end
+      
+      it "should succeed for 'get_gene_fastas'" do
+        get 'get_gene_fastas'
+        response.should be_success
+      end
+      
+      it "should succeed for 'query_diff_exp_genes'" do
+        get 'query_diff_exp_genes'
+        response.should be_success
+      end
+      
+      it "should succeed for 'query_transcript_isoforms'" do
+        get 'query_transcript_isoforms'
+        response.should be_success
+      end
+      
+      it "should succeed for 'blastn'" do
+        get 'blastn'
+        response.should be_success
+      end
+      
+      it "should succeed for 'get_blastn_gap_costs_for_match_and_mismatch_scores'" do
+        get 'get_blastn_gap_costs_for_match_and_mismatch_scores'
+        response.should be_success
+      end
+      
+      it "should succeed for 'tblastn'" do
+        get 'tblastn'
+        response.should be_success
+      end
+      
+      it "should succeed for 'get_tblastn_gap_costs_for_matrix'" do
+        get 'get_tblastn_gap_costs_for_matrix'
+        response.should be_success
+      end
+      
+      it "should succeed for 'tblastx'" do
+        get 'tblastx'
+        response.should be_success
+      end
+    end
+    
+    describe 'POST request' do
+      it "should succeed for 'upload_cuffdiff'" do
+        post 'upload_cuffdiff', 
+           :upload_cuffdiff => {} 
+        response.should be_success
+      end
+      
+      it "should succeed for 'upload_trinity_with_edger_transcripts'" do
+        post 'upload_trinity_with_edger_transcripts', 
+            :upload_trinity_with_edger_transcripts => {}
+        response.should be_success
+      end
+      
+      it "should succeed for 'upload_trinity_with_edger_transcripts_and_genes'" do
+        post 'upload_trinity_with_edger_transcripts_and_genes',
+            :upload_trinity_with_edger_transcripts_and_genes => {}
+        response.should be_success
+      end
+      
+      it "should succeed for 'query_diff_exp_transcripts'" do
+        post 'query_diff_exp_transcripts', :query_diff_exp_transcripts => {}
+        response.should be_success
+      end
+      
+      it "should succeed for 'query_diff_exp_genes'" do
+        post 'query_diff_exp_genes', :query_diff_exp_genes => {}
+        response.should be_success
+      end
+      
+      it "should succeed for 'query_transcript_isoforms'" do
+        post 'query_transcript_isoforms', :query_transcript_isoforms => {}
+        response.should be_success
+      end
+      
+      it "should succeed for 'blastn'" do
+        post 'blastn', :blastn_query => {}
+        response.should be_success
+      end
+      
+      it "should succeed for 'tblastn'" do
+        post 'tblastn', :tblastn_query => {}
+        response.should be_success
+      end
+      
+      it "should succeed for 'tblastx'" do
+        post 'tblastx', :tblastx_query => {}
+        response.should be_success
+      end
     end
   end
-
-  describe "GET 'query_blast_db'" do
-    it "returns http success" do
-      get 'query_blast_db'
-      response.should be_success
-    end
-  end
-
 end

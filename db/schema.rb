@@ -11,57 +11,99 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121007023055) do
+ActiveRecord::Schema.define(:version => 13) do
 
-  create_table "job_statuses", :id => false, :force => true do |t|
-    t.string   "name",        :null => false
-    t.string   "description", :null => false
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+  create_table "datasets", :force => true do |t|
+    t.string   "name",                    :null => false
+    t.boolean  "has_transcript_diff_exp", :null => false
+    t.boolean  "has_transcript_isoforms", :null => false
+    t.boolean  "has_gene_diff_exp",       :null => false
+    t.string   "blast_db_location",       :null => false
+    t.integer  "user_id",                 :null => false
+    t.datetime "when_last_queried"
+    t.datetime "created_at",              :null => false
+    t.datetime "updated_at",              :null => false
   end
 
-  create_table "jobs", :force => true do |t|
-    t.string   "job_status",             :null => false
-    t.string   "current_program_status", :null => false
-    t.string   "eid_of_owner",           :null => false
-    t.integer  "workflow_steps_id",      :null => false
-    t.datetime "created_at",             :null => false
-    t.datetime "updated_at",             :null => false
+  create_table "differential_expression_tests", :force => true do |t|
+    t.integer "fpkm_sample_1_id", :limit => 8, :null => false
+    t.integer "fpkm_sample_2_id", :limit => 8, :null => false
+    t.integer "gene_id",          :limit => 8
+    t.integer "transcript_id",    :limit => 8
+    t.string  "test_status",                   :null => false
+    t.decimal "log_fold_change",               :null => false
+    t.decimal "p_value",                       :null => false
+    t.decimal "fdr",                           :null => false
   end
 
-  create_table "program_statuses", :id => false, :force => true do |t|
-    t.string   "name",        :null => false
-    t.string   "description", :null => false
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+  create_table "fpkm_samples", :force => true do |t|
+    t.integer "gene_id",       :limit => 8
+    t.integer "transcript_id", :limit => 8
+    t.integer "sample_id",     :limit => 8, :null => false
+    t.decimal "fpkm",                       :null => false
+    t.decimal "fpkm_hi"
+    t.decimal "fpkm_lo"
+    t.string  "status"
   end
 
-  create_table "programs", :id => false, :force => true do |t|
-    t.string   "internal_name", :null => false
-    t.string   "display_name"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+  create_table "genes", :force => true do |t|
+    t.integer "dataset_id",        :limit => 8, :null => false
+    t.string  "name_from_program",              :null => false
   end
 
-  create_table "users", :id => false, :force => true do |t|
-    t.string   "eid",        :null => false
-    t.string   "email",      :null => false
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+  create_table "go_terms", :id => false, :force => true do |t|
+    t.string "id",   :null => false
+    t.string "term", :null => false
   end
 
-  create_table "workflow_steps", :force => true do |t|
-    t.integer  "workflow_id"
-    t.string   "program_internal_name"
-    t.integer  "step"
-    t.datetime "created_at",            :null => false
-    t.datetime "updated_at",            :null => false
+  create_table "sample_comparisons", :id => false, :force => true do |t|
+    t.integer "sample_1_id", :null => false
+    t.integer "sample_2_id", :null => false
   end
 
-  create_table "workflows", :force => true do |t|
-    t.string   "display_name"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+  create_table "samples", :force => true do |t|
+    t.string  "name"
+    t.integer "dataset_id", :null => false
   end
+
+  create_table "transcript_fpkm_tracking_informations", :id => false, :force => true do |t|
+    t.integer "transcript_id", :limit => 8, :null => false
+    t.string  "class_code",                 :null => false
+    t.integer "length",                     :null => false
+    t.decimal "coverage"
+  end
+
+  create_table "transcript_has_go_terms", :id => false, :force => true do |t|
+    t.integer "transcript_id", :null => false
+    t.string  "go_term_id",    :null => false
+  end
+
+  create_table "transcripts", :force => true do |t|
+    t.integer "dataset_id",        :limit => 8, :null => false
+    t.integer "gene_id",           :limit => 8
+    t.string  "name_from_program",              :null => false
+    t.string  "blast_seq_id",                   :null => false
+  end
+
+  create_table "users", :force => true do |t|
+    t.string   "email",                  :default => "", :null => false
+    t.string   "encrypted_password",     :default => "", :null => false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          :default => 0
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.string   "name",                                   :null => false
+    t.text     "description"
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
+    t.boolean  "admin"
+  end
+
+  add_index "users", ["email"], :name => "index_users_on_email", :unique => true
+  add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
 end

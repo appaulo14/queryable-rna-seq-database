@@ -96,6 +96,7 @@ class Blastn_Query #< Blast_Query::Base
     
     #TODO: Add validation 
     validate :user_has_permission_to_access_dataset
+    validate :fasta_file_uploaded_when_fasta_file_selected
     
     def initialize(current_user)
       #Set the current user
@@ -144,7 +145,6 @@ class Blastn_Query #< Blast_Query::Base
     end
     
     def blast!()
-      debugger
       #Don't query if it is not valid
       return if not self.valid?
       #Filter by low complexity and soft masking map to soft masking due to
@@ -199,13 +199,23 @@ class Blastn_Query #< Blast_Query::Base
       return blast_xml_output_file.path
     end
     
-    #Defines that this model does not persist in the database.
-    #     See http://railscasts.com/episodes/219-active-model?view=asciicast
+    #Accoring http://railscasts.com/episodes/219-active-model?view=asciicast,
+    #     this defines that this model does not persist in the database.
     def persisted?
       return false
     end
     
     private
     def user_has_permission_to_access_dataset
+    end
+    
+    def fasta_file_uploaded_when_fasta_file_selected
+      if @use_fasta_sequence_or_file == 'use_fasta_sequence'
+        return
+      else
+        if @fasta_file.nil?
+          errors[:fasta_file] << 'Error'
+        end
+      end
     end
 end

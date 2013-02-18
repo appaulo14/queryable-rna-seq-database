@@ -78,6 +78,7 @@ class Query_Transcript_Isoforms
     ds.samples.each do |sample|
       @available_samples << [sample.name, sample.id]
     end
+    @sample_id = @available_samples[0][1]
     @show_results = false
   end
   
@@ -127,8 +128,8 @@ class Query_Transcript_Isoforms
     @show_results = true
   end
   
-  #Defines that this model does not persist in the database.
-  #     See http://railscasts.com/episodes/219-active-model?view=asciicast
+  #Accoring http://railscasts.com/episodes/219-active-model?view=asciicast,
+  #     this defines that this model does not persist in the database.
   def persisted?
       return false
   end

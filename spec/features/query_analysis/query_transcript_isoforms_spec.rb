@@ -11,6 +11,8 @@ describe 'Query Transcript Isoforms page' do
   
   it 'should redirect users who are not signed in to the home page'
   
+  it 'should have all its static links not be broken'
+  
   it 'should only display datasets which belong to the user and ' +
      'have transript isoform data'
   

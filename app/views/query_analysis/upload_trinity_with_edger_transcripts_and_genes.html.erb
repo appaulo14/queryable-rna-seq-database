@@ -1,0 +1,103 @@
+<script src='upload_trinity_with_edger_transcripts_and_genes.js'
+  type='text/javascript' ></script>
+<%= render 'shared/error_messages', :object => @upload_files %>
+<%= form_for( @upload_files,{:url => "upload_trinity_with_edger_transcripts_and_genes"} ) do |uf| %>
+  <h2>
+    Please upload your Trinity.fasta file
+    <%= image_tag('question_mark.png', :id=>'trinity_fasta_tooltip') %>
+  </h2>
+  <div>
+    <%= uf.label( :trinity_fasta_file, "Trinity.fasta file" ) %>
+    <%= uf.file_field :trinity_fasta_file %>
+  </div>
+  
+  <h2>Please upload your Transcript and Gene 
+    differential expression test file(s) (all_diff_expression_results.txt)
+    <%= image_tag('question_mark.png', :id=>'differential_expression_tooltip')%>
+  </h2>
+  <div id="goat">
+    <%= #uf.label( :gene_differential_expression_file, 
+      #"Gene differential expression file" ) 
+      %>
+    <%= #uf.file_field( :gene_differential_expression_file ) 
+    %>
+    <%= file_field_tag('upload_trinity_with_edge_r_transcripts_and_genes[gene_differential_expression_files][]') %>
+    <button type="button" onclick="add_sample_upload();">I have more samples than this</button>
+    <script type="text/javascript">
+      function add_sample_upload(){
+          p = document.getElementById('goat');
+          p.innerHTML += '<%= file_field_tag("upload_trinity_with_edge_r_transcripts_and_genes[gene_differential_expression_files][]") %>';
+      }
+    </script>
+  </div>
+  <div>
+    <%= uf.label( :transcript_differential_expression_file, 
+      "Transcript differential expression file" ) %>
+    <%= uf.file_field( :transcript_differential_expression_file ) %>
+  </div>
+  
+  <h2>
+    Please upload your Transcript and Gene fpkm tracking file.
+    <%= image_tag('question_mark.png', :id=>'fpkm_tooltip') %>
+  </h2>
+  <div>
+    <%= uf.label( :gene_fpkm_file, 
+      "Gene FPKM file" ) %>
+    <%= uf.file_field( :gene_fpkm_file ) %>
+  </div>
+  <div>
+    <%= uf.label( :transcript_fpkm_file, 
+      "Transcript FPKM file" ) %>
+    <%= uf.file_field( :transcript_fpkm_file ) %>
+  </div>
+  <p><%= submit_tag("Upload files") %></p>
+<% end %>
+<!--<script type="text/javascript">
+$(document).ready(function()
+{
+        $('#goat')
+                /*
+                 * Lets delete the qTip data from our target element so we can apply multiple tooltips.
+                 * Since the data is also stored on the tooltip element itself this isn't a problem!
+                 * 
+                 * Check here for more details on this: http://craigsworks.com/projects/qtip2/tutorials/advanced/#multi
+                 */
+                .removeData('qtip') 
+                .qtip({
+                        content: {
+                                text: "Hello World <a href=\"#\">goat</a>", 
+                                title: {
+                                        text: "Hello\nWorld!",
+                                        button: true
+                                }
+                        },
+                        position: {
+                                my: 'left center', // Use the corner...
+                                at: 'right center' // ...and opposite corner
+                        },
+                        show: {
+                                event: 'click', // Don't specify a show event...
+                                ready: false // ... but show the tooltip when ready
+                        },
+                        hide: false, // Don't specify a hide event either!
+                        style: {
+                                classes: 'qtip-shadow qtip-' + 'red'
+                        }
+                });
+});
+</script>-->
+<!--<script type="text/javascript">
+    function add_sample_fasta_upload(){
+        p = document.getElementById("sample_fasta_uploads");
+        var i = 1;
+        for (i = 1; i < 100; ++i){
+            var uploader = document.getElementById("sample_fasta"+i);
+            if (! uploader){
+                break;
+            }
+        }
+        p.innerHTML += '<label for="sample_fasta' + i + '_Sample ' + i + ' fasta">Sample ' + i + ' fasta</label>';
+        p.innerHTML += '<input id="sample_fasta' + i + '" name="sample_fasta' + i +'" type="file" /><br/>';
+    }
+</script>-->
+

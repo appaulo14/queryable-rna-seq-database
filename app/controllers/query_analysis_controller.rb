@@ -21,6 +21,7 @@ class QueryAnalysisController < ApplicationController
     end
 
     def welcome
+      #flash[:notice] = "Success"
     end
 
 #     def upload_reference_cuffdiff
@@ -45,13 +46,11 @@ class QueryAnalysisController < ApplicationController
     def upload_trinity_with_edger_transcripts
     end
     
-    def upload_trinity_with_edger_genes_and_transcripts
+    def upload_trinity_with_edger_transcripts_and_genes
       if (request.get?)
           @upload_files = Upload_Trinity_With_EdgeR_Transcripts_And_Genes.new()
         elsif (request.post?)
-          @upload_edgeR = Upload_Trinity_With_EdgeR_Transcripts_And_Genes.new(params[:upload_trinity_with_edge_r_transcripts_and_genes])
-          debugger
-          puts 'x'
+          @upload_edgeR = Upload_Trinity_With_EdgeR_Transcripts_And_Genes.new(params[:upload_trinity_with_edger_transcripts_and_genes])
 #           debugger if ENV['RAILS_DEBUG'] == 'true'
 #           @upload_edgeR = Upload_EdgeR.new(params[:upload_edge_r])
 #           if @upload_edgeR.valid?
