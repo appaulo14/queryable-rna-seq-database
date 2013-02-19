@@ -3,43 +3,43 @@ require 'spec_helper'
 describe Upload_Trinity_With_EdgeR_Transcripts_And_Genes do
   describe "read the files and writing the data to the database" do
     before(:each) do
-      #Change to the directory of this spec
-      Dir.chdir("#{Rails.root}/spec/view_models/query_analysis")
-      #Make copies of the test files
-      FileUtils.copy('Trinity.fasta','trinity_fasta_file')
-      FileUtils.copy('all_gene_diff_expression_results.txt','gene_det_file')
-      FileUtils.copy('all_transcript_diff_expression_results.txt',
-                    'transcript_det_file')
-      FileUtils.copy('genes.matrix.TMM_normalized.FPKM',
-                    'gene_fpkm_file')
-      FileUtils.copy('transcripts.matrix.TMM_normalized.FPKM',
-                    'transcript_fpkm_file')
-      #Open the test files
-      trintiy_fasta_file = File.new('trinity_fasta_file','r')
-      gene_det_file = File.new('gene_det_file','r')
-      transcript_det_file = File.new('transcript_det_file','r')
-      gene_fpkm_file = File.new('gene_fpkm_file','r')
-      transcript_fpkm_file = 
-        File.new('transcript_fpkm_file','r')
-      #Create the uploaded file objects
-      uploaded_trinity_fasta_file = 
-        ActionDispatch::Http::UploadedFile.new({:tempfile => trintiy_fasta_file})
-      uploaded_gene_det_file = 
-        ActionDispatch::Http::UploadedFile.new({:tempfile => gene_det_file})
-      uploaded_transcript_det_file = 
-        ActionDispatch::Http::UploadedFile.new({:tempfile => transcript_det_file})
-      uploaded_gene_fpkm_file = 
-        ActionDispatch::Http::UploadedFile.new({:tempfile => gene_fpkm_file})
-      uploaded_transcript_fpkm_file = 
-        ActionDispatch::Http::UploadedFile.new(
-          {:tempfile=>transcript_fpkm_file}
-        )
-      @it = Upload_Trinity_With_EdgeR_Transcripts_And_Genes.new()
-      @it.trinity_fasta_file = uploaded_trinity_fasta_file
-      @it.gene_differential_expression_file = uploaded_gene_det_file 
-      @it.transcript_differential_expression_file = uploaded_transcript_det_file
-      @it.gene_fpkm_file = uploaded_gene_fpkm_file
-      @it.transcript_fpkm_file = uploaded_transcript_fpkm_file
+#       #Change to the directory of this spec
+#       Dir.chdir("#{Rails.root}/spec/view_models/query_analysis")
+#       #Make copies of the test files
+#       FileUtils.copy('Trinity.fasta','trinity_fasta_file')
+#       FileUtils.copy('all_gene_diff_expression_results.txt','gene_det_file')
+#       FileUtils.copy('all_transcript_diff_expression_results.txt',
+#                     'transcript_det_file')
+#       FileUtils.copy('genes.matrix.TMM_normalized.FPKM',
+#                     'gene_fpkm_file')
+#       FileUtils.copy('transcripts.matrix.TMM_normalized.FPKM',
+#                     'transcript_fpkm_file')
+#       #Open the test files
+#       trintiy_fasta_file = File.new('trinity_fasta_file','r')
+#       gene_det_file = File.new('gene_det_file','r')
+#       transcript_det_file = File.new('transcript_det_file','r')
+#       gene_fpkm_file = File.new('gene_fpkm_file','r')
+#       transcript_fpkm_file = 
+#         File.new('transcript_fpkm_file','r')
+#       #Create the uploaded file objects
+#       uploaded_trinity_fasta_file = 
+#         ActionDispatch::Http::UploadedFile.new({:tempfile => trintiy_fasta_file})
+#       uploaded_gene_det_file = 
+#         ActionDispatch::Http::UploadedFile.new({:tempfile => gene_det_file})
+#       uploaded_transcript_det_file = 
+#         ActionDispatch::Http::UploadedFile.new({:tempfile => transcript_det_file})
+#       uploaded_gene_fpkm_file = 
+#         ActionDispatch::Http::UploadedFile.new({:tempfile => gene_fpkm_file})
+#       uploaded_transcript_fpkm_file = 
+#         ActionDispatch::Http::UploadedFile.new(
+#           {:tempfile=>transcript_fpkm_file}
+#         )
+#       @it = Upload_Trinity_With_EdgeR_Transcripts_And_Genes.new()
+#       @it.trinity_fasta_file = uploaded_trinity_fasta_file
+#       @it.gene_differential_expression_file = uploaded_gene_det_file 
+#       @it.transcript_differential_expression_file = uploaded_transcript_det_file
+#       @it.gene_fpkm_file = uploaded_gene_fpkm_file
+#       @it.transcript_fpkm_file = uploaded_transcript_fpkm_file
     end
     
 #     it 'should save without generating any errors' do

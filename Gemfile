@@ -49,8 +49,8 @@ group :test do
   gem 'factory_girl_rails', '~> 4.0'
   gem 'capybara', '2.0.2'
   gem 'capybara-webkit'
-  gem 'railroady'
-  gem 'umlify'
+#   gem 'railroady'
+#   gem 'umlify'
   #gem 'poltergeist'
 end
 
@@ -77,5 +77,5 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 # To use debugger
 gem 'debugger'
 
-gem 'devise'
+gem 'devise', '2.2.2'
 

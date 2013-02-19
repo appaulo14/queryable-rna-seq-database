@@ -11,4 +11,5 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require qtip/jquery.qtip
+//= require jquery_ujs
 //= require_tree .

@@ -3,7 +3,7 @@
 # Table name: sample_comparisons
 #
 #  sample_1_id :integer          not null, primary key
-#  sample_2_id :integer          not null
+#  sample_2_id :integer          not null, primary key
 #
 
 class SampleComparison < ActiveRecord::Base

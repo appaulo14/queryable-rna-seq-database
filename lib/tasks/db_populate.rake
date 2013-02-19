@@ -12,7 +12,7 @@ end
 def make_users
   print 'Small Populating users...'
   @user = User.new(:email => 'nietz111@ksu.edu')
-  @user.name = Faker::Name.name
+  #@user.name = Faker::Name.name
   @user.password = 'cis895'
   @user.password_confirmation = 'cis895'
   @user.save!

@@ -5,34 +5,8 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
 
   get "admin/delete_datasets_from_database"
 
-  devise_for :users
-
-  ##############################################################################
-  ##   Configure routes for reference_novel_isoforms_only_workflow controller ##     
-  ##############################################################################
-  get  'reference_novel_isoforms_only_workflow/tophat_configure'
-  post 'reference_novel_isoforms_only_workflow/tophat_configure'
-
-  get 'reference_novel_isoforms_only_workflow/tophat_success'
-
-  get  'reference_novel_isoforms_only_workflow/cufflinks_configure'
-  post 'reference_novel_isoforms_only_workflow/cufflinks_configure'
-
-  get 'reference_novel_isoforms_only_workflow/cufflinks_success'
-
-  get  'reference_novel_isoforms_only_workflow/cuffcompare_configure'
-  post 'reference_novel_isoforms_only_workflow/cuffcompare_configure'
-
-  get 'reference_novel_isoforms_only_workflow/cuffcompare_success'
-
-  get 'reference_novel_isoforms_only_workflow/in_progress'
-  
-  get 'reference_novel_isoforms_only_workflow/job_success'
-  
-  get  'reference_novel_isoforms_only_workflow/express'
-  post 'reference_novel_isoforms_only_workflow/express'
-  
-  match 'reference_novel_isoforms_only_workflow', :to => 'reference_novel_isoforms_only_workflow#express'
+  devise_for :users, :controllers => { :sessions => "user" }
+      #:controllers => { :sessions => "devise/sessions" }
 
   ###########################################################################
   ##########          Configur routes for home controller     ###############
