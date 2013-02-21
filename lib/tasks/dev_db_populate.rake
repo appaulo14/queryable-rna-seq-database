@@ -8,6 +8,7 @@ namespace :db do
     task :populate => :environment do
       #Generate the data
       make_users #1
+      make_unconfirmed_users(10)
       make_datasets('dev') #2
       make_genes #500
       make_transcripts_and_blast_databases('dev')

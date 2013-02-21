@@ -12,5 +12,7 @@
       <tr><td>Email Address</td><%= @user.email %></td></tr>
       <tr><td>Why they want to use the system</td><%= @user.description %></td></tr>
     </table>
+    <div><%= link_to('Go to confirm user page','/admin/confirm_user') %></div>
+    <div><%= link_to('Go to delete user page','/admin/delete_user') %></div>
   </body>
 </html>
