@@ -13,6 +13,21 @@
 #  fdr              :decimal(, )      not null
 #
 
+# == Schema Information
+#
+# Table name: differential_expression_tests
+#
+#  id               :integer          not null, primary key
+#  fpkm_sample_1_id :integer          not null
+#  fpkm_sample_2_id :integer          not null
+#  gene_id          :integer
+#  transcript_id    :integer
+#  test_status      :string(255)      not null
+#  log_fold_change  :decimal(, )      not null
+#  p_value          :decimal(, )      not null
+#  fdr              :decimal(, )      not null
+#
+
 class DifferentialExpressionTest < ActiveRecord::Base
   attr_accessible  :log_fold_change, :p_value, :fdr, :fpkm_sample_1, 
                    :fpkm_sample_2, :test_status, :transcript, :gene

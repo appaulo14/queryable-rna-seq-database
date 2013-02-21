@@ -5,7 +5,7 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
 
   get "admin/delete_datasets_from_database"
 
-  devise_for :users, :controllers => { :sessions => "user" }
+  devise_for :users, :controllers => {:registrations => 'registrations'}#{ :sessions => "user" }
       #:controllers => { :sessions => "devise/sessions" }
 
   ###########################################################################

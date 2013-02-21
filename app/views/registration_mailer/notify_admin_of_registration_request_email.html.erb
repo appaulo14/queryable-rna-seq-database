@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>New User Registration Request Received</title>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>New User Registration Request Received for user: <%= @user.name %></h1>
+    <table>
+      <tr><td>Id</td><%= @user.id %></td></tr>
+      <tr><td>Name</td><%= @user.name %></td></tr>
+      <tr><td>Email Address</td><%= @user.email %></td></tr>
+      <tr><td>Why they want to use the system</td><%= @user.description %></td></tr>
+    </table>
+  </body>
+</html>

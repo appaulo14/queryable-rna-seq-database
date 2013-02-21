@@ -12,6 +12,20 @@
 #  status        :string(255)
 #
 
+# == Schema Information
+#
+# Table name: fpkm_samples
+#
+#  id            :integer          not null, primary key
+#  gene_id       :integer
+#  transcript_id :integer
+#  sample_id     :integer          not null
+#  fpkm          :decimal(, )      not null
+#  fpkm_hi       :decimal(, )
+#  fpkm_lo       :decimal(, )
+#  status        :string(255)
+#
+
 class FpkmSample < ActiveRecord::Base
   attr_accessible :gene, :transcript, :fpkm, :fpkm_hi, :fpkm_lo, :status, 
                   :sample

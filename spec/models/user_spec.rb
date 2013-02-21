@@ -13,11 +13,17 @@
 #  last_sign_in_at        :datetime
 #  current_sign_in_ip     :string(255)
 #  last_sign_in_ip        :string(255)
-#  name                   :string(255)      not null
-#  description            :text
+#  confirmation_token     :string(255)
+#  confirmed_at           :datetime
+#  confirmation_sent_at   :datetime
+#  unconfirmed_email      :string(255)
+#  failed_attempts        :integer          default(0)
+#  unlock_token           :string(255)
+#  locked_at              :datetime
+#  authentication_token   :string(255)
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
-#  admin                  :boolean
+#  admin                  :boolean          default(FALSE), not null
 #
 
 # == Schema Information

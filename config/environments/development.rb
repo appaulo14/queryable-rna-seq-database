@@ -41,16 +41,20 @@ RnaSeqAnalysisPipeline::Application.configure do
 #   config.action_mailer.perform_deliveries    = true
 #   config.action_mailer.raise_delivery_errors = true
 #   config.action_mailer.default_url_options = { :host => '0.0.0.0:3000' }
+  
   config.action_mailer.delivery_method = :smtp
-
   config.action_mailer.smtp_settings = {
     :enable_starttls_auto => true,
     :address => "smtp.gmail.com",
     :port => 587,
     :domain => "gmail.com",
     :authentication => :login,
-    :user_name => "fat.perl.hacker@gmail.com",
-    :password => "",
+    :user_name => ADMIN_CONFIG['email'],
+    :password => ADMIN_CONFIG['password'],
   }
-  config.action_mailer.default_url_options = {:protocol => 'https',:host => '0.0.0.0:3000' }
+  config.action_mailer.perform_deliveries    = true
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.default_url_options = {:protocol => 'https',
+                                              :host => '0.0.0.0:3000',
+                                              :from => ADMIN_CONFIG['email']}
 end

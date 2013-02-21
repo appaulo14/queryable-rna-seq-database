@@ -303,6 +303,8 @@ CREATE TABLE users (
     unlock_token character varying(255),
     locked_at timestamp without time zone,
     authentication_token character varying(255),
+    name character varying(255) NOT NULL,
+    description text NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     admin boolean DEFAULT false NOT NULL

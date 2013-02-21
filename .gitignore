@@ -32,8 +32,8 @@
 .DS_Store
 
 #Ignore database config files
-database.yml
-database.yml~
+*.yml
+*.yml~
 
 cert
 cert/*
