@@ -11,17 +11,25 @@ class RegistrationsController < Devise::RegistrationsController
   # POST /resource
   def create
     build_resource
-
+    #Mark the user as confirmed already so that a confirmation email 
+    #   won't be automatically sent when the user is saved
+    resource.skip_confirmation!
     if resource.save
-      if resource.active_for_authentication?
-        set_flash_message :notice, :signed_up if is_navigational_format?
-        sign_up(resource_name, resource)
-        respond_with resource, :location => after_sign_up_path_for(resource)
-      else
+      #Mark the user as unconfirmed so that they can't log in
+      #The admin will manually trigger the confirmation email later
+      resource.confirmed_at = nil
+      resource.save!
+      #Notify the admin that about the registration request
+      RegistrationMailer.notify_admin_of_registration_request_email(resource).deliver
+#       if resource.active_for_authentication?
+#         set_flash_message :notice, :signed_up if is_navigational_format?
+#         sign_up(resource_name, resource)
+#         respond_with resource, :location => after_sign_up_path_for(resource)
+#       else
         set_flash_message :notice, :"signed_up_but_#{resource.inactive_message}" if is_navigational_format?
         expire_session_data_after_sign_in!
         respond_with resource, :location => after_inactive_sign_up_path_for(resource)
-      end
+#       end
     else
       clean_up_passwords resource
       respond_with resource

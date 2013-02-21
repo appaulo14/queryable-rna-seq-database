@@ -302,7 +302,6 @@ CREATE TABLE users (
     failed_attempts integer DEFAULT 0,
     unlock_token character varying(255),
     locked_at timestamp without time zone,
-    authentication_token character varying(255),
     name character varying(255) NOT NULL,
     description text NOT NULL,
     created_at timestamp without time zone NOT NULL,
@@ -465,13 +464,6 @@ ALTER TABLE ONLY transcripts
 
 ALTER TABLE ONLY users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
-
-
---
--- Name: index_users_on_authentication_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX index_users_on_authentication_token ON users USING btree (authentication_token);
 
 
 --
