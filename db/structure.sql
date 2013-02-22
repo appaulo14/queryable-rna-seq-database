@@ -226,6 +226,38 @@ CREATE TABLE schema_migrations (
 
 
 --
+-- Name: simple_captcha_data; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE simple_captcha_data (
+    id integer NOT NULL,
+    key character varying(40),
+    value character varying(6),
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: simple_captcha_data_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE simple_captcha_data_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: simple_captcha_data_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE simple_captcha_data_id_seq OWNED BY simple_captcha_data.id;
+
+
+--
 -- Name: transcript_fpkm_tracking_informations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -368,6 +400,13 @@ ALTER TABLE ONLY samples ALTER COLUMN id SET DEFAULT nextval('samples_id_seq'::r
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY simple_captcha_data ALTER COLUMN id SET DEFAULT nextval('simple_captcha_data_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY transcripts ALTER COLUMN id SET DEFAULT nextval('transcripts_id_seq'::regclass);
 
 
@@ -435,6 +474,14 @@ ALTER TABLE ONLY samples
 
 
 --
+-- Name: simple_captcha_data_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY simple_captcha_data
+    ADD CONSTRAINT simple_captcha_data_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: transcript_fpkm_tracking_informations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -464,6 +511,13 @@ ALTER TABLE ONLY transcripts
 
 ALTER TABLE ONLY users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: idx_key; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX idx_key ON simple_captcha_data USING btree (key);
 
 
 --
@@ -612,6 +666,8 @@ INSERT INTO schema_migrations (version) VALUES ('12');
 INSERT INTO schema_migrations (version) VALUES ('13');
 
 INSERT INTO schema_migrations (version) VALUES ('2');
+
+INSERT INTO schema_migrations (version) VALUES ('20130222151032');
 
 INSERT INTO schema_migrations (version) VALUES ('3');
 

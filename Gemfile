@@ -56,6 +56,8 @@ end
 
 gem 'faker'
 
+gem "galetahub-simple_captcha", :require => "simple_captcha"
+
 #For foreigner key constraints. 
 #       Unfortunately, it doesn't have cascading updates from what I can ascertain.
 #gem 'foreigner'

@@ -18,6 +18,8 @@
   <div><%= f.label :description, 'Brief Description of Why You Would Like to Use the System' %><br />
   <%= f.text_area :description, :size => '80x10' %></div>
 
+  <%= show_simple_captcha %>
+  
   <div><%= f.submit "Sign up", :disable_with => 'Submitting' %></div>
 <% end %>
 
