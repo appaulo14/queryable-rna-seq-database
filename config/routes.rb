@@ -2,15 +2,23 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
   ###########################################################################
   ##########          Configure routes for home controller     ###############
   ###########################################################################
-  get "admin/view_user_information"
+  get 'admin/view_user_information'
 
-  get "admin/add_new_user_to_system"
+  get 'admin/add_new_user_to_system'
 
-  get "admin/delete_datasets_from_database"
+  get 'admin/delete_datasets_from_database'
   
-  get "admin/view_unconfirmed_users"
+  get 'admin/view_unconfirmed_users'
   
-  get "admin/confirm_or_delete_user"
+  get  'admin/confirm_user'
+  post 'admin/confirm_user'
+  
+  get  'admin/delete_unconfirmed_user'
+  post 'admin/delete_unconfirmed_user'
+  
+  get 'admin/welcome'
+  
+  match 'admin', :to => 'admin#welcome'
 
   devise_for :users, :controllers => {:registrations => 'registrations'}#{ :sessions => "user" }
       #:controllers => { :sessions => "devise/sessions" }

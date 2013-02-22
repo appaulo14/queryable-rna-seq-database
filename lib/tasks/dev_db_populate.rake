@@ -7,7 +7,7 @@ namespace :db do
     desc "Fill database with sample data"
     task :populate => :environment do
       #Generate the data
-      make_users #1
+      make_admin_user #1
       make_unconfirmed_users(10)
       make_datasets('dev') #2
       make_genes #500

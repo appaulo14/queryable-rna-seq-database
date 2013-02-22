@@ -9,7 +9,7 @@ namespace :db do
       Rake::Task['db:test:prepare'].invoke
       #ActiveRecord::Base.establish_connection('test')
       #Generate the data
-      make_users #1
+      make_admin_user #1
       make_unconfirmed_users(10)
       make_datasets('test') #2
       make_genes #500

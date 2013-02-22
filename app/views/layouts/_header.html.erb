@@ -46,6 +46,16 @@
             <li><%= link_to 'TBLASTX', '/query_analysis/tblastx' %></li>
           </ul>
         </li>
+        <% if current_user.admin? %>
+          <li><%= link_to 'Admin', 
+                          '/admin' %>
+            <ul  class='drop-down-menu'>
+              <li><%= link_to 'View Unconfirmed Users', '/admin/view_unconfirmed_users' %></li>
+              <li><%= link_to 'View Confirmed Users', '/admin/view_user_information' %></li>
+              <li><%= link_to 'Delete Datasets', '/admin/delete_datasets_from_database' %></li>
+            </ul>
+          </li>
+        <% end %>
         <li>
           <%= link_to('Edit registration', edit_user_registration_path) %>
         </li>

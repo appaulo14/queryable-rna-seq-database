@@ -7,12 +7,18 @@
   <body>
     <h1>New User Registration Request Received for user: <%= @user.name %></h1>
     <table>
-      <tr><td>Id</td><%= @user.id %></td></tr>
-      <tr><td>Name</td><%= @user.name %></td></tr>
-      <tr><td>Email Address</td><%= @user.email %></td></tr>
-      <tr><td>Why they want to use the system</td><%= @user.description %></td></tr>
+      <tr><td>Id</td><td><%= @user.id %></td></tr>
+      <tr><td>Name</td><td><%= @user.name %></td></tr>
+      <tr><td>Email Address</td><td><%= @user.email %></td></tr>
+      <tr><td>Why they want to use the system</td><td><%= @user.description %></td></tr>
     </table>
-    <div><%= link_to('Go to confirm user page','/admin/confirm_user') %></div>
-    <div><%= link_to('Go to delete user page','/admin/delete_user') %></div>
+    <div>
+      <%= link_to('Go to confirm user page',
+                  "#{@base_url}/admin/confirm_user?user_id=#{@user.id}") %>
+    </div>
+    <div>
+      <%= link_to('Go to delete user page',
+                  "#{@base_url}/admin/delete_unconfirmed_user?user_id=#{@user.id}") %>
+    </div>
   </body>
 </html>

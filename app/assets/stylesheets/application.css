@@ -23,6 +23,11 @@
     height: 75px;
 }
 
+.alert{
+  font-weight:bold;
+  color:red;
+}
+
 body {
   background: rgb(155,86,211);
 }

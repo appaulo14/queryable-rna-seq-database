@@ -9,13 +9,14 @@ namespace :db do
   end
 end
 
-def make_users
+def make_admin_user
   print 'Small Populating users...'
   @user = User.new(:email => 'nietz111@ksu.edu')
   @user.name = Faker::Name.name
   @user.description = Faker::Lorem.paragraph
   @user.password = 'cis895'
   @user.password_confirmation = 'cis895'
+  @user.admin = true
   @user.skip_confirmation!
   @user.save!
   puts 'Done'
@@ -24,14 +25,15 @@ end
 def make_unconfirmed_users(number_of_users)
   print 'Making unconfirmed users.'
   (1..number_of_users).each do |n|
-    @user = User.new(:email => Faker::Internet.email)
-    @user.name = Faker::Name.name
-    @user.description = Faker::Lorem.paragraph
-    @user.password = 'cis895'
-    @user.password_confirmation = 'cis895'
-    @user.save!
-    @user.confirmed_at = nil
-    @user.save!
+    user = User.new(:email => Faker::Internet.email)
+    user.name = Faker::Name.name
+    user.description = Faker::Lorem.paragraph
+    user.password = 'cis895'
+    user.password_confirmation = 'cis895'
+    user.skip_confirmation!
+    user.save!
+    user.confirmed_at = nil
+    user.save!
   end
   puts 'Done'
 end

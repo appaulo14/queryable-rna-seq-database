@@ -6,20 +6,22 @@
   </head>
   <body>
     <h1>Unconfirmed Users</h1>
-    <table>
+    <table style="margin-left:auto;margin-right:auto">
       <thead>
         <tr>
-          <th>Name</th><th>Email</th><th>Confirm or Delete</th>
+          <th>Name</th><th>Email</th><th>Confirm</th><th>Delete</th>
         </tr>
       </thead>
       <tbody>
         <% @unconfirmed_users.each do |user| %>
           <tr>
             <td><%= user.name %></td><td><%= user.email %></td>
-            <td><%= link_to('Go to Confirm or Delete Page For User',"confirm_or_delete_user?user_id=#{user.id}") %></td>
+            <td><%= link_to('Confirm User',"/admin/confirm_user?user_id=#{user.id}") %></td>
+            <td><%= link_to('Delete User',"/admin/delete_user?user_id=#{user.id}") %></td>
           </tr>
         <% end %>
       </tbody>
     </table>
+    </p>
   </body>
 </html>

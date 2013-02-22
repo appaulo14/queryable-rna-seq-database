@@ -1,16 +1,16 @@
-<html>
-  <head>
-    <title>Confirm or Delete User <%= @user.id %> (<%= @user.name %>)</title>
-    <meta content="">
-    <style></style>
-  </head>
-  <body>
-    <h1>Confirm or Delete User <%= @user.id %> (<%= @user.name %>)</h1>
-    <div id="confirm_user" class="sub-section rounded-corners">
-      Confirm User
-    </div>
-    <div id="delete_user" class="sub-section rounded-corners">
-      Delete User
-    </div>
-  </body>
-</html>
+<%= render 'shared/error_messages', :object => @confirm_user %>
+<%= form_for(@confirm_user, :url => 'confirm_user') do |cu| %>
+  <h1>Confirm User <%= @user.id %> (<%= @user.name %>)</h1>
+  <table>
+    <tr><td>Id</td><td><%= @user.id %></td></tr>
+    <tr><td>Name</td><td><%= @user.name %></td></tr>
+    <tr><td>Email Address</td><td><%= @user.email %></td></tr>
+    <tr><td>Why they want to use the system</td><td><%= @user.description %></td></tr>
+  </table>
+  <%= cu.hidden_field :user_id, :value => @user.id %>
+  <p>
+    <%= cu.label :optional_note_to_user, 'Optional Note to User' %><br/>
+    <%= cu.text_area :optional_note_to_user, :size => '80x10' %>
+  </p>
+  <p><%= submit_tag('Send confirmation email', :disable_with => "Sending...") %></p>
+<% end %>

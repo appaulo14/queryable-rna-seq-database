@@ -1,0 +1,20 @@
+<html>
+  <head>
+    <title>Your Account Has Been Dissaproved For Using the Queryable RNA-Seq Database</title>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+    <style></style>
+  </head>
+  <body>
+    <p>Hello <%= @user.name %>,</p>
+    
+    <p>
+      Your account has been dissaproved for using the 
+      Queryable RNA-Seq Database. 
+    </p>
+  
+    <% if not @optional_note_to_user.nil? %>
+      <h3>Additional Note</h3>
+      <p><%= @optional_note_to_user %></p>
+    <% end %>
+  </body>
+</html>
