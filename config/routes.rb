@@ -20,7 +20,7 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
   
   match 'admin', :to => 'admin#welcome'
 
-  devise_for :users, :controllers => {:registrations => 'registrations'}#{ :sessions => "user" }
+  devise_for :users, :controllers => {:registrations => 'registrations' } #, :sessions => "user"
       #:controllers => { :sessions => "devise/sessions" }
 
   ###########################################################################

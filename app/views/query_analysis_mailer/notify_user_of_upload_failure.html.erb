@@ -8,12 +8,13 @@
     <p>Hello <%= @user.name %>,</p>
     
     <p>
-     An error occured and your dataset could not be uploaded. 
-     Please try again. If problems persist, please contact the 
+     An error occured and your dataset named "<%= @dataset.name %>" 
+     could not be uploaded. 
+     Please try again. If problems persist, contact the 
      administrator.
     </p>
     
-    <h3>Addtional Error Information</h3>
+    <h3>Error Information</h3>
     <p><%= @error_message %></p>
   </body>
 </html>

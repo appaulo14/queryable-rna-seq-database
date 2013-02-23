@@ -22,6 +22,8 @@ describe 'Query Transcript Isoforms page' do
   
   it 'should do something when no datasets are available'
   
+  it 'should have some type of notification if flash is not installed'
+  
   #TODO
   it 'should have all the columns in the query results table be sortable', 
      :js => true do

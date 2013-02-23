@@ -30,7 +30,7 @@ gem 'jquery-rails', '2.1.3'
 
 gem 'heroku'
 
-gem 'activerecord-tableless', '>= 1.0.1'
+#gem 'activerecord-tableless', '>= 1.0.1'
 
 group :bioinformatics do
     gem 'bio', '1.4.2'
@@ -40,8 +40,8 @@ end
 group :development do
   gem 'rspec-rails', '>= 2.0.1'
   gem 'annotate'
-  gem 'railroady'
-  gem 'umlify'
+  #gem 'railroady'
+  #gem 'umlify'
 end
 
 group :test do

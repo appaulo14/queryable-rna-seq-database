@@ -27,6 +27,7 @@ class Upload_Trinity_With_EdgeR_Transcripts_And_Genes
       env = 'dev'
       n = Dataset.count + 1
       name = "Dataset_#{n}"
+      de_tests_count = 100
       ds = Dataset.create!(:user => @current_user, 
                       :name => name,
                       #The Blast database will actually be created later
@@ -34,23 +35,24 @@ class Upload_Trinity_With_EdgeR_Transcripts_And_Genes
                       :has_transcript_diff_exp => true,
                       :has_transcript_isoforms => true,
                       :has_gene_diff_exp       => true)
-      Query_Analysis_Mailer.notify_user_of_upload_success(@current_user, ds)
+      Query_Analysis_Mailer.notify_user_of_upload_success(@current_user,
+                                                          ds,
+                                                          de_tests_count)
       sleep 10
       begin
         raise Exception, "This is a raised exception"
-      rescue => ex
+      rescue Exception => ex
         error_message = 'Insert error message here'
-        de_tests_count = 100
         Query_Analysis_Mailer.notify_user_of_upload_failure(@current_user,
                                                             ds,
-                                                            error_message,
-                                                            de_tests_count)
+                                                            error_message)
       end
 #           if (Process.ppid == 1)
 #               logger.warn "Parent process is missing. exiting..."
 #               exit
 #           end
       exit
+    end
     Process.detach(child_pid)
   end
   

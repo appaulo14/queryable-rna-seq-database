@@ -40,6 +40,14 @@ describe Upload_Trinity_With_EdgeR_Transcripts_And_Genes do
 #       @it.transcript_differential_expression_file = uploaded_transcript_det_file
 #       @it.gene_fpkm_file = uploaded_gene_fpkm_file
 #       @it.transcript_fpkm_file = uploaded_transcript_fpkm_file
+      sign_in_as_nietz111
+    end
+    
+    it "This tests RSpec's ability to upload files", :js => true do
+      visit 'query_analysis/upload_trinity_with_edger_transcripts_and_genes'
+      attach_file('upload_trinity_with_edge_r_transcripts_and_genes_trinity_fasta_file',
+                  '/home/pawl/Ruby_Workshop/rails_projects/queryable_rna_seq_database/webrat.log')
+      find_button('upload_files').click
     end
     
 #     it 'should save without generating any errors' do

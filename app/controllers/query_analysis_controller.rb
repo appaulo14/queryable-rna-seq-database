@@ -48,9 +48,12 @@ class QueryAnalysisController < ApplicationController
     
     def upload_trinity_with_edger_transcripts_and_genes
       if (request.get?)
-          @upload_files = Upload_Trinity_With_EdgeR_Transcripts_And_Genes.new()
+          @upload_files = Upload_Trinity_With_EdgeR_Transcripts_And_Genes.new(current_user)
+          @upload_files.set_attributes_and_defaults({})
         elsif (request.post?)
-          @upload_edgeR = Upload_Trinity_With_EdgeR_Transcripts_And_Genes.new(params[:upload_trinity_with_edger_transcripts_and_genes])
+          @upload_files = Upload_Trinity_With_EdgeR_Transcripts_And_Genes.new(current_user)
+          @upload_files.set_attributes_and_defaults()
+          @upload_files.save!
 #           debugger if ENV['RAILS_DEBUG'] == 'true'
 #           @upload_edgeR = Upload_EdgeR.new(params[:upload_edge_r])
 #           if @upload_edgeR.valid?
