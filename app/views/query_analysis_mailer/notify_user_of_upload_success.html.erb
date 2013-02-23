@@ -1,0 +1,22 @@
+<html>
+  <head>
+    <title>You Have Been Approved to User the Queryable RNA-Seq Database</title>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+    <style></style>
+  </head>
+  <body>
+    <p>Hello <%= @user.name %>,</p>
+    
+    <p>
+      You have been approved to use the Queryable RNA-Seq Database. 
+      A confirmation email should be arriving shortly to give you access 
+      to the system. If it does 
+      not arrive within the next few hours feel free to notify me.
+    </p>
+    
+    <% if not @optional_note_to_user.nil? %>
+      <h3>Additional Note</h3>
+      <p><%= @optional_note_to_user %></p>
+    <% end %>
+  </body>
+</html>

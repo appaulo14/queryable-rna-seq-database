@@ -1,4 +1,4 @@
- class RegistrationMailer < ActionMailer::Base
+class RegistrationMailer < ActionMailer::Base
    
   #default :from => "from@example.com"
    def notify_admin_of_registration_request_email(user)

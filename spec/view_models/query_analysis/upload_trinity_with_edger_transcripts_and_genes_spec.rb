@@ -42,6 +42,8 @@ describe Upload_Trinity_With_EdgeR_Transcripts_And_Genes do
       @it.transcript_fpkm_file = uploaded_transcript_fpkm_file
     end
     
+    it 'should be transactional, writing either all the data or none at all'
+    
 #     it 'should save without generating any errors' do
 #       @it.save!
 #     end
