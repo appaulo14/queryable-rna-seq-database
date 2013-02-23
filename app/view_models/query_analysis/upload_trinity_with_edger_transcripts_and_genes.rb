@@ -34,9 +34,18 @@ class Upload_Trinity_With_EdgeR_Transcripts_And_Genes
                       :has_transcript_diff_exp => true,
                       :has_transcript_isoforms => true,
                       :has_gene_diff_exp       => true)
-      sleep 10
       Query_Analysis_Mailer.notify_user_of_upload_success(@current_user, ds)
-      Query_Analysis_Mailer.notify_user_of_upload_failure(@current_user, ds)
+      sleep 10
+      begin
+        raise Exception, "This is a raised exception"
+      rescue => ex
+        error_message = 'Insert error message here'
+        de_tests_count = 100
+        Query_Analysis_Mailer.notify_user_of_upload_failure(@current_user,
+                                                            ds,
+                                                            error_message,
+                                                            de_tests_count)
+      end
 #           if (Process.ppid == 1)
 #               logger.warn "Parent process is missing. exiting..."
 #               exit

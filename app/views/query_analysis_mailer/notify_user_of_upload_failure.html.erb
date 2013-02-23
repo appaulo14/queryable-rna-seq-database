@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>You Have Been Approved to User the Queryable RNA-Seq Database</title>
+    <title>Your Data Upload Was Unsuccessfuly</title>
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
     <style></style>
   </head>
@@ -8,15 +8,12 @@
     <p>Hello <%= @user.name %>,</p>
     
     <p>
-      You have been approved to use the Queryable RNA-Seq Database. 
-      A confirmation email should be arriving shortly to give you access 
-      to the system. If it does 
-      not arrive within the next few hours feel free to notify me.
+     An error occured and your dataset could not be uploaded. 
+     Please try again. If problems persist, please contact the 
+     administrator.
     </p>
     
-    <% if not @optional_note_to_user.nil? %>
-      <h3>Additional Note</h3>
-      <p><%= @optional_note_to_user %></p>
-    <% end %>
+    <h3>Addtional Error Information</h3>
+    <p><%= @error_message %></p>
   </body>
 </html>
