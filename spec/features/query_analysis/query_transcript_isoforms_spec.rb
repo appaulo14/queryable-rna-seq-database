@@ -3,15 +3,21 @@ require 'spec_helper'
 
 describe 'Query Transcript Isoforms page' do
   
+  before (:all) do
+  end
+  
   before(:each) do
     #user = FactoryGirl.create(:user)
     #sign_in(user)
     sign_in_as_nietz111
   end
   
+  #???: Is this needed here? Should this only be in a controller test???
   it 'should redirect users who are not signed in to the home page'
   
   it 'should have all its static links not be broken'
+  
+  it 'should have all the correct columns in its results table'
   
   it 'should only display datasets which belong to the user and ' +
      'have transript isoform data'

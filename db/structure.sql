@@ -620,6 +620,22 @@ ALTER TABLE ONLY fpkm_samples
 
 
 --
+-- Name: ftranscript_has_go_terms_go_terms_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY transcript_has_go_terms
+    ADD CONSTRAINT ftranscript_has_go_terms_go_terms_fk FOREIGN KEY (go_term_id) REFERENCES go_terms(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: ftranscript_has_go_terms_transcripts_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY transcript_has_go_terms
+    ADD CONSTRAINT ftranscript_has_go_terms_transcripts_fk FOREIGN KEY (transcript_id) REFERENCES transcripts(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
 -- Name: genes_datasets_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 

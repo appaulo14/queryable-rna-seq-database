@@ -5,6 +5,16 @@ FactoryGirl.define do
       password_confirmation     'cis895'
     end
     
+    factory :go_term do
+      id                        'GO:0000026'
+      term                      'alpha-1,2-mannosyltransferase activity'
+    end
+    
+    factory :transcript_has_go_term do
+      transcript
+      go_term_id                'GO:0000026'
+    end
+    
 #     factory :differential_expression_test do
 #         sample1          'Sample 1 Name'
 #         sample2          'Sample 2 Name'
@@ -43,13 +53,13 @@ FactoryGirl.define do
 #         differential_expression_test
 #     end
 #     
-#     factory :transcript do
-#         name_from_program        'TCONS_00001'
-#         fasta_sequence           'ATKMBVCNSWD-GUYRHatkmbvcnswd-guyrh'
-#         gene
-#         job                     {gene.job}                 
-#         differential_expression_test
-#     end
+    #TODO: Fix me
+    factory :transcript do
+        id                       1
+        name_from_program        'TCONS_00001'
+        dataset_id               1
+        blast_seq_id            'fsfsd'
+    end
 #     
 #     factory :invalid_transcript, class: Transcript do
 #         name_from_program        nil
