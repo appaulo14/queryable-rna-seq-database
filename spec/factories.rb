@@ -1,8 +1,11 @@
 FactoryGirl.define do
     factory :user do
+      name                      'Paul Cain'
       email                     'nietz111@ksu.edu'
       password                  'cis895'
       password_confirmation     'cis895'
+      description               'Random description'
+      confirmed_at              {Time.now}
     end
     
     factory :go_term do
@@ -11,8 +14,8 @@ FactoryGirl.define do
     end
     
     factory :transcript_has_go_term do
-      transcript
-      go_term_id                'GO:0000026'
+      transcript                #{build(:transcript)}
+      go_term
     end
     
 #     factory :differential_expression_test do
@@ -55,11 +58,32 @@ FactoryGirl.define do
 #     
     #TODO: Fix me
     factory :transcript do
-        id                       1
-        name_from_program        'TCONS_00001'
-        dataset_id               1
+        id                      1
+        name_from_program       'TCONS_00001'
+        dataset                 #{build(:dataset, :id => 1)}
         blast_seq_id            'fsfsd'
     end
+    
+    #  id                      :integer          not null, primary key
+    #  name                    :string(255)      not null
+    #  has_transcript_diff_exp :boolean          not null
+    #  has_transcript_isoforms :boolean          not null
+    #  has_gene_diff_exp       :boolean          not null
+    #  blast_db_location       :string(255)      not null
+    #  user_id                 :integer          not null
+    #  when_last_queried       :datetime
+    #  created_at              :datetime         not null
+    #  updated_at              :datetime         not null
+    #
+    factory :dataset do
+      name                      'Dataset_X'
+      has_transcript_diff_exp   true
+      has_transcript_isoforms   true
+      has_gene_diff_exp         true
+      blast_db_location         'db/blast_databases/test/1_db'
+      user
+    end
+    
 #     
 #     factory :invalid_transcript, class: Transcript do
 #         name_from_program        nil

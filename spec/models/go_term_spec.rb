@@ -53,6 +53,13 @@ describe GoTerm do
       end
     end
     
+    it 'should be valid for go ids that are in the correct format' do
+      ['GO:0001','GO:00055','GO:100001'].each do |valid_id|
+        @it.id = valid_id
+        @it.should be_valid
+      end
+    end
+    
     it 'should correctly validate all the go terms from the go website' do
         go_term_file = File.open('lib/tasks/GO.terms_and_ids')
         #Loop through all the go terms downloaded from the go web site
