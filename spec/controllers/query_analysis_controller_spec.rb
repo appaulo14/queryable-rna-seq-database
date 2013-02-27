@@ -10,90 +10,95 @@ describe QueryAnalysisController do
     end
   end
   
-  describe 'GET requests for user not signed in' do
+  describe 'GET requests for user not signed in' do  
     it "should redirect from 'upload_main_menu'" do
       get 'upload_main_menu'
-      response.status.should eq(302)
+      response.should redirect_to(new_user_session_path)
     end
     
     it "should redirect from 'welcome'" do
       get 'welcome'
-      response.status.should eq(302)
+      response.should redirect_to(new_user_session_path)
     end
     
     it "should redirect from 'upload_cuffdiff'" do
       get 'upload_cuffdiff'
-      response.status.should eq(302)
+      response.should redirect_to(new_user_session_path)
     end
     
     it "should redirect from 'upload_trinity_with_edger_transcripts'" do
       get 'upload_trinity_with_edger_transcripts'
-      response.status.should eq(302)
+      response.should redirect_to(new_user_session_path)
     end
     
     it "should redirect from 'upload_trinity_with_edger_transcripts_and_genes'" do
       get 'upload_trinity_with_edger_transcripts_and_genes'
-      response.status.should eq(302)
+      response.should redirect_to(new_user_session_path)
     end
     
     it "should redirect from 'query_diff_exp_transcripts'" do
       get 'query_diff_exp_transcripts'
-      response.status.should eq(302)
+      response.should redirect_to(new_user_session_path)
     end
     
     it "should redirect from 'get_transcript_fasta'" do
       get 'get_transcript_fasta'
-      response.status.should eq(302)
+      response.should redirect_to(new_user_session_path)
     end
     
     it "should redirect from 'get_gene_fastas'" do
       get 'get_gene_fastas'
-      response.status.should eq(302)
+      response.should redirect_to(new_user_session_path)
     end
     
     it "should redirect from 'query_diff_exp_genes'" do
       get 'query_diff_exp_genes'
-      response.status.should eq(302)
+      response.should redirect_to(new_user_session_path)
     end
     
     it "should redirect from 'query_transcript_isoforms'" do
       get 'query_transcript_isoforms'
-      response.status.should eq(302)
+      response.should redirect_to(new_user_session_path)
     end
     
     it "should redirect from 'blastn'" do
       get 'blastn'
-      response.status.should eq(302)
+      response.should redirect_to(new_user_session_path)
     end
     
     it "should redirect from 'get_blastn_gap_costs_for_match_and_mismatch_scores'" do
       get 'get_blastn_gap_costs_for_match_and_mismatch_scores'
-      response.status.should eq(302)
+      response.should redirect_to(new_user_session_path)
     end
     
     it "should redirect from 'tblastn'" do
       get 'tblastn'
-      response.status.should eq(302)
+      response.should redirect_to(new_user_session_path)
     end
     
     it "should redirect from 'get_tblastn_gap_costs_for_matrix'" do
       get 'get_tblastn_gap_costs_for_matrix'
-      response.status.should eq(302)
+      response.should redirect_to(new_user_session_path)
     end
     
     it "should redirect from 'tblastx'" do
       get 'tblastx'
-      response.status.should eq(302)
+      response.should redirect_to(new_user_session_path)
     end
   end
   
   describe 'when user signed in' do 
     before (:each) do
-      @user = User.first
+      @user = FactoryGirl.create(:user)
       sign_in @user
     end
       
     describe 'GET request' do
+      it "should succeed for '/'" do
+        get '/'
+        response.status.should be_success
+      end
+      
       it "should succeed for 'upload_main_menu'" do
         get 'upload_main_menu'
         response.should be_success
@@ -219,5 +224,5 @@ describe QueryAnalysisController do
         response.should be_success
       end
     end
-  end
+ end
 end

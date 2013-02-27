@@ -7,10 +7,10 @@ class AdminController < ApplicationController
   def welcome
   end
   
-  def view_user_information
-  end
-
   def delete_datasets_from_database
+  end
+  
+  def view_confirmed_user_information
   end
   
   def view_unconfirmed_users
