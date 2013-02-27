@@ -8,16 +8,8 @@
 
 class TranscriptHasGoTerm < ActiveRecord::Base
   attr_accessible :transcript, :go_term
-  
-  validates :transcript_id, :presence => true,
-                            :numericality => { 
-                              :only_integer => true, 
-                              :greater_than => 0 
-                            }
       
   validates :transcript, :presence => true
-  validates :go_term_id, :presence => true,
-                         :format => /\AGO:\d+\z/
   validates :go_term, :presence => true
   
   belongs_to :transcript

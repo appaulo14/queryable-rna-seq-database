@@ -85,10 +85,10 @@ a:visited {
   color: #50017C;
 }
   
-  /* Navigation */
-  /* See http://csswizardry.com/2011/02/creating-a-pure-css-dropdown-menu/ 
-   * for a tutorial to help with the drop down menus for navigation 
-   */
+/* Navigation */
+/* See http://csswizardry.com/2011/02/creating-a-pure-css-dropdown-menu/ 
+  * for a tutorial to help with the drop down menus for navigation 
+  */
 
 nav {
   background-color: white;

@@ -22,10 +22,23 @@ class Dataset < ActiveRecord::Base
                   :has_transcript_isoforms,
                   :has_gene_diff_exp
   
+  #validates :id, :presence => true
+  validates :name, :presence => true
+  validates :has_transcript_diff_exp, 
+      :allow_nil => false,
+      :inclusion => {:in => [true, false]}
+  validates :has_transcript_isoforms, 
+      :allow_nil => false,
+      :inclusion => {:in => [true, false]}
+  validates :has_gene_diff_exp, 
+      :allow_nil => false,
+      :inclusion => {:in => [true, false]}
+  validates :user, :presence => true
+  
   belongs_to :user
   has_many :genes
   has_many :transcripts
   has_many :samples
   
-  validates :user, :presence => true
+  
 end

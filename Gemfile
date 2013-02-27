@@ -8,9 +8,6 @@ gem 'rails', '3.2.11'
 
 gem 'pg'
 gem 'mysql2'
-# gem 'thin'
-#gem 'sinatra'
-#gem 'sequenceserver'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -30,18 +27,13 @@ gem 'jquery-rails', '2.1.3'
 
 gem 'heroku'
 
-#gem 'activerecord-tableless', '>= 1.0.1'
-
 group :bioinformatics do
     gem 'bio', '1.4.2'
-    #gem 'goruby'
 end
 
 group :development do
   gem 'rspec-rails', '>= 2.0.1'
   gem 'annotate'
-  #gem 'railroady'
-  #gem 'umlify'
 end
 
 group :test do
@@ -49,18 +41,11 @@ group :test do
   gem 'factory_girl_rails', '~> 4.0'
   gem 'capybara', '2.0.2'
   gem 'capybara-webkit'
-#   gem 'railroady'
-#   gem 'umlify'
-  #gem 'poltergeist'
 end
 
 gem 'faker'
 
-gem "galetahub-simple_captcha", :require => "simple_captcha"
-
-#For foreigner key constraints. 
-#       Unfortunately, it doesn't have cascading updates from what I can ascertain.
-#gem 'foreigner'
+gem 'galetahub-simple_captcha', :require => 'simple_captcha'
 
 gem 'json', '1.7.7'
 
