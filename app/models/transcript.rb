@@ -21,9 +21,9 @@ class Transcript < ActiveRecord::Base
   #Associations
   belongs_to :dataset
   belongs_to :gene
+  has_one :transcript_fpkm_tracking_information, :dependent => :destroy
   has_many :differential_expression_tests#, :dependent => :destroy
   has_many :fpkm_samples#, :dependent => :destroy
-  has_one :transcript_fpkm_tracking_information
   has_many :transcript_has_go_terms
   has_many :go_terms, :through => :transcript_has_go_terms
   #validates_associated :job, :gene, :differential_expression_test, :fpkm_samples

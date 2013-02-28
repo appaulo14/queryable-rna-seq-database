@@ -13,6 +13,7 @@ class RegistrationsController < Devise::RegistrationsController
     build_resource
     #Validate captcha
     if not simple_captcha_valid?
+      #TODO: Move this flash alert to error messages array instead?
       flash[:alert] = 'Captcha failed'
       redirect_to '/'
       return

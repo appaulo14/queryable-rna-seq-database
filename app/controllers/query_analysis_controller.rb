@@ -207,56 +207,8 @@ class QueryAnalysisController < ApplicationController
         end
       end
     end
-
-#     def query_gene_isoforms
-#     end
-# 
-#     def query_blast_db
-#     end
-
-#     def query_blast_db_2
-#         debugger if ENV['RAILS_DEBUG'] == "true"
-#         if request.get?
-#             @blast_query = Blast_Query::Base.new()
-#         elsif request.post?
-#             @blast_query = Blast_Query::Base.new(params[:blast_query])
-#             debugger if ENV['RAILS_DEBUG'] == "true"
-#             if @blast_query.valid?
-#                 flash[:success] = "Success"
-#             else
-#                 flash[:success]="Failure"
-#             end
-#         end
-#     end
-
-#     def blastn2
-#       #TODO: ADD links in the results page for genes, and transcripts and the fastas of those?
-#       #f = File.open('/media/sf_MSE_Project/Workshop_Of_Paul/BLAST/outputs/NM_000041.2_query.xml')
-#       f = File.open('/media/sf_MSE_Project/Workshop_Of_Paul/BLAST/outputs/5_XML_Blast_output')
-#       xml_string = ''
-#       while not f.eof?
-#         xml_string += f.readline
-#       end
-#       f.close()
-#       @program = :blastn
-#       @blast_report = Bio::Blast::Report.new(xml_string,'xmlparser')
-#     end
-#     
-#     def blastn3
-#       #TODO: ADD links in the results page for genes, and transcripts and the fastas of those?
-#       f = File.open('/media/sf_MSE_Project/Workshop_Of_Paul/BLAST/outputs/NM_000041.2_query.xml')
-#       #f = File.open('/media/sf_MSE_Project/Workshop_Of_Paul/BLAST/outputs/5_XML_Blast_output')
-#       xml_string = ''
-#       while not f.eof?
-#         xml_string += f.readline
-#       end
-#       f.close()
-#       @program = :blastn
-#       @blast_report = Bio::Blast::Report.new(xml_string,'xmlparser')
-#       render :file => 'query_analysis/blast_results'
-#     end
     
-    def blastn
+    def query_using_blastn    #Changed after architecture design
       if request.get?
           @blastn_query = Blastn_Query.new(current_user)
           @blastn_query.set_attributes_and_defaults()
@@ -298,7 +250,7 @@ class QueryAnalysisController < ApplicationController
       render :partial => 'gap_costs', :locals => {:object => @blastn_query}
     end
 
-    def tblastn
+    def query_using_tblastn #changed after the architecture design
         if request.get?
             @tblastn_query = Tblastn_Query.new(current_user)
             @tblastn_query.set_attributes_and_defaults()
@@ -338,7 +290,7 @@ class QueryAnalysisController < ApplicationController
       render :partial => 'gap_costs', :locals => {:object => @tblastn_query}
     end
     
-    def tblastx
+    def querying_using_tblastx  #changed after the architecture design
       if request.get?
             @tblastx_query = Tblastx_Query.new(current_user)
             @tblastx_query.set_attributes_and_defaults()

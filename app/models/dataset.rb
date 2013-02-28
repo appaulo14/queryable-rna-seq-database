@@ -39,9 +39,9 @@ class Dataset < ActiveRecord::Base
   validate :when_last_queried_is_valid_datetime
   
   belongs_to :user
-  has_many :genes
-  has_many :transcripts
-  has_many :samples
+  has_many :transcripts, :dependent => :destroy
+  has_many :genes, :dependent => :destroy
+  has_many :samples, :dependent => :destroy
   
   private
   def blast_db_location_pathname_is_valid

@@ -44,11 +44,10 @@ FactoryGirl.define do
 #         is_significant   true
 #     end
 #     
-#     factory :gene do
-#         name_from_program        'XLOC_00001'
-#         job
-#         differential_expression_test
-#     end
+    factory :gene do
+        name_from_program        {Faker::Name.name}
+        dataset
+    end
 #     
 #     factory :invalid_gene, class: Gene do
 #         name_from_program        nil
@@ -58,23 +57,12 @@ FactoryGirl.define do
 #     
     #TODO: Fix me
     factory :transcript do
-        id                      1
+        id                      {Transcript.count + 1}
         name_from_program       'TCONS_00001'
         dataset                 #{build(:dataset, :id => 1)}
         blast_seq_id            'fsfsd'
     end
     
-    #  id                      :integer          not null, primary key
-    #  name                    :string(255)      not null
-    #  has_transcript_diff_exp :boolean          not null
-    #  has_transcript_isoforms :boolean          not null
-    #  has_gene_diff_exp       :boolean          not null
-    #  blast_db_location       :string(255)      not null
-    #  user_id                 :integer          not null
-    #  when_last_queried       :datetime
-    #  created_at              :datetime         not null
-    #  updated_at              :datetime         not null
-    #
     factory :dataset do
       name                      'Dataset_X'
       has_transcript_diff_exp   true

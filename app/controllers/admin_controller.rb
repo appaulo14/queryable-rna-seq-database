@@ -8,9 +8,12 @@ class AdminController < ApplicationController
   end
   
   def delete_datasets_from_database
+    if request.get?
+    elsif request.delete?
+    end
   end
   
-  def view_confirmed_user_information
+  def view_confirmed_users
   end
   
   def view_unconfirmed_users
@@ -39,6 +42,10 @@ class AdminController < ApplicationController
       flash[:alert] = 'Please select an unconfirmed user'
       redirect_to :view_unconfirmed_users
     end
+  end
+  
+  def welcome
+    #This action is in the architecture design document
   end
   
   private

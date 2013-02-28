@@ -204,6 +204,8 @@ describe QueryAnalysisController do
         response.should be_success
       end
       
+      it 'should redirect if user has not datasets for gene diff exp??'
+      
       it "should succeed for 'query_transcript_isoforms'" do
         post 'query_transcript_isoforms', :query_transcript_isoforms => {}
         response.should be_success

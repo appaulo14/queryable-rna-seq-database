@@ -39,6 +39,23 @@ describe Dataset do
     end
   end
   
+  describe 'destruction' do
+    before(:each) do 
+      @it.save!
+    end
+    
+    it 'should destroy all associated transcripts when destroyed' do
+      FactoryGirl.create(:transcript, :dataset_id => @it.id)
+      FactoryGirl.create(:transcript, :dataset_id => @it.id)
+      Transcript.find_all_by_dataset_id(@it.id).count.should eq(2)
+      @it.destroy
+      Transcript.find_all_by_dataset_id(@it.id).should be_empty
+    end
+    it 'should destroy all associated genes when destroyed'
+    it 'should destroy all associated samples when destroyed'
+    it 'should not destroy the associated user when destroyed'
+  end
+  
   describe 'validations' do
     it 'should save successfully when all fields are valid' do
       @it.save!
