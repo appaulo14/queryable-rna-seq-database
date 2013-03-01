@@ -1,31 +1,31 @@
-<h1>QueryAnalysis#upload_reference_cuffdiff</h1>
-<p>Find me in app/views/query_analysis/upload_reference_cuffdiff.html.erb</p>
-<%= form_tag({:action => :upload_reference_cuffdiff}, :multipart => true) do %>
-  <h1>Please upload the Trinity.fasta file for each sample</h1>
-  <%= label(:transcripts_fasta, "Transcripts fasta") %>
-  <%= file_field_tag 'transcripts_fasta' %><br/>
+<%= render 'shared/error_messages', :object => @upload_cuffdiff %>
+<script type='text/javascript' src='upload_cuffdiff.js' ></script>
+<%= form_for(@upload_cuffdiff,{:url => "upload_cuffdiff"} ) do |uf| %>
+  <h1>Upload Your Cuffdiff Data</h1>
   
-  <div class="sub-section">
-    <%= label(:differential_expression_tests, "Differential Expression Tests") %>
-    <%= check_box_tag(:differential_expression_tests) %>
-    <%= label(:gene_exp_diff, "gene_exp_diff") %>
-    <%= file_field_tag 'gene_exp_diff', :class=>'rounded-corners' %><br/>
-    <%= label(:isoform_exp_diff, "isoform_exp_diff") %>
-    <%= file_field_tag 'isoform_exp_diff', :class=>'rounded-corners' %><br/>
+  <div class="sub-section rounded-corners" id="transcript_fasta_section">
+    <div class="sub-section-heading">Transcript Fasta File</div>
+    <%= label(:transcripts_fasta, "Transcripts fasta") %>
+    <%= uf.file_field :transcripts_fasta %><br/>
   </div>
-  
-  <div class="sub-section">
-    <%= label(:novel_genes_and_transcripts, "Novel Genes and Transcripts") %>
-    <%= check_box_tag(:novel_genes_and_transcripts) %>
-    <%= label(:isoforms_fpkm_tracking, "isoforms_fpkm_tracking") %>
-    <%= file_field_tag 'isoforms_fpkm_tracking', :class=>'rounded-corners' %>
+  <br/><br/>
+  <%= uf.label :has_diff_exp, 'Do you have differential expression tests?' %>
+  <%= uf.check_box :has_diff_exp %>
+  <div class="sub-section rounded-corners" id="differential_expression_section">
+    <div class="sub-section-heading">Differential Expression Test Files</div>
+    <%= uf.label(:gene_diff_exp_file, "gene_exp.diff") %>
+    <%= uf.file_field :gene_diff_exp_file, :class=>'rounded-corners' %><br/>
+    <%= uf.label(:transcript_diff_exp_file, "isoform_exp.diff") %>
+    <%= uf.file_field :transcript_diff_exp_file, :class=>'rounded-corners' %><br/>
+  </div>
+  <br/><br/>
+  <%= uf.label :has_transcript_isoforms, 'Do you have transcript isoform classifications?' %>
+  <%= uf.check_box :has_transcript_isoforms %>
+  <div class="sub-section rounded-corners" id="transcript_isoforms_section">
+    <div class="sub-section-heading">Transcript Isoform Classification File</div>
+    <%= uf.label(:transcript_isoform_file, "isoforms.fpkm_tracking") %>
+    <%= uf.file_field :transcript_isoform_file, :class=>'rounded-corners' %>
     <br/>
   </div>
-  <p>
-    <button type="button" onclick="add_sample_fasta_upload();">
-      I have more samples than this
-    </button>
-    <%= image_tag("question_mark.png") %>
-  </p>
-  <p><%= submit_tag("Upload files") %></p>
+  <p><%= submit_tag('Upload files', :disable_with => 'Uploading...') %></p>
 <% end %>

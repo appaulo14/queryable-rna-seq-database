@@ -26,16 +26,16 @@ class Dataset < ActiveRecord::Base
   validates :name, :presence => true
   validates :has_transcript_diff_exp, 
       :allow_nil => false,
-      :inclusion => {:in => [true, false]}
+  validate :has_transcript_diff_exp_is_boolean
   validates :has_transcript_isoforms, 
-      :allow_nil => false,
-      :inclusion => {:in => [true, false]}
+      :allow_nil => false
+  validate :has_transcript_isoforms_is_boolean
   validates :has_gene_diff_exp, 
       :allow_nil => false,
-      :inclusion => {:in => [true, false]}
+  validate :has_gene_diff_exp_is_boolean
   validates :user, :presence => true
   validates :blast_db_location, :presence => true
-  validate :blast_db_location_pathname_is_valid
+  validate :blast_db_location_pathname
   validate :when_last_queried_is_valid_datetime
   
   belongs_to :user
@@ -44,11 +44,32 @@ class Dataset < ActiveRecord::Base
   has_many :samples, :dependent => :destroy
   
   private
-  def blast_db_location_pathname_is_valid
+  def blast_db_location_pathname
     begin
       Pathname.new(self.blast_db_location)
     rescue TypeError, ArgumentError
       errors[:blast_db_location] << 'must be a valid pathname'
+    end
+  end
+  
+  def has_transcript_diff_exp_is_boolean
+    if (self.has_transcript_diff_exp != true and 
+        self.has_transcript_diff_exp != false)
+      errors[:has_transcript_diff_exp] << 'must be boolean'
+    end
+  end
+  
+  def has_transcript_isoforms_is_boolean
+    if (self.has_transcript_isoforms != true and 
+        self.has_transcript_isoforms != false)
+      errors[:has_transcript_isoforms] << 'must be boolean'
+    end
+  end
+  
+  def has_gene_diff_exp_is_boolean
+    if (self.has_gene_diff_exp != true and 
+        self.has_gene_diff_exp != false)
+      errors[:has_gene_diff_exp] << 'must be boolean'
     end
   end
   

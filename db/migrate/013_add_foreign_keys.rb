@@ -38,10 +38,11 @@ class AddForeignKeys < ActiveRecord::Migration
             'FOREIGN KEY (fpkm_sample_2_id) REFERENCES fpkm_samples (id) ' + 
             'ON UPDATE CASCADE ON DELETE RESTRICT;')
     #FPKM Sample foreign keys
-    execute('ALTER TABLE fpkm_samples ' +
-            'ADD CONSTRAINT fpkm_samples_genes_fk ' + 
-            'FOREIGN KEY (gene_id) REFERENCES genes (id) ' + 
-            'ON UPDATE CASCADE ON DELETE CASCADE;')
+    #FK to genes table no longer needed
+#     execute('ALTER TABLE fpkm_samples ' +
+#             'ADD CONSTRAINT fpkm_samples_genes_fk ' + 
+#             'FOREIGN KEY (gene_id) REFERENCES genes (id) ' + 
+#             'ON UPDATE CASCADE ON DELETE CASCADE;')
     execute('ALTER TABLE fpkm_samples ' +
             'ADD CONSTRAINT fpkm_samples_transcripts_fk ' + 
             'FOREIGN KEY (transcript_id) REFERENCES transcripts (id) ' + 

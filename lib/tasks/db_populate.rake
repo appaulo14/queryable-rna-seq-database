@@ -118,33 +118,6 @@ def make_transcripts_and_blast_databases(env)
   puts 'Done'
 end
 
-# def make_blast_databases
-#   print 'Populating blast databases...'
-#   #Make the blast databases directory if it does not exist
-#   if not Dir.exists?('db/blast_databases')
-#     Dir.mkdir('db/blast_databases')
-#   end
-#   Dataset.all.each do |ds|
-#     #Create a temporary file to use to create the blast database
-#     tmpfasta = Tempfile.new('tmpfasta')
-#     #Write all the fastas for the dataset to the temporary file
-#     ds.transcripts.each do |transcript|
-#       tmpfasta.write(">#{transcript.fasta_description}\n")
-#       tmpfasta.write("#{transcript.fasta_sequence}\n")
-#     end
-#     tmpfasta.rewind
-#     tmpfasta.close
-#     #Create the blast database file for the dataset and save its location
-#     success = system("bin/blast/bin/makeblastdb " +
-#                      "-in #{tmpfasta.path} -title #{ds.id}_db " +
-#                      "-out #{ds.blast_db_location} -hash_index -dbtype nucl ")
-#     exit if success == false
-#     #Close and unlink the temporary file when finished
-#     tmpfasta.unlink
-#   end
-#   puts 'Done'
-# end
-
 def make_samples
   print 'Populating samples...'
   Dataset.all.each do |ds|
@@ -188,20 +161,20 @@ def make_fpkm_samples
       end
     end
     #Create fpkm samples with random values for the genes
-    ds.genes.each do |gene|
-      random_status = FpkmSample::POSSIBLE_STATUSES.sample
-      ds.samples.each do |sample|
-        fpkm_hi = rand(0.0..62000.0)
-        fpkm_lo = rand(0.0..fpkm_hi)
-        fpkm = rand(fpkm_lo..fpkm_hi)
-        FpkmSample.create!(:gene => gene,
-                           :sample => sample,
-                           :fpkm => fpkm, 
-                           :fpkm_hi => fpkm_hi, 
-                           :fpkm_lo => fpkm_lo, 
-                           :status => random_status)
-      end
-    end
+#     ds.genes.each do |gene|
+#       random_status = FpkmSample::POSSIBLE_STATUSES.sample
+#       ds.samples.each do |sample|
+#         fpkm_hi = rand(0.0..62000.0)
+#         fpkm_lo = rand(0.0..fpkm_hi)
+#         fpkm = rand(fpkm_lo..fpkm_hi)
+#         FpkmSample.create!(:gene => gene,
+#                            :sample => sample,
+#                            :fpkm => fpkm, 
+#                            :fpkm_hi => fpkm_hi, 
+#                            :fpkm_lo => fpkm_lo, 
+#                            :status => random_status)
+#       end
+#     end
   end
   puts 'Done'
 end
@@ -255,7 +228,73 @@ def make_differential_expression_tests
         end
       end
     end
-    #Create differnetial expresssion tests with random values for the genes
+    
+    Dataset.all.each do |ds|
+      #Create differnetial expresssion tests with random values for the genes
+      ds.genes.each do |gene|
+        random_status = FpkmSample::POSSIBLE_STATUSES.sample
+        SampleComparison.each do |sample_comparison|
+          sample_1 = sample_comparison.sample_1
+          sample_2 = sample_comparison.sample_2
+          fpkm_sample_1 = FpkmSample.find_by_sample_id(sample_1.id)
+          if (FpkmSample.find_by_sample_id(sample_1.id).nil?)
+            fpkm_hi = rand(0.0..62000.0)
+            fpkm_lo = rand(0.0..fpkm_hi)
+            fpkm = rand(fpkm_lo..fpkm_hi)
+            fpkm_sample_1 = FpkmSample.create!(:gene => gene,
+                              :sample => sample_1,
+                              :fpkm => fpkm, 
+                              :fpkm_hi => fpkm_hi, 
+                              :fpkm_lo => fpkm_lo, 
+                              :status => random_status)
+          end
+          fpkm_sample_2 = FpkmSample.find_by_sample_id(sample_2.id)
+          if (FpkmSample.find_by_sample_id(sample_2.id).nil?)
+          fpkm_hi = rand(0.0..62000.0)
+          fpkm_lo = rand(0.0..fpkm_hi)
+          fpkm = rand(fpkm_lo..fpkm_hi)
+          fpkm_sample_2 = FpkmSample.create!(:gene => gene,
+                             :sample => sample_2,
+                             :fpkm => fpkm, 
+                             :fpkm_hi => fpkm_hi, 
+                             :fpkm_lo => fpkm_lo, 
+                             :status => random_status)
+              DifferentialExpressionTest::POSSIBLE_TEST_STATUSES.sample
+          DifferentialExpressionTest.create!(
+            :fpkm_sample_1 => fpkm_sample_1,
+            :fpkm_sample_2 => fpkm_sample_2,
+            :gene => gene,
+            :test_status => random_test_status,
+            :log_fold_change => Math.log2(fpkm_sample_2.fpkm/fpkm_sample_1.fpkm),
+            :p_value => rand(0.0..1.0),
+            :fdr => rand(0.0..1.0)
+          )
+        end
+        ds.samples.each do |sample|
+          
+          fpkm_hi = rand(0.0..62000.0)
+          fpkm_lo = rand(0.0..fpkm_hi)
+          fpkm = rand(fpkm_lo..fpkm_hi)
+          fpkm_sample_2 = FpkmSample.create!(:gene => gene,
+                             :sample => sample,
+                             :fpkm => fpkm, 
+                             :fpkm_hi => fpkm_hi, 
+                             :fpkm_lo => fpkm_lo, 
+                             :status => random_status)
+          random_test_status = 
+              DifferentialExpressionTest::POSSIBLE_TEST_STATUSES.sample
+          DifferentialExpressionTest.create!(
+            :fpkm_sample_1 => fpkm_sample_1,
+            :fpkm_sample_2 => fpkm_sample_2,
+            :gene => gene,
+            :test_status => random_test_status,
+            :log_fold_change => Math.log2(fpkm_sample_2.fpkm/fpkm_sample_1.fpkm),
+            :p_value => rand(0.0..1.0),
+            :fdr => rand(0.0..1.0)
+          )
+        end
+      end
+    end
     Gene.all.each do |g|
       #Compare all the fpkm samples for the differential expression tests
       FpkmSample.find_all_by_gene_id(g.id).each do |fpkm_sample_1|

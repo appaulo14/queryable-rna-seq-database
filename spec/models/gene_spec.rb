@@ -16,9 +16,6 @@ describe Gene do
   end
   
   describe 'associations' do
-#     belongs_to :dataset
-#   has_many :transcripts#, :dependent => :destroy
-#   has_many :differential_expression_tests
     it 'should have a dataset attribute' do
       @it.should respond_to(:dataset)
     end
@@ -34,6 +31,13 @@ describe Gene do
     it 'should not have an fpkm_samples attribute'
   end
   
+  describe 'when destroyed' do
+    it 'should destroy an associated differential expression tests'
+    it 'should not destroy any associated transcripts'
+    it 'should not destroy the associated dataset'
+  end
+  
   describe 'validations' do
+    it 'hould require a name_from_program'
   end
 end

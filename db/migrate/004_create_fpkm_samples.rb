@@ -7,12 +7,12 @@ class CreateFpkmSamples < ActiveRecord::Migration
       case adapter_type
       when /mysql/
         t.column :id, 'BIGINT UNSIGNED', :null => false
-        t.column :gene_id, 'BIGINT UNSIGNED'
+        #t.column :gene_id, 'BIGINT UNSIGNED'   #no longer needed
         t.column :transcript_id, 'BIGINT UNSIGNED'
         t.column :sample_id, 'BIGINT UNSIGNED'
       when /postgresql/
         t.column :id, 'bigserial', :null => false, :unique => true
-        t.column :gene_id, 'BIGINT'
+        #t.column :gene_id, 'BIGINT'   #no longer needed
         t.column :transcript_id, 'BIGINT'
         t.column :sample_id, 'BIGINT', :null => false
       else

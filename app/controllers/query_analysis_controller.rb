@@ -1,5 +1,6 @@
 class QueryAnalysisController < ApplicationController
     require 'bio'
+    require 'query_analysis/upload_cuffdiff.rb'
     require 'query_analysis/upload_trinity_with_edger_transcripts_and_genes.rb'
     require 'query_analysis/query_diff_exp_transcripts.rb'
     require 'query_analysis/query_transcript_isoforms.rb'
@@ -41,6 +42,17 @@ class QueryAnalysisController < ApplicationController
 #     end
     
     def upload_cuffdiff
+      if request.get?
+        @upload_cuffdiff = Upload_Cuffdiff.new(current_user)
+      elsif request.post?
+        @upload_cuffdiff = Upload_Cuffdiff.new(current_user)
+        @upload_cuffdiff.set_attributes_and_defaults(params[:upload_cuffdiff])
+        if (@upload_cuffdiff.valid?)
+          @upload_cuffdiff.save!
+        else
+          flash[:alert] = 'Validation failed'
+        end
+      end
     end
     
     def upload_trinity_with_edger_transcripts
@@ -50,10 +62,10 @@ class QueryAnalysisController < ApplicationController
       if (request.get?)
           @upload_files = Upload_Trinity_With_EdgeR_Transcripts_And_Genes.new(current_user)
           @upload_files.set_attributes_and_defaults({})
-        elsif (request.post?)
-          @upload_files = Upload_Trinity_With_EdgeR_Transcripts_And_Genes.new(current_user)
-          @upload_files.set_attributes_and_defaults()
-          @upload_files.save!
+      elsif (request.post?)
+        @upload_files = Upload_Trinity_With_EdgeR_Transcripts_And_Genes.new(current_user)
+        @upload_files.set_attributes_and_defaults()
+        @upload_files.save!
 #           debugger if ENV['RAILS_DEBUG'] == 'true'
 #           @upload_edgeR = Upload_EdgeR.new(params[:upload_edge_r])
 #           if @upload_edgeR.valid?
@@ -62,7 +74,7 @@ class QueryAnalysisController < ApplicationController
 #           else
 #               flash[:success]="Failure"
 #           end
-        end
+      end
     end
 
 #     def upload_edgeR

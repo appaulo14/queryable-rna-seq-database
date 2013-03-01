@@ -15,7 +15,7 @@ class Gene < ActiveRecord::Base
   belongs_to :dataset
   has_many :transcripts#, :dependent => :destroy
   has_many :differential_expression_tests
-  has_many :fpkm_samples #FIXME: Remove this association since it is not needed because there is no query gene isoforms workflow
+  #has_many :fpkm_samples #FIXME: Remove this association since it is not needed because there is no query gene isoforms workflow
   #validates_associated :job, :transcripts, :differential_expression_test
   
   validates :name_from_program, :presence => true

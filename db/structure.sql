@@ -107,7 +107,6 @@ ALTER SEQUENCE differential_expression_tests_id_seq OWNED BY differential_expres
 
 CREATE TABLE fpkm_samples (
     id bigint NOT NULL,
-    gene_id bigint,
     transcript_id bigint,
     sample_id bigint NOT NULL,
     fpkm numeric NOT NULL,
@@ -593,14 +592,6 @@ ALTER TABLE ONLY differential_expression_tests
 
 ALTER TABLE ONLY differential_expression_tests
     ADD CONSTRAINT differential_expression_tests_transcripts_fk FOREIGN KEY (transcript_id) REFERENCES transcripts(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- Name: fpkm_samples_genes_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY fpkm_samples
-    ADD CONSTRAINT fpkm_samples_genes_fk FOREIGN KEY (gene_id) REFERENCES genes(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
