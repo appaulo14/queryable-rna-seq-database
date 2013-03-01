@@ -24,14 +24,14 @@ class Dataset < ActiveRecord::Base
   
   #validates :id, :presence => true
   validates :name, :presence => true
-  validates :has_transcript_diff_exp, 
-      :allow_nil => false,
+#   validates :has_transcript_diff_exp, 
+#       :allow_nil => false,
   validate :has_transcript_diff_exp_is_boolean
-  validates :has_transcript_isoforms, 
-      :allow_nil => false
+#   validates :has_transcript_isoforms, 
+#       :allow_nil => false
   validate :has_transcript_isoforms_is_boolean
-  validates :has_gene_diff_exp, 
-      :allow_nil => false,
+#   validates :has_gene_diff_exp, 
+#       :allow_nil => false,
   validate :has_gene_diff_exp_is_boolean
   validates :user, :presence => true
   validates :blast_db_location, :presence => true

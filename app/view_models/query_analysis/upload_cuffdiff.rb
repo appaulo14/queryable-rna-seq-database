@@ -4,13 +4,14 @@ class Upload_Cuffdiff
   extend ActiveModel::Naming
   
   attr_accessor :transcripts_fasta_file, 
-                :gene_differential_exp_file, 
-                :transcript_diff_expression_file, 
+                :transcript_diff_exp_file, 
+                :gene_diff_exp_file, 
                 :transcript_isoforms_file,
                 :has_diff_exp,
                 :has_transcript_isoforms
   
   #validate :validate_all_or_none_gene_files
+  ##Validte for file presence only???
   
   def initialize(current_user)
     @current_user = current_user

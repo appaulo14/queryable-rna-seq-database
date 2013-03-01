@@ -40,7 +40,8 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
 
   get  'query_analysis/upload_main_menu'
 
-  get 'query_analysis/upload_cuffdiff'
+  get  'query_analysis/upload_cuffdiff'
+  post 'query_analysis/upload_cuffdiff'
 
   get 'query_analysis/upload_trinity_with_edger_transcripts_and_genes'
   post 'query_analysis/upload_trinity_with_edger_transcripts_and_genes'
@@ -77,42 +78,6 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
   
   get 'query_analysis/tblastx'
   post 'query_analysis/tblastx'
-
-#     SequenceServer::App.init
-#     #match '/sequenceserver' => SequenceServer::App, :anchor => false
-#     #match '/sequenceserver(/*other_params)' => SequenceServer::App, :anchor => false
-#     mount SequenceServer::App => 'sequenceserver'
-#     #ApiApp.init
-#     mount ApiApp => 'api'
-#     #   SequenceServer::App.routes do
-    #     get 'get_sequence'# => 'sequenceserver/get_sequence'
-    #     get 'sequenceserver/get_sequence'
-    #     get '/sequenceserver/get_sequence'
-    #     match 'get_sequence', :to => SequenceServer::App
-    #     match '/sequenceserver/get_sequence', :to => SequenceServer::App
-    #     match 'sequenceserver/get_sequence', :to => SequenceServer::App
-    #     match 'get_sequence', :to => 'get_sequence', :constraints => {:subdomain => 'sequenceserver'}
-    #     match '/get_sequence', :to => 'get_sequence', :constraints => {:subdomain => 'sequenceserver'}
-    #     match '/sequenceserver/get_sequence', :to => 'get_sequence', :constraints => {:subdomain => 'sequenceserver'}
-    #     match 'sequenceserver/get_sequence', :to => 'get_sequence', :constraints => {:subdomain => 'sequenceserver'}
-    #   end
-    #   match 'get_sequence', :to => SequenceServer::App
-    #   match '/sequenceserver/get_sequence', :to => SequenceServer::App
-    #   match 'sequenceserver/get_sequence', :to => SequenceServer::App
-    #   match 'get_sequence', :to => 'get_sequence', :constraints => {:subdomain => 'sequenceserver'}
-    #   match '/get_sequence', :to => 'get_sequence', :constraints => {:subdomain => 'sequenceserver'}
-    #   match '/sequenceserver/get_sequence', :to => 'get_sequence', :constraints => {:subdomain => 'sequenceserver'}
-    #   match 'sequenceserver/get_sequence', :to => 'get_sequence', :constraints => {:subdomain => 'sequenceserver'}
-
-    # class HomeApp < Sinatra::Base
-    #     get '/' do
-    #     'Hello World!'
-    #     end
-    # end
-
-    # Basecamp::Application.routes do
-    #   match '/home', :to => HomeApp
-    # end
 
 
     # The priority is based upon order of creation:
