@@ -26,8 +26,18 @@ class Upload_Cuffdiff
   
   def save!
     return if not self.valid?
+    #Create the dataset
+    dataset = Dataset.new(:user => @current_user)
+    if @has_diff_exp == '1'
+      dataset.has_transcript_diff_exp = true
+      dataset.has_gene_diff_exp = true
+    else
+      dataset.has_transcript_diff_exp = false
+      dataset.has_gene_diff_exp = false
+    end
+    dataset = (@has_transcript_isoforms == 1) ? true : false
 #     child_pid = fork do
-#       env = 'dev'
+#       env = Rails.env
 #       n = Dataset.count + 1
 #       name = "Dataset_#{n}"
 #       de_tests_count = 100

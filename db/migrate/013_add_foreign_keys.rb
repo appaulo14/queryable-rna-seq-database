@@ -30,19 +30,11 @@ class AddForeignKeys < ActiveRecord::Migration
             'FOREIGN KEY (transcript_id) REFERENCES transcripts (id) ' + 
             'ON UPDATE CASCADE ON DELETE CASCADE;')
     execute('ALTER TABLE differential_expression_tests ' +
-            'ADD CONSTRAINT differential_expression_tests_fpkm_sample_1_fk ' + 
-            'FOREIGN KEY (fpkm_sample_1_id) REFERENCES fpkm_samples (id) ' + 
-            'ON UPDATE CASCADE ON DELETE RESTRICT;')
-    execute('ALTER TABLE differential_expression_tests ' +
-            'ADD CONSTRAINT differential_expression_tests_fpkm_sample_2_fk ' + 
-            'FOREIGN KEY (fpkm_sample_2_id) REFERENCES fpkm_samples (id) ' + 
-            'ON UPDATE CASCADE ON DELETE RESTRICT;')
+            'ADD CONSTRAINT differential_expression_tests_sample_comparisons_fk ' + 
+            'FOREIGN KEY (sample_comparison_id) ' +
+            'REFERENCES sample_comparisons (id) ' + 
+            'ON UPDATE CASCADE ON DELETE CASCADE;')
     #FPKM Sample foreign keys
-    #FK to genes table no longer needed
-#     execute('ALTER TABLE fpkm_samples ' +
-#             'ADD CONSTRAINT fpkm_samples_genes_fk ' + 
-#             'FOREIGN KEY (gene_id) REFERENCES genes (id) ' + 
-#             'ON UPDATE CASCADE ON DELETE CASCADE;')
     execute('ALTER TABLE fpkm_samples ' +
             'ADD CONSTRAINT fpkm_samples_transcripts_fk ' + 
             'FOREIGN KEY (transcript_id) REFERENCES transcripts (id) ' + 

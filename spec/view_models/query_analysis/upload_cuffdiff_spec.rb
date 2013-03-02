@@ -38,13 +38,19 @@ describe Upload_Cuffdiff do
     @it.save!
   end
   
+  it 'should work for 4 samples'
+  
   it 'should be transactional, writing either all the data or none at all'
+  
+  it 'should link the dataset to the user'
+  
+  it 'should add 0 users to the database'
   
   it 'should add 1 dataset to the database'
   
-  it 'should add 170 genes to the database'
-  
   it 'should add 406 transcripts to the database'
+  
+  it 'should add 170 genes to the database'
   
   it 'should add 406 sets of transcript fpkm tracking information to the database'
   
@@ -57,6 +63,8 @@ describe Upload_Cuffdiff do
   it 'should add 576 differential expression tests to the database'
   
   it 'should add X go terms to the database'
+  
+  it 'should add X transcript has go terms to the database'
   
   after(:each) do
     #Delete the temporary upload files

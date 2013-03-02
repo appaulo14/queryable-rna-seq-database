@@ -14,8 +14,8 @@
 #
 
 class DifferentialExpressionTest < ActiveRecord::Base
-  attr_accessible  :log_fold_change, :p_value, :fdr, :fpkm_sample_1, 
-                   :fpkm_sample_2, :test_status, :transcript, :gene
+  attr_accessible  :log_fold_change, :p_value, :fdr, :sample_1_fpkm, 
+                   :sample_1_fpkm, :test_status, :transcript, :gene
   
   POSSIBLE_TEST_STATUSES = ['NOTEST','LOWDATA','HIDATA','FAIL']
   
@@ -23,8 +23,9 @@ class DifferentialExpressionTest < ActiveRecord::Base
   #has_one :test_status, :foreign_key => :name
   belongs_to :gene
   belongs_to :transcript
-  belongs_to :fpkm_sample_1, :class_name => 'FpkmSample'
-  belongs_to :fpkm_sample_2, :class_name => 'FpkmSample'
+  belongs_to :sample_comparison
+  #belongs_to :fpkm_sample_1, :class_name => 'FpkmSample'
+  #belongs_to :fpkm_sample_2, :class_name => 'FpkmSample'
   
   #Validations
 #   validates :sample1, :presence => true

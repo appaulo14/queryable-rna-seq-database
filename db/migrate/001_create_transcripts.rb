@@ -8,12 +8,10 @@ class CreateTranscripts < ActiveRecord::Migration
         t.column :id, 'BIGINT UNSIGNED', :null => false
         t.column :dataset_id, 'BIGINT UNSIGNED', :null => false
         t.column :gene_id,'BIGINT UNSIGNED'
-        #t.column :fasta_sequence, 'longtext'
       when /postgresql/
         t.column :id, 'bigserial', :null => false, :unique => true
         t.column :dataset_id, 'BIGINT', :null => false
         t.column :gene_id,'BIGINT'
-        #t.column :fasta_sequence, :text
       else
         throw NotImplementedError.new("Unsupported adapter '#{adapter_type}'")
       end

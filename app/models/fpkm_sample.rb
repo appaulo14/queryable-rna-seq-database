@@ -19,7 +19,6 @@ class FpkmSample < ActiveRecord::Base
   
   #Associations
   belongs_to :transcript
-  #belongs_to :gene
   belongs_to :sample
   
   #Validation

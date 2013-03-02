@@ -71,11 +71,12 @@ ALTER SEQUENCE datasets_id_seq OWNED BY datasets.id;
 
 CREATE TABLE differential_expression_tests (
     id bigint NOT NULL,
-    fpkm_sample_1_id bigint NOT NULL,
-    fpkm_sample_2_id bigint NOT NULL,
     gene_id bigint,
     transcript_id bigint,
+    sample_comparison_id bigint NOT NULL,
     test_status character varying(255) NOT NULL,
+    sample_1_fpkm numeric NOT NULL,
+    sample_2_fpkm numeric NOT NULL,
     log_fold_change numeric NOT NULL,
     p_value numeric NOT NULL,
     fdr numeric NOT NULL
@@ -107,7 +108,7 @@ ALTER SEQUENCE differential_expression_tests_id_seq OWNED BY differential_expres
 
 CREATE TABLE fpkm_samples (
     id bigint NOT NULL,
-    transcript_id bigint,
+    transcript_id bigint NOT NULL,
     sample_id bigint NOT NULL,
     fpkm numeric NOT NULL,
     fpkm_hi numeric,
@@ -180,9 +181,29 @@ CREATE TABLE go_terms (
 --
 
 CREATE TABLE sample_comparisons (
+    id integer NOT NULL,
     sample_1_id integer NOT NULL,
     sample_2_id integer NOT NULL
 );
+
+
+--
+-- Name: sample_comparisons_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE sample_comparisons_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sample_comparisons_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE sample_comparisons_id_seq OWNED BY sample_comparisons.id;
 
 
 --
@@ -392,6 +413,13 @@ ALTER TABLE ONLY genes ALTER COLUMN id SET DEFAULT nextval('genes_id_seq'::regcl
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY sample_comparisons ALTER COLUMN id SET DEFAULT nextval('sample_comparisons_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY samples ALTER COLUMN id SET DEFAULT nextval('samples_id_seq'::regclass);
 
 
@@ -461,7 +489,7 @@ ALTER TABLE ONLY go_terms
 --
 
 ALTER TABLE ONLY sample_comparisons
-    ADD CONSTRAINT sample_comparisons_pkey PRIMARY KEY (sample_1_id, sample_2_id);
+    ADD CONSTRAINT sample_comparisons_pkey PRIMARY KEY (id);
 
 
 --
@@ -563,27 +591,19 @@ ALTER TABLE ONLY datasets
 
 
 --
--- Name: differential_expression_tests_fpkm_sample_1_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY differential_expression_tests
-    ADD CONSTRAINT differential_expression_tests_fpkm_sample_1_fk FOREIGN KEY (fpkm_sample_1_id) REFERENCES fpkm_samples(id) ON UPDATE CASCADE ON DELETE RESTRICT;
-
-
---
--- Name: differential_expression_tests_fpkm_sample_2_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY differential_expression_tests
-    ADD CONSTRAINT differential_expression_tests_fpkm_sample_2_fk FOREIGN KEY (fpkm_sample_2_id) REFERENCES fpkm_samples(id) ON UPDATE CASCADE ON DELETE RESTRICT;
-
-
---
 -- Name: differential_expression_tests_genes_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY differential_expression_tests
     ADD CONSTRAINT differential_expression_tests_genes_fk FOREIGN KEY (gene_id) REFERENCES genes(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: differential_expression_tests_sample_comparisons_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY differential_expression_tests
+    ADD CONSTRAINT differential_expression_tests_sample_comparisons_fk FOREIGN KEY (sample_comparison_id) REFERENCES sample_comparisons(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
