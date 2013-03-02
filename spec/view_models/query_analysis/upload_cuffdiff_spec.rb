@@ -66,11 +66,6 @@ describe Upload_Cuffdiff do
   
   it 'should add X transcript has go terms to the database'
   
-  after(:each) do
-    #Delete the temporary upload files
-    File.delete(@it.transcripts_fasta_file.tempfile.path)
-    File.delete(@it.transcript_diff_exp_file.tempfile.path)
-    File.delete(@it.gene_diff_exp_file.tempfile.path)
-    File.delete(@it.transcript_isoforms_file.tempfile.path)
-  end
+  it 'should delete the uploaded files when done'
+  
 end

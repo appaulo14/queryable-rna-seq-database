@@ -4,6 +4,12 @@
   <h1>Upload Your Cuffdiff Data</h1>
   
   <div class="sub-section rounded-corners" id="transcript_fasta_section">
+    <div class="sub-section-heading">Name Your Dataset</div>
+    <%= label(:dataset_name, "Dataset Name") %>
+    <%= uf.text_field :dataset_name %><br/><br/>
+  </div>
+  <br/><br/>
+  <div class="sub-section rounded-corners" id="transcript_fasta_section">
     <div class="sub-section-heading">Transcript Fasta File</div>
     <%= label(:transcripts_fasta, "Transcripts fasta") %>
     <%= uf.file_field :transcripts_fasta %><br/>

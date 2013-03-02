@@ -8,7 +8,8 @@ class Upload_Cuffdiff
                 :gene_diff_exp_file, 
                 :transcript_isoforms_file,
                 :has_diff_exp,
-                :has_transcript_isoforms
+                :has_transcript_isoforms,
+                :dataset_name
   
   #validate :validate_all_or_none_gene_files
   ##Validte for file presence only???
@@ -27,15 +28,72 @@ class Upload_Cuffdiff
   def save!
     return if not self.valid?
     #Create the dataset
-    dataset = Dataset.new(:user => @current_user)
-    if @has_diff_exp == '1'
-      dataset.has_transcript_diff_exp = true
-      dataset.has_gene_diff_exp = true
-    else
-      dataset.has_transcript_diff_exp = false
-      dataset.has_gene_diff_exp = false
+    ActiveRecord::Base.transaction do
+      dataset = Dataset.new(:user => @current_user)
+      if @has_diff_exp == '1'
+        dataset.has_transcript_diff_exp = true
+        dataset.has_gene_diff_exp = true
+      else
+        dataset.has_transcript_diff_exp = false
+        dataset.has_gene_diff_exp = false
+      end
+      dataset = (@has_transcript_isoforms == '1') ? true : false
+      dataset.blast_db_location = "db/blast_databases/#{Rails.env}/"
+      dataset.save!
+      dataset.blast_db_location = "db/blast_databases/#{Rails.env}/#{dataset.id}"
+      dataset.save!
+      #Read through the gene differential expression file
+      @gene_diff_exp_file.tempfile.readline #skip the header line
+      while not @gene_diff_exp_file.tempfile.eof?
+        cells = @gene_diff_exp_file.tempfile.readline.split("\t")
+        #Create the genes
+        gene = Gene.create!(:dataset => dataset, 
+                            :name_from_program = cells[0])
+        #Create sample 1 if not already created
+        sample_1_name = cells[4]
+        sample_1 = Sample.where(:dataset_id => dataset.id, 
+                                :name => sample_1_name)[0]
+        if sample_1.nil?
+          sample_1 = Sample.create!(:name => sample_1_name, 
+                                    :dataset_id => dataset.id)
+        end
+        #Create sample 2 if not already created
+        sample_2_name = cells[5]
+        sample_2 = Sample.where(:dataset_id => dataset.id, 
+                                :name => sample_2_name)[0]
+        if sample_2.nil?
+          sample_2 = Sample.create!(:name => sample_2_name, 
+                                    :dataset_id => dataset.id)
+        end
+        #Create the sample comparison if not already created
+        sample_comparison = 
+            SampleComparison.where(:sample_1_id => sample_1_id, 
+                                   :sample_2_id => sample_2_id)[0]
+        if sample_comparison.nil?
+          sample_comparison = 
+              SampleComparison.create!(:sample_1_id => sample_1_id, 
+                                       :sample_2_id => sample_2_id)
+        end
+        #Create the differential expression test
+      end
+      #Read through the transcript differential expression file
+      @transcript_diff_exp_file.tempfile.readline #skip the header line
+      while not @transcript_diff_exp_file.tempfile.eof?
+        cells = @transcript_diff_exp_file.tempfile.readline.split("\t")
+        transcript = Transcript.new(:dataset => dataset, 
+                                    :name_from_program = cells[0],
+                                    :gene)
+      end
     end
-    dataset = (@has_transcript_isoforms == 1) ? true : false
+    #Create Blast database
+    system("bin/blast/bin/makeblastdb " +
+           "-in #{@transcripts_fasta_file.tempfile.path} -title #{ds.id} " +
+           "-out #{ds.blast_db_location} -hash_index -dbtype nucl ")
+    #Delete the temporary upload files
+    File.delete(@transcripts_fasta_file.tempfile.path)
+    File.delete(@transcript_diff_exp_file.tempfile.path)
+    File.delete(@gene_diff_exp_file.tempfile.path)
+    File.delete(@transcript_isoforms_file.tempfile.path)
 #     child_pid = fork do
 #       env = Rails.env
 #       n = Dataset.count + 1
