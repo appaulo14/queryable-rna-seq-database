@@ -2,16 +2,50 @@
   type='text/javascript' ></script>
 <%= render 'shared/error_messages', :object => @upload_files %>
 <%= form_for( @upload_files,{:url => "upload_trinity_with_edger_transcripts_and_genes"} ) do |uf| %>
-  <h2>
-    Please upload your Trinity.fasta file
-    <%= image_tag('question_mark.png', :id=>'trinity_fasta_tooltip') %>
-  </h2>
-  <div>
+  <h1>Upload Your Trinity With EdgeR Data</h1>
+  
+  <div class="sub-section rounded-corners" id="dataset_name_section">
+    <div class="sub-section-heading">Name Your Dataset</div>
+    <p style="text-align:center">
+      <%= label(:dataset_name, "Dataset Name") %>
+      <%= uf.text_field :dataset_name %>
+    </p>
+  </div>
+  <br/><br/>
+  <div class="sub-section rounded-corners" id="transcript_fasta_section">
+    <div class="sub-section-heading">
+      Transcript Fasta File
+      <%= image_tag('question_mark.png', :id=>'trinity_fasta_tooltip') %>
+    </div>
     <%= uf.label( :trinity_fasta_file, "Trinity.fasta file" ) %>
     <%= uf.file_field :trinity_fasta_file %>
   </div>
+  <br/><br/>
+  <div class="sub-section rounded-corners" id="differential_expression_section">
+    <div class="sub-section-heading">
+      Differential Expression Test Files
+      <%= image_tag('question_mark.png', :id=>'differential_expression_tooltip')%>
+    </div>
+    <div><b>Sample 1:</b>
+      <%= uf.label('transcript_diff_exp_files') %>
+      <%= file_field_tag('upload_trinity_with_edge_r_transcripts_and_genes[transcript_diff_exp_files][]') %>
+      <%= uf.label('gene_diff_exp_files') %>
+      <%= file_field_tag('upload_trinity_with_edge_r_transcripts_and_genes[gene_diff_exp_files][]') %>
+    </div>
+  </div>
+  <br/><br/>
+  <div class="sub-section rounded-corners" id="differential_expression_section">
+    <div class="sub-section-heading">
+      FPKM Files
+      <%= image_tag('question_mark.png', :id=>'fpkm_tooltip') %>
+    </div>
+    <%= uf.label(:transcript_fpkm_file, 'Transcript FPKM File') %>
+    <%= uf.file_field :transcript_fpkm_file %><br/>
+    <%= uf.label(:gene_fpkm_file, 'Gene FPKM File') %>
+    <%= uf.file_field :gene_fpkm_file %>
+  </div>
   
-  <h2>Please upload your Transcript and Gene 
+  <!--<h2>Please upload your Transcript and Gene 
     differential expression test file(s) (all_diff_expression_results.txt)
     <%= image_tag('question_mark.png', :id=>'differential_expression_tooltip')%>
   </h2>
@@ -38,7 +72,7 @@
   
   <h2>
     Please upload your Transcript and Gene fpkm tracking file.
-    <%= image_tag('question_mark.png', :id=>'fpkm_tooltip') %>
+    
   </h2>
   <div>
     <%= uf.label( :gene_fpkm_file, 
@@ -49,7 +83,7 @@
     <%= uf.label( :transcript_fpkm_file, 
       "Transcript FPKM file" ) %>
     <%= uf.file_field( :transcript_fpkm_file ) %>
-  </div>
+  </div>-->
   <p><%= submit_tag("Upload files", :id => 'upload_files') %></p>
 <% end %>
 <!--<script type="text/javascript">

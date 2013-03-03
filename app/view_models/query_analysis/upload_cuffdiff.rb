@@ -2,6 +2,8 @@ class Upload_Cuffdiff
   include ActiveModel::Validations
   include ActiveModel::Conversion
   extend ActiveModel::Naming
+  require 'tempfile'
+  require 'open3'
   
   attr_accessor :transcripts_fasta_file, 
                 :transcript_diff_exp_file, 
@@ -28,7 +30,7 @@ class Upload_Cuffdiff
   def save!
     return if not self.valid?
     #Create the dataset
-    ActiveRecord::Base.transaction do
+    ActiveRecord::Base.transaction do   #Transactions work with sub-methods
       dataset = Dataset.new(:user => @current_user,
                             :name => dataset_name)
       if @has_diff_exp == '1'
@@ -102,8 +104,8 @@ class Upload_Cuffdiff
         gene = Gene.where(:dataset_id => dataset.id,
                           :name_from_program => cells[1])[0]
         transcript = Transcript.create!(:dataset => dataset, 
-                                    :name_from_program => cells[0],
-                                    :gene => gene)
+                                        :name_from_program => cells[0],
+                                        :gene => gene)
         #Create sample 1 if not already created
         sample_1_name = cells[4]
         sample_1 = Sample.where(:dataset_id => dataset.id, 
@@ -178,40 +180,50 @@ class Upload_Cuffdiff
       end
       #Create Blast database
       #If this fails and we or it through an exception the transaction will rollback
-      system("bin/blast/bin/makeblastdb " +
+      system("#{Rails.root}/bin/blast/bin/makeblastdb " +
             "-in #{@transcripts_fasta_file.tempfile.path} " +
             "-title #{dataset.id} " +
             "-out #{dataset.blast_db_location} " +
             "-hash_index -dbtype nucl ")
       #Run blast2go
-      blast_xml_output_file = Tempfile.new('blastx')
-      blast_xml_output_file.close
-      system("bin/blast/bin/blastx " +
-            "-remote -db nr -query #{@transcripts_fasta_file.tempfile.path} " +
-            "-out #{blast_xml_output_file.path} " +
-            "-show_gis -outfmt '5' ")
-      blast2go_output_file = Tempfile.new('blast2go')
-      blast2go_output_file.close
-      system("java -Xmx4000m -cp *:bin/blast2go/ext/*: es.blast2go.prog.B2GAnnotPipe " +
-            "-in #{blast_xml_output_file.path} " +
-            "-out #{blast2go_output_file.path} " +
-            "-prop bin/blast2go/b2gPipe.properties -annot")
-      f=File.open("#{blast2go_output_file.path}.annot}")
-      while not f.eof?
-        line = f.readline
+#       blast_xml_output_file = Tempfile.new('blastx')
+#       blast_xml_output_file.close
+#       stdout, stderr, status = 
+#         Open3.capture3("#{Rails.root}/bin/blast/bin/blastx " +
+#                      "-remote -db nr " +
+#                      "-query #{@transcripts_fasta_file.tempfile.path} " +
+#                      "-out #{blast_xml_output_file.path} " +
+#                      "-show_gis -outfmt '5' ")
+#       blast2go_output_file = Tempfile.new('blast2go')
+#       blast2go_output_file.close
+#       blast2go_dir = "#{Rails.root}/bin/blast2go"
+#       #java -Xmx4000m -cp *:$B2GPIPEPATH/ext/*:$B2GPIPEPATH/* es.blast2go.prog.B2GAnnotPipe -prop bin/blast2go/b2gPipe.properties -annot -in /media/sf_MSE_Project/Workshop_Of_Paul/BLAST/b2g4pipe/10_BlastResults_2011.xml -out goat2
+#       
+#       stdout, stderr, status = 
+#         Open3.capture3("java -Xmx4000m " +
+#                         "-cp *:#{blast2go_dir}/ext/*:#{blast2go_dir}/* " +
+#                         "es.blast2go.prog.B2GAnnotPipe " +
+#                         "-in #{blast_xml_output_file.path} " +
+#                         "-out #{blast2go_output_file.path} " +
+#                         "-prop #{blast2go_dir}/b2gPipe.properties -annot")
+#       go_terms_file = File.open("#{blast2go_output_file.path}.annot")
+      go_terms_file = File.open('/tmp/blast2go20130302-31641-126n2vl.annot')
+      while not go_terms_file.eof?
+        line = go_terms_file.readline
         (transcript_name, go_id, term) = line.split("\t")
         go_term = GoTerm.find_by_id(go_id)
-        if (go_term.nil?)
-          go_term = GoTerm.create!(:id=>go_id,:term => term)
+        if go_term.nil?
+          go_term = GoTerm.create!(:id => go_id, :term => term)
         end
         transcript = Transcript.where(:dataset_id => dataset.id, 
                                       :name_from_program => transcript_name)[0]
-        TranscriptHasGoTerm.new(:transcript => transcript, 
-                                :go_term => go_term)
+        TranscriptHasGoTerm.create!(:transcript => transcript, 
+                                    :go_term => go_term)
       end
-      f.close
-      blast_xml_output_file.delete
-      blast2go_output_file.delete
+      go_terms_file.close
+#       File.delete(go_terms_file.path)
+#       File.delete(blast_xml_output_file.path)
+#       File.delete(blast2go_output_file.path)
     end
     #Close the temporary upload files
     @transcripts_fasta_file.tempfile.close

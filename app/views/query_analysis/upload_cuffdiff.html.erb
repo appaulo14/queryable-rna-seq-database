@@ -3,10 +3,12 @@
 <%= form_for(@upload_cuffdiff,{:url => "upload_cuffdiff"} ) do |uf| %>
   <h1>Upload Your Cuffdiff Data</h1>
   
-  <div class="sub-section rounded-corners" id="transcript_fasta_section">
+  <div class="sub-section rounded-corners" id="dataset_name_section">
     <div class="sub-section-heading">Name Your Dataset</div>
-    <%= label(:dataset_name, "Dataset Name") %>
-    <%= uf.text_field :dataset_name %><br/><br/>
+    <p style="text-align:center">
+      <%= label(:dataset_name, "Dataset Name") %>
+      <%= uf.text_field :dataset_name %>
+    </p>
   </div>
   <br/><br/>
   <div class="sub-section rounded-corners" id="transcript_fasta_section">

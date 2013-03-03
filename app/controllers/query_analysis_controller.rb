@@ -65,6 +65,7 @@ class QueryAnalysisController < ApplicationController
           @upload_files = Upload_Trinity_With_EdgeR_Transcripts_And_Genes.new(current_user)
           @upload_files.set_attributes_and_defaults({})
       elsif (request.post?)
+        debugger
         @upload_files = Upload_Trinity_With_EdgeR_Transcripts_And_Genes.new(current_user)
         @upload_files.set_attributes_and_defaults()
         @upload_files.save!

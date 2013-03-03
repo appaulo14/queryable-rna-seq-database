@@ -4,10 +4,12 @@ class Upload_Trinity_With_EdgeR_Transcripts_And_Genes
   extend ActiveModel::Naming
   
   attr_accessor :trinity_fasta_file, 
-                :gene_differential_expression_files, #Array
-                :transcript_differential_expression_files, 
+                :gene_diff_exp_files, #Array
+                :transcript_diff_exp_files, #Array 
                 :gene_fpkm_file, 
-                :transcript_fpkm_file
+                :transcript_fpkm_file,
+                :dataset_name,
+                :has_gene_diff_exp
   
   validate :validate_all_or_none_gene_files
   
