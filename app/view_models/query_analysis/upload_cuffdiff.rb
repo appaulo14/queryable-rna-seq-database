@@ -29,7 +29,8 @@ class Upload_Cuffdiff
     return if not self.valid?
     #Create the dataset
     ActiveRecord::Base.transaction do
-      dataset = Dataset.new(:user => @current_user)
+      dataset = Dataset.new(:user => @current_user,
+                            :name => dataset_name)
       if @has_diff_exp == '1'
         dataset.has_transcript_diff_exp = true
         dataset.has_gene_diff_exp = true
@@ -37,7 +38,11 @@ class Upload_Cuffdiff
         dataset.has_transcript_diff_exp = false
         dataset.has_gene_diff_exp = false
       end
-      dataset = (@has_transcript_isoforms == '1') ? true : false
+      if @has_transcript_isoforms == '1'
+        dataset.has_transcript_isoforms = true
+      else
+        dataset.has_transcript_isoforms = false
+      end
       dataset.blast_db_location = "db/blast_databases/#{Rails.env}/"
       dataset.save!
       dataset.blast_db_location = "db/blast_databases/#{Rails.env}/#{dataset.id}"
@@ -45,17 +50,19 @@ class Upload_Cuffdiff
       #Read through the gene differential expression file
       @gene_diff_exp_file.tempfile.readline #skip the header line
       while not @gene_diff_exp_file.tempfile.eof?
-        cells = @gene_diff_exp_file.tempfile.readline.split("\t")
+        line = @gene_diff_exp_file.tempfile.readline
+        next if line.blank?
+        cells = line.split("\t")
         #Create the genes
         gene = Gene.create!(:dataset => dataset, 
-                            :name_from_program = cells[0])
+                            :name_from_program => cells[0])
         #Create sample 1 if not already created
         sample_1_name = cells[4]
         sample_1 = Sample.where(:dataset_id => dataset.id, 
                                 :name => sample_1_name)[0]
         if sample_1.nil?
           sample_1 = Sample.create!(:name => sample_1_name, 
-                                    :dataset_id => dataset.id)
+                                    :dataset => dataset)
         end
         #Create sample 2 if not already created
         sample_2_name = cells[5]
@@ -63,32 +70,154 @@ class Upload_Cuffdiff
                                 :name => sample_2_name)[0]
         if sample_2.nil?
           sample_2 = Sample.create!(:name => sample_2_name, 
-                                    :dataset_id => dataset.id)
+                                    :dataset => dataset)
         end
         #Create the sample comparison if not already created
         sample_comparison = 
-            SampleComparison.where(:sample_1_id => sample_1_id, 
-                                   :sample_2_id => sample_2_id)[0]
+            SampleComparison.where(:sample_1_id => sample_1.id, 
+                                   :sample_2_id => sample_2.id)[0]
         if sample_comparison.nil?
           sample_comparison = 
-              SampleComparison.create!(:sample_1_id => sample_1_id, 
-                                       :sample_2_id => sample_2_id)
+              SampleComparison.create!(:sample_1 => sample_1, 
+                                       :sample_2 => sample_2)
         end
         #Create the differential expression test
+        DifferentialExpressionTest.create!(:gene => gene,
+                                           :test_status => cells[6],
+                                           :sample_1_fpkm => cells[7],
+                                           :sample_2_fpkm => cells[8],
+                                           :log_fold_change => cells[9],
+                                           :test_statistic => cells[10],
+                                           :p_value => cells[11],
+                                           :fdr => cells[12],
+                                           :sample_comparison => sample_comparison)
       end
       #Read through the transcript differential expression file
       @transcript_diff_exp_file.tempfile.readline #skip the header line
       while not @transcript_diff_exp_file.tempfile.eof?
-        cells = @transcript_diff_exp_file.tempfile.readline.split("\t")
-        transcript = Transcript.new(:dataset => dataset, 
-                                    :name_from_program = cells[0],
-                                    :gene)
+        line = @transcript_diff_exp_file.tempfile.readline
+        next if line.blank?
+        cells = line.split("\t")
+        next if cells.blank?
+        gene = Gene.where(:dataset_id => dataset.id,
+                          :name_from_program => cells[1])[0]
+        transcript = Transcript.create!(:dataset => dataset, 
+                                    :name_from_program => cells[0],
+                                    :gene => gene)
+        #Create sample 1 if not already created
+        sample_1_name = cells[4]
+        sample_1 = Sample.where(:dataset_id => dataset.id, 
+                                :name => sample_1_name)[0]
+        if sample_1.nil?
+          sample_1 = Sample.create!(:name => sample_1_name, 
+                                    :dataset => dataset)
+        end
+        #Create sample 2 if not already created
+        sample_2_name = cells[5]
+        sample_2 = Sample.where(:dataset_id => dataset.id, 
+                                :name => sample_2_name)[0]
+        if sample_2.nil?
+          sample_2 = Sample.create!(:name => sample_2_name, 
+                                    :dataset => dataset)
+        end
+        #Create the sample comparison if not already created
+        sample_comparison = 
+            SampleComparison.where(:sample_1_id => sample_1.id, 
+                                   :sample_2_id => sample_2.id)[0]
+        if sample_comparison.nil?
+          sample_comparison = 
+              SampleComparison.create!(:sample_1 => sample_1, 
+                                       :sample_2 => sample_2)
+        end
+        #Create the differential expression test
+        debugger if cells[6].blank?
+        DifferentialExpressionTest.create!(:transcript => transcript,
+                                           :test_status => cells[6],
+                                           :sample_1_fpkm => cells[7],
+                                           :sample_2_fpkm => cells[8],
+                                           :log_fold_change => cells[9],
+                                           :test_statistic => cells[10],
+                                           :p_value => cells[11],
+                                           :fdr => cells[12],
+                                           :sample_comparison => sample_comparison)
       end
+      #Read through the transcript isoforms file
+      headers = @transcript_isoforms_file.tempfile.readline.split("\t")
+      samples = []
+      next_index = 9
+      while (next_index < headers.count)
+        sample_name = headers[next_index].match(/(.+)_FPKM/).captures[0]
+        samples << Sample.where(:dataset_id => dataset.id,
+                                :name => sample_name)[0]
+        next_index = next_index + 4
+      end
+      while not @transcript_isoforms_file.tempfile.eof?
+        line = @transcript_isoforms_file.tempfile.readline
+        next if line.blank?
+        cells = line.split("\t")
+        transcript = Transcript.where(:dataset_id => dataset.id,
+                                      :name_from_program => cells[0])[0]
+        TranscriptFpkmTrackingInformation.create!(:transcript => transcript,
+                                                  :class_code => cells[1],
+                                                  :length => cells[7],
+                                                  :coverage => cells[8])
+        if transcript.gene.nil?
+          gene = Gene.where(:dataset_id => dataset.id,
+                            :name_from_program => cells[3])[0]
+          transcript.gene = gene
+        end
+        (0..samples.count-1).each do |i|
+          sample = samples[i]
+          FpkmSample.create!(:transcript => transcript,
+                            :sample => sample,
+                            :fpkm => cells[9+(3*i)],
+                            :fpkm_lo => cells[10+(3*i)],
+                            :fpkm_hi => cells[11+(3*i)],
+                            :status => cells[12+(3*i)])
+        end
+      end
+      #Create Blast database
+      #If this fails and we or it through an exception the transaction will rollback
+      system("bin/blast/bin/makeblastdb " +
+            "-in #{@transcripts_fasta_file.tempfile.path} " +
+            "-title #{dataset.id} " +
+            "-out #{dataset.blast_db_location} " +
+            "-hash_index -dbtype nucl ")
+      #Run blast2go
+      blast_xml_output_file = Tempfile.new('blastx')
+      blast_xml_output_file.close
+      system("bin/blast/bin/blastx " +
+            "-remote -db nr -query #{@transcripts_fasta_file.tempfile.path} " +
+            "-out #{blast_xml_output_file.path} " +
+            "-show_gis -outfmt '5' ")
+      blast2go_output_file = Tempfile.new('blast2go')
+      blast2go_output_file.close
+      system("java -Xmx4000m -cp *:bin/blast2go/ext/*: es.blast2go.prog.B2GAnnotPipe " +
+            "-in #{blast_xml_output_file.path} " +
+            "-out #{blast2go_output_file.path} " +
+            "-prop bin/blast2go/b2gPipe.properties -annot")
+      f=File.open("#{blast2go_output_file.path}.annot}")
+      while not f.eof?
+        line = f.readline
+        (transcript_name, go_id, term) = line.split("\t")
+        go_term = GoTerm.find_by_id(go_id)
+        if (go_term.nil?)
+          go_term = GoTerm.create!(:id=>go_id,:term => term)
+        end
+        transcript = Transcript.where(:dataset_id => dataset.id, 
+                                      :name_from_program => transcript_name)[0]
+        TranscriptHasGoTerm.new(:transcript => transcript, 
+                                :go_term => go_term)
+      end
+      f.close
+      blast_xml_output_file.delete
+      blast2go_output_file.delete
     end
-    #Create Blast database
-    system("bin/blast/bin/makeblastdb " +
-           "-in #{@transcripts_fasta_file.tempfile.path} -title #{ds.id} " +
-           "-out #{ds.blast_db_location} -hash_index -dbtype nucl ")
+    #Close the temporary upload files
+    @transcripts_fasta_file.tempfile.close
+    @transcript_diff_exp_file.tempfile.close
+    @gene_diff_exp_file.tempfile.close
+    @transcript_isoforms_file.tempfile.close
     #Delete the temporary upload files
     File.delete(@transcripts_fasta_file.tempfile.path)
     File.delete(@transcript_diff_exp_file.tempfile.path)

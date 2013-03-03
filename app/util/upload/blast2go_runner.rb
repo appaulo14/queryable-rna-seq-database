@@ -18,7 +18,7 @@ class Blast2go_Runner
       if (go_term.nil?)
         GoTerm.create!(:id=>go_id,:term => term)
       end
-      transcript = Transcript.where(:dataset_id => dataset_id, :name_from_program => name_from_program)
+      transcript = Transcript.where(:dataset_id => dataset.id, :name_from_program => name_from_program)
       TranscriptHasGoTerm.new(:transcript => transcript, go_term => go_term)
     end
     f.close

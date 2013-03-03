@@ -2,20 +2,24 @@
 #
 # Table name: differential_expression_tests
 #
-#  id               :integer          not null, primary key
-#  fpkm_sample_1_id :integer          not null
-#  fpkm_sample_2_id :integer          not null
-#  gene_id          :integer
-#  transcript_id    :integer
-#  test_status      :string(255)      not null
-#  log_fold_change  :decimal(, )      not null
-#  p_value          :decimal(, )      not null
-#  fdr              :decimal(, )      not null
+#  id                   :integer          not null, primary key
+#  gene_id              :integer
+#  transcript_id        :integer
+#  sample_comparison_id :integer          not null
+#  test_status          :string(255)      not null
+#  sample_1_fpkm        :float            not null
+#  sample_2_fpkm        :float            not null
+#  log_fold_change      :float            not null
+#  test_statistic       :float            not null
+#  p_value              :float            not null
+#  fdr                  :float            not null
 #
 
 class DifferentialExpressionTest < ActiveRecord::Base
   attr_accessible  :log_fold_change, :p_value, :fdr, :sample_1_fpkm, 
-                   :sample_1_fpkm, :test_status, :transcript, :gene
+                   :sample_1_fpkm, :sample_2_fpkm, 
+                   :test_status, :transcript, :gene,
+                   :sample_comparison, :test_statistic
   
   POSSIBLE_TEST_STATUSES = ['NOTEST','LOWDATA','HIDATA','FAIL']
   

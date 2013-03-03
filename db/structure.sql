@@ -75,11 +75,12 @@ CREATE TABLE differential_expression_tests (
     transcript_id bigint,
     sample_comparison_id bigint NOT NULL,
     test_status character varying(255) NOT NULL,
-    sample_1_fpkm numeric NOT NULL,
-    sample_2_fpkm numeric NOT NULL,
-    log_fold_change numeric NOT NULL,
-    p_value numeric NOT NULL,
-    fdr numeric NOT NULL
+    sample_1_fpkm double precision NOT NULL,
+    sample_2_fpkm double precision NOT NULL,
+    log_fold_change double precision NOT NULL,
+    test_statistic double precision NOT NULL,
+    p_value double precision NOT NULL,
+    fdr double precision NOT NULL
 );
 
 
@@ -110,9 +111,9 @@ CREATE TABLE fpkm_samples (
     id bigint NOT NULL,
     transcript_id bigint NOT NULL,
     sample_id bigint NOT NULL,
-    fpkm numeric NOT NULL,
-    fpkm_hi numeric,
-    fpkm_lo numeric,
+    fpkm double precision NOT NULL,
+    fpkm_hi double precision,
+    fpkm_lo double precision,
     status character varying(255)
 );
 
@@ -285,7 +286,7 @@ CREATE TABLE transcript_fpkm_tracking_informations (
     transcript_id bigint NOT NULL,
     class_code character varying(255) NOT NULL,
     length integer NOT NULL,
-    coverage numeric
+    coverage character varying(255)
 );
 
 
@@ -307,8 +308,7 @@ CREATE TABLE transcripts (
     id bigint NOT NULL,
     dataset_id bigint NOT NULL,
     gene_id bigint,
-    name_from_program character varying(255) NOT NULL,
-    blast_seq_id character varying(255) NOT NULL
+    name_from_program character varying(255) NOT NULL
 );
 
 

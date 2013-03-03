@@ -5,7 +5,7 @@ describe Upload_Cuffdiff do
     #Change to the directory of this spec
     Dir.chdir("#{Rails.root}/spec/view_models/query_analysis")
     #Make copies of the test files
-    FileUtils.copy('transcripts.fasta','cuffdiff_fasta_file')
+    FileUtils.copy('cuff_transcripts.fasta','cuffdiff_fasta_file')
     FileUtils.copy('isoform_exp.diff','transcript_diff_exp_file')
     FileUtils.copy('gene_exp.diff', 'gene_diff_exp_file')
     FileUtils.copy('isoforms.fpkm_tracking','transcript_isoform_file')
@@ -26,6 +26,7 @@ describe Upload_Cuffdiff do
     #Create and fill in the class
     @it = Upload_Cuffdiff.new(FactoryGirl.create(:user))
     @it.set_attributes_and_defaults()
+    @it.dataset_name = 'Test Dataset'
     @it.has_diff_exp = true
     @it.has_transcript_isoforms = true
     @it.transcripts_fasta_file = uploaded_fasta_file
@@ -34,7 +35,7 @@ describe Upload_Cuffdiff do
     @it.transcript_isoforms_file = uploaded_transcript_isoform_file
   end
   
-  it 'should save with errors if valid' do
+  it 'should save without errors if valid' do
     @it.save!
   end
   
@@ -48,9 +49,9 @@ describe Upload_Cuffdiff do
   
   it 'should add 1 dataset to the database'
   
-  it 'should add 406 transcripts to the database'
+  it 'should add 10 transcripts to the database'
   
-  it 'should add 170 genes to the database'
+  it 'should add 10 genes to the database'
   
   it 'should add 406 sets of transcript fpkm tracking information to the database'
   

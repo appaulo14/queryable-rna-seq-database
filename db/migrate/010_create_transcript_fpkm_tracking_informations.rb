@@ -14,7 +14,7 @@ class CreateTranscriptFpkmTrackingInformations < ActiveRecord::Migration
       #Add the other columns
       t.string :class_code, :null => false
       t.integer :length, :null => false
-      t.decimal :coverage
+      t.string :coverage
 
       #t.timestamps
     end

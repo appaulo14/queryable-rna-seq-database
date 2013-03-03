@@ -3,12 +3,11 @@
 # Table name: fpkm_samples
 #
 #  id            :integer          not null, primary key
-#  gene_id       :integer
-#  transcript_id :integer
+#  transcript_id :integer          not null
 #  sample_id     :integer          not null
-#  fpkm          :decimal(, )      not null
-#  fpkm_hi       :decimal(, )
-#  fpkm_lo       :decimal(, )
+#  fpkm          :float            not null
+#  fpkm_hi       :float
+#  fpkm_lo       :float
 #  status        :string(255)
 #
 

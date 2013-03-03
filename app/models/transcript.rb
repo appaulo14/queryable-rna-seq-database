@@ -6,12 +6,21 @@
 #  dataset_id        :integer          not null
 #  gene_id           :integer
 #  name_from_program :string(255)      not null
+#
+
+# == Schema Information
+#
+# Table name: transcripts
+#
+#  id                :integer          not null, primary key
+#  dataset_id        :integer          not null
+#  gene_id           :integer
+#  name_from_program :string(255)      not null
 #  blast_seq_id      :string(255)      not null
 #
 
 class Transcript < ActiveRecord::Base
-    attr_accessible :gene, :dataset, :blast_seq_id, :name_from_program, 
-                    :fasta_description
+    attr_accessible :gene, :dataset, :name_from_program
   
   ###Constants###
   #Based off the NCBI fasta format guide: 

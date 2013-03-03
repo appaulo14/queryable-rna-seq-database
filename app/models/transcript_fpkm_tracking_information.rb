@@ -5,7 +5,7 @@
 #  transcript_id :integer          not null, primary key
 #  class_code    :string(255)      not null
 #  length        :integer          not null
-#  coverage      :decimal(, )
+#  coverage      :string(255)
 #
 
 class TranscriptFpkmTrackingInformation < ActiveRecord::Base
