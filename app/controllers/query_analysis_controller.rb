@@ -58,52 +58,28 @@ class QueryAnalysisController < ApplicationController
     end
     
     def upload_trinity_with_edger_transcripts
+      if (request.get?)
+        @upload_files = Upload_Trinity_With_EdgeR_Transcripts.new(current_user)
+        @upload_files.set_attributes_and_defaults({})
+      elsif (request.post?)
+        debugger
+        @upload_files = Upload_Trinity_With_EdgeR_Transcripts.new(current_user)
+        @upload_files.set_attributes_and_defaults(params[:upload_trinity_with_edger_transcripts])
+        @upload_files.save!
+      end
     end
     
     def upload_trinity_with_edger_transcripts_and_genes
       if (request.get?)
-          @upload_files = Upload_Trinity_With_EdgeR_Transcripts_And_Genes.new(current_user)
-          @upload_files.set_attributes_and_defaults({})
+        @upload_files = Upload_Trinity_With_EdgeR_Transcripts_And_Genes.new(current_user)
+        @upload_files.set_attributes_and_defaults({})
       elsif (request.post?)
         debugger
         @upload_files = Upload_Trinity_With_EdgeR_Transcripts_And_Genes.new(current_user)
-        @upload_files.set_attributes_and_defaults()
+        @upload_files.set_attributes_and_defaults(params[:upload_trinity_with_edger_transcripts_and_genes])
         @upload_files.save!
-#           debugger if ENV['RAILS_DEBUG'] == 'true'
-#           @upload_edgeR = Upload_EdgeR.new(params[:upload_edge_r])
-#           if @upload_edgeR.valid?
-#              @upload_edgeR.save!
-#              flash[:success] = "Success"
-#           else
-#               flash[:success]="Failure"
-#           end
       end
     end
-
-#     def upload_edgeR
-#         if (request.get?)
-#           @upload_edgeR = Upload_EdgeR.new
-#         elsif (request.post?)
-#           debugger if ENV['RAILS_DEBUG'] == 'true'
-#           @upload_edgeR = Upload_EdgeR.new(params[:upload_edge_r])
-#           if @upload_edgeR.valid?
-#              @upload_edgeR.save!
-#              flash[:success] = "Success"
-#           else
-#               flash[:success]="Failure"
-#           end
-# #           params.keys.each do |key|
-# #               if params[key].kind_of? ActionDispatch::Http::UploadedFile
-# #                   uploaded_file = params[key].tempfile
-# #                   #file_to_write = Rails.root.join('tmp/file_uploads', uploaded_file.original_filename)
-# #                   #File.open(file_to_write, 'wb') do |file|
-# #                   #file.write(uploaded_file.read)
-# #                   #TODO: Be sure to delete these files when finished
-# #                   #end
-# #               end
-# #           end
-#         end
-#     end
 
     def query_diff_exp_transcripts
       #Create the view model, giving the current user

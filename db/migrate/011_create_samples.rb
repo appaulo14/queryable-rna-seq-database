@@ -12,7 +12,7 @@ class CreateSamples < ActiveRecord::Migration
       else
         throw NotImplementedError.new("Unknown adapter type '#{adapter_type}'")
       end
-      t.string :name
+      t.string :name, :null => false
       t.integer :dataset_id, :null => false
 
       #t.timestamps

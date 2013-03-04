@@ -14,22 +14,6 @@
 #  updated_at              :datetime         not null
 #
 
-# == Schema Information
-#
-# Table name: datasets
-#
-#  id                      :integer          not null, primary key
-#  name                    :string(255)      not null
-#  has_transcript_diff_exp :boolean          not null
-#  has_transcript_isoforms :boolean          not null
-#  has_gene_diff_exp       :boolean          not null
-#  blast_db_location       :string(255)      not null
-#  user_id                 :integer          not null
-#  when_last_queried       :datetime
-#  created_at              :datetime         not null
-#  updated_at              :datetime         not null
-#
-
 require 'spec_helper'
 
 describe Dataset do
@@ -67,6 +51,7 @@ describe Dataset do
       @it.destroy
       Transcript.find_all_by_dataset_id(@it.id).should be_empty
     end
+    
     it 'should destroy all associated genes' do
       FactoryGirl.create(:gene, :dataset_id => @it.id)
       FactoryGirl.create(:gene, :dataset_id => @it.id)
@@ -74,6 +59,7 @@ describe Dataset do
       @it.destroy
       Gene.find_all_by_dataset_id(@it.id).should be_empty
     end
+    
     it 'should destroy all associated samples' do
       FactoryGirl.create(:sample, :dataset_id => @it.id)
       FactoryGirl.create(:sample, :dataset_id => @it.id)
@@ -159,7 +145,7 @@ describe Dataset do
       it 'should convert number assigments besides 1 to false' do
         [45, -4.5, 0,1000000].each do |value|
           @it.has_transcript_diff_exp = value
-          @it.has_transcript_diff_exp.to_s.should eq('false')
+          @it.has_transcript_diff_exp.should be_false
         end
       end
       
@@ -233,7 +219,7 @@ describe Dataset do
       it 'should convert number assignments besides 1 to false' do
         [45, -4.5, 0,1000000].each do |value|
           @it.has_transcript_isoforms = value
-          @it.has_transcript_isoforms.to_s.should eq('false')
+          @it.has_transcript_isoforms.should be_false
         end
       end
       
@@ -307,7 +293,7 @@ describe Dataset do
       it 'should convert number assignments besides 1 to false' do
         [45, -4.5, 0,1000000].each do |value|
           @it.has_gene_diff_exp = value
-          @it.has_gene_diff_exp.to_s.should eq('false')
+          @it.has_gene_diff_exp.should be_false
         end
       end
       
@@ -391,7 +377,7 @@ describe Dataset do
       
       it 'should not be valid for numbers' do
         [45, -4.5, 0,1000000].each do |value|
-          #A new dataset is created each time here because of a strange 
+          #A new dataset is created each time for this test because of a strange 
           #     behavior where assignment no longer works after the 
           #     firt assignment to when_last_queried
           @it =  FactoryGirl.build(:dataset)

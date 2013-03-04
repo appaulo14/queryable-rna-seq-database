@@ -26,7 +26,7 @@
       Differential Expression Test Files
       <%= image_tag('question_mark.png', :id=>'differential_expression_tooltip')%>
     </div>
-    <div><b>Sample 1:</b>
+    <div><b>Sample Comparison 1:</b>
       <%= uf.label('transcript_diff_exp_files') %>
       <%= file_field_tag('upload_trinity_with_edge_r_transcripts_and_genes[transcript_diff_exp_files][]') %>
       <%= uf.label('gene_diff_exp_files') %>
@@ -84,7 +84,7 @@
       "Transcript FPKM file" ) %>
     <%= uf.file_field( :transcript_fpkm_file ) %>
   </div>-->
-  <p><%= submit_tag("Upload files", :id => 'upload_files') %></p>
+  <p><%= submit_tag("Upload files", :id => 'upload_files', :disable_with => 'Uploading files') %></p>
 <% end %>
 <!--<script type="text/javascript">
 $(document).ready(function()

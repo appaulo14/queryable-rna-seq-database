@@ -60,16 +60,25 @@ FactoryGirl.define do
         id                      {Transcript.count + 1}
         name_from_program       'TCONS_00001'
         dataset                 #{build(:dataset, :id => 1)}
-        blast_seq_id            'fsfsd'
     end
     
     factory :dataset do
-      name                      'Dataset_X'
+      name                      {Faker::Name.name}
       has_transcript_diff_exp   true
       has_transcript_isoforms   true
       has_gene_diff_exp         true
       blast_db_location         'db/blast_databases/test/1_db'
       user
+    end
+    
+    factory :sample do
+      name                      {Faker::Name.name}
+      dataset
+    end
+    
+    factory :sample_comparison do
+      sample_1                 {FactoryGirl.create(:sample)}
+      sample_2                 {FactoryGirl.create(:sample)}
     end
     
 #     

@@ -213,7 +213,7 @@ ALTER SEQUENCE sample_comparisons_id_seq OWNED BY sample_comparisons.id;
 
 CREATE TABLE samples (
     id bigint NOT NULL,
-    name character varying(255),
+    name character varying(255) NOT NULL,
     dataset_id integer NOT NULL
 );
 

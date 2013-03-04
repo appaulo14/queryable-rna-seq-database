@@ -1,4 +1,4 @@
-class Upload_Trinity_With_EdgeR_Transcripts_And_Genes
+class Upload_Trinity_With_EdgeR_Transcripts
   include ActiveModel::Validations
   include ActiveModel::Conversion
   extend ActiveModel::Naming
@@ -29,7 +29,7 @@ class Upload_Trinity_With_EdgeR_Transcripts_And_Genes
       #Create the dataset
       dataset = Dataset.new(:user => @current_user,
                             :name => dataset_name)
-      dataset.has_gene_diff_exp = true
+      dataset.has_gene_diff_exp = false
       dataset.has_transcript_diff_exp = true
       dataset.has_transcript_isoforms = false
       dataset.blast_db_location = "db/blast_databases/#{Rails.env}/"
