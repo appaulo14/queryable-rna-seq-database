@@ -34,6 +34,7 @@ end
 group :development do
   gem 'rspec-rails', '>= 2.0.1'
   gem 'annotate'
+  gem 'debugger'
 end
 
 group :test do
@@ -41,9 +42,9 @@ group :test do
   gem 'factory_girl_rails', '~> 4.0'
   gem 'capybara', '2.0.2'
   gem 'capybara-webkit'
+  gem 'debugger'
+  gem 'faker'
 end
-
-gem 'faker'
 
 gem 'galetahub-simple_captcha', :require => 'simple_captcha'
 
@@ -60,9 +61,6 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 
 # Deploy with Capistrano
 # gem 'capistrano'
-
-# To use debugger
-gem 'debugger'
 
 gem 'devise', '2.2.2'
 

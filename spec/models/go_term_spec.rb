@@ -23,6 +23,11 @@ describe GoTerm do
     end
   end
   
+  describe 'when destroyed' do
+    it 'should destroy any associated transcript_has_go_terms'
+    it 'should not destroy any associated transcripts'
+  end
+  
   describe 'validations' do
     it 'should be valid when all fields are valid' do
      @it.should be_valid

@@ -34,12 +34,20 @@ describe Sample do
       @it.save!
     end
     
-    it 'should destroy all associated sample comparisons' do
+    it 'should destroy all associated sample comparison 1s' do
       FactoryGirl.create(:sample_comparison, :sample_1_id => @it.id)
       FactoryGirl.create(:sample_comparison, :sample_1_id => @it.id)
       SampleComparison.find_all_by_sample_1_id(@it.id).count.should eq(2)
       @it.destroy
       SampleComparison.find_all_by_sample_1_id(@it.id).should be_empty
+    end
+    
+    it 'should destroy all associated sample comparison 2s' do
+      FactoryGirl.create(:sample_comparison, :sample_2_id => @it.id)
+      FactoryGirl.create(:sample_comparison, :sample_2_id => @it.id)
+      SampleComparison.find_all_by_sample_2_id(@it.id).count.should eq(2)
+      @it.destroy
+      SampleComparison.find_all_by_sample_2_id(@it.id).should be_empty
     end
     
     it 'should destroy all associated fpkm samples'

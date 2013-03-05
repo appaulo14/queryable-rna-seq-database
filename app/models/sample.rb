@@ -14,6 +14,7 @@ class Sample < ActiveRecord::Base
   
   belongs_to :dataset
   has_many :fpkm_samples, :dependent => :destroy
-  has_many :sample_comparisons, :as => :sample_1, :dependent => :destroy
-  has_many :samples, :through => :sample_comparisons
+  has_many :sample_comparison_1s, :class_name => 'SampleComparison', :foreign_key => 'sample_1_id', :dependent => :destroy
+  has_many :sample_comparison_2s, :class_name => 'SampleComparison', :foreign_key => 'sample_2_id', :dependent => :destroy
+  #has_many :samples, :through => :sample_comparisons
 end
