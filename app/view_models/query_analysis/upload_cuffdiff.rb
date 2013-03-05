@@ -186,17 +186,20 @@ class Upload_Cuffdiff
             "-out #{dataset.blast_db_location} " +
             "-hash_index -dbtype nucl ")
       #Run blast2go
-#       blast_xml_output_file = Tempfile.new('blastx')
-#       blast_xml_output_file.close
-#       stdout, stderr, status = 
-#         Open3.capture3("#{Rails.root}/bin/blast/bin/blastx " +
-#                      "-remote -db nr " +
-#                      "-query #{@transcripts_fasta_file.tempfile.path} " +
-#                      "-out #{blast_xml_output_file.path} " +
-#                      "-show_gis -outfmt '5' ")
-#       blast2go_output_file = Tempfile.new('blast2go')
-#       blast2go_output_file.close
-#       blast2go_dir = "#{Rails.root}/bin/blast2go"
+      blast_xml_output_file = Tempfile.new('blastx')
+      blast_xml_output_file.close
+      stdout, stderr, status = 
+        Open3.capture3("#{Rails.root}/bin/blast/bin/blastx " +
+                     "-remote -dbb nr " +
+                     "-query #{@transcripts_fasta_file.tempfile.path} " +
+                     "-out #{blast_xml_output_file.path} " +
+                     "-show_gis -outfmt '5' ")
+      if not stderr.blank?
+        raise Exception, stderr
+      end
+      blast2go_output_file = Tempfile.new('blast2go')
+      blast2go_output_file.close
+      blast2go_dir = "#{Rails.root}/bin/blast2go"
 #       #java -Xmx4000m -cp *:$B2GPIPEPATH/ext/*:$B2GPIPEPATH/* es.blast2go.prog.B2GAnnotPipe -prop bin/blast2go/b2gPipe.properties -annot -in /media/sf_MSE_Project/Workshop_Of_Paul/BLAST/b2g4pipe/10_BlastResults_2011.xml -out goat2
 #       
 #       stdout, stderr, status = 
