@@ -18,18 +18,17 @@ FactoryGirl.define do
       go_term
     end
     
-#     factory :differential_expression_test do
-#         sample1          'Sample 1 Name'
-#         sample2          'Sample 2 Name'
-#         test_status_name 'OK'
-#         fpkm_x            1.1243
-#         fpkm_y            4343.2
-#         log2_y_over_x    332.11
-#         test_stat        0.0001
-#         p_value          0.05
-#         q_value          0.0005
-#         is_significant   true
-#     end
+    factory :differential_expression_test do
+      gene
+      sample_comparison
+      test_status               'OK'
+      sample_1_fpkm             8.01089
+      sample_2_fpkm             8.551545
+      log_fold_change           0.06531
+      test_statistic            0.55
+      p_value                   0.05
+      fdr                       0.03
+    end
 #     
 #     factory :invalid_differential_expression_test, class: DifferentialExpressionTest do
 #         sample1          'Sample 1 Name'
@@ -64,6 +63,7 @@ FactoryGirl.define do
     
     factory :dataset do
       name                      {Faker::Name.name}
+      program_used              :trinity_with_edger
       has_transcript_diff_exp   true
       has_transcript_isoforms   true
       has_gene_diff_exp         true
@@ -90,14 +90,14 @@ FactoryGirl.define do
 #         differential_expression_test
 #     end
 #     
-#     factory :fpkm_sample do
-#         sample_number           1
-#         q_fpkm                  2.22
-#         q_fpkm_hi               33.33
-#         q_fpkm_lo               0.05
-#         q_status                'OK'
-#         transcript
-#     end
+    factory :fpkm_sample do
+        fpkm                  2.22
+        fpkm_hi               33.33
+        fpkm_lo               0.05
+        status                'OK'
+        transcript
+        sample
+    end
 #     
 #     factory :invalid_fpkm_sample, class: FpkmSample do
 #         sample_number           1

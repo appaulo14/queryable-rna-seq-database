@@ -4,6 +4,23 @@
 #
 #  id                      :integer          not null, primary key
 #  name                    :string(255)      not null
+#  progam_used             :string(255)      not null
+#  has_transcript_diff_exp :boolean          not null
+#  has_transcript_isoforms :boolean          not null
+#  has_gene_diff_exp       :boolean          not null
+#  blast_db_location       :string(255)      not null
+#  user_id                 :integer          not null
+#  when_last_queried       :datetime
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
+#
+
+# == Schema Information
+#
+# Table name: datasets
+#
+#  id                      :integer          not null, primary key
+#  name                    :string(255)      not null
 #  has_transcript_diff_exp :boolean          not null
 #  has_transcript_isoforms :boolean          not null
 #  has_gene_diff_exp       :boolean          not null
@@ -18,7 +35,7 @@ require 'spec_helper'
 
 describe Dataset do
   before(:each) do
-    @it = FactoryGirl.build(:dataset)
+    @it = FactoryGirl.build(:dataset, :program_used => :cuffdiff)
   end
   
   describe 'associations' do
@@ -380,11 +397,48 @@ describe Dataset do
           #A new dataset is created each time for this test because of a strange 
           #     behavior where assignment no longer works after the 
           #     firt assignment to when_last_queried
-          @it =  FactoryGirl.build(:dataset)
+          @it = FactoryGirl.build(:dataset)
           @it.when_last_queried = value
           @it.should_not be_valid
         end
       end
     end
+    
+    describe 'program_used' do 
+      it 'should be valid for :trinity_with_edger' do
+        @it.program_used = :trinity_with_edger
+        @it.should be_valid
+      end
+      it 'should be valid for :cuffdiff' do
+        @it.program_used = :cuffdiff
+        @it.should be_valid
+      end
+      
+      it 'should not be valid for other strings' do
+        ['puppies',''].each do |invalid_string|
+          @it.program_used = invalid_string
+          @it.should_not be_valid
+        end
+      end
+      
+      it 'should not be valid for numeric values' do
+        [45,0,4.5, -42].each do |invalid_string|
+          @it.program_used = invalid_string
+          @it.should_not be_valid
+        end
+      end
+      
+      it 'should not be valid for boolean values' do
+        [0,1,true,false].each do |invalid_string|
+          @it.program_used = invalid_string
+          @it.should_not be_valid
+        end
+      end
+      
+      it 'should not be valid for nil' do
+        @it.program_used = nil
+        @it.should_not be_valid
+      end 
+    end 
   end
 end

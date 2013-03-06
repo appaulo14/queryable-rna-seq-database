@@ -35,6 +35,7 @@ SET default_with_oids = false;
 CREATE TABLE datasets (
     id bigint NOT NULL,
     name character varying(255) NOT NULL,
+    program_used character varying(255) NOT NULL,
     has_transcript_diff_exp boolean NOT NULL,
     has_transcript_isoforms boolean NOT NULL,
     has_gene_diff_exp boolean NOT NULL,

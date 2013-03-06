@@ -13,11 +13,18 @@ class Upload_Cuffdiff
                 :has_transcript_isoforms,
                 :dataset_name
   
+  attr_reader   :status
+  
+  validates :status, 
+      :allow_nil => false, 
+      :inclusion => [:not_started, :in_progress, :succeeded, :failed]
+  
   #validate :validate_all_or_none_gene_files
   ##Validte for file presence only???
   
   def initialize(current_user)
     @current_user = current_user
+    @status = :not_started
   end
   
   def set_attributes_and_defaults(attributes = {})
@@ -32,7 +39,8 @@ class Upload_Cuffdiff
     #Create the dataset
     ActiveRecord::Base.transaction do   #Transactions work with sub-methods
       dataset = Dataset.new(:user => @current_user,
-                            :name => dataset_name)
+                            :name => dataset_name,
+                            :program_used => :cuffdiff)
       if @has_diff_exp == '1'
         dataset.has_transcript_diff_exp = true
         dataset.has_gene_diff_exp = true
@@ -180,27 +188,26 @@ class Upload_Cuffdiff
       end
       #Create Blast database
       #If this fails and we or it through an exception the transaction will rollback
-      system("#{Rails.root}/bin/blast/bin/makeblastdb " +
-            "-in #{@transcripts_fasta_file.tempfile.path} " +
-            "-title #{dataset.id} " +
-            "-out #{dataset.blast_db_location} " +
-            "-hash_index -dbtype nucl ")
-      #Run blast2go
-      blast_xml_output_file = Tempfile.new('blastx')
-      blast_xml_output_file.close
-      stdout, stderr, status = 
-        Open3.capture3("#{Rails.root}/bin/blast/bin/blastx " +
-                     "-remote -dbb nr " +
-                     "-query #{@transcripts_fasta_file.tempfile.path} " +
-                     "-out #{blast_xml_output_file.path} " +
-                     "-show_gis -outfmt '5' ")
-      if not stderr.blank?
-        raise Exception, stderr
-      end
-      blast2go_output_file = Tempfile.new('blast2go')
-      blast2go_output_file.close
-      blast2go_dir = "#{Rails.root}/bin/blast2go"
-#       #java -Xmx4000m -cp *:$B2GPIPEPATH/ext/*:$B2GPIPEPATH/* es.blast2go.prog.B2GAnnotPipe -prop bin/blast2go/b2gPipe.properties -annot -in /media/sf_MSE_Project/Workshop_Of_Paul/BLAST/b2g4pipe/10_BlastResults_2011.xml -out goat2
+#       system("#{Rails.root}/bin/blast/bin/makeblastdb " +
+#             "-in #{@transcripts_fasta_file.tempfile.path} " +
+#             "-title #{dataset.id} " +
+#             "-out #{dataset.blast_db_location} " +
+#             "-hash_index -dbtype nucl ")
+#       #Run blast2go
+#       blast_xml_output_file = Tempfile.new('blastx')
+#       blast_xml_output_file.close
+#       stdout, stderr, status = 
+#         Open3.capture3("#{Rails.root}/bin/blast/bin/blastx " +
+#                      "-remote -db nr " +
+#                      "-query #{@transcripts_fasta_file.tempfile.path} " +
+#                      "-out #{blast_xml_output_file.path} " +
+#                      "-show_gis -outfmt '5' ")
+#       if not stderr.blank?
+#         raise Exception, stderr
+#       end
+#       blast2go_output_file = Tempfile.new('blast2go')
+#       blast2go_output_file.close
+#       blast2go_dir = "#{Rails.root}/bin/blast2go"
 #       
 #       stdout, stderr, status = 
 #         Open3.capture3("java -Xmx4000m " +

@@ -12,6 +12,7 @@ class CreateDatasets < ActiveRecord::Migration
           throw NotImplementedError.new("Unknown adapter type '#{adapter_type}'")
       end
       t.string :name, :null => false
+      t.string :program_used, :null => false
       t.boolean :has_transcript_diff_exp, :null => false
       t.boolean :has_transcript_isoforms, :null => false
       t.boolean :has_gene_diff_exp, :null => false

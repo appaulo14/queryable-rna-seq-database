@@ -4,22 +4,7 @@
 #
 #  id                      :integer          not null, primary key
 #  name                    :string(255)      not null
-#  has_transcript_diff_exp :boolean          not null
-#  has_transcript_isoforms :boolean          not null
-#  has_gene_diff_exp       :boolean          not null
-#  blast_db_location       :string(255)      not null
-#  user_id                 :integer          not null
-#  when_last_queried       :datetime
-#  created_at              :datetime         not null
-#  updated_at              :datetime         not null
-#
-
-# == Schema Information
-#
-# Table name: datasets
-#
-#  id                      :integer          not null, primary key
-#  name                    :string(255)      not null
+#  progam_used             :string(255)      not null
 #  has_transcript_diff_exp :boolean          not null
 #  has_transcript_isoforms :boolean          not null
 #  has_gene_diff_exp       :boolean          not null
@@ -36,7 +21,8 @@ class Dataset < ActiveRecord::Base
                   :blast_db_location, 
                   :has_transcript_diff_exp,
                   :has_transcript_isoforms,
-                  :has_gene_diff_exp
+                  :has_gene_diff_exp,
+                  :program_used
   
   #validates :id, :presence => true
   validates :name, :presence => true
@@ -51,8 +37,11 @@ class Dataset < ActiveRecord::Base
   validate :has_gene_diff_exp_is_boolean
   validates :user, :presence => true
   validates :blast_db_location, :presence => true
-  validate :blast_db_location_pathname
+  validate :blast_db_location_pathname_is_valid
   validate :when_last_queried_is_valid_datetime
+  validates :program_used, 
+      :allow_nil => false,
+      :inclusion => [:trinity_with_edger, :cuffdiff]
   
   belongs_to :user
   has_many :transcripts, :dependent => :destroy
@@ -60,7 +49,7 @@ class Dataset < ActiveRecord::Base
   has_many :samples, :dependent => :destroy
   
   private
-  def blast_db_location_pathname
+  def blast_db_location_pathname_is_valid
     begin
       Pathname.new(self.blast_db_location)
     rescue TypeError, ArgumentError
