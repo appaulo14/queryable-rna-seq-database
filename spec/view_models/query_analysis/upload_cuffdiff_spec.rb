@@ -52,6 +52,8 @@ describe Upload_Cuffdiff do
   
   it 'should delete the blast database on rollback if it was created'
   
+  it 'should put the blast database it the right place'
+  
   it 'should work for 4 samples'
   
   it 'should be transactional, writing either all the data or none at all'
