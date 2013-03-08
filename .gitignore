@@ -31,7 +31,7 @@
 
 .DS_Store
 
-#Ignore database config files
+#Ignore config files
 *.yml
 *.yml~
 

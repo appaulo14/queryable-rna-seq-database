@@ -1,7 +1,16 @@
 require 'spec_helper'
 
 describe Upload_Cuffdiff do
-  before(:all) do 
+  before(:all) do
+    @current_user = FactoryGirl.create(:user, :email => 'nietz111@ksu.edu')
+  end
+  
+  after(:all) do
+    DatabaseCleaner.clean
+    #@current_user.destroy
+  end
+  
+  before(:each) do 
     #Change to the directory of this spec
     Dir.chdir("#{Rails.root}/spec/view_models/query_analysis")
     #Make copies of the test files
@@ -10,9 +19,9 @@ describe Upload_Cuffdiff do
 #     FileUtils.copy('gene_exp.diff', 'gene_diff_exp_file')
 #     FileUtils.copy('isoforms.fpkm_tracking','transcript_isoform_file')
     FileUtils.copy('cuff_transcripts.fasta','cuffdiff_fasta_file')
-    FileUtils.copy('/media/sf_MSE_Project/Workshop_Of_Paul/Reference_Worflow/cuffdiff_output/isoform_exp.diff','transcript_diff_exp_file')
-    FileUtils.copy('/media/sf_MSE_Project/Workshop_Of_Paul/Reference_Worflow/cuffdiff_output/gene_exp.diff', 'gene_diff_exp_file')
-    FileUtils.copy('/media/sf_MSE_Project/Workshop_Of_Paul/Reference_Worflow/cuffdiff_output/isoforms.fpkm_tracking','transcript_isoform_file')
+    FileUtils.copy('isoform_exp.diff','transcript_diff_exp_file')
+    FileUtils.copy('gene_exp.diff', 'gene_diff_exp_file')
+    FileUtils.copy('isoforms.fpkm_tracking','transcript_isoform_file')
     #Open the test files
     cuffdiff_fasta_file = File.new('cuffdiff_fasta_file','r')
     transcript_diff_exp_file = File.new('transcript_diff_exp_file','r')
@@ -28,7 +37,7 @@ describe Upload_Cuffdiff do
     uploaded_transcript_isoform_file = 
       ActionDispatch::Http::UploadedFile.new({:tempfile=>transcript_isoform_file})
     #Create and fill in the class
-    @it = Upload_Cuffdiff.new(FactoryGirl.create(:user))
+    @it = Upload_Cuffdiff.new(@current_user)
     @it.set_attributes_and_defaults()
     @it.dataset_name = 'Test Dataset'
     @it.has_diff_exp = true
@@ -37,13 +46,33 @@ describe Upload_Cuffdiff do
     @it.transcript_diff_exp_file = uploaded_transcript_diff_exp_file
     @it.gene_diff_exp_file = uploaded_gene_diff_exp_file 
     @it.transcript_isoforms_file = uploaded_transcript_isoform_file
-    @it.save!
+    #@it.delay.save!
   end
   
-  it 'should have all genes have transcripts' do
-    @it.ds.genes.each do |gene|
-      gene.transcripts.count.should_not eq(0)
-    end
+#   it 'should have all genes have transcripts' do
+#     @it.ds.genes.each do |gene|
+#       gene.transcripts.count.should_not eq(0)
+#     end
+#   end
+  
+  it 'should goat' do   
+#     old_ds = Dataset.count
+#     @it.save!
+#     #Process.wait(pid = @it.save!)
+#     sleep 15
+#     Dataset.establish_connection
+#     new_ds = Dataset.count
+#     new_ds.should eq(old_ds + 1)
+      #
+      #debugger
+      #SuckerPunch::Queue[:awesome_queue].async.perform()
+    lambda do
+      @it.save!
+      while(SuckerPunch::Queue[:awesome_queue].tasks[0].running?)
+        sleep 1
+      end
+    end.should change(Dataset, :count).by(1)
+      #User.find(u.id).name.should eq('awesome')
   end
   
   it 'should save without errors if valid'
@@ -90,9 +119,14 @@ describe Upload_Cuffdiff do
 #     Sample.count.should eq(2)
 #   end
 #   
-#   it 'should add 1 sample comparison to the database' do
-#     SampleComparison.count.should eq(1)
-#   end
+  it 'should add 1 sample comparison to the database' do
+    lambda do
+      @it.save!
+      while(SuckerPunch::Queue[:awesome_queue].tasks[0].running?)
+        sleep 1
+      end
+    end.should change(SampleComparison, :count).by(1)
+  end
 #   
 #   it 'should add 20 differential expression tests to the database' do
 #     DifferentialExpressionTest.count.should eq(20)
@@ -106,10 +140,10 @@ describe Upload_Cuffdiff do
 #     TranscriptHasGoTerm.count.should eq(76)
 #   end
   
-  it 'should delete the uploaded files when done' do
-    File.exists?(@it.transcripts_fasta_file.tempfile.path).should be_false
-    File.exists?(@it.transcript_diff_exp_file.tempfile.path).should be_false
-    File.exists?(@it.gene_diff_exp_file.tempfile.path).should be_false
-    File.exists?(@it.transcript_isoforms_file.tempfile.path).should be_false
-  end
+#   it 'should delete the uploaded files when done' do
+#     File.exists?(@it.transcripts_fasta_file.tempfile.path).should be_false
+#     File.exists?(@it.transcript_diff_exp_file.tempfile.path).should be_false
+#     File.exists?(@it.gene_diff_exp_file.tempfile.path).should be_false
+#     File.exists?(@it.transcript_isoforms_file.tempfile.path).should be_false
+#   end
 end

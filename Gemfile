@@ -44,9 +44,13 @@ group :test do
   gem 'capybara-webkit'
   gem 'debugger'
   gem 'faker'
+  gem 'database_cleaner'
 end
 
 gem 'galetahub-simple_captcha', :require => 'simple_captcha'
+gem 'delayed_job_active_record'
+gem 'daemons'
+gem 'sucker_punch'
 
 gem 'json', '1.7.7'
 

@@ -4,4 +4,8 @@ require File.expand_path('../application', __FILE__)
 # Initialize the rails application
 RnaSeqAnalysisPipeline::Application.initialize!
 
-Rails.logger.level = 2
+class Logger
+  def format_message(level, time, progname, msg)
+    "#{time.to_s(:db)} #{level} -- #{msg}\n"
+  end
+end

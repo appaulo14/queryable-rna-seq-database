@@ -1,6 +1,6 @@
 <%= render 'shared/error_messages', :object => @upload_cuffdiff %>
 <script type='text/javascript' src='upload_cuffdiff.js' ></script>
-<%= form_for(@upload_cuffdiff,{:url => "upload_cuffdiff"} ) do |uf| %>
+<%= form_for @upload_cuffdiff, {:url => "upload_cuffdiff",:remote => true} do |uf| %>
   <h1>Upload Your Cuffdiff Data</h1>
   
   <div class="sub-section rounded-corners" id="dataset_name_section">

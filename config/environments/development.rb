@@ -36,11 +36,8 @@ RnaSeqAnalysisPipeline::Application.configure do
   # Expands the lines which load the assets
   config.assets.debug = true
   
-  #For the Devise gem
-#   config.action_mailer.delivery_method       = :sendmail
-#   config.action_mailer.perform_deliveries    = true
-#   config.action_mailer.raise_delivery_errors = true
-#   config.action_mailer.default_url_options = { :host => '0.0.0.0:3000' }
+  #Set log level
+  config.log_level = :error
   
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {

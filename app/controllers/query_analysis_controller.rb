@@ -14,11 +14,6 @@ class QueryAnalysisController < ApplicationController
     before_filter :authenticate_user!
 
     def upload_main_menu
-        debugger if ENV['RAILS_DEBUG'] == "true"
-        if request.post? and not params[:type_of_files].nil?
-            #Would redirecting like this be a security issue because it uses browser response data?
-            redirect_to :action => params[:type_of_files]
-        end
     end
 
     def welcome
@@ -46,7 +41,7 @@ class QueryAnalysisController < ApplicationController
         @upload_cuffdiff = Upload_Cuffdiff.new(current_user)
         @upload_cuffdiff.set_attributes_and_defaults()
       elsif request.post?
-        debugger
+        sleep 5
         @upload_cuffdiff = Upload_Cuffdiff.new(current_user)
         @upload_cuffdiff.set_attributes_and_defaults(params[:upload_cuffdiff])
         if (@upload_cuffdiff.valid?)
@@ -100,7 +95,7 @@ class QueryAnalysisController < ApplicationController
           @qdet.query!()
           flash[:success] = "Success"
         else
-          flash[:success]="Failure"
+          flash[:success] = "Failure"
         end
       end
     end
