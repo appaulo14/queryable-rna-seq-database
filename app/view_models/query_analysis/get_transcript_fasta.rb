@@ -1,4 +1,4 @@
-class Get_Transcript_Fasta
+class GetTranscriptFasta
   include ActiveModel::Validations
   include ActiveModel::Conversion
   extend ActiveModel::Naming

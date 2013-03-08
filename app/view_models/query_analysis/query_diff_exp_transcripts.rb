@@ -1,4 +1,4 @@
-class Query_Diff_Exp_Transcripts
+class QueryDiffExpTranscripts
   include ActiveModel::Validations
   include ActiveModel::Conversion
   extend ActiveModel::Naming

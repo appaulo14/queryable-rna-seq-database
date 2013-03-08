@@ -1,4 +1,4 @@
-class Delete_Unconfirmed_User
+class DeleteUnconfirmedUser
   include ActiveModel::Validations
   include ActiveModel::Conversion
   extend ActiveModel::Naming

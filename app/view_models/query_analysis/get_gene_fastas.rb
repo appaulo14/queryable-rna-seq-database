@@ -1,4 +1,4 @@
-class Get_Gene_Fastas
+class GetGeneFastas
   include ActiveModel::Validations
   include ActiveModel::Conversion
   extend ActiveModel::Naming

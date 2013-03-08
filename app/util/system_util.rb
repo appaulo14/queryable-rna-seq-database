@@ -1,5 +1,5 @@
-class System_Util
-  def backticks!(command_string)
+class SystemUtil
+  def self.backticks!(command_string)
     stdout, stderr, status = Open3.capture3(command_string)
      if stderr.blank?
        return stdout
@@ -8,7 +8,7 @@ class System_Util
      end
   end
   
-  def system!(command_string)
+  def self.system!(command_string)
      stdout, stderr, status = Open3.capture3(command_string)
      if stderr.blank?
        return true

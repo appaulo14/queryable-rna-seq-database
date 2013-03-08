@@ -1,4 +1,4 @@
-class Upload_Cuffdiff
+class UploadCuffdiff
   include ActiveModel::Validations
   include ActiveModel::Conversion
   extend ActiveModel::Naming
@@ -36,7 +36,7 @@ class Upload_Cuffdiff
   
   def save!
     return if not self.valid?
-    SuckerPunch::Queue[:awesome_queue].perform(self)
+    SuckerPunch::Queue[:upload_cuffdiff_queue].perform(self)
     #Create the dataset
 #     ActiveRecord::Base.transaction do   #Transactions work with sub-methods
 #       dataset = Dataset.new(:user => @current_user,

@@ -1,4 +1,4 @@
-class Upload_Trinity_With_EdgeR_Transcripts
+class UploadTrinityWithEdgeRTranscripts
   include ActiveModel::Validations
   include ActiveModel::Conversion
   extend ActiveModel::Naming

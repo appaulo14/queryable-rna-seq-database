@@ -1,4 +1,4 @@
-class Confirm_User
+class ConfirmUser
   include ActiveModel::Validations
   include ActiveModel::Conversion
   extend ActiveModel::Naming

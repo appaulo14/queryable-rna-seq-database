@@ -1,4 +1,4 @@
-class Tblastn_Query #< Blast_Query::Base
+class QueryUsingTblastn #< Blast_Query::Base
   include ActiveModel::Validations
   include ActiveModel::Conversion
   extend ActiveModel::Naming

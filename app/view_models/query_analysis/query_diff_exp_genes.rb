@@ -1,4 +1,4 @@
-class Query_Diff_Exp_Genes
+class QueryDiffExpGenes
   include ActiveModel::Validations
   include ActiveModel::Conversion
   extend ActiveModel::Naming

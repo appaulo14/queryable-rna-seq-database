@@ -1,9 +1,19 @@
-class AwesomeWorker
+#Change to WokerForUploadCuffdiff???
+class UploadCuffdiffWorker
   include SuckerPunch::Worker
-  require 'util/system_util.rb'
-  require 'util/upload_util.rb'
-
+  require 'system_util.rb'
+  require 'upload_util.rb'
+  
+  @@instance_count = 0
+  
+#   def initialize()
+#     super
+#     puts "Instance_count = #{@@instance_count}"
+#     @@instance_count += 1
+#   end
+  
   def perform(upload_cuffdiff)
+    dataset = nil
     ActiveRecord::Base.connection_pool.with_connection do |conn|
       begin
         ActiveRecord::Base.transaction do   #Transactions work with sub-methods 
@@ -14,14 +24,16 @@ class AwesomeWorker
   #         create_blast_database!(upload_cuffdiff.transcripts_fasta_file.tempfile.path, dataset)
   #         find_and_process_go_terms(upload_cuffdiff,dataset)
         end
-      rescue
-        rollback_blast_database!(dataset)
+      rescue Exception => ex
+        UploadUtil.rollback_blast_database(dataset)
+        raise ex
       end
     end
   end
   
   private
   def process_args_to_create_dataset(upload_cuffdiff)
+    raise Exception, "Goat"
     dataset = Dataset.new(:user => upload_cuffdiff.current_user,
                           :name => upload_cuffdiff.dataset_name,
                           :program_used => :cuffdiff)

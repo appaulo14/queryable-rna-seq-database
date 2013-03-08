@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Upload_Cuffdiff do
+describe UploadCuffdiff do
   before(:all) do
     @current_user = FactoryGirl.create(:user, :email => 'nietz111@ksu.edu')
   end
@@ -37,7 +37,7 @@ describe Upload_Cuffdiff do
     uploaded_transcript_isoform_file = 
       ActionDispatch::Http::UploadedFile.new({:tempfile=>transcript_isoform_file})
     #Create and fill in the class
-    @it = Upload_Cuffdiff.new(@current_user)
+    @it = UploadCuffdiff.new(@current_user)
     @it.set_attributes_and_defaults()
     @it.dataset_name = 'Test Dataset'
     @it.has_diff_exp = true
@@ -67,10 +67,10 @@ describe Upload_Cuffdiff do
       #debugger
       #SuckerPunch::Queue[:awesome_queue].async.perform()
     lambda do
-        100.times do 
+        1.times do 
           @it.save!
         end
-      while(SuckerPunch::Queue[:awesome_queue].busy_size > 0)
+      while(SuckerPunch::Queue[:upload_cuffdiff_queue].busy_size > 0)
         sleep 1
       end
     end.should change(Dataset, :count).by(1)
@@ -123,14 +123,14 @@ describe Upload_Cuffdiff do
 #     Sample.count.should eq(2)
 #   end
 #   
-  it 'should add 1 sample comparison to the database' do
-    lambda do
-      @it.save!
-      while(SuckerPunch::Queue[:awesome_queue].busy_size > 0)
-        sleep 1
-      end
-    end.should change(SampleComparison, :count).by(1)
-  end
+#   it 'should add 1 sample comparison to the database' do
+#     lambda do
+#       @it.save!
+#       while(SuckerPunch::Queue[:awesome_queue].busy_size > 0)
+#         sleep 1
+#       end
+#     end.should change(SampleComparison, :count).by(1)
+#   end
 #   
 #   it 'should add 20 differential expression tests to the database' do
 #     DifferentialExpressionTest.count.should eq(20)
