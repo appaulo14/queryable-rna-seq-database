@@ -67,13 +67,17 @@ describe Upload_Cuffdiff do
       #debugger
       #SuckerPunch::Queue[:awesome_queue].async.perform()
     lambda do
-      @it.save!
-      while(SuckerPunch::Queue[:awesome_queue].tasks[0].running?)
+        100.times do 
+          @it.save!
+        end
+      while(SuckerPunch::Queue[:awesome_queue].busy_size > 0)
         sleep 1
       end
     end.should change(Dataset, :count).by(1)
       #User.find(u.id).name.should eq('awesome')
   end
+  
+  it 'should do concurrency properly'
   
   it 'should save without errors if valid'
   
@@ -122,7 +126,7 @@ describe Upload_Cuffdiff do
   it 'should add 1 sample comparison to the database' do
     lambda do
       @it.save!
-      while(SuckerPunch::Queue[:awesome_queue].tasks[0].running?)
+      while(SuckerPunch::Queue[:awesome_queue].busy_size > 0)
         sleep 1
       end
     end.should change(SampleComparison, :count).by(1)

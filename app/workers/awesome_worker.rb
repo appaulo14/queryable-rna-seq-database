@@ -1,20 +1,21 @@
 class AwesomeWorker
   include SuckerPunch::Worker
+  require 'util/system_util.rb'
+  require 'util/upload_util.rb'
 
   def perform(upload_cuffdiff)
     ActiveRecord::Base.connection_pool.with_connection do |conn|
-      ActiveRecord::Base.transaction do   #Transactions work with sub-methods
-        sleep 20
-        puts 'AWESOME WORKER'
-        puts 'PAWL'
-        puts 'PAWL'
-        puts 'PAWL'
-        puts 'PAWL'
-        
-#         dataset = process_args_to_create_dataset(upload_cuffdiff)
-#         process_gene_differential_expression_file(upload_cuffdiff, dataset)
-#         process_transcript_differential_expression_file(upload_cuffdiff, dataset)
-#         process_transcript_isoforms_file(upload_cuffdiff, dataset)
+      begin
+        ActiveRecord::Base.transaction do   #Transactions work with sub-methods 
+          dataset = process_args_to_create_dataset(upload_cuffdiff)
+  #         process_gene_differential_expression_file(upload_cuffdiff, dataset)
+  #         process_transcript_differential_expression_file(upload_cuffdiff, dataset)
+  #         process_transcript_isoforms_file(upload_cuffdiff, dataset)
+  #         create_blast_database!(upload_cuffdiff.transcripts_fasta_file.tempfile.path, dataset)
+  #         find_and_process_go_terms(upload_cuffdiff,dataset)
+        end
+      rescue
+        rollback_blast_database!(dataset)
       end
     end
   end
@@ -176,5 +177,8 @@ class AwesomeWorker
                           :status => cells[12+(3*i)])
       end
     end
+  end
+  
+  def find_and_process_go_terms(upload_cuffdiff,dataset)
   end
 end

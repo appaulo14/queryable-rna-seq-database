@@ -42,6 +42,7 @@ class QueryAnalysisController < ApplicationController
         @upload_cuffdiff.set_attributes_and_defaults()
       elsif request.post?
         sleep 5
+        redirect_to('/')
         @upload_cuffdiff = Upload_Cuffdiff.new(current_user)
         @upload_cuffdiff.set_attributes_and_defaults(params[:upload_cuffdiff])
         if (@upload_cuffdiff.valid?)
