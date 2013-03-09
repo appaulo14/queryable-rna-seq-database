@@ -47,6 +47,34 @@ describe UploadCuffdiff do
     #UploadUtil.stub(:create_blast_database){puts 'STUB OF BLAST DATABASE'}
   end
   
+  after(:each) do
+    ActionMailer::Base.deliveries.clear
+  end
+  
+  describe '2 samples' do
+    describe 'when valid' do
+    end
+    
+    describe 'when an exception occurs' do
+    end
+  end
+  
+  describe '3 samples' do
+    describe 'when valid' do
+    end
+    
+    describe 'when an exception occurs' do
+    end
+  end
+  
+  describe '4 samples' do 
+    describe 'when valid' do
+    end
+    
+    describe 'when an exception occurs' do
+    end
+  end
+  
 #   it 'should have all genes have transcripts' do
 #     @it.save
 #     @it.dataset.genes.each do |gene|
@@ -101,9 +129,23 @@ describe UploadCuffdiff do
   
   it 'should work for 4 samples'
   
-  it 'should if successful email the user an email announcing success'
+  it 'should if successful email the user an email announcing success' do
+    @it.save
+    ActionMailer::Base.deliveries.count.should eq(1)
+    ActionMailer::Base.deliveries.last.to.should eq([@current_user.email])
+    ActionMailer::Base.deliveries.last.subject.should match('Success')
+  end
   
-  it 'should if unsuccessful email the user an email announcing failure'
+  it 'should if unsuccessful email the user announcing failure' do
+    #Seed an error
+   lambda do
+    UploadUtil.stub(:create_blast_database){raise Exception, 'Seeded exception'}
+    @it.save
+   end.should raise_error(Exception, 'Seeded exception')
+    ActionMailer::Base.deliveries.count.should eq(1)
+    ActionMailer::Base.deliveries.last.to.should eq([@current_user.email])
+    ActionMailer::Base.deliveries.last.subject.should match('Fail')
+  end
   
   it 'should be transactional, writing either all the data or none at all'
   

@@ -23,7 +23,7 @@ class QueryAnalysisMailer < ActionMailer::Base
          # Name <email>
          :from => "Queryable RNA-Seq Database Mailer Bot <#{ADMIN_CONFIG['email']}>",
          :reply_to => ADMIN_CONFIG['email'],
-         :subject => 'Your Data Upload Was Unsuccessful').deliver
+         :subject => 'Your Data Upload Failed').deliver
   end
   
   private

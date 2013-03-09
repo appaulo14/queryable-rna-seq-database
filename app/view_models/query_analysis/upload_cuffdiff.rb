@@ -48,16 +48,16 @@ class UploadCuffdiff
       end
     rescue Exception => ex
       #UploadUtil.rollback_blast_database_if_exists(@dataset)
-#         QueryAnalysisMailer.notify_user_of_upload_failure(@current_user,
-#                                                             @dataset,
-#                                                             error_message)
+        QueryAnalysisMailer.notify_user_of_upload_failure(@current_user,
+                                                          @dataset,
+                                                          ex.message)
       raise ex
     ensure
       delete_files()
     end
-#     QueryAnalysisMailer.notify_user_of_upload_success(@current_user,
-#                                                       @dataset,
-#                                                       de_tests_count)
+    QueryAnalysisMailer.notify_user_of_upload_success(@current_user,
+                                                      @dataset,
+                                                      100) #should eventually be de_tests_count
     #Create the dataset
 #     ActiveRecord::Base.transaction do   #Transactions work with sub-methods
 #       dataset = Dataset.new(:user => @current_user,
