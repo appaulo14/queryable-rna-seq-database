@@ -48,8 +48,6 @@ group :test do
 end
 
 gem 'galetahub-simple_captcha', :require => 'simple_captcha'
-gem 'delayed_job_active_record'
-gem 'daemons'
 gem 'sucker_punch'
 
 gem 'json', '1.7.7'

@@ -212,17 +212,17 @@ describe QueryAnalysisController do
       end
       
       it "should succeed for 'blastn'" do
-        post 'blastn', :blastn_query => {}
+        post 'blastn', :query_using_blastn => {}
         response.should be_success
       end
       
       it "should succeed for 'tblastn'" do
-        post 'tblastn', :tblastn_query => {}
+        post 'tblastn', :query_using_blastn => {}
         response.should be_success
       end
       
       it "should succeed for 'tblastx'" do
-        post 'tblastx', :tblastx_query => {}
+        post 'tblastx', :query_using_tblastx => {}
         response.should be_success
       end
     end

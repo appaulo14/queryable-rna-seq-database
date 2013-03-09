@@ -77,7 +77,7 @@ class QueryUsingTblastn #< Blast_Query::Base
       #If given a fasta sequence, write it to a temporary file so that it 
       # can be inputted into blastn
       if @use_fasta_sequence_or_file == 'use_fasta_sequence'
-        query_input_file = Tempfile.new('tblastx_query')
+        query_input_file = Tempfile.new('query_using_tblastx')
         query_input_file.write(@fasta_sequence)
         query_input_file.close
       else

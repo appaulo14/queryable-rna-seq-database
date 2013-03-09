@@ -7,9 +7,9 @@ class QueryAnalysisController < ApplicationController
     require 'query_analysis/query_diff_exp_genes.rb'
     require 'query_analysis/get_gene_fastas.rb'
     require 'query_analysis/get_transcript_fasta.rb'
-    require 'query_analysis/blastn_query.rb'
-    require 'query_analysis/tblastn_query.rb'
-    require 'query_analysis/tblastx_query.rb'
+    require 'query_analysis/query_using_blastn.rb'
+    require 'query_analysis/query_using_tblastn.rb'
+    require 'query_analysis/query_using_tblastx.rb'
     
     before_filter :authenticate_user!
 
@@ -32,7 +32,7 @@ class QueryAnalysisController < ApplicationController
 # #       if (request.post?)
 # #         @goats << params[:add_goat]
 # #       end
-#       render :json => Blastn_Query.new(current_user)
+#       render :json => QueryUsingBlastn.new(current_user)
 #       #render :text => open('/media/sf_MSE_Project/Workshop_Of_Paul/BLAST/outputs/Query_1.png', "rb").read
 #     end
     
@@ -41,12 +41,12 @@ class QueryAnalysisController < ApplicationController
         @upload_cuffdiff = Upload_Cuffdiff.new(current_user)
         @upload_cuffdiff.set_attributes_and_defaults()
       elsif request.post?
-        sleep 5
         redirect_to('/')
         @upload_cuffdiff = Upload_Cuffdiff.new(current_user)
         @upload_cuffdiff.set_attributes_and_defaults(params[:upload_cuffdiff])
         if (@upload_cuffdiff.valid?)
-          @upload_cuffdiff.save!
+          SuckerPunch::Queue[:upload_cuffdiff_queue].async.perform(@upload_cuffdiff)
+          #@upload_cuffdiff.save!
         else
           flash[:alert] = 'Validation failed'
         end
@@ -197,16 +197,16 @@ class QueryAnalysisController < ApplicationController
     
     def query_using_blastn    #Changed after architecture design
       if request.get?
-          @blastn_query = Blastn_Query.new(current_user)
-          @blastn_query.set_attributes_and_defaults()
+          @query_using_blastn = QueryUsingBlastn.new(current_user)
+          @query_using_blastn.set_attributes_and_defaults()
       elsif request.post?
-        @blastn_query = Blastn_Query.new(current_user)
-        @blastn_query.set_attributes_and_defaults(params[:blastn_query])
+        @query_using_blastn = QueryUsingBlastn.new(current_user)
+        @query_using_blastn.set_attributes_and_defaults(params[:query_using_blastn])
         debugger if ENV['RAILS_DEBUG'] == "true"
-        if @blastn_query.valid?
+        if @query_using_blastn.valid?
             flash[:success] = "Success"
             #Run the blast query and get the file path of the result
-            blast_results_file_path = @blastn_query.blast!
+            blast_results_file_path = @query_using_blastn.blast!
             #Parse the xml into Blast reports
             f = File.open(blast_results_file_path)
             xml_string = ''
@@ -228,27 +228,27 @@ class QueryAnalysisController < ApplicationController
     
     def get_blastn_gap_costs_for_match_and_mismatch_scores
       #Calculate the new gap costs from the match and mismatch scores 
-      @blastn_query = Blastn_Query.new(current_user)
+      @query_using_blastn = QueryUsingBlastn.new(current_user)
       match_and_mismatch_scores = params[:match_and_mismatch_scores]
-      @blastn_query.set_attributes_and_defaults(
+      @query_using_blastn.set_attributes_and_defaults(
         :match_and_mismatch_scores => match_and_mismatch_scores
       )
       #Render the new gap costs
-      render :partial => 'gap_costs', :locals => {:object => @blastn_query}
+      render :partial => 'gap_costs', :locals => {:object => @query_using_blastn}
     end
 
     def query_using_tblastn #changed after the architecture design
         if request.get?
-            @tblastn_query = Tblastn_Query.new(current_user)
-            @tblastn_query.set_attributes_and_defaults()
+            @query_using_blastn = QueryUsingTblastn.new(current_user)
+            @query_using_blastn.set_attributes_and_defaults()
         elsif request.post?
-            @tblastn_query = Tblastn_Query.new(current_user)
-            @tblastn_query.set_attributes_and_defaults(params[:tblastn_query])
+            @query_using_blastn = QueryUsingTblastn.new(current_user)
+            @query_using_blastn.set_attributes_and_defaults(params[:query_using_blastn])
             debugger if ENV['RAILS_DEBUG'] == "true"
-            if @tblastn_query.valid?
+            if @query_using_blastn.valid?
               flash[:success] = "Success"
               #Run the blast query and get the file path of the result
-              blast_results_file_path = @tblastn_query.blast!
+              blast_results_file_path = @query_using_blastn.blast!
               #Parse the xml into Blast reports
               f = File.open(blast_results_file_path)
               xml_string = ''
@@ -270,25 +270,25 @@ class QueryAnalysisController < ApplicationController
     
     def get_tblastn_gap_costs_for_matrix
       #Calculate the new gap costs from the match and mismatch scores 
-      @tblastn_query = Tblastn_Query.new(current_user)
+      @query_using_blastn = QueryUsingTblastn.new(current_user)
       matrix = params[:matrix]
-      @tblastn_query.set_attributes_and_defaults(:matrix => matrix)
+      @query_using_blastn.set_attributes_and_defaults(:matrix => matrix)
       #Render the new gap costs
-      render :partial => 'gap_costs', :locals => {:object => @tblastn_query}
+      render :partial => 'gap_costs', :locals => {:object => @query_using_blastn}
     end
     
     def querying_using_tblastx  #changed after the architecture design
       if request.get?
-            @tblastx_query = Tblastx_Query.new(current_user)
-            @tblastx_query.set_attributes_and_defaults()
+            @query_using_tblastx = QueryUsingTblastx.new(current_user)
+            @query_using_tblastx.set_attributes_and_defaults()
       elsif request.post?
-          @tblastx_query = Tblastx_Query.new(current_user)
-          @tblastx_query.set_attributes_and_defaults(params[:tblastx_query])
+          @query_using_tblastx = QueryUsingTblastx.new(current_user)
+          @query_using_tblastx.set_attributes_and_defaults(params[:query_using_tblastx])
           debugger if ENV['RAILS_DEBUG'] == "true"
-          if @tblastx_query.valid?
+          if @query_using_tblastx.valid?
             flash[:success] = "Success"
             #Run the blast query and get the file path of the result
-            blast_results_file_path = @tblastx_query.blast!
+            blast_results_file_path = @query_using_tblastx.blast!
             #Parse the xml into Blast reports
             f = File.open(blast_results_file_path)
             xml_string = ''

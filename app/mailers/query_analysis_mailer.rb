@@ -1,4 +1,4 @@
-class Query_Analysis_Mailer < ActionMailer::Base
+class QueryAnalysisMailer < ActionMailer::Base
    
    def notify_user_of_upload_success(user, dataset, de_tests_count)
     @base_url = get_base_url

@@ -3,8 +3,8 @@ jQuery(document).ready(function($) {
   //    of being enabled or disabled by running the change event 
   fasta_input_radio_button_changed();
   //Bind the events for the fasta selection radio buttons.
-  $('#tblastx_query_use_fasta_sequence_or_file_use_fasta_sequence').change(fasta_input_radio_button_changed);
-  $('#tblastx_query_use_fasta_sequence_or_file_use_fasta_file').change(fasta_input_radio_button_changed);
+  $('#query_using_tblastx_use_fasta_sequence_or_file_use_fasta_sequence').change(fasta_input_radio_button_changed);
+  $('#query_using_tblastx_use_fasta_sequence_or_file_use_fasta_file').change(fasta_input_radio_button_changed);
   //Create the text for the help qtips
   create_qtips();
 });
@@ -16,16 +16,16 @@ jQuery(document).ready(function($) {
  */
 function fasta_input_radio_button_changed(){
   fasta_file_radio_button = 
-    $('#tblastx_query_use_fasta_sequence_or_file_use_fasta_file');
+    $('#query_using_tblastx_use_fasta_sequence_or_file_use_fasta_file');
   fasta_sequence_radio_button = 
-    $('#tblastx_query_use_fasta_sequence_or_file_use_fasta_sequence');
+    $('#query_using_tblastx_use_fasta_sequence_or_file_use_fasta_sequence');
   if (fasta_sequence_radio_button.is(':checked')){
-    $('#tblastx_query_fasta_sequence').removeAttr("disabled");
-    $('#tblastx_query_fasta_file').attr("disabled", "disabled");
+    $('#query_using_tblastx_fasta_sequence').removeAttr("disabled");
+    $('#query_using_tblastx_fasta_file').attr("disabled", "disabled");
   }
   else{
-    $('#tblastx_query_fasta_sequence').attr("disabled", "disabled");
-    $('#tblastx_query_fasta_file').removeAttr("disabled");
+    $('#query_using_tblastx_fasta_sequence').attr("disabled", "disabled");
+    $('#query_using_tblastx_fasta_file').removeAttr("disabled");
   }
 }
  

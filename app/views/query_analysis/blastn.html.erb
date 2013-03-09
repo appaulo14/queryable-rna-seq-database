@@ -1,6 +1,6 @@
 <script type='text/javascript' src='blastn.js'></script>
-<%= render 'shared/error_messages', :object => @blastn_query %>
-<%= form_for(@blastn_query,{:url => "blastn"}) do |bq| %>
+<%= render 'shared/error_messages', :object => @query_using_blastn %>
+<%= form_for(@query_using_blastn,{:url => "blastn"}) do |bq| %>
   <%= #render 'blast_generic_args', :bq => bq 
   %>
   <h2>
@@ -9,7 +9,7 @@
   </h2>
   <p>
       <%= label(:dataset_id, "Dataset:") %>
-      <%= select_tag(:dataset_id, options_for_select(@blastn_query.available_datasets,@blastn_query.dataset_id)) %>
+      <%= select_tag(:dataset_id, options_for_select(@query_using_blastn.available_datasets,@query_using_blastn.dataset_id)) %>
       <%= image_tag('question_mark.png', :id=>'dataset_id_qtip')%>
   </p>
   <hr/>
@@ -43,8 +43,8 @@
     <p class='sub-section-heading-2'>General Parameters</p>
     <div>
         <%= bq.label :num_alignments, "Number of alignments to show" %>
-        <%= bq.select :num_alignments, options_for_select(@blastn_query.available_num_alignments,
-            @blastn_query.num_alignments) %>
+        <%= bq.select :num_alignments, options_for_select(@query_using_blastn.available_num_alignments,
+            @query_using_blastn.num_alignments) %>
         <%= image_tag('question_mark.png', :id=>'num_alignments_qtip')%>
     </div>
     <p>
@@ -55,7 +55,7 @@
     <div>
         <%= bq.label :word_size, "Word siz" %>
         <%= select_tag(:word_size, 
-          options_for_select(@blastn_query.available_word_sizes,@blastn_query.word_size)) %>
+          options_for_select(@query_using_blastn.available_word_sizes,@query_using_blastn.word_size)) %>
         <%= image_tag('question_mark.png', :id=>'word_size_qtip')%>
     </div>
   </div>
@@ -63,11 +63,11 @@
   <div class='sub-section rounded-corners' style='padding:5px'>
     <p class='sub-section-heading-2'>Scoring Parameters</p>
     <%= bq.label :match_and_mismatch_scores, "Match/mismatch scores" %>
-    <%= bq.select :match_and_mismatch_scores, options_for_select(@blastn_query.available_match_and_mismatch_scores,
-        @blastn_query.match_and_mismatch_scores) %>
+    <%= bq.select :match_and_mismatch_scores, options_for_select(@query_using_blastn.available_match_and_mismatch_scores,
+        @query_using_blastn.match_and_mismatch_scores) %>
     <%= image_tag('question_mark.png', :id=>'match_and_mismatch_scores_qtip') %>
     <div>
-      <%= render :partial => 'gap_costs', :locals => {:object => @blastn_query} %>
+      <%= render :partial => 'gap_costs', :locals => {:object => @query_using_blastn} %>
       <%= image_tag('question_mark.png', :id=>'gap_costs_qtip')%>
     </div>
   </div>
