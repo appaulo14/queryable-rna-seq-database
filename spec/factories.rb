@@ -1,3 +1,6 @@
+require 'query_analysis/upload_cuffdiff.rb'
+require 'spec_helper'
+
 FactoryGirl.define do
     factory :user do
       name                      {Faker::Name.name}
@@ -98,7 +101,53 @@ FactoryGirl.define do
         transcript
         sample
     end
-#     
+    
+    factory :upload_cuffdiff_with_1, class: UploadCuffdiff do
+      initialize_with           {new(FactoryGirl.create(:user))}
+      after(:build)             {|object| object.set_attributes_and_defaults() }
+      transcripts_fasta_file    {to_cuffdiff_uploaded_file(1,'transcripts.fasta')}
+      transcript_isoforms_file  {to_cuffdiff_uploaded_file(1,'isoforms.fpkm_tracking')}
+      has_diff_exp              true
+      has_transcript_isoforms   true
+      dataset_name              {Faker::Name.name}
+    end
+    
+    factory :upload_cuffdiff_with_2_samples, class: UploadCuffdiff do
+      initialize_with           {new(FactoryGirl.create(:user))}
+      after(:build)             {|object| object.set_attributes_and_defaults() }
+      transcripts_fasta_file    {to_cuffdiff_uploaded_file(2,'transcripts.fasta')}
+      transcript_diff_exp_file  {to_cuffdiff_uploaded_file(2,'isoform_exp.diff')}
+      gene_diff_exp_file        {to_cuffdiff_uploaded_file(2,'gene_exp.diff')}
+      transcript_isoforms_file  {to_cuffdiff_uploaded_file(2,'isoforms.fpkm_tracking')}
+      has_diff_exp              true
+      has_transcript_isoforms   true
+      dataset_name              {Faker::Name.name}
+    end
+    
+    factory :upload_cuffdiff_with_3_samples, class: UploadCuffdiff do
+      initialize_with           {new(FactoryGirl.create(:user))}
+      after(:build)             {|object| object.set_attributes_and_defaults() }
+      transcripts_fasta_file    {to_cuffdiff_uploaded_file(3,'transcripts.fasta')}
+      transcript_diff_exp_file  {to_cuffdiff_uploaded_file(3,'isoform_exp.diff')}
+      gene_diff_exp_file        {to_cuffdiff_uploaded_file(3,'gene_exp.diff')}
+      transcript_isoforms_file  {to_cuffdiff_uploaded_file(3,'isoforms.fpkm_tracking')}
+      has_diff_exp              true
+      has_transcript_isoforms   true
+      dataset_name              {Faker::Name.name}
+    end
+    
+    factory :upload_cuffdiff_with_4_samples, class: UploadCuffdiff do
+      initialize_with           {new(FactoryGirl.create(:user))}
+      after(:build)             {|object| object.set_attributes_and_defaults() }
+      transcripts_fasta_file    {to_cuffdiff_uploaded_file(4,'transcripts.fasta')}
+      transcript_diff_exp_file  {to_cuffdiff_uploaded_file(4,'isoform_exp.diff')}
+      gene_diff_exp_file        {to_cuffdiff_uploaded_file(4,'gene_exp.diff')}
+      transcript_isoforms_file  {to_cuffdiff_uploaded_file(4,'isoforms.fpkm_tracking')}
+      has_diff_exp              true
+      has_transcript_isoforms   true
+      dataset_name              {Faker::Name.name}
+    end
+#     uc = FactoryGirl.build(:upload_cuffdiff_with_2_samples)
 #     factory :invalid_fpkm_sample, class: FpkmSample do
 #         sample_number           1
 #         q_fpkm                  'INVALID FPKM'

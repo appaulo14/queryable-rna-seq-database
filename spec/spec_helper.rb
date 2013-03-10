@@ -90,6 +90,28 @@ RSpec.configure do |config|
   def sign_out()
     visit destroy_user_session_path
   end
+  
+  def make_http_uploaded_file(file_path)
+    file = File.new(file_path,'r')
+    return ActionDispatch::Http::UploadedFile.new({:tempfile => file})
+  end
+  
+  def to_cuffdiff_uploaded_file(number_of_samples,file_name)
+    absolute_path = "#{Rails.root}/spec/view_models/query_analysis/" +
+               "test_files/cuffdiff/"
+    case number_of_samples
+    when 1
+      absolute_path += '1_sample/'
+    else
+      absolute_path += "#{number_of_samples}_samples/"
+    end
+    absolute_path += file_name
+    file = File.new(absolute_path,'r')
+    return ActionDispatch::Http::UploadedFile.new({:tempfile => file})
+  end
+  
+  def to_uploaded_file(file_name)
+  end
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"

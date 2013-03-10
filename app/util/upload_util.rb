@@ -9,7 +9,7 @@ class UploadUtil
                         "-hash_index -dbtype nucl ")
   end
   
-  def self.rollback_blast_database_if_exists(dataset)
+  def self.rollback_blast_database(dataset)
     puts 'ROLLING BACK TEH BLAST DATABASE'
     #Check whether the database exists
     #If so, delete it
@@ -40,6 +40,7 @@ class UploadUtil
                       "-in #{blast_xml_output_file.path} " +
                       "-out #{blast2go_output_file.path} " +
                       "-prop #{blast2go_dir}/b2gPipe.properties -annot")
+    debugger
     #Raise an exception if there were errors with blast2go
     if not stderr.blank?
       raise StandardError, stderr

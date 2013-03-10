@@ -3,76 +3,142 @@ require 'spec_helper'
 describe UploadCuffdiff do
   before(:all) do
     DatabaseCleaner.clean
-    @current_user = FactoryGirl.create(:user, :email => 'nietz111@ksu.edu')
   end
   
   after(:all) do
     DatabaseCleaner.clean
-    #@current_user.destroy
   end
   
   before(:each) do 
-    #Change to the directory of this spec
-    Dir.chdir("#{Rails.root}/spec/view_models/query_analysis")
-    #Make copies of the test files
-    FileUtils.copy('test_files/cuffdiff/transcripts.fasta','cuffdiff_fasta_file')
-    FileUtils.copy('test_files/cuffdiff/isoform_exp.diff','transcript_diff_exp_file')
-    FileUtils.copy('test_files/cuffdiff/gene_exp.diff', 'gene_diff_exp_file')
-    FileUtils.copy('test_files/cuffdiff/isoforms.fpkm_tracking','transcript_isoform_file')
-    #Open the test files
-    cuffdiff_fasta_file = File.new('cuffdiff_fasta_file','r')
-    transcript_diff_exp_file = File.new('transcript_diff_exp_file','r')
-    gene_diff_exp_file = File.new('gene_diff_exp_file','r')
-    transcript_isoform_file = File.new('transcript_isoform_file','r')
-    #Create the uploaded file objects
-    uploaded_fasta_file = 
-      ActionDispatch::Http::UploadedFile.new({:tempfile=>cuffdiff_fasta_file})
-    uploaded_transcript_diff_exp_file = 
-      ActionDispatch::Http::UploadedFile.new({:tempfile=>transcript_diff_exp_file})
-    uploaded_gene_diff_exp_file = 
-      ActionDispatch::Http::UploadedFile.new({:tempfile=>gene_diff_exp_file})
-    uploaded_transcript_isoform_file = 
-      ActionDispatch::Http::UploadedFile.new({:tempfile=>transcript_isoform_file})
+    #Switch to the directory of the test files
+    Dir.chdir("#{Rails.root}/spec/view_models/query_analysis/test_files/cuffdiff")
     #Create and fill in the class
     @it = UploadCuffdiff.new(@current_user)
-    @it.set_attributes_and_defaults()
-    @it.dataset_name = 'Test Dataset'
+    @it.dataset_name = 'Test_Dataset'
     @it.has_diff_exp = true
     @it.has_transcript_isoforms = true
-    @it.transcripts_fasta_file = uploaded_fasta_file
-    @it.transcript_diff_exp_file = uploaded_transcript_diff_exp_file
-    @it.gene_diff_exp_file = uploaded_gene_diff_exp_file 
-    @it.transcript_isoforms_file = uploaded_transcript_isoform_file
-    #@it.delay.save!
-    #UploadUtil.stub(:create_blast_database){puts 'STUB OF BLAST DATABASE'}
+    @it.transcripts_fasta_file = make_http_uploaded_file('transcripts.fasta')
+    @it.transcript_diff_exp_file = make_http_uploaded_file('isoform_exp.diff')
+    @it.gene_diff_exp_file = make_http_uploaded_file('gene_exp.diff')
+    @it.transcript_isoforms_file = make_http_uploaded_file('isoforms.fpkm_tracking')
+    #Stub the file delete method so that test files aren't delete
+    File.stub(:delete){}
+    #Stub the method to get the go terms so we don't need to run it for each test
+    UploadUtil.stub(:generate_go_terms){"#{Dir.pwd}/go_terms.annot"}
+    #Stub the blast database creation and rollback
+    UploadUtil.stub(:create_blast_database){}
+    UploadUtil.stub(:rollback_blast_database){}
   end
   
   after(:each) do
     ActionMailer::Base.deliveries.clear
   end
   
-  describe '2 samples' do
-    describe 'when valid' do
-    end
-    
-    describe 'when an exception occurs' do
-    end
+  describe 'validations' do
+    it 'should require a dataset name'
+    it 'should require a transcript isoforms file that exists'
   end
   
-  describe '3 samples' do
-    describe 'when valid' do
+  describe 'when valid' do
+    shared_examples_for 'any number of samples' do
+      it 'should process the transcript isoforms file when ' +
+         'has_transcript_isoforms is true' do
+        upload_cuffdiff.has_transcript_isoforms = true
+        upload_cuffdiff.should_receive(:process_transcripts_isoforms_file)
+        upload_cuffdiff.save
+      end
     end
     
-    describe 'when an exception occurs' do
+    describe 'with any number of samples' do
+      it 'should process the transcript isoforms file when ' +
+         'has_transcript_isoforms is true' do
+        @it.has_transcript_isoforms = true
+        @it.should_receive(:process_transcripts_isoforms_file)
+        @it.save
+      end
+      
+      it 'should not call transcript isoforms when has_transcript_isoforms is false' do
+        @it.has_transcript_isoforms = false
+        @it.should_not_receive(:process_transcripts_isoforms_file)
+        @it.save
+      end
+      
+      it 'should delete the uploaded files when done' do
+        File.exists?(@it.transcripts_fasta_file.tempfile.path).should be_false
+        File.exists?(@it.transcript_diff_exp_file.tempfile.path).should be_false
+        File.exists?(@it.gene_diff_exp_file.tempfile.path).should be_false
+        File.exists?(@it.transcript_isoforms_file.tempfile.path).should be_false
+      end
+      
+      it 'should save without errors' do
+        @it.save
+      end
+      
+      it 'should email the user announcing success' do
+        @it.save
+        ActionMailer::Base.deliveries.count.should eq(1)
+        ActionMailer::Base.deliveries.last.to.should eq([@current_user.email])
+        ActionMailer::Base.deliveries.last.subject.should match('Success')
+      end
+      
+      it 'should call blast2go abd the other programs exactly once???'
+    end
+    
+    describe 'with 1 sample' do
+      it_should_behave_like 'any number of samples' do
+        let(:upload_cuffdiff){@it}
+      end
+    end
+    
+    describe 'with 2 samples' do
+      it_should_behave_like 'any number of samples' do
+        let(:upload_cuffdiff){@it}
+      end
+    end
+    
+    describe 'with 3 samples' do
+      it_should_behave_like 'any number of samples' do
+        let(:upload_cuffdiff){@it}
+      end
+    end
+    
+    describe 'with 4 samples' do
+      it_should_behave_like 'any number of samples' do
+        let(:upload_cuffdiff){@it}
+      end
     end
   end
-  
-  describe '4 samples' do 
-    describe 'when valid' do
-    end
     
-    describe 'when an exception occurs' do
-    end
+  describe 'when an exception occurs' do
+    before (:each) do
+        #UploadUtil.stub(:generate_go_terms){raise Exception, 'Seeded exception'}
+        TranscriptHasGoTerm.stub(:create!){raise Exception, 'Seeded exception'}
+      end
+      
+      it 'should email the user announcing failure' do
+        lambda do
+          @it.save
+        end.should raise_error(Exception, 'Seeded exception')
+        ActionMailer::Base.deliveries.count.should eq(1)
+        ActionMailer::Base.deliveries.last.to.should eq([@current_user.email])
+        ActionMailer::Base.deliveries.last.subject.should match('Fail')
+      end
+      
+      it 'should not write any transcripts to the database' do
+        lambda do
+          @it.save
+        end.should change(Transcript, :count).by(0)
+      end
+      
+      it 'should not write any datasets to the database' do
+        lambda do
+          @it.save
+        end.should change(Dataset, :count).by(0)
+      end
+      
+      it 'should not create a blast database'
+      
+      it 'should still delete the files'
   end
   
 #   it 'should have all genes have transcripts' do
@@ -110,106 +176,25 @@ describe UploadCuffdiff do
 #     @it.save
 #   end
   
-  it 'should create a blast database' do
-    #@it.save
-#     ds = double("Dataset")
-#     ds.should_receive(:name)
-#     ds.name
-    #ds.should_receive(:name)
-#     UploadUtil.create_blast_databas("",FactoryGirl.create(:dataset))
-    UploadUtil.should_receive(:create_blast_database).with(kind_of(String),kind_of(Dataset))
-    #UploadUtil.create_blast_database("",FactoryGirl.create(:dataset))
-    @it.save
-  end
-  
-  it 'should delete the blast database on rollback if it was created'
-  
-  it 'should put the blast database it the right place'
-  #blastdbcmd -info -db db/blast_databases/dev/1_db
-  
-  it 'should work for 4 samples'
-  
-  it 'should if successful email the user an email announcing success' do
-    @it.save
-    ActionMailer::Base.deliveries.count.should eq(1)
-    ActionMailer::Base.deliveries.last.to.should eq([@current_user.email])
-    ActionMailer::Base.deliveries.last.subject.should match('Success')
-  end
-  
-  it 'should if unsuccessful email the user announcing failure' do
-    #Seed an error
-   lambda do
-    UploadUtil.stub(:create_blast_database){raise Exception, 'Seeded exception'}
-    @it.save
-   end.should raise_error(Exception, 'Seeded exception')
-    ActionMailer::Base.deliveries.count.should eq(1)
-    ActionMailer::Base.deliveries.last.to.should eq([@current_user.email])
-    ActionMailer::Base.deliveries.last.subject.should match('Fail')
-  end
-  
-  it 'should be transactional, writing either all the data or none at all'
-  
-#   it 'should link the dataset to the user' do
+#   it 'should create a blast database' do
+#     #@it.save
+# #     ds = double("Dataset")
+# #     ds.should_receive(:name)
+# #     ds.name
+#     #ds.should_receive(:name)
+# #     UploadUtil.create_blast_databas("",FactoryGirl.create(:dataset))
+#     UploadUtil.should_receive(:create_blast_database).with(kind_of(String),kind_of(Dataset))
+#     #UploadUtil.create_blast_database("",FactoryGirl.create(:dataset))
 #     @it.save
-#     @it.dataset.user.id.should eq(@current_user.id)
+#     #blastdbcmd -info -db db/blast_databases/dev/1_db
 #   end
 #   
-#   it 'should add 0 users to the database' do
-#     lambda do
-#       @it.save
-#     end.should change(User, :count).by(0)
-#   end
+#   it 'should delete the blast database on rollback if it was created'
 #   
-#   it 'should add 1 dataset to the database' do
-#     lambda do
-#       @it.save
-#     end.should change(Dataset, :count).by(1)
+#   it 'should put the blast database it the right place' do
 #   end
+#   #blastdbcmd -info -db db/blast_databases/dev/1_db
 #   
-#   it 'should add 10 transcripts to the database' do
-#     Transcript.count.should eq(10)
-#   end
 #   
-#   it 'should add 10 genes to the database' do
-#     Gene.count.should eq(10)
-#   end
-#   
-#   it 'should add 10 sets of transcript fpkm tracking information to the database' do
-#     TranscriptFpkmTrackingInformation.count.should eq(10)
-#   end
-#   
-#   it 'should add 20 fpkm samples to the database' do
-#     FpkmSample.count.should eq(20)
-#   end
-  
-#   it 'should add 2 samples to the database' do
-#     lambda do
-#       @it.save
-#     end.should change(Sample, :count).by(2)
-#   end
-#   
-#   it 'should add 1 sample comparison to the database' do
-#     lambda do
-#       @it.save
-#     end.should change(SampleComparison, :count).by(1)
-#   end
-  
-#   it 'should add 20 differential expression tests to the database' do
-#     DifferentialExpressionTest.count.should eq(20)
-#   end
-#   
-#   it 'should add 55 go terms to the database' do
-#     GoTerm.count.should eq(55)
-#   end
-#   
-#   it 'should add 76 transcript has go terms to the database' do
-#     TranscriptHasGoTerm.count.should eq(76)
-#   end
-  
-#   it 'should delete the uploaded files when done' do
-#     File.exists?(@it.transcripts_fasta_file.tempfile.path).should be_false
-#     File.exists?(@it.transcript_diff_exp_file.tempfile.path).should be_false
-#     File.exists?(@it.gene_diff_exp_file.tempfile.path).should be_false
-#     File.exists?(@it.transcript_isoforms_file.tempfile.path).should be_false
-#   end
+
 end

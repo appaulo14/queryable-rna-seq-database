@@ -47,10 +47,10 @@ class UploadCuffdiff
         #find_and_process_go_terms()
       end
     rescue Exception => ex
-      #UploadUtil.rollback_blast_database_if_exists(@dataset)
-        QueryAnalysisMailer.notify_user_of_upload_failure(@current_user,
-                                                          @dataset,
-                                                          ex.message)
+      UploadUtil.rollback_blast_database(@dataset)
+      QueryAnalysisMailer.notify_user_of_upload_failure(@current_user,
+                                                        @dataset,
+                                                        ex.message)
       raise ex
     ensure
       delete_files()
