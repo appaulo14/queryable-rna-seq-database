@@ -15,8 +15,6 @@ class UploadCuffdiff
                 :has_transcript_isoforms,
                 :dataset_name
   
-  attr_accessor :dataset
-  
   #validate :validate_all_or_none_gene_files
   ##Validte for file presence only???
   
@@ -43,8 +41,10 @@ class UploadCuffdiff
         if @has_transcript_isoforms == '1'
           process_transcript_isoforms_file()
         end
+        if @has_diff_exp == '1' or @has_transcript_isoforms == '1'
+          find_and_process_go_terms()
+        end
         UploadUtil.create_blast_database(@transcripts_fasta_file.tempfile.path,@dataset)
-        #find_and_process_go_terms()
       end
     rescue Exception => ex
       UploadUtil.rollback_blast_database(@dataset)
@@ -266,40 +266,40 @@ class UploadCuffdiff
       @dataset.has_gene_diff_exp = false
     end
     if @has_transcript_isoforms == '1'
-      dataset.has_transcript_isoforms = true
+      @dataset.has_transcript_isoforms = true
     else
       @dataset.has_transcript_isoforms = false
     end
     @dataset.blast_db_location = "#{Rails.root}/db/blast_databases/#{Rails.env}/"
     @dataset.save!
-    @dataset.blast_db_location = "#{Rails.root}/db/blast_databases/#{Rails.env}/#{dataset.id}"
+    @dataset.blast_db_location = "#{Rails.root}/db/blast_databases/#{Rails.env}/#{@dataset.id}"
     @dataset.save!
   end
   
   def process_gene_differential_expression_file()
-    upload_cuffdiff.gene_diff_exp_file.tempfile.readline #skip the header line
-    while not upload_cuffdiff.gene_diff_exp_file.tempfile.eof?
-      line = upload_cuffdiff.gene_diff_exp_file.tempfile.readline
+    @gene_diff_exp_file.tempfile.readline #skip the header line
+    while not @gene_diff_exp_file.tempfile.eof?
+      line = @gene_diff_exp_file.tempfile.readline
       next if line.blank?
       cells = line.split("\t")
       #Create the genes
-      gene = Gene.create!(:dataset => dataset, 
+      gene = Gene.create!(:dataset => @dataset, 
                           :name_from_program => cells[0])
       #Create sample 1 if not already created
       sample_1_name = cells[4]
-      sample_1 = Sample.where(:dataset_id => dataset.id, 
+      sample_1 = Sample.where(:dataset_id => @dataset.id, 
                               :name => sample_1_name)[0]
       if sample_1.nil?
         sample_1 = Sample.create!(:name => sample_1_name, 
-                                  :dataset => dataset)
+                                  :dataset => @dataset)
       end
       #Create sample 2 if not already created
       sample_2_name = cells[5]
-      sample_2 = Sample.where(:dataset_id => dataset.id, 
+      sample_2 = Sample.where(:dataset_id => @dataset.id, 
                               :name => sample_2_name)[0]
       if sample_2.nil?
         sample_2 = Sample.create!(:name => sample_2_name, 
-                                  :dataset => dataset)
+                                  :dataset => @dataset)
       end
       #Create the sample comparison if not already created
       sample_comparison = 
@@ -330,26 +330,26 @@ class UploadCuffdiff
       next if line.blank?
       cells = line.split("\t")
       next if cells.blank?
-      gene = Gene.where(:dataset_id => dataset.id,
+      gene = Gene.where(:dataset_id => @dataset.id,
                         :name_from_program => cells[1])[0]
-      transcript = Transcript.create!(:dataset => dataset, 
+      transcript = Transcript.create!(:dataset => @dataset, 
                                       :name_from_program => cells[0],
                                       :gene => gene)
       #Create sample 1 if not already created
       sample_1_name = cells[4]
-      sample_1 = Sample.where(:dataset_id => dataset.id, 
+      sample_1 = Sample.where(:dataset_id => @dataset.id, 
                               :name => sample_1_name)[0]
       if sample_1.nil?
         sample_1 = Sample.create!(:name => sample_1_name, 
-                                  :dataset => dataset)
+                                  :dataset => @dataset)
       end
       #Create sample 2 if not already created
       sample_2_name = cells[5]
-      sample_2 = Sample.where(:dataset_id => dataset.id, 
+      sample_2 = Sample.where(:dataset_id => @dataset.id, 
                               :name => sample_2_name)[0]
       if sample_2.nil?
         sample_2 = Sample.create!(:name => sample_2_name, 
-                                  :dataset => dataset)
+                                  :dataset => @dataset)
       end
       #Create the sample comparison if not already created
       sample_comparison = 
@@ -375,27 +375,27 @@ class UploadCuffdiff
   end
   
   def process_transcript_isoforms_file()
-    headers = upload_cuffdiff.transcript_isoforms_file.tempfile.readline.split("\t")
+    headers = @transcript_isoforms_file.tempfile.readline.split("\t")
     samples = []
     next_index = 9
     while (next_index < headers.count)
       sample_name = headers[next_index].match(/(.+)_FPKM/).captures[0]
-      samples << Sample.where(:dataset_id => dataset.id,
+      samples << Sample.where(:dataset_id => @dataset.id,
                               :name => sample_name)[0]
       next_index = next_index + 4
     end
-    while not upload_cuffdiff.transcript_isoforms_file.tempfile.eof?
-      line = upload_cuffdiff.transcript_isoforms_file.tempfile.readline
+    while not @transcript_isoforms_file.tempfile.eof?
+      line = @transcript_isoforms_file.tempfile.readline
       next if line.blank?
       cells = line.split("\t")
-      transcript = Transcript.where(:dataset_id => dataset.id,
+      transcript = Transcript.where(:dataset_id => @dataset.id,
                                     :name_from_program => cells[0])[0]
       TranscriptFpkmTrackingInformation.create!(:transcript => transcript,
                                                 :class_code => cells[1],
                                                 :length => cells[7],
                                                 :coverage => cells[8])
       if transcript.gene.nil?
-        gene = Gene.where(:dataset_id => dataset.id,
+        gene = Gene.where(:dataset_id => @dataset.id,
                           :name_from_program => cells[3])[0]
         transcript.gene = gene
       end
@@ -417,12 +417,13 @@ class UploadCuffdiff
     go_terms_file = File.open(go_terms_file_path)
     while not go_terms_file.eof?
       line = go_terms_file.readline
+      next if line.blank?
       (transcript_name, go_id, term) = line.split("\t")
       go_term = GoTerm.find_by_id(go_id)
       if go_term.nil?
         go_term = GoTerm.create!(:id => go_id, :term => term)
       end
-      transcript = Transcript.where(:dataset_id => dataset.id, 
+      transcript = Transcript.where(:dataset_id => @dataset.id, 
                                     :name_from_program => transcript_name)[0]
       TranscriptHasGoTerm.create!(:transcript => transcript, 
                                   :go_term => go_term)
@@ -433,9 +434,13 @@ class UploadCuffdiff
   
   def delete_files
     File.delete(@transcripts_fasta_file.tempfile.path)
-    File.delete(@transcript_diff_exp_file.tempfile.path)
-    File.delete(@gene_diff_exp_file.tempfile.path)
-    File.delete(@transcript_isoforms_file.tempfile.path)
+    if (@has_diff_exp == '1')
+      File.delete(@transcript_diff_exp_file.tempfile.path)
+      File.delete(@gene_diff_exp_file.tempfile.path)
+    end
+    if (@has_transcript_isoforms == '1')
+      File.delete(@transcript_isoforms_file.tempfile.path)
+    end
   end
   
   def validate_trinity_fasta_file

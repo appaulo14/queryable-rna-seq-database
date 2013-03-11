@@ -40,7 +40,6 @@ class UploadUtil
                       "-in #{blast_xml_output_file.path} " +
                       "-out #{blast2go_output_file.path} " +
                       "-prop #{blast2go_dir}/b2gPipe.properties -annot")
-    debugger
     #Raise an exception if there were errors with blast2go
     if not stderr.blank?
       raise StandardError, stderr

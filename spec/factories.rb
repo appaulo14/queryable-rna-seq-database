@@ -102,13 +102,13 @@ FactoryGirl.define do
         sample
     end
     
-    factory :upload_cuffdiff_with_1, class: UploadCuffdiff do
+    factory :upload_cuffdiff_with_1_sample, class: UploadCuffdiff do
       initialize_with           {new(FactoryGirl.create(:user))}
       after(:build)             {|object| object.set_attributes_and_defaults() }
       transcripts_fasta_file    {to_cuffdiff_uploaded_file(1,'transcripts.fasta')}
       transcript_isoforms_file  {to_cuffdiff_uploaded_file(1,'isoforms.fpkm_tracking')}
-      has_diff_exp              true
-      has_transcript_isoforms   true
+      has_diff_exp              '0'
+      has_transcript_isoforms   '1'
       dataset_name              {Faker::Name.name}
     end
     
@@ -119,8 +119,8 @@ FactoryGirl.define do
       transcript_diff_exp_file  {to_cuffdiff_uploaded_file(2,'isoform_exp.diff')}
       gene_diff_exp_file        {to_cuffdiff_uploaded_file(2,'gene_exp.diff')}
       transcript_isoforms_file  {to_cuffdiff_uploaded_file(2,'isoforms.fpkm_tracking')}
-      has_diff_exp              true
-      has_transcript_isoforms   true
+      has_diff_exp              '1'
+      has_transcript_isoforms   '1'
       dataset_name              {Faker::Name.name}
     end
     
@@ -131,8 +131,8 @@ FactoryGirl.define do
       transcript_diff_exp_file  {to_cuffdiff_uploaded_file(3,'isoform_exp.diff')}
       gene_diff_exp_file        {to_cuffdiff_uploaded_file(3,'gene_exp.diff')}
       transcript_isoforms_file  {to_cuffdiff_uploaded_file(3,'isoforms.fpkm_tracking')}
-      has_diff_exp              true
-      has_transcript_isoforms   true
+      has_diff_exp              '1'
+      has_transcript_isoforms   '1'
       dataset_name              {Faker::Name.name}
     end
     
@@ -143,8 +143,8 @@ FactoryGirl.define do
       transcript_diff_exp_file  {to_cuffdiff_uploaded_file(4,'isoform_exp.diff')}
       gene_diff_exp_file        {to_cuffdiff_uploaded_file(4,'gene_exp.diff')}
       transcript_isoforms_file  {to_cuffdiff_uploaded_file(4,'isoforms.fpkm_tracking')}
-      has_diff_exp              true
-      has_transcript_isoforms   true
+      has_diff_exp              '1'
+      has_transcript_isoforms   '1'
       dataset_name              {Faker::Name.name}
     end
 #     uc = FactoryGirl.build(:upload_cuffdiff_with_2_samples)
