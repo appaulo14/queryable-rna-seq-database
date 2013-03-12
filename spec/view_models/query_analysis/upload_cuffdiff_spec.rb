@@ -7,23 +7,13 @@ describe UploadCuffdiff do
     DatabaseCleaner.clean
   end
   
-  after(:all) do
-    DatabaseCleaner.clean
-  end
-  
-  before(:each) do 
-    @it = FactoryGirl.build(:upload_cuffdiff_with_2_samples)
+  before(:each) do
     #Stub the file delete method so that test files aren't delete
     File.stub(:delete){}
-    UploadUtil.stub(:generate_go_terms){
-      "#{@test_files_path}/2_samples/go_terms.annot"
-    }
-#     UploadUtil.stub(:generate_go_terms){
-#      @goat
-#     }
-    #Stub the blast database creation and rollback
-#     UploadUtil.stub(:create_blast_database){}
-#     UploadUtil.stub(:rollback_blast_database){}
+  end
+  
+  after(:all) do
+    DatabaseCleaner.clean
   end
   
   after(:each) do
@@ -31,183 +21,362 @@ describe UploadCuffdiff do
   end
   
   describe 'validations', :type => :validations do
-    it 'should require a dataset name'
-    it 'should require a transcript isoforms file that exists'
-    it "should require has_diff_exp be '1' or '0'"
-    it 'should not save when not valid'
+    before (:each) do
+      @it = FactoryGirl.build(:upload_cuffdiff_with_2_samples)
+    end
+    
+    shared_examples_for 'any option' do
+      it 'should require a dataset name'
+      it 'should require has_diff_exp be "1" or "0"'
+      it 'should require has_transcript_isoforms be "1" or "0"'
+      it 'should not save when not valid'
+      it 'should require a transcript fasta file'
+    end
+    
+    describe 'when has_diff_exp is "1"' do
+      before (:each) do
+        @it.has_diff_exp = '1'
+      end
+      
+      it_should_behave_like 'any option'
+      
+      it 'should require a gene differential expression file'
+      it 'should require a transcript differenntial expression file'
+    end
+    
+    describe 'when has_diff_exp is "0"' do
+      before (:each) do
+        @it.has_diff_exp = '1'
+      end
+      
+      it_should_behave_like 'any option'
+      
+      it 'should not require a gene differential expression file'
+      it 'should not require a transcript differenntial expression file'
+    end
+    
+    describe 'when has_transcript_isoforms is "1"' do
+      before (:each) do
+        @it.has_transcript_isoforms = '1'
+      end
+      
+      it_should_behave_like 'any option'
+      
+      it 'should require an uploaded transcript isoforms file'
+    end
+    
+    describe 'when has_transcript_isoforms is "0"' do
+      before (:each) do
+        @it.has_transcript_isoforms = '1'
+      end
+      
+      it_should_behave_like 'any option'
+      
+      it 'should not require an uploaded transcript isoforms file'
+    end
   end
   
   describe 'flow control', :type => :white_box do
+    let(:uc){FactoryGirl.build(:upload_cuffdiff_with_2_samples)}
+    
     before(:each) do
-      #Stub it all
-      #Change @it to @uc?
       @it = FactoryGirl.build(:upload_cuffdiff_with_2_samples)
-      @it.stub(:process_args_to_create_dataset){}
-      @it.stub(:process_transcript_differential_expression_file){}
-      @it.stub(:process_gene_differential_expression_file){}
-      @it.stub(:process_transcript_isoforms_file){}
-      @it.stub(:find_and_process_go_terms){}
-      @it.stub(:delete_files)
-      QueryAnalysisMailer.stub(:notify_user_of_upload_success){}
-      QueryAnalysisMailer.stub(:notify_user_of_upload_failure){}
+      #Stub all the methods since we are just testing control flow
+      @it.stub(:process_args_to_create_dataset)
+      @it.stub(:process_gene_differential_expression_file)
+      @it.stub(:process_transcript_differential_expression_file)
+      @it.stub(:process_transcript_isoforms_file)
+      @it.stub(:find_and_process_go_terms)
+      #@it.stub(:delete_uploaded_files)
+      File.stub(:delete)
       UploadUtil.stub(:create_blast_database)
       UploadUtil.stub(:rollback_blast_database)
-      #etc.
+      QueryAnalysisMailer.stub(:notify_user_of_upload_success)
+      QueryAnalysisMailer.stub(:notify_user_of_upload_failure)
     end
     
     shared_examples_for 'all options when an exception occurs' do
-      it 'should call QueryAnalysisMailer.notify_user_of_upload_failure'
-      it 'should not call QueryAnalysisMailer.notify_user_of_upload_success'
-      it 'should rollback the blast database'
+      before (:each) do
+        UploadUtil.stub(:create_blast_database){raise SeededTestException}
+      end
+      
+      it 'should call QueryAnalysisMailer.notify_user_of_upload_failure'do
+        begin
+          QueryAnalysisMailer.should_receive(:notify_user_of_upload_failure)
+          @it.save
+        rescue SeededTestException => ex
+        end
+      end
+      it 'should not call QueryAnalysisMailer.notify_user_of_upload_success' do
+        begin 
+          QueryAnalysisMailer.should_receive(:notify_user_of_upload_failure)
+          @it.save 
+        rescue SeededTestException => ex
+        end
+      end
+      it 'should rollback the blast database' do
+        begin
+          UploadUtil.should_receive(:rollback_blast_database)
+          @it.save
+        rescue SeededTestException => ex
+        end
+      end
+      it 'should delete the uploaded files' do
+        begin 
+          @it.should_receive(:delete_uploaded_files)
+          @it.save
+        rescue SeededTestException => ex
+        end
+      end
     end
     
     shared_examples_for 'all options when no exception occurs' do
-      it 'should call process_args_to_create_dataset'
-      it 'should call Upload.create_blast_database'
-      it 'should call QueryAnalysisMailer.notify_user_of_upload_success'
-      it 'should not call QueryAnalysisMailer.notify_user_of_upload_failure'
-      it 'should not call UploadUtil.rollback_blast_database'
-    end
-    
-    shared_examples_for 'all options regardless of whether an exception occurs' do
-       it 'should delete the uploaded files' 
-#       do       
-#         File.should_receive(:delete).with(@it.transcripts_fasta_file.tempfile.path)
-#         File.should_receive(:delete).with(@it.transcript_diff_exp_file.tempfile.path)
-#         File.should_receive(:delete).with(@it.gene_diff_exp_file.tempfile.path)
-#         File.should_receive(:delete).with(@it.transcript_isoforms_file.tempfile.path)
-#         @it.save
-#       end
+      it 'should call process_args_to_create_dataset' do
+        @it.should_receive(:process_args_to_create_dataset)
+        @it.save
+      end
+      it 'should call UploadUtil.create_blast_database' do
+        UploadUtil.should_receive(:create_blast_database)
+        @it.save
+      end
+      it 'should call QueryAnalysisMailer.notify_user_of_upload_success' do
+        QueryAnalysisMailer.should_receive(:notify_user_of_upload_success)
+        @it.save
+      end
+      it 'should not call QueryAnalysisMailer.notify_user_of_upload_failure' do
+        QueryAnalysisMailer.should_not_receive(:notify_user_of_upload_failure)
+        @it.save
+      end
+      it 'should not call UploadUtil.rollback_blast_database' do
+        UploadUtil.should_not_receive(:rollback_blast_database)
+        @it.save
+      end
+      it 'should delete the uploaded files' do
+        @it.should_receive(:delete_uploaded_files)
+        @it.save
+      end
     end
     
     describe 'when both has_transcript_isoforms and has_diff_exp are "1"' do
+      before (:each) do
+        @it.has_diff_exp = '1'
+        @it.has_transcript_isoforms = '1'
+      end
+
       it_should_behave_like 'all options when an exception occurs'
       it_should_behave_like 'all options when no exception occurs'
-      it_should_behave_like 'all options regardless of whether an exception occurs'
       
-      it 'should call process_transcript_differential_expression_file'
-      it 'should call process_gene_differential_expression_file'
-      #etc.
+      it 'should call process_transcript_differential_expression_file' do
+        @it.should_receive(:process_transcript_differential_expression_file)
+        @it.save
+      end
+      
+      it 'should call process_gene_differential_expression_file' do
+        @it.should_receive(:process_gene_differential_expression_file)
+        @it.save
+      end
+      it 'should call process_transcript_isoforms_file' do
+        @it.should_receive(:process_transcript_isoforms_file)
+        @it.save
+      end
+      it 'should call find_and_process_go_terms' do
+        @it.should_receive(:find_and_process_go_terms)
+        @it.save
+      end
     end
     
     describe 'when has_transcript_isoforms is "1" but has_diff_exp is "0" ' do
+      before (:each) do
+        @it.has_diff_exp = '0'
+        @it.has_transcript_isoforms = '1'
+      end
+      
       it_should_behave_like 'all options when an exception occurs'
       it_should_behave_like 'all options when no exception occurs'
-      it_should_behave_like 'all options regardless of whether an exception occurs'
+      
+      it 'should not call process_transcript_differential_expression_file' do
+        @it.should_not_receive(:process_transcript_differential_expression_file)
+        @it.save
+      end
+      
+      it 'should not call process_gene_differential_expression_file' do
+        @it.should_not_receive(:process_gene_differential_expression_file)
+        @it.save
+      end
+      it 'should call process_transcript_isoforms_file' do
+        @it.should_receive(:process_transcript_isoforms_file)
+        @it.save
+      end
+      it 'should call find_and_process_go_terms' do
+        @it.should_receive(:find_and_process_go_terms)
+        @it.save
+      end
     end
     
     describe 'when has_transcript_isoforms is "0" but has_diff_exp is "1" ' do
+      before (:each) do
+        @it.has_diff_exp = '1'
+        @it.has_transcript_isoforms = '0'
+      end
+      
       it_should_behave_like 'all options when an exception occurs'
       it_should_behave_like 'all options when no exception occurs'
-      it_should_behave_like 'all options regardless of whether an exception occurs'
+      
+      it 'should call process_transcript_differential_expression_file' do
+        @it.should_receive(:process_transcript_differential_expression_file)
+        @it.save
+      end
+      
+      it 'should call process_gene_differential_expression_file' do
+        @it.should_receive(:process_gene_differential_expression_file)
+        @it.save
+      end
+      it 'should not call process_transcript_isoforms_file' do
+        @it.should_not_receive(:process_transcript_isoforms_file)
+        @it.save
+      end
+      it 'should call find_and_process_go_terms' do
+        @it.should_receive(:find_and_process_go_terms)
+        @it.save
+      end
     end
     
     describe 'when both has_transcript_isoforms and has_diff_exp are "0"' do
+      before (:each) do
+        @it.has_diff_exp = '0'
+        @it.has_transcript_isoforms = '0'
+      end
+      
       it_should_behave_like 'all options when an exception occurs'
       it_should_behave_like 'all options when no exception occurs'
-      it_should_behave_like 'all options regardless of whether an exception occurs'
       
-      it 'should not call go terms'
+      it 'should not call process_transcript_differential_expression_file' do
+        @it.should_not_receive(:process_transcript_differential_expression_file)
+        @it.save
+      end
+      
+      it 'should not call process_gene_differential_expression_file' do
+        @it.should_not_receive(:process_gene_differential_expression_file)
+        @it.save
+      end
+      it 'should not call process_transcript_isoforms_file' do
+        @it.should_not_receive(:process_transcript_isoforms_file)
+        @it.save
+      end
+      it 'should not call find_and_process_go_terms' do
+        @it.should_not_receive(:find_and_process_go_terms)
+        @it.save
+      end
     end
   end
-    
-#     describe 'when an exception is thrown' do
-#       it_should_behave_like 'all paths'
-#       
-#       it 'should rollback the blast database'
-#       it 'should notify the user of failure'
-#       it 'should rollback the blast database'
-# #       it 'should rollback the database transaction' do
-# #         lambda do
-# #           @it.stub(:process_args_to_create_dataset){raise Exception, "Seeded exception"}
-# #           ActiveRecord::Base.should_receive(:rollback_active_record_state!).and_call_original
-# #           @it.save
-# #         end.should raise_error(Exception, "Seeded exception")
-# #       end
-#     end
-#   end
   
   describe 'database/email/file interaction', :type => :black_box do
+    
     shared_examples_for 'any number of samples when an exception occurs' do
-      it 'should create 0 datasets'
-      it 'should create 0 transcripts'
-      it 'should send an email notifying user of failure'
+      it 'should add 0 datasets to the database'
+      it 'should add 0 users to the database'
+      it 'should add 0 transcripts to the database'
+      it 'should add 0 genes to the database'
+      it 'should add 0 fpkm samples to the database'
+      it 'should add 0 samples to the database'
+      it 'should add 0 sample comparisons to the database'
+      it 'should add 0 differential expression tests to the database'
+      it 'should add 0 transcript has go terms to the database'
+      it 'should add 0 transcript fpkm tracking informations to the database'
+      it 'should add 0 go terms to the database'
       it 'should rollback the blast database'
-      #etc.
+      it 'should send an email notifying user of failure'
     end
     
     shared_examples_for 'any number of samples when no exception occurs' do
-      it 'should create 1 blast database' 
-#       do
-#         exec_path = "#{Rails.root}/bin/blast/bin"
-#         database_path = "db/blast_databases/test/#{dataset.id}_db"
-#         result = system("#{exec_path}/blastdbcmd -info -db #{database_path}")
-#         result.should be_true
-#       end
+      it 'should create 1 blast database' do
+        exec_path = "#{Rails.root}/bin/blast/bin"
+        database_path = "db/blast_databases/test/#{dataset.id}_db"
+        result = system("#{exec_path}/blastdbcmd -info -db #{database_path}")
+        result.should be_true
+      end
+      
       it 'should create 1 dataset'
       it 'should create 0 users'
       it 'should send 1 email notifying the user of success'
-      #etc.?
     end
     
-    shared_examples_for 'any number of samples regardless of whether an exception occurs' do
-      it 'should delete the uploaded files' do       
-        File.should_receive(:delete).with(uc.transcripts_fasta_file.tempfile.path)
-        File.should_receive(:delete).with(uc.transcript_diff_exp_file.tempfile.path)
-        File.should_receive(:delete).with(uc.gene_diff_exp_file.tempfile.path)
-        File.should_receive(:delete).with(uc.transcript_isoforms_file.tempfile.path)
+    shared_examples_for 'all samples regardless of whether an exception occurs' do
+      it 'should delete the uploaded files' do 
+        if @it.transcripts_fasta_file.nil?
+          File.should_not_receive(:delete).with(@it.transcripts_fasta_file.tempfile.path)
+        else
+          File.should_receive(:delete).with(@it.transcripts_fasta_file.tempfile.path)
+        end
+        if @it.transcript_diff_exp_file.nil?
+          File.should_not_receive(:delete).with(@it.transcript_diff_exp_file.tempfile.path)
+        else
+          File.should_receive(:delete).with(@it.transcript_diff_exp_file.tempfile.path)
+        end
+        if @it.gene_diff_exp_file.nil?
+          File.should_not_receive(:delete).with(@it.gene_diff_exp_file.tempfile.path)
+        else
+          File.should_receive(:delete).with(@it.gene_diff_exp_file.tempfile.path)
+        end
+        if @it.transcript_isoforms_file.nil?
+          File.should_not_receive(:delete).with(@it.transcript_isoforms_file.tempfile.path)
+        else
+          File.should_receive(:delete).with(@it.transcript_isoforms_file.tempfile.path)
+        end
         @it.save
       end
     end
     
     describe 'for 1 sample' do
       before(:each) do
+        @it = FactoryGirl.build(:upload_cuffdiff_with_1_sample)
         #Stub blast2go because it takes a long time
         UploadUtil.stub(:generate_go_terms){
           "#{@test_files_path}/1_sample/go_terms.annot"
         }
       end
-      
-      it_should_behave_like 'any number of samples when an exception occurs' do
-        let(:uc){FactoryGirl.build(:upload_cuffdiff_with_1_sample)}
-      end
-      
-      it_should_behave_like 'any number of samples when no exception occurs' do
-        let(:uc){FactoryGirl.build(:upload_cuffdiff_with_1_sample)}
-      end
-      
-      it_should_behave_like 'any number of samples regardless of whether an exception occurs' do
-        let(:uc){FactoryGirl.build(:upload_cuffdiff_with_1_sample)}
-      end
-      
+          
       describe 'when it has transcript isoforms only' do
+        it_should_behave_like 'any number of samples when an exception occurs'
+        it_should_behave_like 'any number of samples when no exception occurs'
+        it_should_behave_like 'any number of samples regardless of whether an exception occurs'
+        
+        it 'should add X transcripts to the database'
+        it 'should add X genes to the database'
+        it 'should add X fpkm samples to the database'
+        it 'should add X samples to the database'
+        it 'should add X sample comparisons to the database'
+        it 'should add X differential expression tests to the database'
+        it 'should add X transcript has go terms to the database'
+        it 'should add X transcript fpkm tracking informations to the database'
+        it 'should add X go terms to the database'
+        it 'should add X go terms to the database if Y already exist in the database'
+        
       end
       
       describe 'when it has no transcript isoforms' do
+        it_should_behave_like 'any number of samples when an exception occurs'
+        it_should_behave_like 'any number of samples when no exception occurs'
+        it_should_behave_like 'any number of samples regardless of whether an exception occurs'
+        
         it 'should have 0 transcripts'
         #etc.
       end
     end
     
     describe 'for 2 sample' do
-      before(:each) do
-        #Stub blast2go because it takes a long time
+      before(:each) do 
+        @it = FactoryGirl.build(:upload_cuffdiff_with_2_samples)
+        #Stub the generate go terms method so we don't need to run blast2go
         UploadUtil.stub(:generate_go_terms){
           "#{@test_files_path}/2_samples/go_terms.annot"
         }
       end
       
-      it_should_behave_like 'any number of samples when an exception occurs' do
-        let(:uc){FactoryGirl.build(:upload_cuffdiff_with_2_samples)}
-      end
-      
-      it_should_behave_like 'any number of samples when no exception occurs' do
-        let(:uc){FactoryGirl.build(:upload_cuffdiff_with_2_samples)}
-      end
-      
-      it_should_behave_like 'any number of samples regardless of whether an exception occurs' do
-        let(:uc){FactoryGirl.build(:upload_cuffdiff_with_2_samples)}
-      end
+      #TODO: Put these below??
+      it_should_behave_like 'any number of samples when an exception occurs'
+      it_should_behave_like 'any number of samples when no exception occurs' 
+      it_should_behave_like 'any number of samples regardless of whether an exception occurs'
 
       describe 'when it has differenntial expression tests and transcript isoforms' do
       end
@@ -225,24 +394,17 @@ describe UploadCuffdiff do
     end
     
     describe 'for 3 sample' do
-      before(:each) do
-        #Stub blast2go because it takes a long time
+      before(:each) do 
+        @it = FactoryGirl.build(:upload_cuffdiff_with_3_samples)
+        #Stub the generate go terms method so we don't need to run blast2go
         UploadUtil.stub(:generate_go_terms){
           "#{@test_files_path}/3_samples/go_terms.annot"
         }
       end
       
-      it_should_behave_like 'any number of samples when an exception occurs' do
-        let(:uc){FactoryGirl.build(:upload_cuffdiff_with_3_samples)}
-      end
-      
-      it_should_behave_like 'any number of samples when no exception occurs' do
-        let(:uc){FactoryGirl.build(:upload_cuffdiff_with_3_samples)}
-      end
-      
-      it_should_behave_like 'any number of samples regardless of whether an exception occurs' do
-        let(:uc){FactoryGirl.build(:upload_cuffdiff_with_3_samples)}
-      end
+      it_should_behave_like 'any number of samples when an exception occurs'
+      it_should_behave_like 'any number of samples when no exception occurs'
+      it_should_behave_like 'any number of samples regardless of whether an exception occurs'
 
       describe 'when it has differenntial expression tests and transcript isoforms' do
       end
@@ -260,24 +422,16 @@ describe UploadCuffdiff do
     end
     
     describe 'for 4 sample' do
-      before(:each) do
-        #Stub blast2go because it takes a long time
+      before(:each) do 
+        @it = FactoryGirl.build(:upload_cuffdiff_with_2_samples)
+        #Stub the generate go terms method so we don't need to run blast2go
         UploadUtil.stub(:generate_go_terms){
           "#{@test_files_path}/2_samples/go_terms.annot"
         }
       end
       
-      it_should_behave_like 'any number of samples when an exception occurs' do
-        let(:uc){FactoryGirl.build(:upload_cuffdiff_with_4_samples)}
-      end
-      
-      it_should_behave_like 'any number of samples when no exception occurs' do
-        let(:uc){FactoryGirl.build(:upload_cuffdiff_with_4_samples)}
-      end
-      
-      it_should_behave_like 'any number of samples regardless of whether an exception occurs' do
-        let(:uc){FactoryGirl.build(:upload_cuffdiff_with_4_samples)}
-      end
+      it_should_behave_like 'any number of samples when an exception occurs'
+      it_should_behave_like 'any number of samples when no exception occurs'
       
       describe 'when it has differenntial expression tests and transcript isoforms' do
       end

@@ -14,7 +14,7 @@ class UploadCuffdiff
                 :has_diff_exp,
                 :has_transcript_isoforms,
                 :dataset_name
-  
+ 
   #validate :validate_all_or_none_gene_files
   ##Validte for file presence only???
   
@@ -41,7 +41,7 @@ class UploadCuffdiff
         if @has_transcript_isoforms == '1'
           process_transcript_isoforms_file()
         end
-        if @has_diff_exp == '1' or @has_transcript_isoforms == '1'
+        if (@has_diff_exp == '1' or @has_transcript_isoforms == '1')
           find_and_process_go_terms()
         end
         UploadUtil.create_blast_database(@transcripts_fasta_file.tempfile.path,@dataset)
@@ -53,7 +53,7 @@ class UploadCuffdiff
                                                         ex.message)
       raise ex
     ensure
-      delete_files()
+      delete_uploaded_files()
     end
     QueryAnalysisMailer.notify_user_of_upload_success(@current_user,
                                                       @dataset,
@@ -361,7 +361,6 @@ class UploadCuffdiff
                                       :sample_2 => sample_2)
       end
       #Create the differential expression test
-      debugger if cells[6].blank?
       DifferentialExpressionTest.create!(:transcript => transcript,
                                           :test_status => cells[6],
                                           :sample_1_fpkm => cells[7],
@@ -432,13 +431,17 @@ class UploadCuffdiff
     File.delete(go_terms_file.path)
   end
   
-  def delete_files
-    File.delete(@transcripts_fasta_file.tempfile.path)
-    if (@has_diff_exp == '1')
+  def delete_uploaded_files
+    if not @transcript_fasta_file.nil? 
+      File.delete(@transcripts_fasta_file.tempfile.path)
+    end
+    if not @transcript_diff_exp_file.nil?
       File.delete(@transcript_diff_exp_file.tempfile.path)
+    end
+    if not @gene_diff_exp_file.nil?
       File.delete(@gene_diff_exp_file.tempfile.path)
     end
-    if (@has_transcript_isoforms == '1')
+    if not @transcript_isoforms_file.nil?
       File.delete(@transcript_isoforms_file.tempfile.path)
     end
   end

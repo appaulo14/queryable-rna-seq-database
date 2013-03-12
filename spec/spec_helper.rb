@@ -11,6 +11,10 @@ require 'database_cleaner'
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
+#Special exception used for testing
+class SeededTestException < Exception
+end
+
 RSpec.configure do |config|
   config.include Devise::TestHelpers, :type => :controller
   config.include Devise::TestHelpers, :type => :view
