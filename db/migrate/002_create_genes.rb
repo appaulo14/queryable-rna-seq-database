@@ -6,14 +6,12 @@ class CreateGenes < ActiveRecord::Migration
       case adapter_type
       when /mysql/
         t.column :id, 'BIGINT UNSIGNED', :null => false
-        t.column :dataset_id, 'BIGINT UNSIGNED', :null => false
       when /postgresql/
         t.column :id, 'bigserial', :null => false, :unique => true
-        t.column :dataset_id, 'BIGINT', :null => false
       else
         throw NotImplementedError.new("Unknown adapter type '#{adapter_type}'")
       end
-
+      t.integer :dataset_id, :null => false
       t.string :name_from_program, :null => false
       #t.timestamps
     end

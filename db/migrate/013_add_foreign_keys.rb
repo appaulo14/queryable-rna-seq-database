@@ -24,34 +24,34 @@ class AddForeignKeys < ActiveRecord::Migration
     execute('ALTER TABLE differential_expression_tests ' +
             'ADD CONSTRAINT differential_expression_tests_genes_fk ' + 
             'FOREIGN KEY (gene_id) REFERENCES genes (id) ' + 
-            'ON UPDATE CASCADE ON DELETE CASCADE;')
+            'ON UPDATE CASCADE ON DELETE RESTRICT;')
     execute('ALTER TABLE differential_expression_tests ' +
             'ADD CONSTRAINT differential_expression_tests_transcripts_fk ' + 
             'FOREIGN KEY (transcript_id) REFERENCES transcripts (id) ' + 
-            'ON UPDATE CASCADE ON DELETE CASCADE;')
+            'ON UPDATE CASCADE ON DELETE RESTRICT;')
     execute('ALTER TABLE differential_expression_tests ' +
             'ADD CONSTRAINT differential_expression_tests_sample_comparisons_fk ' + 
             'FOREIGN KEY (sample_comparison_id) ' +
             'REFERENCES sample_comparisons (id) ' + 
-            'ON UPDATE CASCADE ON DELETE CASCADE;')
+            'ON UPDATE CASCADE ON DELETE RESTRICT;')
     #FPKM Sample foreign keys
     execute('ALTER TABLE fpkm_samples ' +
             'ADD CONSTRAINT fpkm_samples_transcripts_fk ' + 
             'FOREIGN KEY (transcript_id) REFERENCES transcripts (id) ' + 
-            'ON UPDATE CASCADE ON DELETE CASCADE;')
+            'ON UPDATE CASCADE ON DELETE RESTRICT;')
     execute('ALTER TABLE fpkm_samples ' +
             'ADD CONSTRAINT fpkm_samples_samples_fk ' + 
             'FOREIGN KEY (sample_id) REFERENCES samples (id) ' + 
-            'ON UPDATE CASCADE ON DELETE CASCADE;')
+            'ON UPDATE CASCADE ON DELETE RESTRICT;')
     #Transcript Has Go Terms Foreign Keys
     execute('ALTER TABLE transcript_has_go_terms ' +
-            'ADD CONSTRAINT ftranscript_has_go_terms_transcripts_fk ' + 
+            'ADD CONSTRAINT transcript_has_go_terms_transcripts_fk ' + 
             'FOREIGN KEY (transcript_id) REFERENCES transcripts (id) ' + 
-            'ON UPDATE CASCADE ON DELETE CASCADE;')
+            'ON UPDATE CASCADE ON DELETE RESTRICT;')
     execute('ALTER TABLE transcript_has_go_terms ' +
-            'ADD CONSTRAINT ftranscript_has_go_terms_go_terms_fk ' + 
+            'ADD CONSTRAINT transcript_has_go_terms_go_terms_fk ' + 
             'FOREIGN KEY (go_term_id) REFERENCES go_terms (id) ' + 
-            'ON UPDATE CASCADE ON DELETE CASCADE;')
+            'ON UPDATE CASCADE ON DELETE RESTRICT;')
   end
 
   def down

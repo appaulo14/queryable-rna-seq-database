@@ -51,6 +51,7 @@ gem 'galetahub-simple_captcha', :require => 'simple_captcha'
 gem 'sucker_punch'
 
 gem 'json', '1.7.7'
+gem 'execjs'
 
 # To use ActiveModel has_secure_password
 gem 'bcrypt-ruby', '~> 3.0.0'

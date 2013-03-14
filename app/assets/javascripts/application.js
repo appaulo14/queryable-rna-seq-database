@@ -12,4 +12,5 @@
 //
 //= require qtip/jquery.qtip
 //= require jquery_ujs
+//= require jquery.min
 //= require_tree .
