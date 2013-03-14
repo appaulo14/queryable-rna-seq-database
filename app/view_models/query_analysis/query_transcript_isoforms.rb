@@ -5,17 +5,17 @@ class QueryTranscriptIsoforms
   
   #TODO: Get rid of FDR and P-value because they're not needed
   attr_accessor :dataset_id, :sample_id,
-                :fdr_or_pvalue, :cutoff, :filter_by_class_codes,
+                :filter_by_class_codes,
                 :class_code_equal, :class_code_c, :class_code_j, :class_code_e,
                 :class_code_i, :class_code_o, :class_code_p, :class_code_r,
                 :class_code_u, :class_code_x, :class_code_s, :class_code_dot,
-                :filter_by_go_names, :go_names,
+                :filter_by_go_terms, :go_terms,
                 :filter_by_go_ids, :go_ids, :filter_by_transcript_length, 
                 :transcript_length_comparison_sign, :transcript_length_value,
                 :filter_by_transcript_name, :transcript_name 
   attr_reader   :names_and_ids_for_available_datasets, 
-                :available_samples, :available_class_codes,
-                :show_results, :results, :fpkm_samples, :sample_name
+                :available_samples,
+                :show_results, :results, :sample_name
   
   #For Boolean attributes, provide methods ending with a question mark 
   #  for convenience.
@@ -42,8 +42,8 @@ class QueryTranscriptIsoforms
   validate :user_has_permission_to_access_dataset
   validate :sample_is_not_compared_against_itself
   
-  def initialize(user)
-    @current_user = user
+  def initialize(current_user)
+    @current_user = current_user
   end
   
   def set_attributes_and_defaults(attributes = {})
@@ -82,7 +82,7 @@ class QueryTranscriptIsoforms
     @show_results = false
   end
   
-  def query!()
+  def query()
     #Don't query if it is not valid
     return if not self.valid?
     #Create and run the query

@@ -4,7 +4,7 @@ class QueryDiffExpTranscripts
   extend ActiveModel::Naming
   
   attr_accessor :dataset_id, :sample_comparison_id_pair,
-                :fdr_or_pvalue, :cutoff, :filter_by_go_names, :go_names,
+                :fdr_or_p_value, :cutoff, :filter_by_go_terms, :go_terms,
                 :filter_by_go_ids, :go_ids, :filter_by_transcript_length, 
                 :transcript_length_comparison_sign, :transcript_length_value,
                 :filter_by_transcript_name, :transcript_name 
@@ -52,7 +52,7 @@ class QueryDiffExpTranscripts
     end
     #Set default values for the relavent blank attributes
     @dataset_id = all_datasets_for_current_user.first.id if @dataset_id.blank?
-    @fdr_or_pvalue = 'p_value' if fdr_or_pvalue.blank?
+    @fdr_or_p_value = 'p_value' if fdr_or_p_value.blank?
     @cutoff = '0.05' if cutoff.blank?
     @filter_by_go_names = false if filter_by_go_names.blank?
     @filter_by_go_ids = false if filter_by_go_ids.blank?
@@ -81,7 +81,7 @@ class QueryDiffExpTranscripts
     @show_results = false
   end
   
-  def query!()
+  def query()
     #Don't query if it is not valid
     return if not self.valid?
     #Create and run the query

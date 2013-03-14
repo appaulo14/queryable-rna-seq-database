@@ -4,12 +4,9 @@ class UploadTrinityWithEdgeRTranscripts
   extend ActiveModel::Naming
   
   attr_accessor :trinity_fasta_file, 
-                :gene_diff_exp_files, #Array
                 :transcript_diff_exp_files, #Array 
-                :gene_fpkm_file, 
                 :transcript_fpkm_file,
-                :dataset_name,
-                :has_gene_diff_exp
+                :dataset_name
   
   validate :validate_all_or_none_gene_files
   
@@ -24,7 +21,7 @@ class UploadTrinityWithEdgeRTranscripts
     end
   end
   
-  def save!
+  def save
     ActiveRecord::Base.transaction do   #Transactions work with sub-methods
       #Create the dataset
       dataset = Dataset.new(:user => @current_user,

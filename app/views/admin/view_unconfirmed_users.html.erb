@@ -16,8 +16,8 @@
         <% @unconfirmed_users.each do |user| %>
           <tr>
             <td><%= user.name %></td><td><%= user.email %></td>
-            <td><%= link_to('Confirm User',"/admin/confirm_user?user_id=#{user.id}") %></td>
-            <td><%= link_to('Delete User',"/admin/delete_user?user_id=#{user.id}") %></td>
+            <td><%= link_to('Go To Confirm User Page',"/admin/confirm_user?user_id=#{user.id}") %></td>
+            <td><%= link_to('Go To Delete User Page',"/admin/delete_user?user_id=#{user.id}") %></td>
           </tr>
         <% end %>
       </tbody>

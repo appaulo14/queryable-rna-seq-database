@@ -11,6 +11,7 @@
 #  status        :string(255)
 #
 
+
 class FpkmSample < ActiveRecord::Base
   attr_accessible :transcript, :fpkm, :fpkm_hi, :fpkm_lo, :status, 
                   :sample

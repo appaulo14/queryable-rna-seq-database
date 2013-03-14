@@ -79,7 +79,7 @@ class QueryAnalysisController < ApplicationController
 
     def query_diff_exp_transcripts
       #Create the view model, giving the current user
-      @qdet = Query_Diff_Exp_Transcripts.new(current_user)
+      @qdet = QueryDiffExpTranscripts.new(current_user)
       #Which type of request was received?
       if request.get?
         #If the dataset_id parameter makes the view model invalid, 
@@ -277,7 +277,7 @@ class QueryAnalysisController < ApplicationController
       render :partial => 'gap_costs', :locals => {:object => @query_using_blastn}
     end
     
-    def querying_using_tblastx  #changed after the architecture design
+    def query_using_tblastx  #changed after the architecture design
       if request.get?
             @query_using_tblastx = QueryUsingTblastx.new(current_user)
             @query_using_tblastx.set_attributes_and_defaults()

@@ -49,7 +49,8 @@
 #  failed_attempts        :integer          default(0)
 #  unlock_token           :string(255)
 #  locked_at              :datetime
-#  authentication_token   :string(255)
+#  name                   :string(255)      not null
+#  description            :text             not null
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  admin                  :boolean          default(FALSE), not null
@@ -59,6 +60,10 @@ require 'spec_helper'
 
 describe User do
   describe 'associations' do
+    it 'should require a .edu address'
+  end
+  
+  describe 'when destroyed' do
   end
   
   describe 'validations' do

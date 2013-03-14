@@ -5,15 +5,21 @@ class AdminController < ApplicationController
   before_filter :authenticate_admin_user!
   
   def welcome
+    #This action is in the architecture design document
   end
   
-  def delete_datasets_from_database
+  def view_datasets
     if request.get?
     elsif request.delete?
     end
   end
   
+  def delete_dataset
+  end
+  
   def view_confirmed_users
+    ut = User.arel_table
+    @confirmed_users = User.where(ut[:confirmed_at].not_eq(nil))
   end
   
   def view_unconfirmed_users
@@ -27,7 +33,7 @@ class AdminController < ApplicationController
         flash[:alert] = 'Please select an unconfirmed user'
         redirect_to :action => 'view_unconfirmed_users'
       end
-      @confirm_user = Confirm_User.new()
+      @confirm_user = ConfirmUser.new()
     elsif request.post?
       @confirm_user = Confirm_User.new(params[:confirm_user])
       @confirm_user.send_confirmation_emails!
@@ -42,10 +48,6 @@ class AdminController < ApplicationController
       flash[:alert] = 'Please select an unconfirmed user'
       redirect_to :view_unconfirmed_users
     end
-  end
-  
-  def welcome
-    #This action is in the architecture design document
   end
   
   private

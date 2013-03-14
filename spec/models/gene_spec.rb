@@ -7,6 +7,15 @@
 #  name_from_program :string(255)      not null
 #
 
+# == Schema Information
+#
+# Table name: genes
+#
+#  id                :integer          not null, primary key
+#  dataset_id        :integer          not null
+#  name_from_program :string(255)      not null
+#
+
 require 'spec_helper'
 
 describe Gene do

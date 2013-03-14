@@ -80,6 +80,7 @@
               <th data-sort='float'><%= @qdeg.sample_1_name %> FPKM&nbsp;<%= neutral_sort_arrow %></th>
               <th data-sort='float'><%= @qdeg.sample_2_name %> FPKM&nbsp;<%= neutral_sort_arrow %></th>
               <th data-sort='float'>Log Fold Change&nbsp;<%= neutral_sort_arrow %></th>
+              <th data-sort='float'>Test Status&nbsp;<%= neutral_sort_arrow %></th>
           </tr>
       </thead>
       <tbody>
@@ -112,6 +113,7 @@
                   <td><%= result[:sample_1_fpkm].to_f.round(3) %></td>
                   <td><%= result[:sample_2_fpkm].to_f.round(3) %></td>
                   <td><%= result[:log_fold_change].to_f.round(3) %></td>
+                  <td>Insert test status here</td>
               </tr>
           <% end %>
       </tbody>

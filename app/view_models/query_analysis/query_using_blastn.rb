@@ -144,7 +144,7 @@ class QueryUsingBlastn #< Blast_Query::Base
       end
     end
     
-    def blast!()
+    def blast()
       #Don't query if it is not valid
       return if not self.valid?
       #Filter by low complexity and soft masking map to soft masking due to

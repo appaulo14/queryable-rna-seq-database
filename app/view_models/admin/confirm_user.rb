@@ -13,7 +13,7 @@ class ConfirmUser
       end
   end
   
-  def send_confirmation_emails!
+  def send_confirmation_emails
     #Get the transcripts from the parameters
     raise(ActiveRecord::RecordInvalid,self) if not self.valid?
     user = User.find_by_id(@user_id)

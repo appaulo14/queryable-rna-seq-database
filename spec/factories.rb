@@ -4,7 +4,7 @@ require 'spec_helper'
 FactoryGirl.define do
     factory :user do
       name                      {Faker::Name.name}
-      email                     {Faker::Internet.email}
+      email                     {"#{Faker::Internet.email}#{rand()}#{rand()}#{rand()}.edu"}
       password                  'cis895'
       password_confirmation     'cis895'
       description               {Faker::Lorem.paragraph}
@@ -62,6 +62,12 @@ FactoryGirl.define do
         id                      {Transcript.count + 1}
         name_from_program       'TCONS_00001'
         dataset                 #{build(:dataset, :id => 1)}
+    end
+    
+    factory :transcript_fpkm_tracking_information do
+      transcript
+      class_code                'a'
+      length                    100
     end
     
     factory :dataset do

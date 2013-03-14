@@ -4,6 +4,23 @@
 #
 #  id                      :integer          not null, primary key
 #  name                    :string(255)      not null
+#  program_used            :string(255)      not null
+#  has_transcript_diff_exp :boolean          not null
+#  has_transcript_isoforms :boolean          not null
+#  has_gene_diff_exp       :boolean          not null
+#  blast_db_location       :string(255)      not null
+#  user_id                 :integer          not null
+#  when_last_queried       :datetime
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
+#
+
+# == Schema Information
+#
+# Table name: datasets
+#
+#  id                      :integer          not null, primary key
+#  name                    :string(255)      not null
 #  progam_used             :string(255)      not null
 #  has_transcript_diff_exp :boolean          not null
 #  has_transcript_isoforms :boolean          not null
@@ -102,32 +119,6 @@ describe Dataset do
         @it.should_not be_valid
       end
     end
-    
-#     shared_examples_for "goat" do
-#       let(:goat) { FactoryGirl.build(:dataset) }
-#       it 'should goat' do
-#         puts "Type = #{ goat.has_gene_diff_exp.class}"
-#         goat.has_gene_diff_exp.should be_true
-#       end
-#     end
-#     
-#     shared_examples_for "a measurable object" do |measurement, measurement_methods|
-#       measurement_methods.each do |measurement_method|
-#         it "should return #{measurement} from #{measurement_method}" do
-#           subject.send(measurement_method).should == measurement
-#         end
-#       end
-#     end
-# 
-#     describe Array, "with 3 items" do
-#       subject { [1, 2, 3] }
-#       it_should_behave_like "a measurable object", 3, [:size, :length]
-#     end
-# 
-#     describe String, "of 6 characters" do
-#       subject { "FooBar" }
-#       it_should_behave_like "a measurable object", 6, [:size, :length]
-#     end
     
     describe 'has_transcript_diff_exp' do
       #it_behaves_like 'goat'
@@ -441,6 +432,10 @@ describe Dataset do
       end
       it 'should be valid for :cuffdiff' do
         @it.program_used = :cuffdiff
+        @it.should be_valid
+      end
+      it 'should be valid for :generic_fasta_file' do
+        @it.program_used = :generic_fasta_file
         @it.should be_valid
       end
       

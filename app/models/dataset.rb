@@ -4,7 +4,7 @@
 #
 #  id                      :integer          not null, primary key
 #  name                    :string(255)      not null
-#  progam_used             :string(255)      not null
+#  program_used            :string(255)      not null
 #  has_transcript_diff_exp :boolean          not null
 #  has_transcript_isoforms :boolean          not null
 #  has_gene_diff_exp       :boolean          not null
@@ -41,7 +41,7 @@ class Dataset < ActiveRecord::Base
   validate :when_last_queried_is_valid_datetime
   validates :program_used, 
       :allow_nil => false,
-      :inclusion => [:trinity_with_edger, :cuffdiff]
+      :inclusion => [:trinity_with_edger, :cuffdiff, :generic_fasta_file]
   
   belongs_to :user
   has_many :transcripts, :dependent => :destroy

@@ -14,4 +14,6 @@ class TranscriptFpkmTrackingInformation < ActiveRecord::Base
   POSSIBLE_CLASS_CODES = %w(= c j e u o p r u x s . -)
   
   belongs_to :transcript
+  
+  validates :transcript, :presence => true
 end

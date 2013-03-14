@@ -77,8 +77,6 @@ describe UploadCuffdiff do
   end
   
   describe 'flow control', :type => :white_box do
-    let(:uc){FactoryGirl.build(:upload_cuffdiff_with_2_samples)}
-    
     before(:each) do
       @it = FactoryGirl.build(:upload_cuffdiff_with_2_samples)
       #Stub all the methods since we are just testing control flow
@@ -87,8 +85,7 @@ describe UploadCuffdiff do
       @it.stub(:process_transcript_differential_expression_file)
       @it.stub(:process_transcript_isoforms_file)
       @it.stub(:find_and_process_go_terms)
-      #@it.stub(:delete_uploaded_files)
-      File.stub(:delete)
+      @it.stub(:delete_uploaded_files)
       UploadUtil.stub(:create_blast_database)
       UploadUtil.stub(:rollback_blast_database)
       QueryAnalysisMailer.stub(:notify_user_of_upload_success)
@@ -100,6 +97,10 @@ describe UploadCuffdiff do
         UploadUtil.stub(:create_blast_database){raise SeededTestException}
       end
       
+      it 'should call valid?' do
+        @it.should_receive(:valid?)
+        @it.save
+      end
       it 'should call QueryAnalysisMailer.notify_user_of_upload_failure'do
         begin
           QueryAnalysisMailer.should_receive(:notify_user_of_upload_failure)
@@ -131,6 +132,10 @@ describe UploadCuffdiff do
     end
     
     shared_examples_for 'all options when no exception occurs' do
+      it 'should call valid?' do
+        @it.should_receive(:valid?)
+        @it.save
+      end
       it 'should call process_args_to_create_dataset' do
         @it.should_receive(:process_args_to_create_dataset)
         @it.save
@@ -301,7 +306,17 @@ describe UploadCuffdiff do
       it 'should send 1 email notifying the user of success'
     end
     
-    shared_examples_for 'all samples regardless of whether an exception occurs' do
+    shared_examples_for 'any number of samples regardless of whether an exception occurs' do
+      #TODO?: Move to white box and make two methods for each, such as:
+      #it 'should delete the transcripts diff exp file when it is not nil' do
+      #  File.should_receive(:delete).with(@it.transcript_diff_exp_file.tempfile.path)
+      #  @it.save
+      #end
+      #it 'should not try to delete the transcript diff exp file when not nil' do
+      #  @it.transcript_diff_exp_file = nil
+      #  File.should_not_receive(:delete).with(@it.transcript_diff_exp_file.tempfile.path)
+      #  @it.save
+      #end
       it 'should delete the uploaded files' do 
         if @it.transcripts_fasta_file.nil?
           File.should_not_receive(:delete).with(@it.transcripts_fasta_file.tempfile.path)

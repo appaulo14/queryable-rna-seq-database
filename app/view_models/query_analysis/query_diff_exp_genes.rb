@@ -4,7 +4,7 @@ class QueryDiffExpGenes
   extend ActiveModel::Naming
   
   attr_accessor :dataset_id, :sample_comparison_id_pair,
-                :fdr_or_p_value, :cutoff, :filter_by_go_names, :go_names,
+                :fdr_or_p_value, :cutoff, :filter_by_go_terms, :go_terms,
                 :filter_by_go_ids, :go_ids,  
                 :filter_by_gene_name, :gene_name 
   attr_reader   :names_and_ids_for_available_datasets, 
@@ -41,13 +41,13 @@ class QueryDiffExpGenes
     end
     #Set available datasets
     @names_and_ids_for_available_datasets = []
-    all_datasets_for_current_user = 
-        Dataset.find_all_by_user_id(@current_user.id)
-    all_datasets_for_current_user.each do |ds|
+    available_datasets = Dataset.where(:user_id => @current_user.id, 
+                                       :has_gene_diff_exp => true)
+    available_datasets.each do |ds|
       @names_and_ids_for_available_datasets << [ds.name, ds.id]
     end
     #Set default values for the relavent blank attributes
-    @dataset_id = all_datasets_for_current_user.first.id if @dataset_id.blank?
+    @dataset_id = available_datasets.first.id if @dataset_id.blank?
     @fdr_or_p_value = 'p_value' if fdr_or_p_value.blank?
     @cutoff = '0.05' if cutoff.blank?
     @filter_by_go_names = false if filter_by_go_names.blank?
@@ -70,7 +70,7 @@ class QueryDiffExpGenes
     @show_results = false
   end
   
-  def query!()
+  def query()
     #Don't query if it is not valid
     return if not self.valid?
     #Create and run the query
