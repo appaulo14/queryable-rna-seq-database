@@ -6,16 +6,15 @@ class CreateTranscripts < ActiveRecord::Migration
       case adapter_type
       when /mysql/
         t.column :id, 'BIGINT UNSIGNED', :null => false
-        t.column :dataset_id, 'BIGINT UNSIGNED', :null => false
         t.column :gene_id,'BIGINT UNSIGNED'
       when /postgresql/
         t.column :id, 'bigserial', :null => false, :unique => true
-        t.column :dataset_id, 'BIGINT', :null => false
         t.column :gene_id,'BIGINT'
       else
         throw NotImplementedError.new("Unsupported adapter '#{adapter_type}'")
       end
       #Add the other columns
+      t.integer :dataset_id, :null => false
       t.string :name_from_program, :null => false
       
 

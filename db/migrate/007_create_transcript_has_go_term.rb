@@ -1,7 +1,15 @@
 class CreateTranscriptHasGoTerm < ActiveRecord::Migration
   def up
     create_table :transcript_has_go_terms, :id => false do |t|
-      t.integer :transcript_id, :null => false
+      adapter_type = ActiveRecord::Base.connection.adapter_name.downcase
+      case adapter_type
+      when /mysql/
+        t.column :transcript_id, 'BIGINT UNSIGNED', :null => false
+      when /postgresql/
+        t.column :transcript_id, 'BIGINT', :null => false
+      else
+        throw NotImplementedError.new("Unsupported adapter '#{adapter_type}'")
+      end
       t.string :go_term_id, :null => false
 
       #t.timestamps

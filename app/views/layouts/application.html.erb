@@ -3,11 +3,7 @@
 <head>
   <title>Queryabla RNA-Seq Database</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
-  <!--jquery.min.js is included here instead of in application.js because it 
-    doesn't work when I put it in application.js" -->
-  <%= javascript_include_tag(
-    "https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"
-  ) %>
+  
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
   

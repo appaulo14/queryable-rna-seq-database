@@ -204,6 +204,7 @@ DEPENDENCIES
   database_cleaner
   debugger
   devise (= 2.2.2)
+  execjs
   factory_girl_rails (~> 4.0)
   faker
   galetahub-simple_captcha
