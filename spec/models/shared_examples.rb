@@ -175,3 +175,20 @@ shared_examples_for 'a string' do
   end
 end
 
+shared_examples_for 'an ActiveRecord-customized float greater than 0' do
+end
+
+shared_examples_for 'a required attribute' do
+  it 'should be required' do
+    @it.send("#{@attribute}=", nil)
+    @it.should_not be_valid
+  end
+end
+
+shared_examples_for 'an optional attribute' do
+  it 'should be optional' do
+    @it.send("#{@attribute}=", nil)
+    @it.should be_valid
+  end
+end
+

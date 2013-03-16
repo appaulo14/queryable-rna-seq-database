@@ -24,8 +24,8 @@ class FpkmSample < ActiveRecord::Base
   #Validation
 #   validates :sample_number, :presence => true,
 #           :numericality => { :only_integer => true, :greater_than => 0 }
-#   validates :q_fpkm, :presence => true,
-#           :numericality => { :only_double => true }
+   validates :fpkm, :presence => true,
+           :numericality => { :only_float => true }
 #   validates :q_fpkm_hi, :presence => true,
 #           :numericality => { :only_double => true }
 #   validates :q_fpkm_lo, :presence => true,

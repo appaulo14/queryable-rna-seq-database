@@ -11,26 +11,17 @@
 #  status        :string(255)
 #
 
-# == Schema Information
-#
-# Table name: fpkm_samples
-#
-#  id            :integer          not null, primary key
-#  gene_id       :integer
-#  transcript_id :integer
-#  sample_name   :string(255)      not null
-#  fpkm          :decimal(, )      not null
-#  fpkm_hi       :decimal(, )
-#  fpkm_lo       :decimal(, )
-#  status        :string(255)
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#
-
 require 'spec_helper'
 
 describe FpkmSample do
-  pending "add some examples to (or delete) #{__FILE__}"
+  before(:each) do 
+    @it = FactoryGirl.build(:fpkm_sample)
+  end
   
-  it 'should test for numbers being too big'
+  it 'should be able to preserve large numbers' do
+    @it.fpkm = 1e100.to_s
+    @it.save
+    @it.reload
+    @it.fpkm.to_f.should eq(1e100)
+  end
 end

@@ -45,7 +45,12 @@ describe Gene do
   end
   
   describe 'validations' do
-    it 'should require a name_from_program'
-    it 'should require a dataset'
+    it 'should save when all fields are valid'
+  
+    describe 'name_from_program' do
+    end
+    
+    describe 'dataset' do
+    end
   end
 end

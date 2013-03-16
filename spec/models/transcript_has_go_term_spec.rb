@@ -23,6 +23,7 @@ describe TranscriptHasGoTerm do
       @it.should respond_to(:go_term)
     end
   end
+  
   describe 'validations' do
     it 'should be valid when all fields are valid' do
       @it.should be_valid
