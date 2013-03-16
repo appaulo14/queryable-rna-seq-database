@@ -11,21 +11,6 @@ class QueryDiffExpGenes
                 :available_sample_comparisons, 
                 :show_results, :results, :sample_1_name, :sample_2_name
   
-  #For Boolean attributes, provide methods ending with a question mark 
-  #  for convenience.
-  def filter_by_go_names?
-    return @filter_by_go_names
-  end
-  def filter_by_go_ids?
-    return @filter_by_go_ids
-  end
-  def filter_by_gene_name?
-    return @filter_by_gene_name
-  end
-  def show_results?
-    return @show_results
-  end
-  
   #TODO: Add validation 
   validate :user_has_permission_to_access_dataset
   validate :sample_is_not_compared_against_itself

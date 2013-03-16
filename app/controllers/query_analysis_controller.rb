@@ -203,6 +203,7 @@ class QueryAnalysisController < ApplicationController
         @query_using_blastn = QueryUsingBlastn.new(current_user)
         @query_using_blastn.set_attributes_and_defaults(params[:query_using_blastn])
         debugger if ENV['RAILS_DEBUG'] == "true"
+        #TODO: Move this code back into the view model
         if @query_using_blastn.valid?
             flash[:success] = "Success"
             #Run the blast query and get the file path of the result

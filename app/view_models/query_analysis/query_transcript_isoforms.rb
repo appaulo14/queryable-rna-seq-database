@@ -17,23 +17,6 @@ class QueryTranscriptIsoforms
                 :available_samples,
                 :show_results, :results, :sample_name
   
-  #For Boolean attributes, provide methods ending with a question mark 
-  #  for convenience.
-  def filter_by_class_codes?
-    return @filter_by_class_codes
-  end
-  def filter_by_go_names?
-    return @filter_by_go_names
-  end
-  def filter_by_go_ids?
-    return @filter_by_go_ids
-  end
-  def filter_by_transcript_length?
-    return @filter_by_transcript_length
-  end
-  def filter_by_transcript_name?
-    return @filter_by_transcript_name
-  end
   def show_results?
     return @show_results
   end

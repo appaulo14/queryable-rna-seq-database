@@ -66,7 +66,7 @@ FactoryGirl.define do
     
     factory :transcript_fpkm_tracking_information do
       transcript
-      class_code                'a'
+      class_code                'c'
       length                    100
     end
     

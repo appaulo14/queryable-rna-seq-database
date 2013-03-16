@@ -21,7 +21,7 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
-#NOTE: Update the CDN for jquery in views/application.html.erb
+#NOTE: Update the jquery.min file in vendor/assets/javascripts/jquery
 #    to the lastest version when updating this
 gem 'jquery-rails', '2.1.3'
 

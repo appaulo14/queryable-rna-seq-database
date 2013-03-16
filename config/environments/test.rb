@@ -39,5 +39,8 @@ RnaSeqAnalysisPipeline::Application.configure do
   config.active_support.deprecation = :stderr
   
   #For the Devise gem
-  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.default_url_options = {:protocol => 'https',
+                                              :host => '0.0.0.0:3000',
+                                              :from => ADMIN_CONFIG['email']}
 end

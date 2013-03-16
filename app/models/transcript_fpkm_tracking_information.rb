@@ -16,4 +16,10 @@ class TranscriptFpkmTrackingInformation < ActiveRecord::Base
   belongs_to :transcript
   
   validates :transcript, :presence => true
+  validates :class_code, :presence => true,
+                         :inclusion => { :in => POSSIBLE_CLASS_CODES }
+  validates :length, :presence => true,
+                     :numericality => {
+                        :only_integer => true, :greater_than => 0 
+                     }
 end
