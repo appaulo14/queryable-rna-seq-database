@@ -16,9 +16,9 @@ class CreateFpkmSamples < ActiveRecord::Migration
       else
         throw NotImplementedError.new("Unknown adapter type '#{adapter_type}'")
       end
-      t.float :fpkm, :null => false
-      t.float :fpkm_hi
-      t.float :fpkm_lo
+      t.string :fpkm, :null => false
+      t.string :fpkm_hi
+      t.string :fpkm_lo
       t.string  :status
 
       #t.timestamps

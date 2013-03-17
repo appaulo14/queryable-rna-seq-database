@@ -175,7 +175,27 @@ shared_examples_for 'a string' do
   end
 end
 
-shared_examples_for 'an ActiveRecord-customized float greater than 0' do
+shared_examples_for 'a float stored as a string' do
+  it 'should be valid for numbers greater than 0' do
+    [0.0001, 1, 10000].each do |number_greater_than_0|
+      @it.send("#{@attribute}=", number_greater_than_0)
+      @it.should be_valid
+    end
+  end
+  it 'should be valid for floats greater than 0'
+  it 'should not be valid for integers 0 or less'
+  it 'should not be valid for floats less than 0'
+  it 'should be able to store large numbers' do
+     @it.send("#{@attribute}=", 1e300.to_s)
+     @it.save!
+     @it.reload
+     @it.send("#{@attribute}").should eq(1e300.to_s)
+  end
+  it 'should be valid for strings since they get converted to 0'
+  it 'should not be valid for booleans'
+  it 'should not be valid for arrays'
+  it 'should not be valid for hashes'
+  it 'should not be valid for objects'
 end
 
 shared_examples_for 'a required attribute' do
