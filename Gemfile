@@ -6,7 +6,6 @@ gem 'rails', '3.2.11'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'pg'
 gem 'mysql2'
 
 # Gems used only for assets and not required
@@ -24,8 +23,6 @@ end
 #NOTE: Update the jquery.min file in vendor/assets/javascripts/jquery
 #    to the lastest version when updating this
 gem 'jquery-rails', '2.1.3'
-
-gem 'heroku'
 
 group :bioinformatics do
     gem 'bio', '1.4.2'
