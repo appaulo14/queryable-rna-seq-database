@@ -4,10 +4,10 @@
 #
 #  id            :integer          not null, primary key
 #  transcript_id :integer          not null
-#  sample_id     :integer          not null
-#  fpkm          :float            not null
-#  fpkm_hi       :float
-#  fpkm_lo       :float
+#  sample_id     :integer
+#  fpkm          :string(255)      not null
+#  fpkm_hi       :string(255)
+#  fpkm_lo       :string(255)
 #  status        :string(255)
 #
 
@@ -26,62 +26,37 @@ class FpkmSample < ActiveRecord::Base
   validates :sample, :presence => true
   
   validates :fpkm, :presence => true
-  validate  :fpkm_is_convertable_to_float
-  validate  :fpkm_is_greater_than_zero
+  validate  :fpkm_is_greater_than_or_equal_to_zero
   
-  validate  :fpkm_lo_is_convertable_to_float
-  validate  :fpkm_lo_is_greater_than_zero
+  validate  :fpkm_lo_is_greater_than_or_equal_to_zero
   
-  validate  :fpkm_hi_is_convertable_to_float
-  validate  :fpkm_hi_is_greater_than_zero
+  validate  :fpkm_hi_is_greater_than_or_equal_to_zero
 
-  validates :status,:allow_nil => true, 
+  validates :status,:presence => true,
                     :inclusion => { :in => POSSIBLE_STATUSES }
-#   validates :transcript, :presence => true
 
   private
   
-  def fpkm_is_convertable_to_float
+  def fpkm_is_greater_than_or_equal_to_zero
+    is_greater_than_or_equal_to_zero('fpkm')
+  end
+  
+  def fpkm_lo_is_greater_than_or_equal_to_zero
+    is_greater_than_or_equal_to_zero('fpkm_lo')
+  end
+  
+  def fpkm_hi_is_greater_than_or_equal_to_zero
+    is_greater_than_or_equal_to_zero('fpkm_hi')
+  end
+  
+  def is_greater_than_or_equal_to_zero(attribute)
+    return if self.send(attribute).nil?
     begin
-      self.fpkm.to_f
+      if self.send(attribute).to_f < 0.0
+        errors[attribute] << 'must be greater than or equal to zero'
+      end
     rescue NoMethodError => ex
-      errors[:fpkm] << 'fpkm must be float or double'
-    end
-  end
-  
-  def fpkm_is_greater_than_zero
-    if self.fpkm.to_f <= 0.0
-      errors[:fpkm] << 'fpkm must be greater than zero'
-    end
-  end
-  
-  def fpkm_lo_is_convertable_to_float
-    begin
-      self.fpkm_lo.to_f
-    rescue NoMethodError => ex
-      errors[:fpkm_lo] << 'fpkm must be float or double'
-    end
-  end
-  
-  def fpkm_lo_is_greater_than_zero
-    return if self.fpkm_lo.nil?
-    if self.fpkm_lo.to_f <= 0.0
-      errors[:fpkm_lo] << 'fpkm must be greater than zero'
-    end
-  end
-  
-  def fpkm_hi_is_convertable_to_float
-    begin
-      self.fpkm_hi.to_f
-    rescue NoMethodError => ex
-      errors[:fpkm_hi] << 'fpkm must be float or double'
-    end
-  end
-  
-  def fpkm_hi_is_greater_than_zero
-    return if self.fpkm_hi.nil?
-    if self.fpkm_hi.to_f <= 0.0
-      errors[:fpkm_hi] << 'fpkm must be greater than zero'
+      errors[attribute] << 'must be float or double'
     end
   end
 end

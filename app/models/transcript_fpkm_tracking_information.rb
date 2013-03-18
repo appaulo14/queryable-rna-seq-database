@@ -20,6 +20,6 @@ class TranscriptFpkmTrackingInformation < ActiveRecord::Base
                          :inclusion => { :in => POSSIBLE_CLASS_CODES }
   validates :length, :presence => true,
                      :numericality => {
-                        :only_integer => true, :greater_than => 0 
+                        :only_integer => true, :greater_than_or_equal_to => 0 
                      }
 end

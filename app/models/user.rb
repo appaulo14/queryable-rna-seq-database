@@ -21,7 +21,7 @@
 #  unlock_token           :string(255)
 #  locked_at              :datetime
 #  name                   :string(255)      not null
-#  description            :text             not null
+#  description            :text             default(""), not null
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  admin                  :boolean          default(FALSE), not null
@@ -39,7 +39,9 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, 
                   :remember_me, :name, :description
-  # attr_accessible :title, :body
+  
+  validates :name, :presence => true
+  validates :description, :presence => true
   
   has_many :datasets, :dependent => :destroy
 end

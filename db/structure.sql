@@ -20,13 +20,13 @@ CREATE TABLE `differential_expression_tests` (
   `gene_id` bigint(20) unsigned DEFAULT NULL,
   `transcript_id` bigint(20) unsigned DEFAULT NULL,
   `sample_comparison_id` int(11) NOT NULL,
-  `test_status` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `sample_1_fpkm` float NOT NULL,
-  `sample_2_fpkm` float NOT NULL,
-  `log_fold_change` float NOT NULL,
-  `test_statistic` float NOT NULL,
-  `p_value` float NOT NULL,
-  `fdr` float NOT NULL,
+  `test_status` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `sample_1_fpkm` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `sample_2_fpkm` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `log_fold_change` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `test_statistic` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `p_value` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `fdr` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `differential_expression_tests_genes_fk` (`gene_id`),
   KEY `differential_expression_tests_transcripts_fk` (`transcript_id`),
@@ -39,7 +39,7 @@ CREATE TABLE `differential_expression_tests` (
 CREATE TABLE `fpkm_samples` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `transcript_id` bigint(20) unsigned NOT NULL,
-  `sample_id` bigint(20) unsigned DEFAULT NULL,
+  `sample_id` int(11) NOT NULL,
   `fpkm` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `fpkm_hi` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `fpkm_lo` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -74,7 +74,7 @@ CREATE TABLE `sample_comparisons` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `samples` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `dataset_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
@@ -121,7 +121,7 @@ CREATE TABLE `transcripts` (
   PRIMARY KEY (`id`),
   KEY `transripts_datasets_fk` (`dataset_id`),
   KEY `transripts_genes_fk` (`gene_id`),
-  CONSTRAINT `transripts_genes_fk` FOREIGN KEY (`gene_id`) REFERENCES `genes` (`id`) ON UPDATE CASCADE,
+  CONSTRAINT `transripts_genes_fk` FOREIGN KEY (`gene_id`) REFERENCES `genes` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `transripts_datasets_fk` FOREIGN KEY (`dataset_id`) REFERENCES `datasets` (`id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

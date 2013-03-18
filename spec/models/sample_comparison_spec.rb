@@ -14,7 +14,7 @@ describe SampleComparison do
     @it = FactoryGirl.build(:sample_comparison)
   end
   
-  describe 'assocations' do
+  describe 'assocations', :type => :associations do
     it 'should have a sample_1 attribute' do
       @it.should respond_to(:sample_1)
     end
@@ -53,18 +53,20 @@ describe SampleComparison do
   end
   
   describe 'validations' do
-    it 'should be valid when all fields are valid' do
-      @it.should be_valid
+    it 'should save successfully when all fields are valid' do
+      @it.save!
     end
     
-    it 'should require a sample 1' do
-      @it.sample_1 = nil
-      @it.should_not be_valid
+    describe 'sample_1' do
+      before(:each) do @attribute = 'sample_1' end
+      
+      it_should_behave_like 'a required attribute'
     end
     
-    it 'should require a sample 2' do
-      @it.sample_2 = nil
-      @it.should_not be_valid
+    describe 'sample_2' do
+      before(:each) do @attribute = 'sample_2' end
+      
+      it_should_behave_like 'a required attribute'
     end
   end
 end

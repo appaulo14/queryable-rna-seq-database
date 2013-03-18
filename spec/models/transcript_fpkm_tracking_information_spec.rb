@@ -16,13 +16,15 @@ describe TranscriptFpkmTrackingInformation do
     @it = FactoryGirl.build(:transcript_fpkm_tracking_information)
   end
   
-  describe 'assocations' do
+  describe 'assocations', :type => :associations do
     it 'should have a transcript attribute' do
       @it.should respond_to(:transcript)
     end
   end
   
   describe 'when destroyed' do
+    before (:each) do @it.save! end
+  
     it 'should not destroy the associated transcript' do
       associated_transcript = @it.transcript
       @it.destroy
@@ -35,24 +37,14 @@ describe TranscriptFpkmTrackingInformation do
       @it.save!
     end
     
-    it 'should be valid when all fields are valid' do
-      @it.should be_valid
-    end
-    
-    it 'should require a transcript' do
-      @it.transcript = nil
-      @it.should_not be_valid
+    describe 'transcript' do
+      before(:each) do @attribute = 'transcript' end
+      
+      it_should_behave_like 'a required attribute'
     end
     
     describe 'class code' do
-      before(:each) do
-        @attribute = 'class_code'
-      end
-      
-      it 'should requie a class code' do
-        @it.class_code = nil
-        @it.should_not be_valid
-      end
+      before(:each) do @attribute = 'class_code' end
       
       it 'should be valid if class code is one of the possible class codes' do
         @it.instance_eval('POSSIBLE_CLASS_CODES').each do |class_code|
@@ -74,28 +66,22 @@ describe TranscriptFpkmTrackingInformation do
           @it.class_code = 'q'
           @it.should_not be_valid
         end
-
       end 
       
-      it_should_behave_like 'a string'
+      it_should_behave_like 'a required attribute'
     end
     
     describe 'length' do
-      before(:each) do
-        @attribute = 'length'
-      end
+      before(:each) do @attribute = 'length' end
     
-      it 'should require a length' do
-        @it.length = nil
-        @it.should_not be_valid
-      end
-      
-      it_should_behave_like 'an ActiveRecord-customized integer greater than 0'
+      it_should_behave_like 'a required attribute'  
+      it_should_behave_like 'an ActiveRecord-customized integer >= 0'
     end
     
-    it 'should not require a coverage' do
-      @it.coverage = nil
-      @it.should be_valid
+    describe 'coverage' do
+      before(:each) do @attribute = 'coverage' end
+      
+      it_should_behave_like 'an optional attribute'
     end
   end
 end

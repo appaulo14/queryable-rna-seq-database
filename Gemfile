@@ -49,6 +49,7 @@ end
 
 gem 'galetahub-simple_captcha', :require => 'simple_captcha'
 gem 'sucker_punch'
+gem 'composite_primary_keys'
 
 gem 'json', '1.7.7'
 gem 'execjs'

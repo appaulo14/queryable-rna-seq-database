@@ -81,55 +81,35 @@ describe Dataset do
       @it.save!
     end
     
-    it 'should require a name' do
-      @it.name = nil
-      @it.should_not be_valid
+    describe 'name' do
+      before (:each) do @attribute = 'name' end
+      
+      it_should_behave_like 'a required attribute'
     end
     
     describe 'has_transcript_diff_exp' do
-      before (:each) do
-        @attribute = 'has_transcript_diff_exp'
-      end
-      
-      it 'should not be valid for nils' do
-        @it.has_transcript_diff_exp = nil
-        @it.should_not be_valid
-      end
-    
-      it_behaves_like 'an ActiveRecord-customized boolean'
+      before (:each) do @attribute = 'has_transcript_diff_exp' end
+   
+      it_should_behave_like 'a required attribute' 
+      it_should_behave_like 'an ActiveRecord-customized boolean'
     end
     
      describe 'has_transcript_isoforms' do
-       before (:each) do
-         @attribute = 'has_transcript_isoforms'
-       end
-       
-       it 'should not be valid for nils' do
-         @it.has_transcript_isoforms = nil
-         @it.should_not be_valid
-       end
-       
-       it_behaves_like 'an ActiveRecord-customized boolean'
+       before (:each) do @attribute = 'has_transcript_isoforms' end
+  
+       it_should_behave_like 'a required attribute'
+       it_should_behave_like 'an ActiveRecord-customized boolean'
      end
     
      describe 'has_gene_diff_exp' do
-       before (:each) do
-         @attribute = 'has_gene_diff_exp'
-       end
+       before (:each) do @attribute = 'has_gene_diff_exp' end
        
-       it 'should not be valid for nils' do
-         @it.has_gene_diff_exp = nil
-         @it.should_not be_valid
-       end
-       
-       it_behaves_like 'an ActiveRecord-customized boolean'
+       it_should_behave_like 'a required attribute'
+       it_should_behave_like 'an ActiveRecord-customized boolean'
      end
     
     describe 'blast_db_location' do
-      it 'should not be valid when nil' do
-        @it.blast_db_location = nil
-        @it.should_not be_valid
-      end
+      before(:each) do @attribute = 'blast_db_location' end
       
       it 'should not be valid when empty' do
         @it.blast_db_location = ""
@@ -147,30 +127,25 @@ describe Dataset do
           @it.should be_valid
         end
       end
+      
+      it_should_behave_like 'a required attribute'
     end
     
-    it 'should require a user' do
-      @it.user = nil
-      @it.should_not be_valid
+    describe 'user' do
+      before(:each) do @attribute = 'user' end
+      
+      it_should_behave_like 'a required attribute'
     end
     
     describe 'when_last_queried' do
-      before(:each) do
-        @attribute = 'when_last_queried'
-      end
+      before(:each) do @attribute = 'when_last_queried' end
       
-      it 'should be valid for nils' do
-        @it.when_last_queried = nil
-        @it.should be_valid
-      end
-      
+      it_should_behave_like 'an optional attribute'
       it_should_behave_like 'an ActiveRecord-customized datetime'
     end
     
     describe 'program_used' do 
-      before(:each) do
-        @attribute = 'program_used'
-      end
+      before(:each) do @attribute = 'program_used' end
     
       it 'should be valid for :trinity_with_edger' do
         @it.program_used = :trinity_with_edger
@@ -192,12 +167,7 @@ describe Dataset do
         end
       end
       
-      it 'should not be valid for nil' do
-        @it.program_used = nil
-        @it.should_not be_valid
-      end
-      
-      it_should_behavior_like 'a string' 
+      it_should_behave_like 'a required attribute'
     end 
   end
 end

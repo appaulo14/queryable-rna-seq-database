@@ -13,6 +13,6 @@ class GoTerm < ActiveRecord::Base
                  :format => /\AGO:\d+\z/
   validates :term, :presence => true
   
-  has_many :transcript_has_go_terms
+  has_many :transcript_has_go_terms, :dependent => :destroy
   has_many :transcripts, :through => :transcript_has_go_terms
 end

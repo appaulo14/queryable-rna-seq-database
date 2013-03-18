@@ -109,16 +109,16 @@ shared_examples_for 'an ActiveRecord-customized datetime' do
   end
 end
 
-shared_examples_for 'an ActiveRecord-customized integer greater than 0' do
-  it 'should be valid when it is a non-negative integer' do
-    [1, 5, 1000000].each do |non_negative_integer|
+shared_examples_for 'an ActiveRecord-customized integer >= 0' do
+  it 'should be valid when it is 0 or higher' do
+    [0, 1, 5, 1000000].each do |non_negative_integer|
       @it.send("#{@attribute}=", non_negative_integer)
       @it.should be_valid
     end
   end
   
-  it 'should not be valid when 0 or below' do
-    [0, -5, -1000000].each do |zero_or_negative_integer|
+  it 'should not be valid when it is below 0' do
+    [-1, -5, -1000000].each do |zero_or_negative_integer|
       @it.send("#{@attribute}=", zero_or_negative_integer)
       @it.should_not be_valid
     end
@@ -159,43 +159,59 @@ shared_examples_for 'an ActiveRecord-customized integer greater than 0' do
   end
 end
 
-shared_examples_for 'a string' do
-  it 'should not be valid for numeric values' do
-    [45,0,4.5, -42].each do |number|
-      @it.send("#{@attribute}=",number)
-      @it.should_not be_valid
-    end
-  end
-  
-  it 'should not be valid for boolean values' do
-    [true,false].each do |boolean|
-      @it.send("#{@attribute}=",boolean)
-      @it.should_not be_valid
-    end
-  end
-end
-
-shared_examples_for 'a float stored as a string' do
-  it 'should be valid for numbers greater than 0' do
-    [0.0001, 1, 10000].each do |number_greater_than_0|
+shared_examples_for 'a float >= 0 that is stored as a string' do
+  it 'should be valid for numbers 0 or greater' do
+    [0, 0.0001, 1, 10000].each do |number_greater_than_0|
       @it.send("#{@attribute}=", number_greater_than_0)
       @it.should be_valid
     end
   end
-  it 'should be valid for floats greater than 0'
-  it 'should not be valid for integers 0 or less'
-  it 'should not be valid for floats less than 0'
+  
+  it 'should not be valid for numbers less than 0' do
+    [-0.0001, -1, -10000].each do |zero_or_less_than|
+      @it.send("#{@attribute}=", zero_or_less_than)
+      @it.should_not be_valid
+    end
+  end
+  
   it 'should be able to store large numbers' do
      @it.send("#{@attribute}=", 1e300.to_s)
      @it.save!
      @it.reload
      @it.send("#{@attribute}").should eq(1e300.to_s)
   end
-  it 'should be valid for strings since they get converted to 0'
-  it 'should not be valid for booleans'
-  it 'should not be valid for arrays'
-  it 'should not be valid for hashes'
-  it 'should not be valid for objects'
+  
+  it 'should be able to store very precise numbers' do
+    @it.send("#{@attribute}=", '1552355312.5445124234232343232')
+   @it.save!
+   @it.reload
+   @it.send("#{@attribute}").should eq('1552355312.5445124234232343232')
+  end
+  
+  it 'should be valid for strings since they can be converted' do
+    ["goats","11","1x10"].each do |string|
+      @it.send("#{@attribute}=",string)
+      @it.should be_valid
+    end
+  end
+  it 'should not be valid for booleans' do
+    [true, false].each do |boolean|
+      @it.send("#{@attribute}=", boolean)
+      @it.should_not be_valid
+    end
+  end
+  it 'should not be valid for arrays' do
+    @it.send("#{@attribute}=", [])
+    @it.should_not be_valid
+  end
+  it 'should not be valid for hashes' do
+    @it.send("#{@attribute}=",{})
+    @it.should_not be_valid
+  end
+  it 'should not be valid for objects' do
+    @it.send("#{@attribute}=",Object.new)
+    @it.should_not be_valid
+  end
 end
 
 shared_examples_for 'a required attribute' do
