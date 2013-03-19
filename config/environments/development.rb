@@ -37,7 +37,7 @@ RnaSeqAnalysisPipeline::Application.configure do
   config.assets.debug = true
   
   #Set log level
-  config.log_level = :error
+  config.log_level = :debug
   
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
