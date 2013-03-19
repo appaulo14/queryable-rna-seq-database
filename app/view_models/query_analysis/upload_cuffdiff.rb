@@ -8,15 +8,18 @@ class UploadCuffdiff
   require 'upload_util.rb'
   
   attr_accessor :transcripts_fasta_file, 
-                :transcript_diff_exp_file, 
-                :gene_diff_exp_file, 
-                :transcript_isoforms_file,
-                :has_diff_exp,
-                :has_transcript_isoforms,
-                :dataset_name
+                  :transcript_diff_exp_file, 
+                  :gene_diff_exp_file, 
+                  :transcript_isoforms_file,
+                  :has_diff_exp,
+                  :has_transcript_isoforms,
+                  :dataset_name
  
   #validate :validate_all_or_none_gene_files
   ##Validte for file presence only???
+  
+  validates :transcripts_fasta_file, :presence => true
+  validate  :transcripts_fasta_file_is_uploaded_file
   
   def initialize(current_user)
     @current_user = current_user
@@ -254,6 +257,14 @@ class UploadCuffdiff
   end
   
   private
+  
+  #Validations
+  def transcripts_fasta_file_is_uploaded_file
+    if @transcripts_fasta_file.class.to_s != "ActionDispatch::Http::UploadedFile"
+      errors[:transcripts_fasta_file] << 'must be an uploaded file'
+    end
+  end
+  
   def process_args_to_create_dataset()
     @dataset = Dataset.new(:user => @current_user,
                           :name => @dataset_name,

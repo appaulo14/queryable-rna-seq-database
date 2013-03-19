@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'view_models/shared_examples.rb'
 
 describe UploadCuffdiff do
   before(:all) do
@@ -23,6 +24,39 @@ describe UploadCuffdiff do
   describe 'validations', :type => :validations do
     before (:each) do
       @it = FactoryGirl.build(:upload_cuffdiff_with_2_samples)
+    end
+    
+#    :transcripts_fasta_file, 
+#    :transcript_diff_exp_file, 
+#    :gene_diff_exp_file, 
+#    :transcript_isoforms_file,
+#    :has_diff_exp,
+#    :has_transcript_isoforms,
+#    :dataset_name
+    describe 'transcripts_fasta_file' do
+      before(:each) do @attribute = 'transcripts_fasta_file' end
+      
+      it_should_behave_like 'a required attribute'
+      it_should_behave_like 'an uploaded file'
+    end
+    
+    describe 'transcript_diff_exp_file' do
+    end
+    
+    describe 'gene_diff_exp_file' do
+    end
+    
+    describe 'transcript_isoforms_file' do
+    end
+    
+    describe 'has_diff_exp' do
+      
+    end
+    
+    describe 'has_transcript_isoforms' do
+    end
+    
+    describe 'dataset_name' do
     end
     
     shared_examples_for 'any option' do

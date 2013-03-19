@@ -4,7 +4,6 @@ class RegistrationsController < Devise::RegistrationsController
 
   # GET /resource/sign_up
   def new
-    RegistrationMailer.notify_admin_of_registration_request_email(User.first).deliver
     resource = build_resource({})
     respond_with resource
   end
