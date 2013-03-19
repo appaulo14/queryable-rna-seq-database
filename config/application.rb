@@ -2,7 +2,7 @@ require File.expand_path('../boot', __FILE__)
 
 #Load any YAML config files
 require 'yaml'
-ADMIN_CONFIG = YAML.load(File.read('config/admin_config.yml'))
+MAILER_BOT_CONFIG = YAML.load(File.read('config/mailer_bot_config.yml'))
 
 # Pick the frameworks you want:
 require "active_record/railtie"

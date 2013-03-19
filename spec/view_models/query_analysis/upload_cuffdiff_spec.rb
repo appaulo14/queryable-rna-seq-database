@@ -19,6 +19,7 @@ describe UploadCuffdiff do
   
   after(:each) do
     ActionMailer::Base.deliveries.clear
+    #system("rm #{Rails.root}/db/blast_databases/test/*")
   end
   
   describe 'validations', :type => :validations do
@@ -40,26 +41,26 @@ describe UploadCuffdiff do
       it_should_behave_like 'an uploaded file'
     end
     
-    describe 'transcript_diff_exp_file' do
-      before(:each) do @attribute = 'transcript_diff_exp_file' end
-      
-      it_should_behave_like 'a required attribute'
-      it_should_behave_like 'an uploaded file'
-    end
-    
-    describe 'gene_diff_exp_file' do
-      before(:each) do @attribute = 'gene_diff_exp_file' end
-      
-      it_should_behave_like 'a required attribute'
-      it_should_behave_like 'an uploaded file'
-    end
-    
-    describe 'transcript_isoforms_file' do
-      before(:each) do @attribute = 'transcript_isoforms_file' end
-      
-      it_should_behave_like 'a required attribute'
-      it_should_behave_like 'an uploaded file'
-    end
+#    describe 'transcript_diff_exp_file' do
+#      before(:each) do @attribute = 'transcript_diff_exp_file' end
+#      
+#      it_should_behave_like 'a required attribute'
+#      it_should_behave_like 'an uploaded file'
+#    end
+#    
+#    describe 'gene_diff_exp_file' do
+#      before(:each) do @attribute = 'gene_diff_exp_file' end
+#      
+#      it_should_behave_like 'a required attribute'
+#      it_should_behave_like 'an uploaded file'
+#    end
+#    
+#    describe 'transcript_isoforms_file' do
+#      before(:each) do @attribute = 'transcript_isoforms_file' end
+#      
+#      it_should_behave_like 'a required attribute'
+#      it_should_behave_like 'an uploaded file'
+#    end
     
     describe 'has_diff_exp' do
       before(:each) do @attribute = 'has_diff_exp' end
@@ -138,6 +139,57 @@ describe UploadCuffdiff do
       end
     end
     
+    shared_examples_for 'all options no matter whether an exception occurs' do
+      before(:each) do
+        @it.stub(:delete_uploaded_files).and_call_original
+      end
+    
+      it 'should delete transcripts_fasta_file if it exists' do
+        file_path = @it.transcripts_fasta_file.tempfile.path
+        File.should_receive(:delete).with(file_path)
+        @it.save
+      end
+      it 'should not try to delete transcripts_fasta_file if it does not exist' do
+        file_path = @it.transcripts_fasta_file.tempfile.path
+        @it.transcripts_fasta_file = nil
+        File.should_not_receive(:delete).with(file_path)
+        @it.save
+      end
+      it 'should delete gene_diff_exp_file if it exists' do
+        file_path = @it.gene_diff_exp_file.tempfile.path
+        File.should_receive(:delete).with(file_path)
+        @it.save
+      end
+      it 'should not try to delete gene_diff_exp_file if it does not exist' do
+        file_path = @it.gene_diff_exp_file.tempfile.path
+        @it.gene_diff_exp_file = nil
+        File.should_not_receive(:delete).with(file_path)
+        @it.save
+      end
+      it 'should delete transcript_diff_exp_file if it exists' do
+        file_path = @it.transcript_diff_exp_file.tempfile.path
+        File.should_receive(:delete).with(file_path)
+        @it.save
+      end
+      it 'should not try to delete transcript_diff_exp_file if it does not exist' do
+        file_path = @it.transcript_diff_exp_file.tempfile.path
+        @it.transcript_diff_exp_file = nil
+        File.should_not_receive(:delete).with(file_path)
+        @it.save
+      end
+      it 'should delete transcript_isoforms_file if it exists' do
+        file_path = @it.transcript_isoforms_file.tempfile.path
+        File.should_receive(:delete).with(file_path)
+        @it.save
+      end
+      it 'should not try to delete transcript_isoforms_file if it does not exist' do
+        file_path = @it.transcript_isoforms_file.tempfile.path
+        @it.transcript_isoforms_file = nil
+        File.should_not_receive(:delete).with(file_path)
+        @it.save
+      end
+    end
+    
     shared_examples_for 'all options when no exception occurs' do
       it 'should call valid?' do
         @it.should_receive(:valid?)
@@ -174,9 +226,6 @@ describe UploadCuffdiff do
         @it.has_diff_exp = '1'
         @it.has_transcript_isoforms = '1'
       end
-
-      it_should_behave_like 'all options when an exception occurs'
-      it_should_behave_like 'all options when no exception occurs'
       
       it 'should call process_transcript_differential_expression_file' do
         @it.should_receive(:process_transcript_differential_expression_file)
@@ -195,6 +244,10 @@ describe UploadCuffdiff do
         @it.should_receive(:find_and_process_go_terms)
         @it.save
       end
+      
+      it_should_behave_like 'all options when an exception occurs'
+      it_should_behave_like 'all options when no exception occurs'
+      it_should_behave_like 'all options no matter whether an exception occurs'
     end
     
     describe 'when has_transcript_isoforms is "1" but has_diff_exp is "0" ' do
@@ -202,9 +255,6 @@ describe UploadCuffdiff do
         @it.has_diff_exp = '0'
         @it.has_transcript_isoforms = '1'
       end
-      
-      it_should_behave_like 'all options when an exception occurs'
-      it_should_behave_like 'all options when no exception occurs'
       
       it 'should not call process_transcript_differential_expression_file' do
         @it.should_not_receive(:process_transcript_differential_expression_file)
@@ -223,6 +273,10 @@ describe UploadCuffdiff do
         @it.should_receive(:find_and_process_go_terms)
         @it.save
       end
+      
+      it_should_behave_like 'all options when an exception occurs'
+      it_should_behave_like 'all options when no exception occurs'
+      it_should_behave_like 'all options no matter whether an exception occurs'
     end
     
     describe 'when has_transcript_isoforms is "0" but has_diff_exp is "1" ' do
@@ -230,9 +284,6 @@ describe UploadCuffdiff do
         @it.has_diff_exp = '1'
         @it.has_transcript_isoforms = '0'
       end
-      
-      it_should_behave_like 'all options when an exception occurs'
-      it_should_behave_like 'all options when no exception occurs'
       
       it 'should call process_transcript_differential_expression_file' do
         @it.should_receive(:process_transcript_differential_expression_file)
@@ -251,6 +302,10 @@ describe UploadCuffdiff do
         @it.should_receive(:find_and_process_go_terms)
         @it.save
       end
+      
+      it_should_behave_like 'all options when an exception occurs'
+      it_should_behave_like 'all options when no exception occurs'
+      it_should_behave_like 'all options no matter whether an exception occurs'
     end
     
     describe 'when both has_transcript_isoforms and has_diff_exp are "0"' do
@@ -258,9 +313,6 @@ describe UploadCuffdiff do
         @it.has_diff_exp = '0'
         @it.has_transcript_isoforms = '0'
       end
-      
-      it_should_behave_like 'all options when an exception occurs'
-      it_should_behave_like 'all options when no exception occurs'
       
       it 'should not call process_transcript_differential_expression_file' do
         @it.should_not_receive(:process_transcript_differential_expression_file)
@@ -279,6 +331,10 @@ describe UploadCuffdiff do
         @it.should_not_receive(:find_and_process_go_terms)
         @it.save
       end
+      
+      it_should_behave_like 'all options when an exception occurs'
+      it_should_behave_like 'all options when no exception occurs'
+      it_should_behave_like 'all options no matter whether an exception occurs'
     end
   end
   
@@ -302,50 +358,30 @@ describe UploadCuffdiff do
     
     shared_examples_for 'any number of samples when no exception occurs' do
       it 'should create 1 blast database' do
+        @it.save
         exec_path = "#{Rails.root}/bin/blast/bin"
-        database_path = "db/blast_databases/test/#{dataset.id}_db"
+        database_path = "#{Rails.root}/db/blast_databases/test/#{@it.instance_eval('@dataset').id}_db"
         result = system("#{exec_path}/blastdbcmd -info -db #{database_path}")
+        #debugger if result == false
         result.should be_true
       end
       
-      it 'should create 1 dataset'
-      it 'should create 0 users'
-      it 'should send 1 email notifying the user of success'
-    end
-    
-    shared_examples_for 'any number of samples regardless of whether an exception occurs' do
-      #TODO?: Move to white box and make two methods for each, such as:
-      #it 'should delete the transcripts diff exp file when it is not nil' do
-      #  File.should_receive(:delete).with(@it.transcript_diff_exp_file.tempfile.path)
-      #  @it.save
-      #end
-      #it 'should not try to delete the transcript diff exp file when not nil' do
-      #  @it.transcript_diff_exp_file = nil
-      #  File.should_not_receive(:delete).with(@it.transcript_diff_exp_file.tempfile.path)
-      #  @it.save
-      #end
-      it 'should delete the uploaded files' do 
-        if @it.transcripts_fasta_file.nil?
-          File.should_not_receive(:delete).with(@it.transcripts_fasta_file.tempfile.path)
-        else
-          File.should_receive(:delete).with(@it.transcripts_fasta_file.tempfile.path)
-        end
-        if @it.transcript_diff_exp_file.nil?
-          File.should_not_receive(:delete).with(@it.transcript_diff_exp_file.tempfile.path)
-        else
-          File.should_receive(:delete).with(@it.transcript_diff_exp_file.tempfile.path)
-        end
-        if @it.gene_diff_exp_file.nil?
-          File.should_not_receive(:delete).with(@it.gene_diff_exp_file.tempfile.path)
-        else
-          File.should_receive(:delete).with(@it.gene_diff_exp_file.tempfile.path)
-        end
-        if @it.transcript_isoforms_file.nil?
-          File.should_not_receive(:delete).with(@it.transcript_isoforms_file.tempfile.path)
-        else
-          File.should_receive(:delete).with(@it.transcript_isoforms_file.tempfile.path)
-        end
+      it 'should create 1 dataset' do
+        lambda do
+          @it.save
+        end.should change(Dataset, :count).by(1)
+      end
+      it 'should create 0 users' do
+        lambda do
+          @it.save
+        end.should change(User, :count).by(0)
+      end
+      it 'should send 1 email notifying the user of success' do
         @it.save
+        ActionMailer::Base.deliveries.count.should eq(1)
+        current_user = @it.instance_variable_get('@current_user')
+        ActionMailer::Base.deliveries.last.to.should eq([current_user.email])
+        ActionMailer::Base.deliveries.last.subject.should match('Success')
       end
     end
     
@@ -358,11 +394,7 @@ describe UploadCuffdiff do
         }
       end
           
-      describe 'when it has transcript isoforms only' do
-        it_should_behave_like 'any number of samples when an exception occurs'
-        it_should_behave_like 'any number of samples when no exception occurs'
-        it_should_behave_like 'any number of samples regardless of whether an exception occurs'
-        
+      describe 'when it has transcript isoforms only' do    
         it 'should add X transcripts to the database'
         it 'should add X genes to the database'
         it 'should add X fpkm samples to the database'
@@ -374,15 +406,24 @@ describe UploadCuffdiff do
         it 'should add X go terms to the database'
         it 'should add X go terms to the database if Y already exist in the database'
         
+        it_should_behave_like 'any number of samples when an exception occurs'
+        it_should_behave_like 'any number of samples when no exception occurs'
       end
       
       describe 'when it has no transcript isoforms' do
+        it 'should add X transcripts to the database'
+        it 'should add X genes to the database'
+        it 'should add X fpkm samples to the database'
+        it 'should add X samples to the database'
+        it 'should add X sample comparisons to the database'
+        it 'should add X differential expression tests to the database'
+        it 'should add X transcript has go terms to the database'
+        it 'should add X transcript fpkm tracking informations to the database'
+        it 'should add X go terms to the database'
+        it 'should add X go terms to the database if Y already exist in the database'
+        
         it_should_behave_like 'any number of samples when an exception occurs'
         it_should_behave_like 'any number of samples when no exception occurs'
-        it_should_behave_like 'any number of samples regardless of whether an exception occurs'
-        
-        it 'should have 0 transcripts'
-        #etc.
       end
     end
     
@@ -394,24 +435,69 @@ describe UploadCuffdiff do
           "#{@test_files_path}/2_samples/go_terms.annot"
         }
       end
-      
-      #TODO: Put these below??
-      it_should_behave_like 'any number of samples when an exception occurs'
-      it_should_behave_like 'any number of samples when no exception occurs' 
-      it_should_behave_like 'any number of samples regardless of whether an exception occurs'
 
       describe 'when it has differenntial expression tests and transcript isoforms' do
+        it 'should add X transcripts to the database'
+        it 'should add X genes to the database'
+        it 'should add X fpkm samples to the database'
+        it 'should add X samples to the database'
+        it 'should add X sample comparisons to the database'
+        it 'should add X differential expression tests to the database'
+        it 'should add X transcript has go terms to the database'
+        it 'should add X transcript fpkm tracking informations to the database'
+        it 'should add X go terms to the database'
+        it 'should add X go terms to the database if Y already exist in the database'
+        
+        it_should_behave_like 'any number of samples when an exception occurs'
+        it_should_behave_like 'any number of samples when no exception occurs'
       end
       
       describe 'when it has differenntial expression tests only' do
+        it 'should add X transcripts to the database'
+        it 'should add X genes to the database'
+        it 'should add X fpkm samples to the database'
+        it 'should add X samples to the database'
+        it 'should add X sample comparisons to the database'
+        it 'should add X differential expression tests to the database'
+        it 'should add X transcript has go terms to the database'
+        it 'should add X transcript fpkm tracking informations to the database'
+        it 'should add X go terms to the database'
+        it 'should add X go terms to the database if Y already exist in the database'
+        
+        it_should_behave_like 'any number of samples when an exception occurs'
+        it_should_behave_like 'any number of samples when no exception occurs'
       end
       
       describe 'when it transcript isoforms only' do
+        it 'should add X transcripts to the database'
+        it 'should add X genes to the database'
+        it 'should add X fpkm samples to the database'
+        it 'should add X samples to the database'
+        it 'should add X sample comparisons to the database'
+        it 'should add X differential expression tests to the database'
+        it 'should add X transcript has go terms to the database'
+        it 'should add X transcript fpkm tracking informations to the database'
+        it 'should add X go terms to the database'
+        it 'should add X go terms to the database if Y already exist in the database'
+        
+        it_should_behave_like 'any number of samples when an exception occurs'
+        it_should_behave_like 'any number of samples when no exception occurs'
       end
       
       describe 'when it has neither differenntial expression tests nor transcript isoforms' do
-        it 'should have 0 transcripts'
-        #etc.
+        it 'should add X transcripts to the database'
+        it 'should add X genes to the database'
+        it 'should add X fpkm samples to the database'
+        it 'should add X samples to the database'
+        it 'should add X sample comparisons to the database'
+        it 'should add X differential expression tests to the database'
+        it 'should add X transcript has go terms to the database'
+        it 'should add X transcript fpkm tracking informations to the database'
+        it 'should add X go terms to the database'
+        it 'should add X go terms to the database if Y already exist in the database'
+        
+        it_should_behave_like 'any number of samples when an exception occurs'
+        it_should_behave_like 'any number of samples when no exception occurs'
       end
     end
     
@@ -423,23 +509,69 @@ describe UploadCuffdiff do
           "#{@test_files_path}/3_samples/go_terms.annot"
         }
       end
-      
-      it_should_behave_like 'any number of samples when an exception occurs'
-      it_should_behave_like 'any number of samples when no exception occurs'
-      it_should_behave_like 'any number of samples regardless of whether an exception occurs'
 
       describe 'when it has differenntial expression tests and transcript isoforms' do
+        it 'should add X transcripts to the database'
+        it 'should add X genes to the database'
+        it 'should add X fpkm samples to the database'
+        it 'should add X samples to the database'
+        it 'should add X sample comparisons to the database'
+        it 'should add X differential expression tests to the database'
+        it 'should add X transcript has go terms to the database'
+        it 'should add X transcript fpkm tracking informations to the database'
+        it 'should add X go terms to the database'
+        it 'should add X go terms to the database if Y already exist in the database'
+        
+        it_should_behave_like 'any number of samples when an exception occurs'
+        it_should_behave_like 'any number of samples when no exception occurs'
       end
       
       describe 'when it has differenntial expression tests only' do
+        it 'should add X transcripts to the database'
+        it 'should add X genes to the database'
+        it 'should add X fpkm samples to the database'
+        it 'should add X samples to the database'
+        it 'should add X sample comparisons to the database'
+        it 'should add X differential expression tests to the database'
+        it 'should add X transcript has go terms to the database'
+        it 'should add X transcript fpkm tracking informations to the database'
+        it 'should add X go terms to the database'
+        it 'should add X go terms to the database if Y already exist in the database'
+        
+        it_should_behave_like 'any number of samples when an exception occurs'
+        it_should_behave_like 'any number of samples when no exception occurs'
       end
       
       describe 'when it transcript isoforms only' do
+        it 'should add X transcripts to the database'
+        it 'should add X genes to the database'
+        it 'should add X fpkm samples to the database'
+        it 'should add X samples to the database'
+        it 'should add X sample comparisons to the database'
+        it 'should add X differential expression tests to the database'
+        it 'should add X transcript has go terms to the database'
+        it 'should add X transcript fpkm tracking informations to the database'
+        it 'should add X go terms to the database'
+        it 'should add X go terms to the database if Y already exist in the database'
+        
+        it_should_behave_like 'any number of samples when an exception occurs'
+        it_should_behave_like 'any number of samples when no exception occurs'
       end
       
       describe 'when it has neither differenntial expression tests nor transcript isoforms' do
-        it 'should have 0 transcripts'
-        #etc.
+        it 'should add X transcripts to the database'
+        it 'should add X genes to the database'
+        it 'should add X fpkm samples to the database'
+        it 'should add X samples to the database'
+        it 'should add X sample comparisons to the database'
+        it 'should add X differential expression tests to the database'
+        it 'should add X transcript has go terms to the database'
+        it 'should add X transcript fpkm tracking informations to the database'
+        it 'should add X go terms to the database'
+        it 'should add X go terms to the database if Y already exist in the database'
+        
+        it_should_behave_like 'any number of samples when an exception occurs'
+        it_should_behave_like 'any number of samples when no exception occurs'
       end
     end
     
@@ -452,21 +584,68 @@ describe UploadCuffdiff do
         }
       end
       
-      it_should_behave_like 'any number of samples when an exception occurs'
-      it_should_behave_like 'any number of samples when no exception occurs'
-      
       describe 'when it has differenntial expression tests and transcript isoforms' do
+        it 'should add X transcripts to the database'
+        it 'should add X genes to the database'
+        it 'should add X fpkm samples to the database'
+        it 'should add X samples to the database'
+        it 'should add X sample comparisons to the database'
+        it 'should add X differential expression tests to the database'
+        it 'should add X transcript has go terms to the database'
+        it 'should add X transcript fpkm tracking informations to the database'
+        it 'should add X go terms to the database'
+        it 'should add X go terms to the database if Y already exist in the database'
+        
+        it_should_behave_like 'any number of samples when an exception occurs'
+        it_should_behave_like 'any number of samples when no exception occurs'
       end
       
       describe 'when it has differenntial expression tests only' do
+        it 'should add X transcripts to the database'
+        it 'should add X genes to the database'
+        it 'should add X fpkm samples to the database'
+        it 'should add X samples to the database'
+        it 'should add X sample comparisons to the database'
+        it 'should add X differential expression tests to the database'
+        it 'should add X transcript has go terms to the database'
+        it 'should add X transcript fpkm tracking informations to the database'
+        it 'should add X go terms to the database'
+        it 'should add X go terms to the database if Y already exist in the database'
+        
+        it_should_behave_like 'any number of samples when an exception occurs'
+        it_should_behave_like 'any number of samples when no exception occurs'
       end
       
       describe 'when it transcript isoforms only' do
+        it 'should add X transcripts to the database'
+        it 'should add X genes to the database'
+        it 'should add X fpkm samples to the database'
+        it 'should add X samples to the database'
+        it 'should add X sample comparisons to the database'
+        it 'should add X differential expression tests to the database'
+        it 'should add X transcript has go terms to the database'
+        it 'should add X transcript fpkm tracking informations to the database'
+        it 'should add X go terms to the database'
+        it 'should add X go terms to the database if Y already exist in the database'
+        
+        it_should_behave_like 'any number of samples when an exception occurs'
+        it_should_behave_like 'any number of samples when no exception occurs'
       end
       
       describe 'when it has neither differenntial expression tests nor transcript isoforms' do
-        it 'should have 0 transcripts'
-        #etc.
+        it 'should add X transcripts to the database'
+        it 'should add X genes to the database'
+        it 'should add X fpkm samples to the database'
+        it 'should add X samples to the database'
+        it 'should add X sample comparisons to the database'
+        it 'should add X differential expression tests to the database'
+        it 'should add X transcript has go terms to the database'
+        it 'should add X transcript fpkm tracking informations to the database'
+        it 'should add X go terms to the database'
+        it 'should add X go terms to the database if Y already exist in the database'
+        
+        it_should_behave_like 'any number of samples when an exception occurs'
+        it_should_behave_like 'any number of samples when no exception occurs'
       end
     end
   end

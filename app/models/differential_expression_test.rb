@@ -40,9 +40,9 @@ class DifferentialExpressionTest < ActiveRecord::Base
   validate  :sample_2_fpkm_is_greater_than_or_equal_to_zero
   
   validates :log_fold_change, :presence => true
-  validate  :log_fold_change_is_greater_than_or_equal_to_zero
+  #validate  :log_fold_change_is_greater_than_or_equal_to_zero
   
-  validate  :test_statistic_is_greater_than_or_equal_to_zero
+  #validate  :test_statistic_is_greater_than_or_equal_to_zero
   
   validates :p_value, :presence => true
   validate  :p_value_is_greater_than_or_equal_to_zero

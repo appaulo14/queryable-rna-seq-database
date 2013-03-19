@@ -46,12 +46,12 @@ RnaSeqAnalysisPipeline::Application.configure do
     :port => 587,
     :domain => "gmail.com",
     :authentication => :login,
-    :user_name => ADMIN_CONFIG['email'],
-    :password => ADMIN_CONFIG['password'],
+    :user_name => MAILER_BOT_CONFIG['email'],
+    :password => MAILER_BOT_CONFIG['password'],
   }
   config.action_mailer.perform_deliveries    = true
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.default_url_options = {:protocol => 'https',
                                               :host => '0.0.0.0:3000',
-                                              :from => ADMIN_CONFIG['email']}
+                                              :from => MAILER_BOT_CONFIG['email']}
 end

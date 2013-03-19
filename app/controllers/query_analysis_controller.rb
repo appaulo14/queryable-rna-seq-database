@@ -112,7 +112,7 @@ class QueryAnalysisController < ApplicationController
     
     def get_transcript_fasta
       #Create/fill in the view model
-      get_transcript_fasta = Get_Transcript_Fasta.new(current_user)
+      get_transcript_fasta = GetTranscriptFasta.new(current_user)
       get_transcript_fasta.set_attributes(params)
       #Output based on whether the view model is valid
       if get_transcript_fasta.valid?
@@ -131,7 +131,7 @@ class QueryAnalysisController < ApplicationController
     
     def get_gene_fastas
       #Create/fill in the view model
-      get_gene_fastas = Get_Gene_Fastas.new(current_user)
+      get_gene_fastas = GetGeneFastas.new(current_user)
       get_gene_fastas.set_attributes(params)
       #Output based on whether the view model is valid
       if get_gene_fastas.valid?
@@ -149,7 +149,7 @@ class QueryAnalysisController < ApplicationController
 
     def query_diff_exp_genes
       #Create the view model, giving the current user
-      @qdeg = Query_Diff_Exp_Genes.new(current_user)
+      @qdeg = QueryDiff_ExpGenes.new(current_user)
       #Which type of request was received?
       if request.get?
         #If the dataset_id parameter makes the view model invalid, 
@@ -173,7 +173,7 @@ class QueryAnalysisController < ApplicationController
 
     def query_transcript_isoforms
       #Create the view model, giving the current user
-      @qti = Query_Transcript_Isoforms.new(current_user)
+      @qti = QueryTranscriptIsoforms.new(current_user)
       #Which type of request was received?
       if request.get?
         #If the dataset_id parameter makes the view model invalid, 
@@ -187,10 +187,10 @@ class QueryAnalysisController < ApplicationController
         @qti.set_attributes_and_defaults(params[:query_transcript_isoforms])
         # If valid, query and return results; otherwise return failure
         if @qti.valid?
-          @qti.query!()
-          flash[:success] = "Success"
+          @qti.query()
+          flash[:notice] = "Success"
         else
-          flash[:success]="Failure"
+          flash[:notice]="Failure"
         end
       end
     end

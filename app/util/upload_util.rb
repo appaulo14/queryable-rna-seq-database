@@ -6,7 +6,7 @@ class UploadUtil
                         "-in #{fasta_file_path} " +
                         "-title #{dataset.id} " +
                         "-out #{dataset.blast_db_location} " +
-                        "-hash_index -dbtype nucl ")
+                        "-hash_index -parse_seqids -dbtype nucl ")
   end
   
   def self.rollback_blast_database(dataset)

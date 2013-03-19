@@ -42,5 +42,5 @@ RnaSeqAnalysisPipeline::Application.configure do
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.default_url_options = {:protocol => 'https',
                                               :host => '0.0.0.0:3000',
-                                              :from => ADMIN_CONFIG['email']}
+                                              :from => MAILER_BOT_CONFIG['email']}
 end

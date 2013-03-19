@@ -13,7 +13,7 @@ class QueryTranscriptIsoforms
                 :filter_by_go_ids, :go_ids, :filter_by_transcript_length, 
                 :transcript_length_comparison_sign, :transcript_length_value,
                 :filter_by_transcript_name, :transcript_name 
-  attr_reader   :names_and_ids_for_available_datasets, 
+  attr_reader  :names_and_ids_for_available_datasets, 
                 :available_samples,
                 :show_results, :results, :sample_name
   
@@ -43,9 +43,7 @@ class QueryTranscriptIsoforms
     end
     #Set default values for the relavent blank attributes
     @dataset_id = all_datasets_for_current_user.first.id if @dataset_id.blank?
-    @fdr_or_pvalue = 'p_value' if fdr_or_pvalue.blank?
-    @cutoff = '0.05' if cutoff.blank?
-    @filter_by_go_names = false if filter_by_go_names.blank?
+    @filter_by_go_terms = false if filter_by_go_terms.blank?
     @filter_by_go_ids = false if filter_by_go_ids.blank?
     if filter_by_transcript_length.blank?
       @filter_by_transcript_length = false
@@ -78,15 +76,28 @@ class QueryTranscriptIsoforms
                     'fpkm_samples.fpkm_lo,' +
                     'fpkm_samples.fpkm_hi,' +
                     'fpkm_samples.status'
+    ds_t = Dataset.arel_table
+    where_clause = tfti_t[:id].eq(@dataset_id)
+    fs_t = FpkmSample.arel_table
+    where_clause = where_clause.and(fs_t[:sample_id].eq(@sample_id))
+    if @filter_by_class_code == '1'
+      where_clause.and(generate_filter_by_class_codes_where_clause)
+    end
     query_results = 
-      Dataset.joins(
+     Dataset.joins(
         :transcripts => [:transcript_fpkm_tracking_information, :gene, :fpkm_samples]
       ).
-      where(
-        'datasets.id' => @dataset_id,
-        'fpkm_samples.sample_id' => @sample_id
-      ).
-      select(select_string) 
+      where(where_clause).
+      select(select_string)
+#    query_results = 
+#      Dataset.joins(
+#        :transcripts => [:transcript_fpkm_tracking_information, :gene, :fpkm_samples]
+#      ).
+#      where(
+#        'datasets.id' => @dataset_id,
+#        'fpkm_samples.sample_id' => @sample_id
+#      ).
+#      select(select_string) 
     #Extract the query results to form that can be put in the view
     @sample_name = Sample.find_by_id(@sample_id).name
     @results = []
@@ -111,13 +122,91 @@ class QueryTranscriptIsoforms
     @show_results = true
   end
   
-  #Accoring http://railscasts.com/episodes/219-active-model?view=asciicast,
+  #According http://railscasts.com/episodes/219-active-model?view=asciicast,
   #     this defines that this model does not persist in the database.
   def persisted?
       return false
   end
   
   private
+  def generate_filter_by_class_codes_where_clause
+    tfti_t = TranscriptFpkmTrackingInformation.arel_table
+    if @class_code_equal == '1'
+      tfti_w = tfti_t[:class_code].eq('=')
+    end
+    if @class_code_c == '1'
+      if not tfti_w.nil?
+        tfti_w.or(tfti_t[:class_code].eq('c'))
+      else
+        tfti_w = tfti_t[:class_code].eq('c')
+      end
+    end
+#    :class_code_equal, :class_code_c, :class_code_j, :class_code_e,
+#                :class_code_i, :class_code_o, :class_code_p, :class_code_r,
+#                :class_code_u, :class_code_x, :class_code_s, :class_code_dot,
+    return tfti_w
+  end
+  
+  def generate_filter_by_go_ids_where_clause
+    go_terms = @go_terms.split(';')
+    gt_t = GoTerm.arel_table
+    where_clauses = []
+    go_terms.each do |go_term|
+      where_clauses << gt_t[:id].eq(go_term.strip)
+    end
+    if where_clauses.count > 1
+      combined_where_clause = where_clauses[0]
+      (1..where_clauses.count-1).each do |i|
+        combined_where_clause.or(where_clauses[i])
+      end
+      return combined_where_clause
+    else
+      return where_clauses[0]
+    end
+  end
+  
+  def generate_filter_by_go_terms_where_clause
+    go_terms = @go_terms.split(';')
+    gt_t = GoTerm.arel_table
+    where_clauses = []
+    go_terms.each do |go_term|
+      where_clauses << gt_t[:id].eq(go_term.strip)
+    end
+    if where_clauses.count > 1
+      combined_where_clause = where_clauses[0]
+      (1..where_clauses.count-1).each do |i|
+        combined_where_clause.or(where_clauses[i])
+      end
+      return combined_where_clause
+    else
+      return where_clauses[0]
+    end
+  end
+  
+  def generate_filter_by_transcript_name_where_clause
+    t_t = Transcript.arel_table
+    return t_t[:name_from_program].eq(@transcript_name)
+  end
+  
+  def generate_filter_by_transcript_length_where_clause
+    t_t = Transcript.arel_table
+    case transcript_length_comparison_sign
+    when '>'
+      t_w = t_t[:length].gt(@transcript_length_value)
+    when '>='
+      t_w = t_t[:length].gte(@transcript_length_value)
+    when '='
+      t_w = t_t[:length].eq(@transcript_length_value)
+    when '<'
+      t_w = t_t[:length].lt(@transcript_length_value)
+    when '=<'
+      t_w = t_t[:length].lte(@transcript_length_value)
+    else
+      #???
+    end
+    return t_w
+  end
+  
   def user_has_permission_to_access_dataset
   end
   
