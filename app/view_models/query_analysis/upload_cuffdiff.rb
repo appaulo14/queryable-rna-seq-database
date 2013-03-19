@@ -21,6 +21,18 @@ class UploadCuffdiff
   validates :transcripts_fasta_file, :presence => true
   validate  :transcripts_fasta_file_is_uploaded_file
   
+  validates :transcript_diff_exp_file, :presence => true
+  
+  validates :gene_diff_exp_file, :presence => true
+  
+  validates :transcript_isoforms_file, :presence => true
+  
+  validates :has_diff_exp, :presence => true
+  
+  validates :has_transcript_isoforms, :presence => true
+  
+  validates :dataset_name, :presence => true
+  
   def initialize(current_user)
     @current_user = current_user
   end

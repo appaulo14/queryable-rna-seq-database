@@ -41,74 +41,47 @@ describe UploadCuffdiff do
     end
     
     describe 'transcript_diff_exp_file' do
+      before(:each) do @attribute = 'transcript_diff_exp_file' end
+      
+      it_should_behave_like 'a required attribute'
+      it_should_behave_like 'an uploaded file'
     end
     
     describe 'gene_diff_exp_file' do
+      before(:each) do @attribute = 'gene_diff_exp_file' end
+      
+      it_should_behave_like 'a required attribute'
+      it_should_behave_like 'an uploaded file'
     end
     
     describe 'transcript_isoforms_file' do
+      before(:each) do @attribute = 'transcript_isoforms_file' end
+      
+      it_should_behave_like 'a required attribute'
+      it_should_behave_like 'an uploaded file'
     end
     
     describe 'has_diff_exp' do
+      before(:each) do @attribute = 'has_diff_exp' end
       
+      it_should_behave_like 'a required attribute'
+      it_should_behave_like 'a view model-style boolean'
     end
     
     describe 'has_transcript_isoforms' do
+      before(:each) do @attribute = 'has_transcript_isoforms' end
+      
+      it_should_behave_like 'a required attribute'
+      it_should_behave_like 'a view model-style boolean'
     end
     
     describe 'dataset_name' do
-    end
-    
-    shared_examples_for 'any option' do
-      it 'should require a dataset name'
-      it 'should require has_diff_exp be "1" or "0"'
-      it 'should require has_transcript_isoforms be "1" or "0"'
-      it 'should not save when not valid'
-      it 'should require a transcript fasta file'
-    end
-    
-    describe 'when has_diff_exp is "1"' do
-      before (:each) do
-        @it.has_diff_exp = '1'
-      end
+      before(:each) do @attribute = 'dataset_name' end
       
-      it_should_behave_like 'any option'
-      
-      it 'should require a gene differential expression file'
-      it 'should require a transcript differenntial expression file'
-    end
-    
-    describe 'when has_diff_exp is "0"' do
-      before (:each) do
-        @it.has_diff_exp = '1'
-      end
-      
-      it_should_behave_like 'any option'
-      
-      it 'should not require a gene differential expression file'
-      it 'should not require a transcript differenntial expression file'
-    end
-    
-    describe 'when has_transcript_isoforms is "1"' do
-      before (:each) do
-        @it.has_transcript_isoforms = '1'
-      end
-      
-      it_should_behave_like 'any option'
-      
-      it 'should require an uploaded transcript isoforms file'
-    end
-    
-    describe 'when has_transcript_isoforms is "0"' do
-      before (:each) do
-        @it.has_transcript_isoforms = '1'
-      end
-      
-      it_should_behave_like 'any option'
-      
-      it 'should not require an uploaded transcript isoforms file'
+      it_should_behave_like 'a required attribute'
     end
   end
+  
   
   describe 'flow control', :type => :white_box do
     before(:each) do

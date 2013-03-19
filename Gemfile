@@ -44,6 +44,10 @@ group :test do
   gem 'database_cleaner'
 end
 
+group :production do
+  gem 'thin'
+end
+
 gem 'galetahub-simple_captcha', :require => 'simple_captcha'
 gem 'sucker_punch'
 gem 'composite_primary_keys'
