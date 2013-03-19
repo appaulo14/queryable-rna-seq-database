@@ -17,7 +17,7 @@
 /db/*.sqlite3
 
 #Ignore blast databases
-#/db/blast_databases/*
+/db/blast_databases/*
 
 # Ignore all logfiles and tempfiles.
 /log/*.log

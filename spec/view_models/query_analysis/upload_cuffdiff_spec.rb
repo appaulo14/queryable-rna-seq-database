@@ -394,15 +394,47 @@ describe UploadCuffdiff do
         }
       end
           
-      describe 'when it has transcript isoforms only' do    
-        it 'should add X transcripts to the database'
-        it 'should add X genes to the database'
-        it 'should add X fpkm samples to the database'
-        it 'should add X samples to the database'
-        it 'should add X sample comparisons to the database'
-        it 'should add X differential expression tests to the database'
-        it 'should add X transcript has go terms to the database'
-        it 'should add X transcript fpkm tracking informations to the database'
+      describe 'when it has transcript isoforms only' do  
+        it 'should add 24 transcripts to the database' do
+          lambda do
+            @it.save
+          end.should change(Transcript,:count).by(24)
+        end
+        it 'should add 10 genes to the database' do
+          lambda do
+            @it.save
+          end.should change(Transcript,:count).by(10)
+        end
+        it 'should add 24 fpkm samples to the database' do
+          lambda do
+            @it.save
+          end.should change(FpkmSample,:count).by(24)
+        end
+        it 'should add 1 samples to the database' do
+          lambda do
+            @it.save
+          end.should change(Sample,:count).by(1)
+        end
+        it 'should add 0 sample comparisons to the database' do
+          lambda do
+            @it.save
+          end.should change(SampleComparison,:count).by(0)
+        end
+        it 'should add 0 differential expression tests to the database' do
+          lambda do
+            @it.save
+          end.should change(DifferentialExpressionTest,:count).by(0)
+        end
+        it 'should add 250 transcript has go terms to the database' do
+          lambda do
+            @it.save
+          end.should change(TranscriptHasGoTerm,:count).by(250)
+        end
+        it 'should add 24 transcript fpkm tracking informations to the database' do
+          lambda do
+            @it.save
+          end.should change(TranscriptFpkmTrackingInformation,:count).by(24)
+        end
         it 'should add X go terms to the database'
         it 'should add X go terms to the database if Y already exist in the database'
         
@@ -411,16 +443,16 @@ describe UploadCuffdiff do
       end
       
       describe 'when it has no transcript isoforms' do
-        it 'should add X transcripts to the database'
-        it 'should add X genes to the database'
-        it 'should add X fpkm samples to the database'
-        it 'should add X samples to the database'
-        it 'should add X sample comparisons to the database'
-        it 'should add X differential expression tests to the database'
-        it 'should add X transcript has go terms to the database'
-        it 'should add X transcript fpkm tracking informations to the database'
-        it 'should add X go terms to the database'
-        it 'should add X go terms to the database if Y already exist in the database'
+        it 'should add 0 transcripts to the database'
+        it 'should add 0 genes to the database'
+        it 'should add 0 fpkm samples to the database'
+        it 'should add 0 samples to the database'
+        it 'should add 0 sample comparisons to the database'
+        it 'should add 0 differential expression tests to the database'
+        it 'should add 0 transcript has go terms to the database'
+        it 'should add 0 transcript fpkm tracking informations to the database'
+        it 'should add 0 go terms to the database'
+        it 'should add 0 go terms to the database if Y already exist in the database'
         
         it_should_behave_like 'any number of samples when an exception occurs'
         it_should_behave_like 'any number of samples when no exception occurs'

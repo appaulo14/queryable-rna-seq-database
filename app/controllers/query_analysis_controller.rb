@@ -58,7 +58,6 @@ class QueryAnalysisController < ApplicationController
         @upload_files = Upload_Trinity_With_EdgeR_Transcripts.new(current_user)
         @upload_files.set_attributes_and_defaults({})
       elsif (request.post?)
-        debugger
         @upload_files = Upload_Trinity_With_EdgeR_Transcripts.new(current_user)
         @upload_files.set_attributes_and_defaults(params[:upload_trinity_with_edger_transcripts])
         @upload_files.save!
@@ -70,7 +69,6 @@ class QueryAnalysisController < ApplicationController
         @upload_files = Upload_Trinity_With_EdgeR_Transcripts_And_Genes.new(current_user)
         @upload_files.set_attributes_and_defaults({})
       elsif (request.post?)
-        debugger
         @upload_files = Upload_Trinity_With_EdgeR_Transcripts_And_Genes.new(current_user)
         @upload_files.set_attributes_and_defaults(params[:upload_trinity_with_edger_transcripts_and_genes])
         @upload_files.save!
@@ -280,32 +278,32 @@ class QueryAnalysisController < ApplicationController
     
     def query_using_tblastx  #changed after the architecture design
       if request.get?
-            @query_using_tblastx = QueryUsingTblastx.new(current_user)
-            @query_using_tblastx.set_attributes_and_defaults()
+        @query_using_tblastx = QueryUsingTblastx.new(current_user)
+        @query_using_tblastx.set_attributes_and_defaults()
       elsif request.post?
-          @query_using_tblastx = QueryUsingTblastx.new(current_user)
-          @query_using_tblastx.set_attributes_and_defaults(params[:query_using_tblastx])
-          debugger if ENV['RAILS_DEBUG'] == "true"
-          if @query_using_tblastx.valid?
-            flash[:success] = "Success"
-            #Run the blast query and get the file path of the result
-            blast_results_file_path = @query_using_tblastx.blast!
-            #Parse the xml into Blast reports
-            f = File.open(blast_results_file_path)
-            xml_string = ''
-            while not f.eof?
-              xml_string += f.readline
-            end
-            f.close()
-            @program = :tblastx
-            @blast_report = Bio::Blast::Report.new(xml_string,'xmlparser')
-            #Send the result to the user
-            render :file => 'query_analysis/blast_results'
-            #Delete the result file since it is no longer needed
-            #File.delete(blast_results_file_path)
-          else
-              flash[:success]="Failure"
+        @query_using_tblastx = QueryUsingTblastx.new(current_user)
+        @query_using_tblastx.set_attributes_and_defaults(params[:query_using_tblastx])
+        debugger if ENV['RAILS_DEBUG'] == "true"
+        if @query_using_tblastx.valid?
+          flash[:success] = "Success"
+          #Run the blast query and get the file path of the result
+          blast_results_file_path = @query_using_tblastx.blast!
+          #Parse the xml into Blast reports
+          f = File.open(blast_results_file_path)
+          xml_string = ''
+          while not f.eof?
+            xml_string += f.readline
           end
+          f.close()
+          @program = :tblastx
+          @blast_report = Bio::Blast::Report.new(xml_string,'xmlparser')
+          #Send the result to the user
+          render :file => 'query_analysis/blast_results'
+          #Delete the result file since it is no longer needed
+          #File.delete(blast_results_file_path)
+        else
+          flash[:success]="Failure"
+        end
       end
   end
 end

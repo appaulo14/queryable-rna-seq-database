@@ -3,7 +3,6 @@ class QueryTranscriptIsoforms
   include ActiveModel::Conversion
   extend ActiveModel::Naming
   
-  #TODO: Get rid of FDR and P-value because they're not needed
   attr_accessor :dataset_id, :sample_id,
                 :filter_by_class_codes,
                 :class_code_equal, :class_code_c, :class_code_j, :class_code_e,
@@ -16,6 +15,21 @@ class QueryTranscriptIsoforms
   attr_reader  :names_and_ids_for_available_datasets, 
                 :available_samples,
                 :show_results, :results, :sample_name
+  
+  CLASS_CODES = {
+    '=' => @class_code_equal,
+    'c' => @class_code_c,
+    'j' => @class_code_j,
+    'e' => @class_code_e,
+    'i' => @class_code_i,
+    'o' => @class_code_o,
+    'p' => @class_code_p,
+    'r' => @class_code_r,
+    'u' => @class_code_u,
+    'x' => @class_code_x,
+    's' => @class_code_s,
+    '.' => @class_code_dot
+  }
   
   def show_results?
     return @show_results
@@ -77,11 +91,23 @@ class QueryTranscriptIsoforms
                     'fpkm_samples.fpkm_hi,' +
                     'fpkm_samples.status'
     ds_t = Dataset.arel_table
-    where_clause = tfti_t[:id].eq(@dataset_id)
+    where_clause = ds_t[:id].eq(@dataset_id)
     fs_t = FpkmSample.arel_table
     where_clause = where_clause.and(fs_t[:sample_id].eq(@sample_id))
-    if @filter_by_class_code == '1'
-      where_clause.and(generate_filter_by_class_codes_where_clause)
+    if @filter_by_class_codes == '1'
+      where_clause = where_clause.and(generate_class_codes_where_clause)
+    end
+    if @filter_by_go_terms == '1'
+      where_clause = where_clause.and(generate_go_terms_where_clause)
+    end
+    if @filter_by_go_ids == '1'
+      where_clause = where_clause.and(generate_go_ids_where_clause)
+    end
+    if @filter_by_transcript_length == '1'
+      where_clause = where_clause.and(generate_transcript_length_where_clause)
+    end
+    if @filter_by_transcript_name == '1'
+      where_clause = where_clause.and(generate_transcript_name_where_clause)
     end
     query_results = 
      Dataset.joins(
@@ -129,25 +155,23 @@ class QueryTranscriptIsoforms
   end
   
   private
-  def generate_filter_by_class_codes_where_clause
+  def generate_class_codes_where_clause
     tfti_t = TranscriptFpkmTrackingInformation.arel_table
-    if @class_code_equal == '1'
-      tfti_w = tfti_t[:class_code].eq('=')
-    end
-    if @class_code_c == '1'
-      if not tfti_w.nil?
-        tfti_w.or(tfti_t[:class_code].eq('c'))
-      else
-        tfti_w = tfti_t[:class_code].eq('c')
+    tfti_w = ''
+    CLASS_CODES.each do |class_code, is_checked|
+      if is_checked == '1'
+        if tfti_w.nil?
+          tfti_w = tfti_t[:class_code].eq(class_code)
+        else
+          tfti_w.or(tfti_t[:class_code].eq(class_code))
+        end
       end
     end
-#    :class_code_equal, :class_code_c, :class_code_j, :class_code_e,
-#                :class_code_i, :class_code_o, :class_code_p, :class_code_r,
-#                :class_code_u, :class_code_x, :class_code_s, :class_code_dot,
+    debugger
     return tfti_w
   end
   
-  def generate_filter_by_go_ids_where_clause
+  def generate_go_ids_where_clause
     go_terms = @go_terms.split(';')
     gt_t = GoTerm.arel_table
     where_clauses = []
@@ -165,7 +189,7 @@ class QueryTranscriptIsoforms
     end
   end
   
-  def generate_filter_by_go_terms_where_clause
+  def generate_go_terms_where_clause
     go_terms = @go_terms.split(';')
     gt_t = GoTerm.arel_table
     where_clauses = []
@@ -183,28 +207,29 @@ class QueryTranscriptIsoforms
     end
   end
   
-  def generate_filter_by_transcript_name_where_clause
+  def generate_transcript_name_where_clause
     t_t = Transcript.arel_table
     return t_t[:name_from_program].eq(@transcript_name)
   end
   
-  def generate_filter_by_transcript_length_where_clause
-    t_t = Transcript.arel_table
+  def generate_transcript_length_where_clause
+    tfti_t = TranscriptFpkmTrackingInformation.arel_table
     case transcript_length_comparison_sign
     when '>'
-      t_w = t_t[:length].gt(@transcript_length_value)
+      tfti_w = tfti_t[:length].gt(@transcript_length_value)
     when '>='
-      t_w = t_t[:length].gte(@transcript_length_value)
+      tfti_w = tfti_t[:length].gte(@transcript_length_value)
     when '='
-      t_w = t_t[:length].eq(@transcript_length_value)
+      tfti_w = tfti_t[:length].eq(@transcript_length_value)
     when '<'
-      t_w = t_t[:length].lt(@transcript_length_value)
+      tfti_w = tfti_t[:length].lt(@transcript_length_value)
     when '=<'
-      t_w = t_t[:length].lte(@transcript_length_value)
+      tfti_w = tfti_t[:length].lte(@transcript_length_value)
     else
+      puts 'x'
       #???
     end
-    return t_w
+    return tfti_w
   end
   
   def user_has_permission_to_access_dataset
