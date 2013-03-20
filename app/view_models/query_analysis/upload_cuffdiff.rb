@@ -272,24 +272,16 @@ class UploadCuffdiff
   end
   
   def transcript_diff_exp_file_is_uploaded_file
-    is_attribute('transcripts_fasta_file')
+    is_uploaded_file('transcripts_fasta_file')
   end
   
   def gene_diff_exp_file_is_uploaded_file
-    is_attribute('transcripts_fasta_file')
+    is_uploaded_file('transcripts_fasta_file')
   end
   
   def transcript_isoforms_file_is_uploaded_file
-    is_attribute('transcripts_fasta_file')
+    is_uploaded_file('transcripts_fasta_file')
   end
-  
-#  attr_accessor :transcripts_fasta_file, 
-#                  :transcript_diff_exp_file, 
-#                  :gene_diff_exp_file, 
-#                  :transcript_isoforms_file,
-#                  :has_diff_exp,
-#                  :has_transcript_isoforms,
-#                  :dataset_name
 
   def is_uploaded_file(attribute)
     if self.send(attribute).class.to_s != 'ActionDispatch::Http::UploadedFile'
@@ -427,7 +419,7 @@ class UploadCuffdiff
   end
   
   def process_transcript_isoforms_file()
-    headers = @transcript_isoforms_file.tempfile.readline.split("\t")
+    headers = @transcript_isoforms_file.tempfile.readline.split(/\s+/)
     samples = []
     next_index = 9
     while (next_index < headers.count)
@@ -484,7 +476,8 @@ class UploadCuffdiff
     while not go_terms_file.eof?
       line = go_terms_file.readline
       next if line.blank?
-      (transcript_name, go_id, term) = line.split(/\s+/)
+      line_regex = /\A(\S+)\s+(\S+)\s+(.+)\z/
+      (transcript_name, go_id, term) = line.strip.match(line_regex).captures
       go_term = GoTerm.find_by_id(go_id)
       if go_term.nil?
         go_term = GoTerm.create!(:id => go_id, :term => term)
@@ -492,7 +485,7 @@ class UploadCuffdiff
       transcript = Transcript.where(:dataset_id => @dataset.id, 
                                     :name_from_program => transcript_name)[0]
       TranscriptHasGoTerm.create!(:transcript => transcript, 
-                                  :go_term => go_term)
+                                     :go_term => go_term)
     end
     go_terms_file.close
     File.delete(go_terms_file.path)

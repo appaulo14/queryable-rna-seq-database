@@ -3,6 +3,10 @@ class QueryTranscriptIsoforms
   include ActiveModel::Conversion
   extend ActiveModel::Naming
   
+  require 'query/transcript_name_query_condition_generator.rb'
+  require 'query/go_ids_query_condition_generator.rb'
+  require 'query/go_terms_query_condition_generator.rb'
+  
   attr_accessor :dataset_id, :sample_id,
                 :filter_by_class_codes,
                 :class_code_equal, :class_code_c, :class_code_j, :class_code_e,
@@ -67,13 +71,13 @@ class QueryTranscriptIsoforms
     end
     @transcript_length_value = '0' if transcript_length_value.blank?
     @filter_by_transcript_name = false if filter_by_transcript_name.blank?
-    #Set available samples for comparison
+    #Set available samples for querying
     ds = Dataset.find_by_id(@dataset_id)
     @available_samples = []
     ds.samples.each do |sample|
       @available_samples << [sample.name, sample.id]
     end
-    @sample_id = @available_samples[0][1]
+    @sample_id = @available_samples[0][1] if @sample_id.blank?
     @show_results = false
   end
   
@@ -95,13 +99,15 @@ class QueryTranscriptIsoforms
     fs_t = FpkmSample.arel_table
     where_clause = where_clause.and(fs_t[:sample_id].eq(@sample_id))
     if @filter_by_class_codes == '1'
-      where_clause = where_clause.and(generate_class_codes_where_clause())
+      where_clause = where_clause.and(class_codes_where_clause())
     end
     if @filter_by_transcript_length == '1'
-      where_clause = where_clause.and(generate_transcript_length_where_clause())
+      where_clause = where_clause.and(transcript_length_query_condition())
     end
     if @filter_by_transcript_name == '1'
-      where_clause = where_clause.and(generate_transcript_name_where_clause())
+      tnqcg = TranscriptNameQueryConditionGenerator.new()
+      tnqcg.name = @transcript_name
+      where_clause = where_clause.and(tnqcg.generate_query_condition())
     end
     query_results = 
      Dataset.joins(
@@ -115,10 +121,14 @@ class QueryTranscriptIsoforms
       #Do a few more minor queries to get the data in the needed format
       transcript = Transcript.find_by_id(query_result.transcript_id)
       if @filter_by_go_ids == '1'
-        next if (transcript.go_terms & GoTerm.where(generate_go_ids_where_clause())).empty?
+        giqcg = GoIdsQueryConditionGenerator.new(@go_ids)
+        query_condition = giqcg.generate_query_condition()
+        next if (transcript.go_terms & GoTerm.where(query_condition)).empty?
       end
       if @filter_by_go_terms == '1'
-        next if (transcript.go_terms & GoTerm.where(generate_go_terms_where_clause())).empty?
+        gtqcg = GoTermsQueryConditionGenerator.new(@go_terms)
+        query_condition = gtqcg.generate_query_condition()
+        next if (transcript.go_terms & GoTerm.where(query_condition)).empty?
       end
       #Fill in the result hash that the view will use to display the data
       result = {}
@@ -145,7 +155,7 @@ class QueryTranscriptIsoforms
   end
   
   private
-  def generate_class_codes_where_clause
+  def class_codes_where_clause
     tfti_t = TranscriptFpkmTrackingInformation.arel_table
     tfti_w = nil
     CLASS_CODES.each do |key, value|
@@ -160,60 +170,60 @@ class QueryTranscriptIsoforms
     return tfti_w
   end
   
-  def generate_go_ids_where_clause
-    go_terms = @go_ids.split(';')
-    gt_t = GoTerm.arel_table
-    where_clauses = []
-    go_terms.each do |go_term|
-      where_clauses << gt_t[:id].eq(go_term.strip)
-    end
-    if where_clauses.count > 1
-      combined_where_clause = where_clauses[0]
-      (1..where_clauses.count-1).each do |i|
-        combined_where_clause = combined_where_clause.or(where_clauses[i])
-      end
-      return combined_where_clause
-    else
-      return where_clauses[0]
-    end
-  end
+#  def generate_go_ids_where_clause
+#    go_terms = @go_ids.split(';')
+#    gt_t = GoTerm.arel_table
+#    where_clauses = []
+#    go_terms.each do |go_term|
+#      where_clauses << gt_t[:id].eq(go_term.strip)
+#    end
+#    if where_clauses.count > 1
+#      combined_where_clause = where_clauses[0]
+#      (1..where_clauses.count-1).each do |i|
+#        combined_where_clause = combined_where_clause.or(where_clauses[i])
+#      end
+#      return combined_where_clause
+#    else
+#      return where_clauses[0]
+#    end
+#  end
   
-  def generate_go_terms_where_clause
-    go_terms = @go_terms.split(';')
-    gt_t = GoTerm.arel_table
-    where_clauses = []
-    go_terms.each do |go_term|
-      where_clauses << gt_t[:term].matches("%#{go_term.strip}%")
-    end
-    if where_clauses.count > 1
-      combined_where_clause = where_clauses[0]
-      (1..where_clauses.count-1).each do |i|
-        combined_where_clause = combined_where_clause.or(where_clauses[i])
-      end
-      return combined_where_clause
-    else
-      return where_clauses[0]
-    end
-  end
+#  def generate_go_terms_where_clause
+#    go_terms = @go_terms.split(';')
+#    gt_t = GoTerm.arel_table
+#    where_clauses = []
+#    go_terms.each do |go_term|
+#      where_clauses << gt_t[:term].matches("%#{go_term.strip}%")
+#    end
+#    if where_clauses.count > 1
+#      combined_where_clause = where_clauses[0]
+#      (1..where_clauses.count-1).each do |i|
+#        combined_where_clause = combined_where_clause.or(where_clauses[i])
+#      end
+#      return combined_where_clause
+#    else
+#      return where_clauses[0]
+#    end
+#  end
   
-  def generate_transcript_name_where_clause
-    t_t = Transcript.arel_table
-    return t_t[:name_from_program].eq(@transcript_name)
-  end
+#  def generate_transcript_name_where_clause
+#    t_t = Transcript.arel_table
+#    return t_t[:name_from_program].eq(@transcript_name)
+#  end
   
-  def generate_transcript_length_where_clause
+  def transcript_length_query_condition
     tfti_t = TranscriptFpkmTrackingInformation.arel_table
     case transcript_length_comparison_sign
     when '>'
       tfti_w = tfti_t[:length].gt(@transcript_length_value)
     when '>='
-      tfti_w = tfti_t[:length].gte(@transcript_length_value)
+      tfti_w = tfti_t[:length].gteq(@transcript_length_value)
     when '='
       tfti_w = tfti_t[:length].eq(@transcript_length_value)
     when '<'
       tfti_w = tfti_t[:length].lt(@transcript_length_value)
     when '=<'
-      tfti_w = tfti_t[:length].lte(@transcript_length_value)
+      tfti_w = tfti_t[:length].lteq(@transcript_length_value)
     else
       puts 'x'
       #???

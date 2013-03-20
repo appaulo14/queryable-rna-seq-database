@@ -19,10 +19,10 @@
   </p>
   <p>
     <div>
-        <%= label(:fdr_or_pvalue, "Filter By:") %>
+        <%= label(:fdr_or_p_value, "Filter By:") %>
         <%= qdeg.radio_button(:fdr_or_p_value, :p_value) %>
         <%= qdeg.label(:filter_by_p_value, "P-value") %>
-        <%= qdeg.radio_button(:fdr_or_pvalue, :fdr) %>
+        <%= qdeg.radio_button(:fdr_or_p_value, :fdr) %>
         <%= qdeg.label(:filter_by_fdr, "FDR") %>
     </div>
     <div>
@@ -38,14 +38,14 @@
   <h2>Query filtering options</h2>
   <p>
     <div>
-        <%= qdeg.check_box(:filter_by_go_names) %>
-        <%= qdeg.label(:go_names, "GO Names (for associated genes) (separated by semicolons)") %>
-        <%= qdeg.text_field(:go_names) %>
+        <%= qdeg.check_box(:filter_by_go_terms) %>
+        <%= qdeg.label(:go_terms, "GO Terms, separated by semicolons") %>
+        <%= qdeg.text_field(:go_terms, :size => 70) %>
         <%= link_to('Browse GO Terms','http://amigo.geneontology.org/cgi-bin/amigo/browse.cgi', :target => '_blank') %>
     </div>
     <div>
         <%= qdeg.check_box(:filter_by_go_ids) %>
-        <%= qdeg.label(:go_ids, "GO IDs (for associated genes) (separated by semicolons)") %>
+        <%= qdeg.label(:go_ids, "GO IDs (a.k.a Accessions), separated by semicolons") %>
         <%= qdeg.text_field(:go_ids) %>
         <%= link_to('Browse GO Terms','http://amigo.geneontology.org/cgi-bin/amigo/browse.cgi', :target => '_blank') %>
     </div>
@@ -75,6 +75,7 @@
               <th data-sort='string'>Gene&nbsp;<%= neutral_sort_arrow %></th>
               <th data-sort='string'>Associated Transcripts&nbsp;<%= neutral_sort_arrow %></th>
               <th data-sort='string'>GO Terms&nbsp;<%= neutral_sort_arrow %></th>
+              <th data-sort='float'>Test Statistic&nbsp;<%= neutral_sort_arrow %></th>
               <th data-sort='float'>P-value&nbsp;<%= neutral_sort_arrow %></th>
               <th data-sort='float'>FDR&nbsp;<%= neutral_sort_arrow %></th>
               <th data-sort='float'><%= @qdeg.sample_1_name %> FPKM&nbsp;<%= neutral_sort_arrow %></th>
@@ -108,12 +109,13 @@
                       No GO ids found.
                     <% end %>
                   </td>
-                  <td><%= "%f" % result[:p_value] %></td>
-                  <td><%= result[:fdr] %></td>
+                  <td><%= result[:test_statistic].to_f.round(5) %></td>
+                  <td><%= result[:p_value].to_f.round(5) %></td>
+                  <td><%= result[:fdr].to_f.round(5) %></td>
                   <td><%= result[:sample_1_fpkm].to_f.round(3) %></td>
                   <td><%= result[:sample_2_fpkm].to_f.round(3) %></td>
                   <td><%= result[:log_fold_change].to_f.round(3) %></td>
-                  <td>Insert test status here</td>
+                  <td><%= result[:test_status] %></td>
               </tr>
           <% end %>
       </tbody>

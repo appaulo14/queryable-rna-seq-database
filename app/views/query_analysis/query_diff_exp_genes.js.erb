@@ -50,20 +50,20 @@ function set_table_table_sorting(){
 function set_up_events_for_filter_parameters(){
   //Ensure the filter parameters are at their correct state or being 
   //    enabled or disabled by running their changed events.
-  filter_by_go_names_checked_changed();
+  filter_by_go_terms_checked_changed();
   filter_by_go_ids_checked_changed();
   filter_by_gene_name_checked_changed();
-  //Enable/disabled the go names text box based on whether
-  //    the Filter by GO Names check box is checked
-  filter_by_go_names = $('#query_diff_exp_genes_filter_by_go_names');
-  filter_by_go_names.change(filter_by_go_names_checked_changed);
-  function filter_by_go_names_checked_changed(){
-    filter_by_go_names = $('#query_diff_exp_genes_filter_by_go_names');
-    if (filter_by_go_names.is(':checked')){
-      $('#query_diff_exp_genes_go_names').removeAttr("disabled");
+  //Enable/disabled the go terms text box based on whether
+  //    the Filter by GO Terms check box is checked
+  filter_by_go_terms = $('#query_diff_exp_genes_filter_by_go_terms');
+  filter_by_go_terms.change(filter_by_go_terms_checked_changed);
+  function filter_by_go_terms_checked_changed(){
+    filter_by_go_terms = $('#query_diff_exp_genes_filter_by_go_terms');
+    if (filter_by_go_terms.is(':checked')){
+      $('#query_diff_exp_genes_go_terms').removeAttr("disabled");
     }
     else{
-      $('#query_diff_exp_genes_go_names').attr("disabled", "disabled");
+      $('#query_diff_exp_genes_go_terms').attr("disabled", "disabled");
     }
   }
   //Enable/disabled the GO IDs text box based on whether

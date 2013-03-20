@@ -91,7 +91,7 @@ class QueryAnalysisController < ApplicationController
         @qdet.set_attributes_and_defaults(params[:query_diff_exp_transcripts])
         # If valid, query and return results; otherwise return failure
         if @qdet.valid?
-          @qdet.query!()
+          @qdet.query()
           flash[:success] = "Success"
         else
           flash[:success] = "Failure"
@@ -147,7 +147,7 @@ class QueryAnalysisController < ApplicationController
 
     def query_diff_exp_genes
       #Create the view model, giving the current user
-      @qdeg = QueryDiff_ExpGenes.new(current_user)
+      @qdeg = QueryDiffExpGenes.new(current_user)
       #Which type of request was received?
       if request.get?
         #If the dataset_id parameter makes the view model invalid, 
@@ -161,7 +161,7 @@ class QueryAnalysisController < ApplicationController
         @qdeg.set_attributes_and_defaults(params[:query_diff_exp_genes])
         # If valid, query and return results; otherwise return failure
         if @qdeg.valid?
-          @qdeg.query!()
+          @qdeg.query()
           flash[:success] = "Success"
         else
           flash[:success]="Failure"
