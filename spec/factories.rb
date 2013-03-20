@@ -4,7 +4,7 @@ require 'spec_helper'
 FactoryGirl.define do
     factory :user do
       name                      {Faker::Name.name}
-      email                     {"#{Faker::Internet.email}#{rand()}#{rand()}#{rand()}.edu"}
+      email                     {"#{Faker::Internet.email}.edu"}
       password                  'cis895'
       password_confirmation     'cis895'
       description               {Faker::Lorem.paragraph}
@@ -86,15 +86,15 @@ FactoryGirl.define do
         sample
     end
     
-    factory :upload_cuffdiff_with_1_sample, class: UploadCuffdiff do
-      initialize_with           {new(FactoryGirl.create(:user))}
-      after(:build)             {|object| object.set_attributes_and_defaults() }
-      transcripts_fasta_file    {to_cuffdiff_uploaded_file(1,'transcripts.fasta')}
-      transcript_isoforms_file  {to_cuffdiff_uploaded_file(1,'isoforms.fpkm_tracking')}
-      has_diff_exp              '0'
-      has_transcript_isoforms   '1'
-      dataset_name              {Faker::Name.name}
-    end
+#    factory :upload_cuffdiff_with_1_sample, class: UploadCuffdiff do
+#      initialize_with           {new(FactoryGirl.create(:user))}
+#      after(:build)             {|object| object.set_attributes_and_defaults() }
+#      transcripts_fasta_file    {to_cuffdiff_uploaded_file(1,'transcripts.fasta')}
+#      transcript_isoforms_file  {to_cuffdiff_uploaded_file(1,'isoforms.fpkm_tracking')}
+#      has_diff_exp              '0'
+#      has_transcript_isoforms   '1'
+#      dataset_name              {Faker::Name.name}
+#    end
     
     factory :upload_cuffdiff_with_2_samples, class: UploadCuffdiff do
       initialize_with           {new(FactoryGirl.create(:user))}

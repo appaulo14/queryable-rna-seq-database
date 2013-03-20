@@ -58,7 +58,7 @@ def make_datasets(env)
     Dataset.create!(:user => @user, 
                     :name => name,
                     #The Blast database will actually be created later
-                    :blast_db_location => "db/blast_databases/#{env}/#{n}_db",
+                    :blast_db_location => "db/blast_databases/#{env}/#{n}",
                     :has_transcript_diff_exp => true,
                     :has_transcript_isoforms => true,
                     :has_gene_diff_exp       => true,
@@ -72,7 +72,7 @@ def make_genes
   Dataset.all.each do |ds|
     gene_count = 0
     3.times do |n|
-      gene = Gene.create!(:name_from_program => Faker::Name.name,
+      gene = Gene.create!(:name_from_program => Faker::Lorem.word,
                           :dataset => ds)
       gene_count += 1
     end
@@ -99,7 +99,7 @@ def make_transcripts_and_blast_databases(env)
     ds.genes.each do |gene|
       rand(1..3).times do |n|
         #Create the transcript name
-        transcript_name = Faker::Name.name
+        transcript_name = Faker::Lorem.word
         #Create a random fasta description and sequence
         fasta_description = "#{transcript_name} gene=#{gene.name_from_program}"
         nucleotide_counts = {'a' => rand(40..100),

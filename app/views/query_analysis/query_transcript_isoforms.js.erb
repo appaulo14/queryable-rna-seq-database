@@ -38,7 +38,7 @@ function aftertablesort(event, data) {
   for (var i = 0; i<ths.length;i++){
     //Skip this column if it is not marked as sortable
     if ($(ths[i]).attr('data-sort') == undefined){
-      next;
+      continue;
     }
     //Remove the old sort arrow
     $(ths[i]).find(".sort_arrow").remove();

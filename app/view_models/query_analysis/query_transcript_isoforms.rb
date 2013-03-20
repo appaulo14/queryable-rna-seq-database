@@ -17,18 +17,18 @@ class QueryTranscriptIsoforms
                 :show_results, :results, :sample_name
   
   CLASS_CODES = {
-    '=' => @class_code_equal,
-    'c' => @class_code_c,
-    'j' => @class_code_j,
-    'e' => @class_code_e,
-    'i' => @class_code_i,
-    'o' => @class_code_o,
-    'p' => @class_code_p,
-    'r' => @class_code_r,
-    'u' => @class_code_u,
-    'x' => @class_code_x,
-    's' => @class_code_s,
-    '.' => @class_code_dot
+    :class_code_equal => '=', 
+    :class_code_c => 'c',
+    :class_code_j => 'j',
+    :class_code_e => 'e',
+    :class_code_i => 'i',
+    :class_code_o => 'o',
+    :class_code_p => 'p',
+    :class_code_r => 'r',
+    :class_code_u => 'u',
+    :class_code_x => 'x',
+    :class_code_s => 's',
+    :class_code_dot => '.'
   }
   
   def show_results?
@@ -37,7 +37,7 @@ class QueryTranscriptIsoforms
   
   #TODO: Add validation 
   validate :user_has_permission_to_access_dataset
-  validate :sample_is_not_compared_against_itself
+  #validate if filter box is checked then some options are selected
   
   def initialize(current_user)
     @current_user = current_user
@@ -95,41 +95,31 @@ class QueryTranscriptIsoforms
     fs_t = FpkmSample.arel_table
     where_clause = where_clause.and(fs_t[:sample_id].eq(@sample_id))
     if @filter_by_class_codes == '1'
-      where_clause = where_clause.and(generate_class_codes_where_clause)
-    end
-    if @filter_by_go_terms == '1'
-      where_clause = where_clause.and(generate_go_terms_where_clause)
-    end
-    if @filter_by_go_ids == '1'
-      where_clause = where_clause.and(generate_go_ids_where_clause)
+      where_clause = where_clause.and(generate_class_codes_where_clause())
     end
     if @filter_by_transcript_length == '1'
-      where_clause = where_clause.and(generate_transcript_length_where_clause)
+      where_clause = where_clause.and(generate_transcript_length_where_clause())
     end
     if @filter_by_transcript_name == '1'
-      where_clause = where_clause.and(generate_transcript_name_where_clause)
+      where_clause = where_clause.and(generate_transcript_name_where_clause())
     end
     query_results = 
      Dataset.joins(
         :transcripts => [:transcript_fpkm_tracking_information, :gene, :fpkm_samples]
       ).
-      where(where_clause).
-      select(select_string)
-#    query_results = 
-#      Dataset.joins(
-#        :transcripts => [:transcript_fpkm_tracking_information, :gene, :fpkm_samples]
-#      ).
-#      where(
-#        'datasets.id' => @dataset_id,
-#        'fpkm_samples.sample_id' => @sample_id
-#      ).
-#      select(select_string) 
+      where(where_clause).select(select_string)
     #Extract the query results to form that can be put in the view
     @sample_name = Sample.find_by_id(@sample_id).name
     @results = []
     query_results.each do |query_result|
       #Do a few more minor queries to get the data in the needed format
       transcript = Transcript.find_by_id(query_result.transcript_id)
+      if @filter_by_go_ids == '1'
+        next if (transcript.go_terms & GoTerm.where(generate_go_ids_where_clause())).empty?
+      end
+      if @filter_by_go_terms == '1'
+        next if (transcript.go_terms & GoTerm.where(generate_go_terms_where_clause())).empty?
+      end
       #Fill in the result hash that the view will use to display the data
       result = {}
       result[:transcript_name] = transcript.name_from_program
@@ -157,22 +147,21 @@ class QueryTranscriptIsoforms
   private
   def generate_class_codes_where_clause
     tfti_t = TranscriptFpkmTrackingInformation.arel_table
-    tfti_w = ''
-    CLASS_CODES.each do |class_code, is_checked|
-      if is_checked == '1'
+    tfti_w = nil
+    CLASS_CODES.each do |key, value|
+      if self.send(key) == '1'
         if tfti_w.nil?
-          tfti_w = tfti_t[:class_code].eq(class_code)
+          tfti_w = tfti_t[:class_code].eq(value)
         else
-          tfti_w.or(tfti_t[:class_code].eq(class_code))
+          tfti_w = tfti_w.or(tfti_t[:class_code].eq(value))
         end
       end
     end
-    debugger
     return tfti_w
   end
   
   def generate_go_ids_where_clause
-    go_terms = @go_terms.split(';')
+    go_terms = @go_ids.split(';')
     gt_t = GoTerm.arel_table
     where_clauses = []
     go_terms.each do |go_term|
@@ -181,7 +170,7 @@ class QueryTranscriptIsoforms
     if where_clauses.count > 1
       combined_where_clause = where_clauses[0]
       (1..where_clauses.count-1).each do |i|
-        combined_where_clause.or(where_clauses[i])
+        combined_where_clause = combined_where_clause.or(where_clauses[i])
       end
       return combined_where_clause
     else
@@ -194,12 +183,12 @@ class QueryTranscriptIsoforms
     gt_t = GoTerm.arel_table
     where_clauses = []
     go_terms.each do |go_term|
-      where_clauses << gt_t[:id].eq(go_term.strip)
+      where_clauses << gt_t[:term].matches("%#{go_term.strip}%")
     end
     if where_clauses.count > 1
       combined_where_clause = where_clauses[0]
       (1..where_clauses.count-1).each do |i|
-        combined_where_clause.or(where_clauses[i])
+        combined_where_clause = combined_where_clause.or(where_clauses[i])
       end
       return combined_where_clause
     else
