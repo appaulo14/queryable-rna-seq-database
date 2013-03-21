@@ -41,28 +41,7 @@ describe UploadCuffdiff do
       it_should_behave_like 'a required attribute'
       it_should_behave_like 'an uploaded file'
     end
-    
-#    describe 'transcript_diff_exp_file' do
-#      before(:each) do @attribute = 'transcript_diff_exp_file' end
-#      
-#      it_should_behave_like 'a required attribute'
-#      it_should_behave_like 'an uploaded file'
-#    end
-#    
-#    describe 'gene_diff_exp_file' do
-#      before(:each) do @attribute = 'gene_diff_exp_file' end
-#      
-#      it_should_behave_like 'a required attribute'
-#      it_should_behave_like 'an uploaded file'
-#    end
-#    
-#    describe 'transcript_isoforms_file' do
-#      before(:each) do @attribute = 'transcript_isoforms_file' end
-#      
-#      it_should_behave_like 'a required attribute'
-#      it_should_behave_like 'an uploaded file'
-#    end																																																													
-    
+        
     describe 'has_diff_exp' do
       before(:each) do @attribute = 'has_diff_exp' end
       
@@ -106,11 +85,7 @@ describe UploadCuffdiff do
         UploadUtil.stub(:create_blast_database){raise SeededTestException}
       end
       
-      it 'should call valid?' do
-        @it.should_receive(:valid?)
-        @it.save
-      end
-      it 'should call QueryAnalysisMailer.notify_user_of_upload_failure'do
+      it 'should call QueryAnalysisMailer.notify_user_of_upload_failure' do
         begin
           QueryAnalysisMailer.should_receive(:notify_user_of_upload_failure)
           @it.save
@@ -143,6 +118,11 @@ describe UploadCuffdiff do
     shared_examples_for 'all options no matter whether an exception occurs' do
       before(:each) do
         @it.stub(:delete_uploaded_files).and_call_original
+      end
+      
+      it 'should call valid?' do
+        @it.should_receive(:valid?)
+        @it.save
       end
     
       it 'should delete transcripts_fasta_file if it exists' do
@@ -192,10 +172,6 @@ describe UploadCuffdiff do
     end
     
     shared_examples_for 'all options when no exception occurs' do
-      it 'should call valid?' do
-        @it.should_receive(:valid?)
-        @it.save
-      end
       it 'should call process_args_to_create_dataset' do
         @it.should_receive(:process_args_to_create_dataset)
         @it.save

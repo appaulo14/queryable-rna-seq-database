@@ -131,6 +131,13 @@ FactoryGirl.define do
       has_transcript_isoforms   '1'
       dataset_name              {Faker::Name.name}
     end
+    
+    factory :upload_fasta_sequenes, class: UploadFastaSequences do
+      initialize_with           {new(FactoryGirl.create(:user))}
+      after(:build)             {|object| object.set_attributes_and_defaults() }
+      transcripts_fasta_file    {to_cuffdiff_uploaded_file(2,'transcripts.fasta')}
+      dataset_name              {Faker::Name.name}
+    end
 end
 
 # Factor.define :test_status do |test_status|
