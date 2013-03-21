@@ -16,13 +16,13 @@ class CreateDifferentialExpressionTests < ActiveRecord::Migration
         throw NotImplementedError.new("Unknown adapter type '#{adapter_type}'")
       end
       t.integer :sample_comparison_id, :null => false
-      t.string :test_status, :null => false
-      t.float :sample_1_fpkm, :null => false
-      t.float :sample_2_fpkm, :null => false
-      t.float :log_fold_change, :null => false
-      t.float :test_statistic, :null => false
-      t.float :p_value, :null => false
-      t.float :fdr, :null => false
+      t.string :test_status
+      t.string :sample_1_fpkm, :null => false
+      t.string :sample_2_fpkm, :null => false
+      t.string :log_fold_change, :null => false
+      t.string :test_statistic
+      t.string :p_value, :null => false
+      t.string :fdr, :null => false
 	
 
       #t.timestamps

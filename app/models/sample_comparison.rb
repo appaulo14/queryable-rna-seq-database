@@ -12,7 +12,7 @@ class SampleComparison < ActiveRecord::Base
   
   belongs_to :sample_1, :class_name => 'Sample'
   belongs_to :sample_2, :class_name => 'Sample'
-  has_many :differential_expression_tests
+  has_many :differential_expression_tests, :dependent => :destroy
   
   validates :sample_1, :presence => true
   validates :sample_2, :presence => true

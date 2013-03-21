@@ -8,17 +8,16 @@ class CreateFpkmSamples < ActiveRecord::Migration
       when /mysql/
         t.column :id, 'BIGINT UNSIGNED', :null => false
         t.column :transcript_id, 'BIGINT UNSIGNED', :null => false
-        t.column :sample_id, 'BIGINT UNSIGNED'
       when /postgresql/
         t.column :id, 'bigserial', :null => false, :unique => true
         t.column :transcript_id, 'BIGINT', :null => false
-        t.column :sample_id, 'BIGINT', :null => false
       else
         throw NotImplementedError.new("Unknown adapter type '#{adapter_type}'")
       end
-      t.float :fpkm, :null => false
-      t.float :fpkm_hi
-      t.float :fpkm_lo
+      t.integer :sample_id, :null => false
+      t.string :fpkm, :null => false
+      t.string :fpkm_hi
+      t.string :fpkm_lo
       t.string  :status
 
       #t.timestamps

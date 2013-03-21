@@ -38,7 +38,7 @@ class Dataset < ActiveRecord::Base
   validates :user, :presence => true
   validates :blast_db_location, :presence => true
   validate :blast_db_location_pathname_is_valid
-  validate :when_last_queried_is_valid_datetime
+  validate :when_last_queried_is_valid_datetime_or_nil
   validates :program_used, 
       :allow_nil => false,
       :inclusion => [:trinity_with_edger, :cuffdiff, :generic_fasta_file]
@@ -78,7 +78,7 @@ class Dataset < ActiveRecord::Base
     end
   end
   
-  def when_last_queried_is_valid_datetime
+  def when_last_queried_is_valid_datetime_or_nil
     #We want to allow nils
     return if self.when_last_queried.nil?
     #See if when_last_queried is parseable to a datetime

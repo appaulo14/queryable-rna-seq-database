@@ -2,7 +2,7 @@ require File.expand_path('../boot', __FILE__)
 
 #Load any YAML config files
 require 'yaml'
-ADMIN_CONFIG = YAML.load(File.read('config/admin_config.yml'))
+MAILER_BOT_CONFIG = YAML.load(File.read('config/mailer_bot_config.yml'))
 
 # Pick the frameworks you want:
 require "active_record/railtie"
@@ -31,7 +31,7 @@ module RnaSeqAnalysisPipeline
     # Only load the plugins named here, in the order given (default is alphabetical).
     # :all can be used as a placeholder for all plugins not explicitly named.
     # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
-    config.force_ssl = true
+    # config.force_ssl = true
 
     # Activate observers that should always be running.
     # config.active_record.observers = :cacher, :garbage_collector, :forum_observer
@@ -67,8 +67,7 @@ module RnaSeqAnalysisPipeline
     # Enable the asset pipeline
     config.assets.enabled = true
     
-    #Don't pre-compile assets because it causes problems when using devise with heroku
-    config.assets.initialize_on_precompile = false
+    config.assets.initialize_on_precompile = true
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.2'

@@ -14,7 +14,7 @@ describe Sample do
     @it = FactoryGirl.build(:sample)
   end
   
-  describe 'assocations' do
+  describe 'assocations', :type => :associations do
     it 'should have a dataset attribute' do
       @it.should respond_to(:dataset)
     end
@@ -65,20 +65,20 @@ describe Sample do
   end
   
   describe 'validations' do
-    it 'should be valid when all fields are valid' do
-      @it.should be_valid
+    it 'should save successfully when all fields are valid' do
+      @it.save!
     end
     
-    it 'should require a name' do
-      [nil, ""].each do |invalid_value|
-        @it.name = invalid_value
-        @it.should_not be_valid
-      end
+    describe 'name' do
+      before(:each) do @attribute = 'name' end
+      
+      it_should_behave_like 'a required attribute'
     end
     
-    it 'should require a dataset' do
-      @it.dataset = nil
-      @it.should_not be_valid
+    describe 'dataset' do
+      before(:each) do @attribute = 'dataset' end
+      
+      it_should_behave_like 'a required attribute'
     end
   end
 end

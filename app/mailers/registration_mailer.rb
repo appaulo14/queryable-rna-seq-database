@@ -4,11 +4,15 @@ class RegistrationMailer < ActionMailer::Base
    def notify_admin_of_registration_request_email(user)
     @base_url = get_base_url
     @user = user
-    mail(:to => ADMIN_CONFIG['email'],
-         # Name <email>
-         :from => "Queryable RNA-Seq Database Mailer Bot <#{ADMIN_CONFIG['email']}>",
-         :reply_to => ADMIN_CONFIG['email'],
-         :subject => 'New User Registration Request Received').deliver
+    User.where(:admin => true).each do |admin|
+      from = "Queryable RNA-Seq Database Mailer Bot " +
+             "<#{MAILER_BOT_CONFIG['email']}>"
+      mail(:to => admin.email,
+           # Name <email>
+           :from => from,
+           :reply_to => MAILER_BOT_CONFIG['email'],
+           :subject => 'New User Registration Request Received').deliver
+    end
     #@url  = "http://example.com/login"
     #mail(:to => user.email, :subject => "Welcome to My Awesome Site")
   end
@@ -17,10 +21,11 @@ class RegistrationMailer < ActionMailer::Base
     @user = user
     @optional_note_to_user = optional_note_to_user
     subject = 'You Have Been Approved to User the Queryable RNA-Seq Database'
+    from = "Queryable RNA-Seq Database Mailer Bot <#{MAILER_BOT_CONFIG['email']}>"
     mail(:to => @user.email,
          # Name <email>
-         :from => "Queryable RNA-Seq Database Mailer Bot <#{ADMIN_CONFIG['email']}>",
-         :reply_to => ADMIN_CONFIG['email'],
+         :from => from,
+         :reply_to => MAILER_BOT_CONFIG['email'],
          :subject => subject).deliver
   end
   
@@ -29,10 +34,11 @@ class RegistrationMailer < ActionMailer::Base
     @optional_note_to_user = optional_note_to_user
     subject = 'Your Account Has Been Dissaproved For Using the ' +
               'Queryable RNA-Seq Database'
+    from = "Queryable RNA-Seq Database Mailer Bot <#{MAILER_BOT_CONFIG['email']}>"
     mail(:to => @user.email,
          # Name <email>
-         :from => "Queryable RNA-Seq Database Mailer Bot <#{ADMIN_CONFIG['email']}>",
-         :reply_to => ADMIN_CONFIG['email'],
+         :from => from,
+         :reply_to => MAILER_BOT_CONFIG['email'],
          :subject => subject).deliver
   end
   

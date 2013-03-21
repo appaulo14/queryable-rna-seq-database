@@ -11,9 +11,15 @@
 class TranscriptFpkmTrackingInformation < ActiveRecord::Base
   attr_accessible :class_code, :coverage, :length, :transcript
   
-  POSSIBLE_CLASS_CODES = %w(= c j e u o p r u x s . -)
+  POSSIBLE_CLASS_CODES = %w(= c j e u o p r u x s . -) 
   
   belongs_to :transcript
   
   validates :transcript, :presence => true
+  validates :class_code, :presence => true,
+                         :inclusion => { :in => POSSIBLE_CLASS_CODES }
+  validates :length, :presence => true,
+                     :numericality => {
+                        :only_integer => true, :greater_than_or_equal_to => 0 
+                     }
 end

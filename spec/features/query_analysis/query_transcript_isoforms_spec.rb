@@ -9,6 +9,7 @@ describe 'Query Transcript Isoforms page' do
   before(:each) do
     #user = FactoryGirl.create(:user)
     #sign_in(user)
+    debugger
     sign_in_as_nietz111
   end
   

@@ -8,15 +8,26 @@ class UploadCuffdiff
   require 'upload_util.rb'
   
   attr_accessor :transcripts_fasta_file, 
-                :transcript_diff_exp_file, 
-                :gene_diff_exp_file, 
-                :transcript_isoforms_file,
-                :has_diff_exp,
-                :has_transcript_isoforms,
-                :dataset_name
+                  :transcript_diff_exp_file, 
+                  :gene_diff_exp_file, 
+                  :transcript_isoforms_file,
+                  :has_diff_exp,
+                  :has_transcript_isoforms,
+                  :dataset_name
  
   #validate :validate_all_or_none_gene_files
   ##Validte for file presence only???
+  
+  validates :transcripts_fasta_file, :presence => true
+  validate :transcripts_fasta_file_is_uploaded_file
+  
+  validates :has_diff_exp, :presence => true,
+                           :format => {:with => /\A[01]\z/}
+  
+  validates :has_transcript_isoforms, :presence => true,
+                                      :inclusion => {:in => ['1','0']}
+  
+  validates :dataset_name, :presence => true
   
   def initialize(current_user)
     @current_user = current_user
@@ -247,13 +258,37 @@ class UploadCuffdiff
 #     File.delete(@transcript_isoforms_file.tempfile.path)
   end
   
-  #Accoring http://railscasts.com/episodes/219-active-model?view=asciicast,
+  #According http://railscasts.com/episodes/219-active-model?view=asciicast,
   #     this defines that this model does not persist in the database.
   def persisted?
       return false
   end
   
   private
+  
+  #Validations
+  def transcripts_fasta_file_is_uploaded_file
+    is_uploaded_file('transcripts_fasta_file')
+  end
+  
+  def transcript_diff_exp_file_is_uploaded_file
+    is_uploaded_file('transcripts_fasta_file')
+  end
+  
+  def gene_diff_exp_file_is_uploaded_file
+    is_uploaded_file('transcripts_fasta_file')
+  end
+  
+  def transcript_isoforms_file_is_uploaded_file
+    is_uploaded_file('transcripts_fasta_file')
+  end
+
+  def is_uploaded_file(attribute)
+    if self.send(attribute).class.to_s != 'ActionDispatch::Http::UploadedFile'
+      errors[attribute] << 'must be an uploaded file'
+    end
+  end
+  
   def process_args_to_create_dataset()
     @dataset = Dataset.new(:user => @current_user,
                           :name => @dataset_name,
@@ -281,10 +316,14 @@ class UploadCuffdiff
     while not @gene_diff_exp_file.tempfile.eof?
       line = @gene_diff_exp_file.tempfile.readline
       next if line.blank?
-      cells = line.split("\t")
-      #Create the genes
-      gene = Gene.create!(:dataset => @dataset, 
-                          :name_from_program => cells[0])
+      cells = line.split(/\s+/)
+      #Create the gene if not already created
+      gene = Gene.where(:dataset_id => @dataset.id,
+                         :name_from_program => cells[0])[0]
+      if gene.nil?
+        gene = Gene.create!(:dataset => @dataset, 
+                            :name_from_program => cells[0])
+      end
       #Create sample 1 if not already created
       sample_1_name = cells[4]
       sample_1 = Sample.where(:dataset_id => @dataset.id, 
@@ -328,13 +367,19 @@ class UploadCuffdiff
     while not @transcript_diff_exp_file.tempfile.eof?
       line = @transcript_diff_exp_file.tempfile.readline
       next if line.blank?
-      cells = line.split("\t")
+      cells = line.split(/\s+/)
       next if cells.blank?
+      # Retrieve the transcript's associated gene
       gene = Gene.where(:dataset_id => @dataset.id,
-                        :name_from_program => cells[1])[0]
-      transcript = Transcript.create!(:dataset => @dataset, 
-                                      :name_from_program => cells[0],
-                                      :gene => gene)
+                         :name_from_program => cells[1])[0]
+      #Create the transcript if not already created
+      transcript = Transcript.where(:dataset_id => @dataset.id,
+                                      :name_from_program => cells[0])[0]
+      if transcript.nil?
+        transcript = Transcript.create!(:dataset => @dataset, 
+                                         :name_from_program => cells[0],
+                                         :gene => gene)
+      end
       #Create sample 1 if not already created
       sample_1_name = cells[4]
       sample_1 = Sample.where(:dataset_id => @dataset.id, 
@@ -374,38 +419,52 @@ class UploadCuffdiff
   end
   
   def process_transcript_isoforms_file()
-    headers = @transcript_isoforms_file.tempfile.readline.split("\t")
+    headers = @transcript_isoforms_file.tempfile.readline.split(/\s+/)
     samples = []
     next_index = 9
     while (next_index < headers.count)
       sample_name = headers[next_index].match(/(.+)_FPKM/).captures[0]
-      samples << Sample.where(:dataset_id => @dataset.id,
-                              :name => sample_name)[0]
+      sample = Sample.where(:dataset_id => @dataset.id,
+                               :name => sample_name)[0]
+      if sample.nil?
+        sample = Sample.create!(:name => sample_name, 
+                                 :dataset => @dataset)
+      end
+      samples << sample
       next_index = next_index + 4
     end
     while not @transcript_isoforms_file.tempfile.eof?
       line = @transcript_isoforms_file.tempfile.readline
       next if line.blank?
-      cells = line.split("\t")
+      cells = line.split(/\s+/)
+      #Create the transcript's associated gene if not already created
+      gene = Gene.where(:dataset_id => @dataset.id,
+                         :name_from_program => cells[3])[0]
+      if gene.nil?
+        gene = Gene.create!(:dataset => @dataset,
+                             :name_from_program => cells[3])
+      end
+      #Create the transcript if not already created
       transcript = Transcript.where(:dataset_id => @dataset.id,
                                     :name_from_program => cells[0])[0]
+      if transcript.nil?
+        transcript = Transcript.create!(:dataset => @dataset,
+                             :gene => gene,
+                             :name_from_program => cells[0])
+      end
+#      debugger if not TranscriptFpkmTrackingInformation.class_eval('POSSIBLE_CLASS_CODES').include?(cells[1])
       TranscriptFpkmTrackingInformation.create!(:transcript => transcript,
                                                 :class_code => cells[1],
                                                 :length => cells[7],
                                                 :coverage => cells[8])
-      if transcript.gene.nil?
-        gene = Gene.where(:dataset_id => @dataset.id,
-                          :name_from_program => cells[3])[0]
-        transcript.gene = gene
-      end
       (0..samples.count-1).each do |i|
         sample = samples[i]
         FpkmSample.create!(:transcript => transcript,
                           :sample => sample,
-                          :fpkm => cells[9+(3*i)],
-                          :fpkm_lo => cells[10+(3*i)],
-                          :fpkm_hi => cells[11+(3*i)],
-                          :status => cells[12+(3*i)])
+                          :fpkm => cells[9+(4*i)],
+                          :fpkm_lo => cells[10+(4*i)],
+                          :fpkm_hi => cells[11+(4*i)],
+                          :status => cells[12+(4*i)])
       end
     end
   end
@@ -417,7 +476,8 @@ class UploadCuffdiff
     while not go_terms_file.eof?
       line = go_terms_file.readline
       next if line.blank?
-      (transcript_name, go_id, term) = line.split("\t")
+      line_regex = /\A(\S+)\s+(\S+)\s+(.+)\z/
+      (transcript_name, go_id, term) = line.strip.match(line_regex).captures
       go_term = GoTerm.find_by_id(go_id)
       if go_term.nil?
         go_term = GoTerm.create!(:id => go_id, :term => term)
@@ -425,20 +485,21 @@ class UploadCuffdiff
       transcript = Transcript.where(:dataset_id => @dataset.id, 
                                     :name_from_program => transcript_name)[0]
       TranscriptHasGoTerm.create!(:transcript => transcript, 
-                                  :go_term => go_term)
+                                     :go_term => go_term)
     end
     go_terms_file.close
     File.delete(go_terms_file.path)
   end
   
   def delete_uploaded_files
-    if not @transcript_fasta_file.nil? 
+    if not @transcripts_fasta_file.nil? 
       File.delete(@transcripts_fasta_file.tempfile.path)
     end
     if not @transcript_diff_exp_file.nil?
       File.delete(@transcript_diff_exp_file.tempfile.path)
     end
     if not @gene_diff_exp_file.nil?
+      @gene_diff_exp_file.tempfile.close
       File.delete(@gene_diff_exp_file.tempfile.path)
     end
     if not @transcript_isoforms_file.nil?

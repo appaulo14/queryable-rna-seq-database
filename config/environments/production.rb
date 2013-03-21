@@ -68,6 +68,19 @@ RnaSeqAnalysisPipeline::Application.configure do
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
   
-  #NOTE: For the Devise gem. This will need to be changed for production
-  config.action_mailer.default_url_options = { :host => 'rna-seq-analysis-pipeline-ksu.herokuapp.com' }
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    :enable_starttls_auto => true,
+    :address => "smtp.gmail.com",
+    :port => 587,
+    :domain => "gmail.com",
+    :authentication => :login,
+    :user_name => MAILER_BOT_CONFIG['email'],
+    :password => MAILER_BOT_CONFIG['password'],
+  }
+  config.action_mailer.perform_deliveries    = true
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.default_url_options = {:protocol => 'https',
+                                              :host => 'iaso.beocat.cis.ksu.edu',
+                                              :from => MAILER_BOT_CONFIG['email']}
 end

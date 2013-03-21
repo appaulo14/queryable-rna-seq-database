@@ -4,7 +4,7 @@
 require 'rubygems'
 require 'rails/commands/server'
 require 'rack'
-#require 'thin'
+require 'thin'
 require 'webrick'
 require 'webrick/https'
 

@@ -58,7 +58,6 @@ class QueryAnalysisController < ApplicationController
         @upload_files = Upload_Trinity_With_EdgeR_Transcripts.new(current_user)
         @upload_files.set_attributes_and_defaults({})
       elsif (request.post?)
-        debugger
         @upload_files = Upload_Trinity_With_EdgeR_Transcripts.new(current_user)
         @upload_files.set_attributes_and_defaults(params[:upload_trinity_with_edger_transcripts])
         @upload_files.save!
@@ -70,7 +69,6 @@ class QueryAnalysisController < ApplicationController
         @upload_files = Upload_Trinity_With_EdgeR_Transcripts_And_Genes.new(current_user)
         @upload_files.set_attributes_and_defaults({})
       elsif (request.post?)
-        debugger
         @upload_files = Upload_Trinity_With_EdgeR_Transcripts_And_Genes.new(current_user)
         @upload_files.set_attributes_and_defaults(params[:upload_trinity_with_edger_transcripts_and_genes])
         @upload_files.save!
@@ -93,7 +91,7 @@ class QueryAnalysisController < ApplicationController
         @qdet.set_attributes_and_defaults(params[:query_diff_exp_transcripts])
         # If valid, query and return results; otherwise return failure
         if @qdet.valid?
-          @qdet.query!()
+          @qdet.query()
           flash[:success] = "Success"
         else
           flash[:success] = "Failure"
@@ -112,7 +110,7 @@ class QueryAnalysisController < ApplicationController
     
     def get_transcript_fasta
       #Create/fill in the view model
-      get_transcript_fasta = Get_Transcript_Fasta.new(current_user)
+      get_transcript_fasta = GetTranscriptFasta.new(current_user)
       get_transcript_fasta.set_attributes(params)
       #Output based on whether the view model is valid
       if get_transcript_fasta.valid?
@@ -131,7 +129,7 @@ class QueryAnalysisController < ApplicationController
     
     def get_gene_fastas
       #Create/fill in the view model
-      get_gene_fastas = Get_Gene_Fastas.new(current_user)
+      get_gene_fastas = GetGeneFastas.new(current_user)
       get_gene_fastas.set_attributes(params)
       #Output based on whether the view model is valid
       if get_gene_fastas.valid?
@@ -149,7 +147,7 @@ class QueryAnalysisController < ApplicationController
 
     def query_diff_exp_genes
       #Create the view model, giving the current user
-      @qdeg = Query_Diff_Exp_Genes.new(current_user)
+      @qdeg = QueryDiffExpGenes.new(current_user)
       #Which type of request was received?
       if request.get?
         #If the dataset_id parameter makes the view model invalid, 
@@ -163,7 +161,7 @@ class QueryAnalysisController < ApplicationController
         @qdeg.set_attributes_and_defaults(params[:query_diff_exp_genes])
         # If valid, query and return results; otherwise return failure
         if @qdeg.valid?
-          @qdeg.query!()
+          @qdeg.query()
           flash[:success] = "Success"
         else
           flash[:success]="Failure"
@@ -173,7 +171,7 @@ class QueryAnalysisController < ApplicationController
 
     def query_transcript_isoforms
       #Create the view model, giving the current user
-      @qti = Query_Transcript_Isoforms.new(current_user)
+      @qti = QueryTranscriptIsoforms.new(current_user)
       #Which type of request was received?
       if request.get?
         #If the dataset_id parameter makes the view model invalid, 
@@ -187,10 +185,10 @@ class QueryAnalysisController < ApplicationController
         @qti.set_attributes_and_defaults(params[:query_transcript_isoforms])
         # If valid, query and return results; otherwise return failure
         if @qti.valid?
-          @qti.query!()
-          flash[:success] = "Success"
+          @qti.query()
+          flash[:notice] = "Success"
         else
-          flash[:success]="Failure"
+          flash[:notice]="Failure"
         end
       end
     end
@@ -203,6 +201,7 @@ class QueryAnalysisController < ApplicationController
         @query_using_blastn = QueryUsingBlastn.new(current_user)
         @query_using_blastn.set_attributes_and_defaults(params[:query_using_blastn])
         debugger if ENV['RAILS_DEBUG'] == "true"
+        #TODO: Move this code back into the view model
         if @query_using_blastn.valid?
             flash[:success] = "Success"
             #Run the blast query and get the file path of the result
@@ -279,32 +278,32 @@ class QueryAnalysisController < ApplicationController
     
     def query_using_tblastx  #changed after the architecture design
       if request.get?
-            @query_using_tblastx = QueryUsingTblastx.new(current_user)
-            @query_using_tblastx.set_attributes_and_defaults()
+        @query_using_tblastx = QueryUsingTblastx.new(current_user)
+        @query_using_tblastx.set_attributes_and_defaults()
       elsif request.post?
-          @query_using_tblastx = QueryUsingTblastx.new(current_user)
-          @query_using_tblastx.set_attributes_and_defaults(params[:query_using_tblastx])
-          debugger if ENV['RAILS_DEBUG'] == "true"
-          if @query_using_tblastx.valid?
-            flash[:success] = "Success"
-            #Run the blast query and get the file path of the result
-            blast_results_file_path = @query_using_tblastx.blast!
-            #Parse the xml into Blast reports
-            f = File.open(blast_results_file_path)
-            xml_string = ''
-            while not f.eof?
-              xml_string += f.readline
-            end
-            f.close()
-            @program = :tblastx
-            @blast_report = Bio::Blast::Report.new(xml_string,'xmlparser')
-            #Send the result to the user
-            render :file => 'query_analysis/blast_results'
-            #Delete the result file since it is no longer needed
-            #File.delete(blast_results_file_path)
-          else
-              flash[:success]="Failure"
+        @query_using_tblastx = QueryUsingTblastx.new(current_user)
+        @query_using_tblastx.set_attributes_and_defaults(params[:query_using_tblastx])
+        debugger if ENV['RAILS_DEBUG'] == "true"
+        if @query_using_tblastx.valid?
+          flash[:success] = "Success"
+          #Run the blast query and get the file path of the result
+          blast_results_file_path = @query_using_tblastx.blast!
+          #Parse the xml into Blast reports
+          f = File.open(blast_results_file_path)
+          xml_string = ''
+          while not f.eof?
+            xml_string += f.readline
           end
+          f.close()
+          @program = :tblastx
+          @blast_report = Bio::Blast::Report.new(xml_string,'xmlparser')
+          #Send the result to the user
+          render :file => 'query_analysis/blast_results'
+          #Delete the result file since it is no longer needed
+          #File.delete(blast_results_file_path)
+        else
+          flash[:success]="Failure"
+        end
       end
   end
 end

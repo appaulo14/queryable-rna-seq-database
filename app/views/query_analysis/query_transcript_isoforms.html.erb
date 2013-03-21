@@ -15,20 +15,6 @@
     <%= label :sample_id, "Select Sample" %>
     <%= qti.select :sample_id, options_for_select(@qti.available_samples,@qti.sample_id)  %> 
   </p>
-<!--  <p>
-    <div>
-        <%= label(:fdr_or_pvalue, "Filter By:") %>
-        <%= qti.radio_button(:fdr_or_pvalue, :p_value) %>
-        <%= qti.label(:filter_by_p_value, "P-value") %>
-        <%= qti.radio_button(:fdr_or_pvalue, :fdr) %>
-        <%= qti.label(:filter_by_fdr, "FDR") %>
-    </div>
-    <div>
-        <%= qti.label(:cutoff, "Select cutoff:") %>
-        <%= qti.text_field(:cutoff, {:size=>10}) %>
-    </div>
-  </p>
-  <br/>-->
   <h2>Query filtering options</h2>
   <p>
     <div>
@@ -93,14 +79,14 @@
         </table>
     </div>
     <div>
-        <%= qti.check_box(:filter_by_go_names) %>
-        <%= qti.label(:go_names, "GO Names (for associated genes) (separated by semicolons)") %>
-        <%= qti.text_field(:go_names) %>
+        <%= qti.check_box(:filter_by_go_terms) %>
+        <%= qti.label(:go_terms, "GO Terms, separated by semicolons") %>
+        <%= qti.text_field(:go_terms, :size => 70) %>
         <%= link_to('Browse GO Terms','http://amigo.geneontology.org/cgi-bin/amigo/browse.cgi', :target => '_blank') %>
     </div>
     <div>
         <%= qti.check_box(:filter_by_go_ids) %>
-        <%= qti.label(:go_ids, "GO IDs (for associated genes) (separated by semicolons)") %>
+        <%= qti.label(:go_ids, "GO IDs (a.k.a Accessions), separated by semicolons") %>
         <%= qti.text_field(:go_ids) %>
         <%= link_to('Browse GO Terms','http://amigo.geneontology.org/cgi-bin/amigo/browse.cgi', :target => '_blank') %>
     </div>

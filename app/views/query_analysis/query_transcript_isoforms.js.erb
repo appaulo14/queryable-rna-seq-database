@@ -38,7 +38,7 @@ function aftertablesort(event, data) {
   for (var i = 0; i<ths.length;i++){
     //Skip this column if it is not marked as sortable
     if ($(ths[i]).attr('data-sort') == undefined){
-      next;
+      continue;
     }
     //Remove the old sort arrow
     $(ths[i]).find(".sort_arrow").remove();
@@ -69,14 +69,14 @@ function set_up_events_for_filter_parameters(){
   //Ensure the filter parameters are at their correct state or being 
   //    enabled or disabled by running their changed events.
   filter_by_class_code_checked_changed();
-  filter_by_go_names_checked_changed();
+  filter_by_go_terms_checked_changed();
   filter_by_go_ids_checked_changed();
   filter_by_transcript_name_checked_changed();
   filter_by_transcript_length_checked_changed();
   //Bind the events for enabling/disabling the filter elements based on 
   //    whether or not the check box is clicked.
   $('#query_transcript_isoforms_filter_by_class_codes').change(filter_by_class_code_checked_changed);
-  $('#query_transcript_isoforms_filter_by_go_names').change(filter_by_go_names_checked_changed);
+  $('#query_transcript_isoforms_filter_by_go_terms').change(filter_by_go_terms_checked_changed);
   $('#query_transcript_isoforms_filter_by_go_ids').change(filter_by_go_ids_checked_changed);
   $('#query_transcript_isoforms_filter_by_transcript_length').change(filter_by_transcript_length_checked_changed);
   $('#query_transcript_isoforms_filter_by_transcript_name').change(filter_by_transcript_name_checked_changed);
@@ -121,13 +121,13 @@ function filter_by_class_code_checked_changed(){
  * Enable/disabled the go names text box based on whether
  *    the Filter by GO Names check box is checked
 */
-function filter_by_go_names_checked_changed(){
-  filter_by_go_names = $('#query_transcript_isoforms_filter_by_go_names');
-  if (filter_by_go_names.is(':checked')){
-    $('#query_transcript_isoforms_go_names').removeAttr("disabled");
+function filter_by_go_terms_checked_changed(){
+  filter_by_go_terms = $('#query_transcript_isoforms_filter_by_go_terms');
+  if (filter_by_go_terms.is(':checked')){
+    $('#query_transcript_isoforms_go_terms').removeAttr("disabled");
   }
   else{
-    $('#query_transcript_isoforms_go_names').attr("disabled", "disabled");
+    $('#query_transcript_isoforms_go_terms').attr("disabled", "disabled");
   }
 }
 

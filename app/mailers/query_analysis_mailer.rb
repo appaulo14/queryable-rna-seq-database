@@ -1,5 +1,6 @@
 class QueryAnalysisMailer < ActionMailer::Base
    
+   
    def notify_user_of_upload_success(user, dataset, de_tests_count)
     @base_url = get_base_url
     @user = user
@@ -7,8 +8,8 @@ class QueryAnalysisMailer < ActionMailer::Base
     @de_tests_count = de_tests_count
     mail(:to => @user.email,
          # Name <email>
-         :from => "Queryable RNA-Seq Database Mailer Bot <#{ADMIN_CONFIG['email']}>",
-         :reply_to => ADMIN_CONFIG['email'],
+         :from => "Queryable RNA-Seq Database Mailer Bot <#{MAILER_BOT_CONFIG['email']}>",
+         #:reply_to => MAILER_BOT_CONFIG['email'],
          :subject => 'Your Data Upload Was Successful').deliver
     #@url  = "http://example.com/login"
     #mail(:to => user.email, :subject => "Welcome to My Awesome Site")
@@ -21,8 +22,8 @@ class QueryAnalysisMailer < ActionMailer::Base
     @error_message = error_message
     mail(:to => @user.email,
          # Name <email>
-         :from => "Queryable RNA-Seq Database Mailer Bot <#{ADMIN_CONFIG['email']}>",
-         :reply_to => ADMIN_CONFIG['email'],
+         :from => "Queryable RNA-Seq Database Mailer Bot <#{MAILER_BOT_CONFIG['email']}>",
+         #:reply_to => MAILER_BOT_CONFIG['email'],
          :subject => 'Your Data Upload Failed').deliver
   end
   

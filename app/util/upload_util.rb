@@ -6,13 +6,15 @@ class UploadUtil
                         "-in #{fasta_file_path} " +
                         "-title #{dataset.id} " +
                         "-out #{dataset.blast_db_location} " +
-                        "-hash_index -dbtype nucl ")
+                        "-hash_index -parse_seqids -dbtype nucl ")
   end
   
   def self.rollback_blast_database(dataset)
-    puts 'ROLLING BACK TEH BLAST DATABASE'
-    #Check whether the database exists
-    #If so, delete it
+    stdout, stderr, status = 
+      Open3.capture3("ls db/blast_databases/#{Rails.env}/#{dataset.id}.*")
+    if stderr.blank?
+      system("rm db/blast_databases/#{Rails.env}/#{dataset.id}.*")
+    end
   end
   
   def self.generate_go_terms(fasta_file_path)

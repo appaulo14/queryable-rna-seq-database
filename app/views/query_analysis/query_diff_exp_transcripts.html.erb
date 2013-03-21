@@ -21,10 +21,10 @@
   </p>
   <p>
     <div>
-        <%= label(:fdr_or_pvalue, "Filter By:") %>
-        <%= qdet.radio_button(:fdr_or_pvalue, :p_value) %>
+        <%= label(:fdr_or_p_value, "Filter By:") %>
+        <%= qdet.radio_button(:fdr_or_p_value, :p_value) %>
         <%= qdet.label(:filter_by_p_value, "P-value") %>
-        <%= qdet.radio_button(:fdr_or_pvalue, :fdr) %>
+        <%= qdet.radio_button(:fdr_or_p_value, :fdr) %>
         <%= qdet.label(:filter_by_fdr, "FDR") %>
     </div>
     <div>
@@ -40,22 +40,16 @@
   <h2>Query filtering options</h2>
   <p>
     <div>
-        <%= qdet.check_box(:filter_by_go_names) %>
-        <%= qdet.label(:go_names, "GO Names (for associated genes) (separated by semicolons)") %>
-        <%= qdet.text_field(:go_names) %>
+        <%= qdet.check_box(:filter_by_go_terms) %>
+        <%= qdet.label(:go_terms, "GO Terms, separated by semicolons") %>
+        <%= qdet.text_field(:go_terms, :size => 70) %>
         <%= link_to('Browse GO Terms','http://amigo.geneontology.org/cgi-bin/amigo/browse.cgi', :target => '_blank') %>
     </div>
     <div>
         <%= qdet.check_box(:filter_by_go_ids) %>
-        <%= qdet.label(:go_ids, "GO IDs (for associated genes) (separated by semicolons)") %>
+        <%= qdet.label(:go_ids, "GO IDs (a.k.a Accessions), separated by semicolons") %>
         <%= qdet.text_field(:go_ids) %>
         <%= link_to('Browse GO Terms','http://amigo.geneontology.org/cgi-bin/amigo/browse.cgi', :target => '_blank') %>
-    </div>
-    <div>
-        <%= qdet.check_box(:filter_by_transcript_length) %>
-        <%= label(:transcript_length, "Transcript length") %>
-        <%= qdet.select(:transcript_length_comparison_sign, options_for_select(['>','>=','<','=<','='],'>')) %>
-        <%= qdet.text_field(:transcript_length_value) %>
     </div>
     <div>
         <%= qdet.check_box(:filter_by_transcript_name) %>
@@ -85,6 +79,7 @@
               <th data-sort='string'>Transcript&nbsp;<%= neutral_sort_arrow %></th>
               <th data-sort='string'>Associated Gene&nbsp;<%= neutral_sort_arrow %></th>
               <th data-sort='string'>GO Terms&nbsp;<%= neutral_sort_arrow %></th>
+              <th data-sort='float'>Test Statistic&nbsp;<%= neutral_sort_arrow %></th>
               <th data-sort='float'>P-value&nbsp;<%= neutral_sort_arrow %></th>
               <th data-sort='float'>FDR&nbsp;<%= neutral_sort_arrow %></th>
               <th data-sort='float'><%= @qdet.sample_1_name %> FPKM&nbsp;<%= neutral_sort_arrow %></th>
@@ -114,12 +109,13 @@
                       No GO ids found.
                     <% end %>
                   </td>
-                  <td><%= result[:p_value] %></td>
-                  <td><%= result[:fdr] %></td>
+                  <td><%= result[:test_statistic].to_f.round(5) %></td>
+                  <td><%= result[:p_value].to_f.round(5) %></td>
+                  <td><%= result[:fdr].to_f.round(5) %></td>
                   <td><%= result[:sample_1_fpkm].to_f.round(3) %></td>
                   <td><%= result[:sample_2_fpkm].to_f.round(3) %></td>
                   <td><%= result[:log_fold_change].to_f.round(3) %></td>
-                  <td>Insert test status here</td>
+                  <td><%= result[:test_status] %></td>
               </tr>
           <% end %>
       </tbody>

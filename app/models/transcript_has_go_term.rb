@@ -2,12 +2,13 @@
 #
 # Table name: transcript_has_go_terms
 #
-#  transcript_id :integer          not null, primary key
+#  transcript_id :integer          not null
 #  go_term_id    :string(255)      not null
 #
 
 class TranscriptHasGoTerm < ActiveRecord::Base
   attr_accessible :transcript, :go_term
+  self.primary_keys = :transcript_id, :go_term_id
       
   validates :transcript, :presence => true
   validates :go_term, :presence => true

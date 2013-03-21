@@ -6,7 +6,6 @@ gem 'rails', '3.2.11'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'pg'
 gem 'mysql2'
 
 # Gems used only for assets and not required
@@ -21,11 +20,9 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
-#NOTE: Update the CDN for jquery in views/application.html.erb
+#NOTE: Update the jquery.min file in vendor/assets/javascripts/jquery
 #    to the lastest version when updating this
 gem 'jquery-rails', '2.1.3'
-
-gem 'heroku'
 
 group :bioinformatics do
     gem 'bio', '1.4.2'
@@ -47,8 +44,13 @@ group :test do
   gem 'database_cleaner'
 end
 
+group :production do
+  gem 'thin'
+end
+
 gem 'galetahub-simple_captcha', :require => 'simple_captcha'
 gem 'sucker_punch'
+gem 'composite_primary_keys'
 
 gem 'json', '1.7.7'
 gem 'execjs'

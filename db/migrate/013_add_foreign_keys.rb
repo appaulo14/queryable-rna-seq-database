@@ -10,7 +10,7 @@ class AddForeignKeys < ActiveRecord::Migration
             'ON UPDATE CASCADE ON DELETE RESTRICT;')
     execute('ALTER TABLE transcripts ADD CONSTRAINT transripts_genes_fk ' +
             'FOREIGN KEY (gene_id) REFERENCES genes (id) ' +
-            'ON UPDATE CASCADE ON DELETE RESTRICT;')
+            'ON UPDATE CASCADE ON DELETE SET NULL;')
     #Transcript fpkm tracking foreign key
     execute('ALTER TABLE transcript_fpkm_tracking_informations ' +
             'ADD CONSTRAINT transcript_fpkm_tracking_informations_transripts_fk ' +
