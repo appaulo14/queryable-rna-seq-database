@@ -132,10 +132,40 @@ FactoryGirl.define do
       dataset_name              {Faker::Name.name}
     end
     
-    factory :upload_fasta_sequenes, class: UploadFastaSequences do
+    factory :upload_fasta_sequences, class: UploadFastaSequences do
       initialize_with           {new(FactoryGirl.create(:user))}
       after(:build)             {|object| object.set_attributes_and_defaults() }
       transcripts_fasta_file    {to_cuffdiff_uploaded_file(2,'transcripts.fasta')}
+      dataset_name              {Faker::Name.name}
+    end
+    
+    factory :upload_trinity_with_edger_transcripts_with_2_samples, 
+    class: UploadTrinityWithEdgeRTranscripts do
+      initialize_with           {new(FactoryGirl.create(:user))}
+      after(:build)             {|object| object.set_attributes_and_defaults() }
+      transcripts_fasta_file    {get_uploaded_trinity_fasta_file()}
+      transcript_diff_exp_files {get_trinity_transcript_diff_exp_files(2)}
+      transcript_fpkm_file      {get_trinity_transcript_fpkm_file(2)}
+      dataset_name              {Faker::Name.name}
+    end
+    
+    factory :upload_trinity_with_edger_transcripts_with_3_samples, 
+    class: UploadTrinityWithEdgeRTranscripts do
+      initialize_with           {new(FactoryGirl.create(:user))}
+      after(:build)             {|object| object.set_attributes_and_defaults() }
+      transcripts_fasta_file    {get_uploaded_trinity_fasta_file()}
+      transcript_diff_exp_files {get_trinity_transcript_diff_exp_files(3)}
+      transcript_fpkm_file      {get_trinity_transcript_fpkm_file(3)}
+      dataset_name              {Faker::Name.name}
+    end
+    
+    factory :upload_trinity_with_edger_transcripts_with_4_samples, 
+    class: UploadTrinityWithEdgeRTranscripts do
+      initialize_with           {new(FactoryGirl.create(:user))}
+      after(:build)             {|object| object.set_attributes_and_defaults() }
+      transcripts_fasta_file    {get_uploaded_trinity_fasta_file()}
+      transcript_diff_exp_files {get_trinity_transcript_diff_exp_files(4)}
+      transcript_fpkm_file      {get_trinity_transcript_fpkm_file(4)}
       dataset_name              {Faker::Name.name}
     end
 end

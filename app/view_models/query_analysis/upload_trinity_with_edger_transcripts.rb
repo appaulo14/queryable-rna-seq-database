@@ -3,14 +3,18 @@ class UploadTrinityWithEdgeRTranscripts
   include ActiveModel::Conversion
   extend ActiveModel::Naming
   
+  require 'upload/trinity_diff_exp_file_processor.rb'
+  
   attr_accessor :transcripts_fasta_file, 
                   :transcript_diff_exp_files, #Array 
                   :transcript_fpkm_file,
                   :dataset_name
   
-  validates :transcripts_fasta_file, :presence => true
+  validates :transcripts_fasta_file, :presence => true,
+                                     :uploaded_file => true
   validates :transcript_diff_exp_files, :presence => true
-  validates :transcript_fpkm_file, :presence => true
+  validates :transcript_fpkm_file, :presence => true,
+                                   :uploaded_file => true
   validates :dataset_name, :presence => true
   
   def initialize(current_user)
@@ -20,23 +24,57 @@ class UploadTrinityWithEdgeRTranscripts
   def set_attributes_and_defaults(attributes = {})
     #Load in any values from the form
     attributes.each do |name, value|
-        send("#{name}=", value)
+      send("#{name}=", value)
     end
   end
   
   def save
-    ActiveRecord::Base.transaction do   #Transactions work with sub-methods
-      #Create the dataset
-      dataset = Dataset.new(:user => @current_user,
-                            :name => dataset_name)
-      dataset.has_gene_diff_exp = false
-      dataset.has_transcript_diff_exp = true
-      dataset.has_transcript_isoforms = false
-      dataset.blast_db_location = "db/blast_databases/#{Rails.env}/"
-      dataset.save!
-      dataset.blast_db_location = "db/blast_databases/#{Rails.env}/#{dataset.id}"
-      dataset.save!
+    return if not self.valid?
+    begin
+      ActiveRecord::Base.transaction do   #Transactions work with sub-methods
+        process_args_to_create_dataset()
+        #Process transcript diff exp files
+        @transcript_diff_exp_files.each do |transcript_diff_exp_file|
+          #Process the file
+          tdefp = TranscriptDiffExpFileProcessor.new(transcript_diff_exp_file,
+                                                         @dataset)
+          tdefp.process_file()
+        end
+        #Process transcript FPKM file
+        
+        find_and_process_go_terms()
+        UploadUtil.create_blast_database(@transcripts_fasta_file.tempfile.path,
+                                          @dataset)
+      end
+    rescue Exception => ex
+      UploadUtil.rollback_blast_database(@dataset)
+      QueryAnalysisMailer.notify_user_of_upload_failure(@current_user,
+                                                          @dataset,
+                                                          ex.message)
+      raise ex
+    ensure
+      delete_uploaded_files()
     end
+    QueryAnalysisMailer.notify_user_of_upload_success(@current_user,
+                                                        @dataset)
+  end
+  
+  private 
+  
+  def process_args_to_create_dataset()
+    @dataset = Dataset.new(:user => @current_user,
+                            :name => @dataset_name,
+                            :program_used => :trinity_with_edger)
+    @dataset.has_transcript_diff_exp = true
+    @dataset.has_gene_diff_exp = false
+    @dataset.has_transcript_isoforms = false
+    @dataset.blast_db_location = 
+      "#{Rails.root}/db/blast_databases/#{Rails.env}/"
+    @dataset.save!
+    @dataset.blast_db_location = 
+      "#{Rails.root}/db/blast_databases/#{Rails.env}/#{@dataset.id}"
+    @dataset.save!
+  end
 #     child_pid = fork do
 #       env = 'dev'
 #       n = Dataset.count + 1
@@ -68,7 +106,6 @@ class UploadTrinityWithEdgeRTranscripts
 #       exit
 #     end
 #     Process.detach(child_pid)
-  end
   
 #   def save!
 #     debugger if ENV['RAILS_DEBUG'] == 'true'
@@ -183,40 +220,5 @@ class UploadTrinityWithEdgeRTranscripts
   #     this defines that this model does not persist in the database.
   def persisted?
       return false
-  end
-  
-  private
-  def validate_trinity_fasta_file
-    #Validate that transcript name can be captured from description line?
-  end
-  
-  def validate_transcript_differential_expression_file
-    #Ensure this is a file before parsing it
-#     return if trinity_fasta_file.nil?
-#     if not trinity_fasta_file.kind_of? ActionDispatch::Http::UploadedFile
-#       errors[:trinity_fasta_file] << "Must be a file."
-#       return
-#     end
-#     
-#     #loop through the file.
-#     debugger if ENV['RAILS_DEBUG'] == 'true'
-#     trinity_fasta_file.tempfile
-    #Must have 7 columns
-    #Last 4 columns must be convertable to double types
-  end
-  
-  def validate_gene_differential_expression_file
-  end
-  
-  def validate_transcript_fpkm_file
-    #Confirm at least two samples in header column
-    #Confirm all rows have the right number of fpkm_samples
-  end
-  
-  def validate_gene_fpkm_file
-  end
-  
-  def validate_all_or_none_gene_files
-    #User should upload both gene files or neither
   end
 end

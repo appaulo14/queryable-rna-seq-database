@@ -2,20 +2,10 @@ require 'spec_helper'
 require 'view_models/shared_examples.rb'
 
 describe UploadFastaSequences do
-   before(:all) do
-    @test_files_path = "#{Rails.root}/spec/view_models/query_analysis/" +
-                       "test_files/cuffdiff"
-    DatabaseCleaner.clean
-  end
-  
   before(:each) do
-    @it = FactoryGirl.build(:upload_fasta_sequenes)
+    @it = FactoryGirl.build(:upload_fasta_sequences)
     #Stub the file delete method so that test files aren't delete
     File.stub(:delete){}
-  end
-  
-  after(:all) do
-    DatabaseCleaner.clean
   end
   
   after(:each) do
@@ -119,7 +109,31 @@ describe UploadFastaSequences do
   
   ################# Black Box ###################
   describe 'database/email/file interaction', :type => :black_box do
-    shared_examples_for 'itself no matter whether an exception occurs' do
+    describe 'when no exception occurs' do
+      it 'should create 1 blast database' do
+        @it.save
+        exec_path = "#{Rails.root}/bin/blast/bin"
+        database_path = "#{Rails.root}/db/blast_databases/test/" +
+                        "#{@it.instance_eval('@dataset').id}"
+        lambda do
+          SystemUtil.system!("#{exec_path}/blastdbcmd -info -db #{database_path}")
+        end.should_not raise_error(StandardError)
+      end
+      
+      it 'should create 1 dataset' do
+        lambda do
+          @it.save
+        end.should change(Dataset, :count).by(1)
+      end
+      
+      it 'should send 1 email notifying the user of success' do
+        @it.save
+        ActionMailer::Base.deliveries.count.should eq(1)
+        current_user = @it.instance_variable_get('@current_user')
+        ActionMailer::Base.deliveries.last.to.should eq([current_user.email])
+        ActionMailer::Base.deliveries.last.subject.should match('Success')
+      end
+      
       it 'should create 0 users' do
         lambda do
           @it.save
@@ -171,50 +185,7 @@ describe UploadFastaSequences do
         end.should change(GoTerm,:count).by(0)
       end
     end
-  
-    describe 'when an exception occurs' do
-      it 'should create 0 blast databases'
-      it 'should create 0 datasets'
-      it 'should send an email notifying user of failure' do
-        begin
-            @it.save
-        rescue SeededTestException => ex
-        end
-        ActionMailer::Base.deliveries.count.should eq(1)
-        current_user = @it.instance_variable_get('@current_user')
-        ActionMailer::Base.deliveries.last.to.should eq([current_user.email])
-        ActionMailer::Base.deliveries.last.subject.should match('Fail')
-      end
-      
-      it_should_behave_like 'itself no matter whether an exception occurs'
-    end
     
-    describe 'when no exception occurs' do
-      it 'should create 1 blast database' do
-        @it.save
-        exec_path = "#{Rails.root}/bin/blast/bin"
-        database_path = "#{Rails.root}/db/blast_databases/test/" +
-                        "#{@it.instance_eval('@dataset').id}"
-        lambda do
-          SystemUtil.system!("#{exec_path}/blastdbcmd -info -db #{database_path}")
-        end.should_not raise_error(StandardError)
-      end
-      
-      it 'should create 1 dataset' do
-        lambda do
-          @it.save
-        end.should change(Dataset, :count).by(1)
-      end
-      
-      it 'should send 1 email notifying the user of success' do
-        @it.save
-        ActionMailer::Base.deliveries.count.should eq(1)
-        current_user = @it.instance_variable_get('@current_user')
-        ActionMailer::Base.deliveries.last.to.should eq([current_user.email])
-        ActionMailer::Base.deliveries.last.subject.should match('Success')
-      end
-      
-      it_should_behave_like 'itself no matter whether an exception occurs'
-    end
+    it_should_behave_like 'any upload view model when an exception occurs' 
   end
 end

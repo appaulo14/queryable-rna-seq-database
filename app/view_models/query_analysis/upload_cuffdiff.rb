@@ -18,8 +18,9 @@ class UploadCuffdiff
   #validate :validate_all_or_none_gene_files
   ##Validte for file presence only???
   
-  validates :transcripts_fasta_file, :presence => true
-  validate :transcripts_fasta_file_is_uploaded_file
+  validates :transcripts_fasta_file, :presence => true,
+                                     :uploaded_file => true
+  #validate :transcripts_fasta_file_is_uploaded_file
   
   validates :has_diff_exp, :presence => true,
                            :format => {:with => /\A[01]\z/}

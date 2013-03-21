@@ -319,132 +319,6 @@ describe UploadCuffdiff do
   ########## Black Box Tests ########### 
   
   describe 'database/email/file interaction', :type => :black_box do
-    
-    shared_examples_for 'any number of samples when an exception occurs' do
-      before (:each) do
-        #TranscriptHasGoTerm.stub('create!'){raise SeededTestException}
-        UploadUtil.stub('create_blast_database') do
-          fasta_file_path = 
-            @it.instance_eval('@transcripts_fasta_file').tempfile.path
-          dataset = @it.instance_eval('@dataset')
-          SystemUtil.system!("#{Rails.root}/bin/blast/bin/makeblastdb " +
-                              "-in #{fasta_file_path} " +
-                              "-title #{dataset.id} " +
-                              "-out #{dataset.blast_db_location} " +
-                              "-hash_index -parse_seqids -dbtype nucl ")
-          raise SeededTestException
-        end
-      end
-      
-      it 'should add 0 datasets to the database' do
-        lambda do
-          begin
-            @it.save
-          rescue SeededTestException => ex
-          end
-        end.should change(Dataset, :count).by(0)
-      end
-      it 'should add 0 users to the database' do
-        lambda do
-          begin
-            @it.save
-          rescue SeededTestException => ex
-          end
-        end.should change(User, :count).by(0)
-      end
-      it 'should add 0 transcripts to the database' do
-        lambda do
-          begin
-            @it.save
-          rescue SeededTestException => ex
-          end
-        end.should change(Transcript, :count).by(0)
-      end
-      it 'should add 0 genes to the database' do
-        lambda do
-          begin
-            @it.save
-          rescue SeededTestException => ex
-          end
-        end.should change(Gene, :count).by(0)
-      end
-      it 'should add 0 fpkm samples to the database' do
-        lambda do
-          begin
-            @it.save
-          rescue SeededTestException => ex
-          end
-        end.should change(FpkmSample, :count).by(0)
-      end
-      it 'should add 0 samples to the database' do
-        lambda do
-          begin
-            @it.save
-          rescue SeededTestException => ex
-          end
-        end.should change(Sample, :count).by(0)
-      end
-      it 'should add 0 sample comparisons to the database' do
-        lambda do
-          begin
-            @it.save
-          rescue SeededTestException => ex
-          end
-        end.should change(SampleComparison, :count).by(0)
-      end
-      it 'should add 0 differential expression tests to the database' do
-        lambda do
-          begin
-            @it.save
-          rescue SeededTestException => ex
-          end
-        end.should change(DifferentialExpressionTest, :count).by(0)
-      end
-      it 'should add 0 transcript has go terms to the database' do
-        lambda do
-          begin
-            @it.save
-          rescue SeededTestException => ex
-          end
-        end.should change(TranscriptHasGoTerm, :count).by(0)
-      end
-      it 'should add 0 transcript fpkm tracking informations to the database' do
-        lambda do
-          begin
-            @it.save
-          rescue SeededTestException => ex
-          end
-        end.should change(TranscriptFpkmTrackingInformation, :count).by(0)
-      end
-      it 'should add 0 go terms to the database' do
-        lambda do
-          begin
-            @it.save
-          rescue SeededTestException => ex
-          end
-        end.should change(GoTerm, :count).by(0)
-      end
-      it 'should not create the blast database' do
-        begin
-            @it.save
-        rescue SeededTestException => ex
-        end
-        dir_path = "db/blast_databases/#{Rails.env}"
-        cmd_string = "ls #{dir_path}/#{@it.instance_eval('@dataset').id}.*"
-        system(cmd_string).should be_false
-      end
-      it 'should send an email notifying user of failure' do
-        begin
-            @it.save
-        rescue SeededTestException => ex
-        end
-        ActionMailer::Base.deliveries.count.should eq(1)
-        current_user = @it.instance_variable_get('@current_user')
-        ActionMailer::Base.deliveries.last.to.should eq([current_user.email])
-        ActionMailer::Base.deliveries.last.subject.should match('Fail')
-      end
-    end
-    
     shared_examples_for 'any option and number of samples when no exception occurs' do
       it 'should create 1 blast database' do
         @it.save
@@ -593,7 +467,7 @@ describe UploadCuffdiff do
           end.should change(GoTerm,:count).by(0)
         end
         
-        it_should_behave_like 'any number of samples when an exception occurs'
+        it_should_behave_like 'any upload view model when an exception occurs'
         it_should_behave_like 'any option and number of samples when no exception occurs'
       end
       
@@ -655,7 +529,7 @@ describe UploadCuffdiff do
           end.should change(GoTerm,:count).by(0)
         end
         
-        it_should_behave_like 'any number of samples when an exception occurs'
+        it_should_behave_like 'any upload view model when an exception occurs'
         it_should_behave_like 'any option and number of samples when no exception occurs'
       end
       
@@ -717,7 +591,7 @@ describe UploadCuffdiff do
           end.should change(GoTerm,:count).by(0)
         end
         
-        it_should_behave_like 'any number of samples when an exception occurs'
+        it_should_behave_like 'any upload view model when an exception occurs'
         it_should_behave_like 'any option and number of samples when no exception occurs'
       end
       
@@ -730,7 +604,7 @@ describe UploadCuffdiff do
         it_should_behave_like 'any number of samples when ' +
                               'no differential expression tests or ' +
                               'transcript isoforms'
-        it_should_behave_like 'any number of samples when an exception occurs'
+        it_should_behave_like 'any upload view model when an exception occurs'
         it_should_behave_like 'any option and number of samples when no exception occurs'
       end
     end
@@ -803,7 +677,7 @@ describe UploadCuffdiff do
           end.should change(GoTerm,:count).by(0)
         end
         
-        it_should_behave_like 'any number of samples when an exception occurs'
+        it_should_behave_like 'any upload view model when an exception occurs'
         it_should_behave_like 'any option and number of samples when no exception occurs'
       end
       
@@ -865,7 +739,7 @@ describe UploadCuffdiff do
           end.should change(GoTerm,:count).by(0)
         end
         
-        it_should_behave_like 'any number of samples when an exception occurs'
+        it_should_behave_like 'any upload view model when an exception occurs'
         it_should_behave_like 'any option and number of samples when no exception occurs'
       end
       
@@ -927,7 +801,7 @@ describe UploadCuffdiff do
           end.should change(GoTerm,:count).by(0)
         end
         
-        it_should_behave_like 'any number of samples when an exception occurs'
+        it_should_behave_like 'any upload view model when an exception occurs'
         it_should_behave_like 'any option and number of samples when no exception occurs'
       end
       
@@ -940,7 +814,7 @@ describe UploadCuffdiff do
         it_should_behave_like 'any number of samples when ' +
                               'no differential expression tests or ' +
                               'transcript isoforms'  
-        it_should_behave_like 'any number of samples when an exception occurs'
+        it_should_behave_like 'any upload view model when an exception occurs'
         it_should_behave_like 'any option and number of samples when no exception occurs'
       end
     end
@@ -1014,7 +888,7 @@ describe UploadCuffdiff do
           end.should change(GoTerm,:count).by(0)
         end
         
-        it_should_behave_like 'any number of samples when an exception occurs'
+        it_should_behave_like 'any upload view model when an exception occurs'
         it_should_behave_like 'any option and number of samples when no exception occurs'
       end
       
@@ -1076,7 +950,7 @@ describe UploadCuffdiff do
           end.should change(GoTerm,:count).by(0)
         end
         
-        it_should_behave_like 'any number of samples when an exception occurs'
+        it_should_behave_like 'any upload view model when an exception occurs'
         it_should_behave_like 'any option and number of samples when no exception occurs'
       end
       
@@ -1138,7 +1012,7 @@ describe UploadCuffdiff do
           end.should change(GoTerm,:count).by(0)
         end
         
-        it_should_behave_like 'any number of samples when an exception occurs'
+        it_should_behave_like 'any upload view model when an exception occurs'
         it_should_behave_like 'any option and number of samples when no exception occurs'
       end
       
@@ -1151,7 +1025,7 @@ describe UploadCuffdiff do
         it_should_behave_like 'any number of samples when ' +
                               'no differential expression tests or ' +
                               'transcript isoforms'
-        it_should_behave_like 'any number of samples when an exception occurs'
+        it_should_behave_like 'any upload view model when an exception occurs'
         it_should_behave_like 'any option and number of samples when no exception occurs'
       end
     end

@@ -6,8 +6,8 @@ class UploadFastaSequences
   attr_accessor :transcripts_fasta_file, 
                   :dataset_name
                   
-  validates :transcripts_fasta_file, :presence => true
-  validate  :transcripts_fasta_file_is_uploaded_file
+  validates :transcripts_fasta_file, :presence => true,
+                                     :uploaded_file => true
   validates :dataset_name, :presence => true
   
   def initialize(current_user)

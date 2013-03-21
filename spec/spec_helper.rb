@@ -97,15 +97,69 @@ RSpec.configure do |config|
   
   def to_cuffdiff_uploaded_file(number_of_samples,file_name)
     absolute_path = "#{Rails.root}/spec/view_models/query_analysis/" +
-               "test_files/cuffdiff/"
-    case number_of_samples
-    when 1
-      absolute_path += '1_sample/'
-    else
-      absolute_path += "#{number_of_samples}_samples/"
-    end
+                    "test_files/cuffdiff/#{number_of_samples}_samples/"
     absolute_path += file_name
     file = File.new(absolute_path,'r')
+    return ActionDispatch::Http::UploadedFile.new({:tempfile => file})
+  end
+  
+  def get_uploaded_trinity_fasta_file
+    file_path = "#{Rails.root}/spec/view_models/query_analysis/" +
+                "test_files/trinity_with_edger/trinity_out_dir/" +
+                "Trinity.fasta"
+    file = File.new(file_path,'r')
+    return ActionDispatch::Http::UploadedFile.new({:tempfile => file})
+  end
+  
+  def get_trinity_transcript_diff_exp_files(number_of_samples)
+    absolute_path = "#{Rails.root}/spec/view_models/query_analysis/" +
+                    "test_files/trinity_with_edger/" +
+                    "#{number_of_samples}_samples/edgeR_trans"
+    uploaded_files = []
+    if number_of_samples >= 2
+      f = File.new("#{absolute_path}/ds_trans_vs_hs_trans.results.txt",'r')
+      uploaded_file = ActionDispatch::Http::UploadedFile.new({:tempfile => f})
+      uploaded_file.original_filename = "ds_trans_vs_hs_trans.results.txt"
+      uploaded_files << uploaded_file
+    end
+    if number_of_samples >= 3
+      #ds_trans_vs_ms_trans.results.txt
+      f =  File.new("#{absolute_path}/ds_trans_vs_ms_trans.results.txt",'r')
+      uploaded_file1 = ActionDispatch::Http::UploadedFile.new({:tempfile => f})
+      uploaded_file1.original_filename = "ds_trans_vs_ms_trans.results.txt"
+      uploaded_files << uploaded_file1
+      #hs_trans_vs_ms_trans.results.txt
+      f2 = File.new("#{absolute_path}/hs_trans_vs_ms_trans.results.txt",'r')
+      uploaded_file2 = ActionDispatch::Http::UploadedFile.new({:tempfile => f2})
+      uploaded_file2.original_filename = "hs_trans_vs_ms_trans.results.txt"
+      uploaded_files << uploaded_file2
+    end
+    if number_of_samples == 4
+      #ds_trans_vs_qs_trans.results.txt
+      f =  File.new("#{absolute_path}/ds_trans_vs_qs_trans.results.txt",'r')
+      uf = ActionDispatch::Http::UploadedFile.new({:tempfile => f})
+      uf.original_filename = 'ds_trans_vs_qs_trans.results.txt'
+      uploaded_files << uf
+      #hs_trans_vs_qs_trans.results.txt
+      f2 = File.new("#{absolute_path}/hs_trans_vs_qs_trans.results.txt",'r')
+      uf2 = ActionDispatch::Http::UploadedFile.new({:tempfile => f2})
+      uf2.original_filename = 'hs_trans_vs_qs_trans.results.txt'
+      uploaded_files << uf2
+      #ms_trans_vs_qs_trans.results.txt
+      f3 = File.new("#{absolute_path}/ms_trans_vs_qs_trans.results.txt",'r')
+      uf3 = ActionDispatch::Http::UploadedFile.new({:tempfile => f3})
+      uf3.original_filename = ms_trans_vs_qs_trans.results.txt
+      uploaded_files << uf3
+    end
+    return uploaded_files
+  end
+  
+  def get_trinity_transcript_fpkm_file(number_of_samples)
+    absolute_path = "#{Rails.root}/spec/view_models/query_analysis/" +
+                    "test_files/trinity_with_edger/" +
+                    "#{number_of_samples}_samples/edgeR_trans/" +
+                    "matrix.TMM_normalized.FPKM"
+    file = File.new(absolute_path)
     return ActionDispatch::Http::UploadedFile.new({:tempfile => file})
   end
 
