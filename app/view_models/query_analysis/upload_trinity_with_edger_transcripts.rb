@@ -3,12 +3,15 @@ class UploadTrinityWithEdgeRTranscripts
   include ActiveModel::Conversion
   extend ActiveModel::Naming
   
-  attr_accessor :trinity_fasta_file, 
-                :transcript_diff_exp_files, #Array 
-                :transcript_fpkm_file,
-                :dataset_name
+  attr_accessor :transcripts_fasta_file, 
+                  :transcript_diff_exp_files, #Array 
+                  :transcript_fpkm_file,
+                  :dataset_name
   
-  validate :validate_all_or_none_gene_files
+  validates :transcripts_fasta_file, :presence => true
+  validates :transcript_diff_exp_files, :presence => true
+  validates :transcript_fpkm_file, :presence => true
+  validates :dataset_name, :presence => true
   
   def initialize(current_user)
     @current_user = current_user

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Upload_Trinity_With_EdgeR_Transcripts do
+describe UploadTrinityWithEdgeRTranscripts do
   describe "read the files and writing the data to the database" do
     before(:each) do
       #Change to the directory of this spec

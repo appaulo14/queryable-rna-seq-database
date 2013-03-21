@@ -5,13 +5,13 @@ class QueryAnalysisMailer < ActionMailer::Base
     @base_url = get_base_url
     @user = user
     @dataset = dataset
-    trancripts_det_count = DifferentialExpressionTest.joins(
+    transcripts_det_count = DifferentialExpressionTest.joins(
       :transcript
     ).where('transcripts.dataset_id' => dataset.id).count
     genes_det_count = DifferentialExpressionTest.joins(
       :gene
     ).where('genes.dataset_id' => dataset.id).count
-    @de_tests_count = transcript_det_count + genes_det_count
+    @de_tests_count = transcripts_det_count + genes_det_count
     mail(:to => @user.email,
          # Name <email>
          :from => "Queryable RNA-Seq Database Mailer Bot <#{MAILER_BOT_CONFIG['email']}>",

@@ -21,7 +21,6 @@ describe UploadFastaSequences do
   after(:each) do
     ActionMailer::Base.deliveries.clear
     DatabaseCleaner.clean
-    #system("rm #{Rails.root}/db/blast_databases/test/*")
   end
   
   
@@ -120,10 +119,102 @@ describe UploadFastaSequences do
   
   ################# Black Box ###################
   describe 'database/email/file interaction', :type => :black_box do
+    shared_examples_for 'itself no matter whether an exception occurs' do
+      it 'should create 0 users' do
+        lambda do
+          @it.save
+        end.should change(User, :count).by(0)
+      end
+      it 'should add 0 transcripts to the database' do
+        lambda do
+          @it.save
+        end.should change(Transcript,:count).by(0)
+      end
+      it 'should add 0 genes to the database' do
+        lambda do
+          @it.save
+        end.should change(Gene,:count).by(0)
+      end
+      it 'should add 0 fpkm samples to the database' do
+        lambda do
+          @it.save
+        end.should change(FpkmSample,:count).by(0)
+      end
+      it 'should add 0 samples to the database' do
+        lambda do
+          @it.save
+        end.should change(Sample,:count).by(0)
+      end
+      it 'should add 0 sample comparisons to the database' do
+        lambda do
+          @it.save
+        end.should change(SampleComparison,:count).by(0)
+      end
+      it 'should add 0 differential expression tests to the database' do
+        lambda do
+          @it.save
+        end.should change(DifferentialExpressionTest,:count).by(0)
+      end
+      it 'should add 0 transcript has go terms to the database' do
+        lambda do
+          @it.save
+        end.should change(TranscriptHasGoTerm,:count).by(0)
+      end
+      it 'should add 0 transcript fpkm tracking informations to the database' do
+        lambda do
+          @it.save
+        end.should change(TranscriptFpkmTrackingInformation,:count).by(0)
+      end
+      it 'should add 0 go terms to the database' do
+        lambda do
+          @it.save
+        end.should change(GoTerm,:count).by(0)
+      end
+    end
+  
     describe 'when an exception occurs' do
+      it 'should create 0 blast databases'
+      it 'should create 0 datasets'
+      it 'should send an email notifying user of failure' do
+        begin
+            @it.save
+        rescue SeededTestException => ex
+        end
+        ActionMailer::Base.deliveries.count.should eq(1)
+        current_user = @it.instance_variable_get('@current_user')
+        ActionMailer::Base.deliveries.last.to.should eq([current_user.email])
+        ActionMailer::Base.deliveries.last.subject.should match('Fail')
+      end
+      
+      it_should_behave_like 'itself no matter whether an exception occurs'
     end
     
     describe 'when no exception occurs' do
+      it 'should create 1 blast database' do
+        @it.save
+        exec_path = "#{Rails.root}/bin/blast/bin"
+        database_path = "#{Rails.root}/db/blast_databases/test/" +
+                        "#{@it.instance_eval('@dataset').id}"
+        lambda do
+          SystemUtil.system!("#{exec_path}/blastdbcmd -info -db #{database_path}")
+        end.should_not raise_error(StandardError)
+      end
+      
+      it 'should create 1 dataset' do
+        lambda do
+          @it.save
+        end.should change(Dataset, :count).by(1)
+      end
+      
+      it 'should send 1 email notifying the user of success' do
+        @it.save
+        ActionMailer::Base.deliveries.count.should eq(1)
+        current_user = @it.instance_variable_get('@current_user')
+        ActionMailer::Base.deliveries.last.to.should eq([current_user.email])
+        ActionMailer::Base.deliveries.last.subject.should match('Success')
+      end
+      
+      it_should_behave_like 'itself no matter whether an exception occurs'
     end
   end
 end
