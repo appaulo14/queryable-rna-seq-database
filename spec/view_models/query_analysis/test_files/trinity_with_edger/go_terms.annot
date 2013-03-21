@@ -1,0 +1,26 @@
+comp392_c1_seq1	GO:0022891	high-affinity glucose transporter ght5
+comp392_c1_seq1	GO:0016021	high-affinity glucose transporter ght5
+comp392_c1_seq1	GO:0055085	high-affinity glucose transporter ght5
+comp392_c1_seq1	GO:0008643	high-affinity glucose transporter ght5
+comp523_c0_seq1	GO:0008152	phospholipase
+comp523_c0_seq1	GO:0004620	phospholipase
+comp542_c0_seq1	GO:0005737	ubiquitin
+comp542_c0_seq1	GO:0036166	ubiquitin
+comp542_c0_seq1	GO:0031386	ubiquitin
+comp542_c0_seq1	GO:0000902	ubiquitin
+comp542_c0_seq1	GO:0005886	ubiquitin
+comp542_c0_seq1	GO:0016567	ubiquitin
+comp542_c0_seq1	GO:0034605	ubiquitin
+comp542_c0_seq1	GO:0009405	ubiquitin
+comp542_c0_seq1	GO:0005634	ubiquitin
+comp542_c0_seq1	GO:0044182	ubiquitin
+comp328_c1_seq1	GO:0006457	atp-dependent molecular chaperone hsc82
+comp328_c1_seq1	GO:0051082	atp-dependent molecular chaperone hsc82
+comp328_c1_seq1	GO:0005524	atp-dependent molecular chaperone hsc82
+comp328_c1_seq1	GO:0006950	atp-dependent molecular chaperone hsc82
+comp511_c0_seq1	GO:0005737	heat shock protein hsp98
+comp511_c0_seq1	GO:0019538	heat shock protein hsp98
+comp511_c0_seq1	GO:0006950	heat shock protein hsp98
+comp511_c0_seq1	GO:0005524	heat shock protein hsp98
+comp511_c0_seq1	GO:0017111	heat shock protein hsp98
+comp511_c0_seq1	GO:0005634	heat shock protein hsp98

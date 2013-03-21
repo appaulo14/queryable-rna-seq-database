@@ -40,6 +40,43 @@ shared_examples_for 'an uploaded file' do
   end
 end
 
+shared_examples_for 'an array of uploaded files' do
+  it 'should be valid for any array of uploaded files' do
+    uploaded_files = []
+    uploaded_files << to_cuffdiff_uploaded_file(2,'transcripts.fasta')
+    @it.send("#{@attribute}=",uploaded_files)
+    @it.should be_valid
+  end
+  it 'should not be valid for an uploaded file' do
+    @it.send("#{@attribute}=",FactoryGirl.build(:upload_cuffdiff_with_2_samples))
+    @it.should_not be_valid
+  end
+  it 'should not be valid when it is a string' do
+    @it.send("#{@attribute}=","hello")
+    @it.should_not be_valid
+  end
+  it 'should not be valid when it is an array of strings' do
+    @it.send("#{@attribute}=",["hello",""])
+    @it.should_not be_valid
+  end
+  it 'should not be valid for an integer' do
+    @it.send("#{@attribute}=",42)
+    @it.should_not be_valid
+  end
+  it 'should not be valid for any array of integers' do
+    @it.send("#{@attribute}=",[42,32])
+    @it.should_not be_valid
+  end
+  it 'should not be valid for an object' do
+    @it.send("#{@attribute}=",Object.new)
+    @it.should_not be_valid
+  end
+  it 'should not be valid for any array of objects' do
+    @it.send("#{@attribute}=",[Object.new,Object.new])
+    @it.should_not be_valid
+  end
+end
+
 shared_examples_for 'a view model-style boolean' do
   it 'should be valid for "1"' do
     @it.send("#{@attribute}=",'1')
@@ -85,6 +122,36 @@ shared_examples_for 'a view model-style boolean' do
   it 'should not be valid for boolean false' do
     @it.send("#{@attribute}=",false)
     @it.should_not be_valid
+  end
+end
+
+shared_examples_for 'any upload view model when no exception occurs' do
+  it 'should create 1 blast database' do
+    @it.save
+    exec_path = "#{Rails.root}/bin/blast/bin"
+    database_path = "#{Rails.root}/db/blast_databases/test/#{@it.instance_eval('@dataset').id}"
+    #result = system("#{exec_path}/blastdbcmd -info -db #{database_path}")
+    lambda do
+      SystemUtil.system!("#{exec_path}/blastdbcmd -info -db #{database_path}")
+    end.should_not raise_error(StandardError)
+  end
+  
+  it 'should create 1 dataset' do
+    lambda do
+      @it.save
+    end.should change(Dataset, :count).by(1)
+  end
+  it 'should create 0 users' do
+    lambda do
+      @it.save
+    end.should change(User, :count).by(0)
+  end
+  it 'should send 1 email notifying the user of success' do
+    @it.save
+    ActionMailer::Base.deliveries.count.should eq(1)
+    current_user = @it.instance_variable_get('@current_user')
+    ActionMailer::Base.deliveries.last.to.should eq([current_user.email])
+    ActionMailer::Base.deliveries.last.subject.should match('Success')
   end
 end
 

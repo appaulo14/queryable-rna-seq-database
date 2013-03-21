@@ -144,7 +144,7 @@ FactoryGirl.define do
       initialize_with           {new(FactoryGirl.create(:user))}
       after(:build)             {|object| object.set_attributes_and_defaults() }
       transcripts_fasta_file    {get_uploaded_trinity_fasta_file()}
-      transcript_diff_exp_files {get_trinity_transcript_diff_exp_files(2)}
+      transcript_diff_exp_files {get_trinity_diff_exp_files('trans', 2)}
       transcript_fpkm_file      {get_trinity_transcript_fpkm_file(2)}
       dataset_name              {Faker::Name.name}
     end
@@ -154,7 +154,7 @@ FactoryGirl.define do
       initialize_with           {new(FactoryGirl.create(:user))}
       after(:build)             {|object| object.set_attributes_and_defaults() }
       transcripts_fasta_file    {get_uploaded_trinity_fasta_file()}
-      transcript_diff_exp_files {get_trinity_transcript_diff_exp_files(3)}
+      transcript_diff_exp_files {get_trinity_diff_exp_files('trans', 3)}
       transcript_fpkm_file      {get_trinity_transcript_fpkm_file(3)}
       dataset_name              {Faker::Name.name}
     end
@@ -164,14 +164,44 @@ FactoryGirl.define do
       initialize_with           {new(FactoryGirl.create(:user))}
       after(:build)             {|object| object.set_attributes_and_defaults() }
       transcripts_fasta_file    {get_uploaded_trinity_fasta_file()}
-      transcript_diff_exp_files {get_trinity_transcript_diff_exp_files(4)}
+      transcript_diff_exp_files {get_trinity_diff_exp_files('trans', 4)}
       transcript_fpkm_file      {get_trinity_transcript_fpkm_file(4)}
       dataset_name              {Faker::Name.name}
     end
+    
+    factory :upload_trinity_with_edger_transcripts_and_genes_with_2_samples, 
+    class: UploadTrinityWithEdgeRTranscriptsAndGenes do
+      initialize_with           {new(FactoryGirl.create(:user))}
+      after(:build)             {|object| object.set_attributes_and_defaults() }
+      transcripts_fasta_file    {get_uploaded_trinity_fasta_file()}
+      gene_diff_exp_files       {get_trinity_diff_exp_files('gene', 2)}
+      transcript_diff_exp_files {get_trinity_diff_exp_files('trans', 2)}
+      gene_fpkm_file            {get_trinity_transcript_fpkm_file(2)}
+      transcript_fpkm_file      {get_trinity_gene_fpkm_file(2)}
+      dataset_name              {Faker::Name.name}
+    end
+    
+    factory :upload_trinity_with_edger_transcripts_and_genes_with_3_samples, 
+    class: UploadTrinityWithEdgeRTranscriptsAndGenes do
+      initialize_with           {new(FactoryGirl.create(:user))}
+      after(:build)             {|object| object.set_attributes_and_defaults() }
+      transcripts_fasta_file    {get_uploaded_trinity_fasta_file()}
+      gene_diff_exp_files       {get_trinity_diff_exp_files('gene', 3)}
+      transcript_diff_exp_files {get_trinity_diff_exp_files('trans', 3)}
+      gene_fpkm_file            {get_trinity_transcript_fpkm_file(3)}
+      transcript_fpkm_file      {get_trinity_gene_fpkm_file(3)}
+      dataset_name              {Faker::Name.name}
+    end
+    
+    factory :upload_trinity_with_edger_transcripts_and_genes_with_4_samples, 
+    class: UploadTrinityWithEdgeRTranscriptsAndGenes do
+      initialize_with           {new(FactoryGirl.create(:user))}
+      after(:build)             {|object| object.set_attributes_and_defaults() }
+      transcripts_fasta_file    {get_uploaded_trinity_fasta_file()}
+      gene_diff_exp_files       {get_trinity_diff_exp_files('gene', 4)}
+      transcript_diff_exp_files {get_trinity_diff_exp_files('trans', 4)}
+      gene_fpkm_file            {get_trinity_transcript_fpkm_file(4)}
+      transcript_fpkm_file      {get_trinity_gene_fpkm_file(4)}
+      dataset_name              {Faker::Name.name}
+    end
 end
-
-# Factor.define :test_status do |test_status|
-#     test_status.name = 'OK'
-#     test_status.description = 'The ran successfully.'
-#     test_status.association :differential_expression_test
-# end

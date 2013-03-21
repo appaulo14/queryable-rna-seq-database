@@ -322,38 +322,4 @@ class UploadCuffdiff
       File.delete(@transcript_isoforms_file.tempfile.path)
     end
   end
-  
-  def validate_trinity_fasta_file
-    #Validate that transcript name can be captured from description line?
-  end
-  
-  def validate_transcript_differential_expression_file
-    #Ensure this is a file before parsing it
-#     return if trinity_fasta_file.nil?
-#     if not trinity_fasta_file.kind_of? ActionDispatch::Http::UploadedFile
-#       errors[:trinity_fasta_file] << "Must be a file."
-#       return
-#     end
-#     
-#     #loop through the file.
-#     debugger if ENV['RAILS_DEBUG'] == 'true'
-#     trinity_fasta_file.tempfile
-    #Must have 7 columns
-    #Last 4 columns must be convertable to double types
-  end
-  
-  def validate_gene_differential_expression_file
-  end
-  
-  def validate_transcript_fpkm_file
-    #Confirm at least two samples in header column
-    #Confirm all rows have the right number of fpkm_samples
-  end
-  
-  def validate_gene_fpkm_file
-  end
-  
-  def validate_all_or_none_gene_files
-    #User should upload both gene files or neither
-  end
 end

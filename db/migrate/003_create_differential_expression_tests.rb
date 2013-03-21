@@ -17,8 +17,8 @@ class CreateDifferentialExpressionTests < ActiveRecord::Migration
       end
       t.integer :sample_comparison_id, :null => false
       t.string :test_status
-      t.string :sample_1_fpkm, :null => false
-      t.string :sample_2_fpkm, :null => false
+      t.string :sample_1_fpkm
+      t.string :sample_2_fpkm
       t.string :log_fold_change, :null => false
       t.string :test_statistic
       t.string :p_value, :null => false

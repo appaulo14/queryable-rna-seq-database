@@ -110,35 +110,6 @@ describe UploadFastaSequences do
   ################# Black Box ###################
   describe 'database/email/file interaction', :type => :black_box do
     describe 'when no exception occurs' do
-      it 'should create 1 blast database' do
-        @it.save
-        exec_path = "#{Rails.root}/bin/blast/bin"
-        database_path = "#{Rails.root}/db/blast_databases/test/" +
-                        "#{@it.instance_eval('@dataset').id}"
-        lambda do
-          SystemUtil.system!("#{exec_path}/blastdbcmd -info -db #{database_path}")
-        end.should_not raise_error(StandardError)
-      end
-      
-      it 'should create 1 dataset' do
-        lambda do
-          @it.save
-        end.should change(Dataset, :count).by(1)
-      end
-      
-      it 'should send 1 email notifying the user of success' do
-        @it.save
-        ActionMailer::Base.deliveries.count.should eq(1)
-        current_user = @it.instance_variable_get('@current_user')
-        ActionMailer::Base.deliveries.last.to.should eq([current_user.email])
-        ActionMailer::Base.deliveries.last.subject.should match('Success')
-      end
-      
-      it 'should create 0 users' do
-        lambda do
-          @it.save
-        end.should change(User, :count).by(0)
-      end
       it 'should add 0 transcripts to the database' do
         lambda do
           @it.save
@@ -186,6 +157,7 @@ describe UploadFastaSequences do
       end
     end
     
+    it_should_behave_like 'any upload view model when no exception occurs'
     it_should_behave_like 'any upload view model when an exception occurs' 
   end
 end

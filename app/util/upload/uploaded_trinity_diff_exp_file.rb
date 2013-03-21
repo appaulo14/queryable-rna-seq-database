@@ -1,27 +1,27 @@
 class UploadedTrinityDiffExpFile
+  
+  attr_accessor :sample_names
+  
   def initialize(uploaded_file)
     @uploaded_file = uploaded_file
-    sample_names_regex = /\A(.+)_vs_(.+).result.txt\z/
-    @samples_names = 
+    sample_names_regex = /\A(.+)_vs_(.+)[.]results[.]txt/
+    @sample_names = 
       @uploaded_file.original_filename.match(sample_names_regex).captures
+    #Skip the header line
+    @uploaded_file.tempfile.readline
   end
 
-  def get_next_line
-    line = @uploaded_file.tempfile.readline
-    cells = line.split(/\s+/)
-    item = cells[0]
-    fpkms = cells[1..-1]
-    #Validations
-    if item.nil? or fpkms.empty?
-      return nil
-    end
-    sample_fpkms = []
-    (0..fpkms.count-1).each do |i|
-      sample_fpkm = SampleFpkm.new(:fpkm)
-      sample_fpkm.sample_name = sample_names[i]
-      sample_fpkm.fpkm = fpkms[i]
-      sample_fpkms << sample_fpkm
-    end
-    return TrinityFpkmLine.new(:item => item, :sample_fpkms => sample_fpkms)
+  def eof?
+    return @uploaded_file.tempfile.eof?
   end
+  
+  def get_next_line
+    line = @uploaded_file.tempfile.readline.strip
+    return nil if line.blank?
+    (item, logConc, log_fold_change, p_value, fdr) = line.split(/\s+/)
+    return TrinityDiffExpLine.new(item,log_fold_change,p_value, fdr)
+  end
+end
+
+class TrinityDiffExpLine < Struct.new :item, :log_fold_change, :p_value, :fdr
 end

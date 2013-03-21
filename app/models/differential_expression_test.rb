@@ -33,10 +33,10 @@ class DifferentialExpressionTest < ActiveRecord::Base
   validates :test_status, :allow_nil => true,
                           :inclusion => { :in => POSSIBLE_TEST_STATUSES }
   
-  validates :sample_1_fpkm, :presence => true
+#   validates :sample_1_fpkm, :presence => true
   validate  :sample_1_fpkm_is_greater_than_or_equal_to_zero
   
-  validates :sample_2_fpkm, :presence => true
+#   validates :sample_2_fpkm, :presence => true
   validate  :sample_2_fpkm_is_greater_than_or_equal_to_zero
   
   validates :log_fold_change, :presence => true

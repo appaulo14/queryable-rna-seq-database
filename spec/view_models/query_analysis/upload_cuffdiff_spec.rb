@@ -318,37 +318,7 @@ describe UploadCuffdiff do
   
   ########## Black Box Tests ########### 
   
-  describe 'database/email/file interaction', :type => :black_box do
-    shared_examples_for 'any option and number of samples when no exception occurs' do
-      it 'should create 1 blast database' do
-        @it.save
-        exec_path = "#{Rails.root}/bin/blast/bin"
-        database_path = "#{Rails.root}/db/blast_databases/test/#{@it.instance_eval('@dataset').id}"
-        #result = system("#{exec_path}/blastdbcmd -info -db #{database_path}")
-        lambda do
-          SystemUtil.system!("#{exec_path}/blastdbcmd -info -db #{database_path}")
-        end.should_not raise_error(StandardError)
-      end
-      
-      it 'should create 1 dataset' do
-        lambda do
-          @it.save
-        end.should change(Dataset, :count).by(1)
-      end
-      it 'should create 0 users' do
-        lambda do
-          @it.save
-        end.should change(User, :count).by(0)
-      end
-      it 'should send 1 email notifying the user of success' do
-        @it.save
-        ActionMailer::Base.deliveries.count.should eq(1)
-        current_user = @it.instance_variable_get('@current_user')
-        ActionMailer::Base.deliveries.last.to.should eq([current_user.email])
-        ActionMailer::Base.deliveries.last.subject.should match('Success')
-      end
-    end
-    
+  describe 'database/email/file interaction', :type => :black_box do    
     shared_examples_for 'any number of samples when ' +
                         'no differential expression tests or ' +
                         'transcript isoforms' do
@@ -468,7 +438,7 @@ describe UploadCuffdiff do
         end
         
         it_should_behave_like 'any upload view model when an exception occurs'
-        it_should_behave_like 'any option and number of samples when no exception occurs'
+        it_should_behave_like 'any upload view model when no exception occurs'
       end
       
       describe 'when it has differential expression tests only' do
@@ -530,7 +500,7 @@ describe UploadCuffdiff do
         end
         
         it_should_behave_like 'any upload view model when an exception occurs'
-        it_should_behave_like 'any option and number of samples when no exception occurs'
+        it_should_behave_like 'any upload view model when no exception occurs'
       end
       
       describe 'when it transcript isoforms only' do
@@ -592,7 +562,7 @@ describe UploadCuffdiff do
         end
         
         it_should_behave_like 'any upload view model when an exception occurs'
-        it_should_behave_like 'any option and number of samples when no exception occurs'
+        it_should_behave_like 'any upload view model when no exception occurs'
       end
       
       describe 'when it has neither differenntial expression tests nor transcript isoforms' do
@@ -605,7 +575,7 @@ describe UploadCuffdiff do
                               'no differential expression tests or ' +
                               'transcript isoforms'
         it_should_behave_like 'any upload view model when an exception occurs'
-        it_should_behave_like 'any option and number of samples when no exception occurs'
+        it_should_behave_like 'any upload view model when no exception occurs'
       end
     end
     
@@ -678,7 +648,7 @@ describe UploadCuffdiff do
         end
         
         it_should_behave_like 'any upload view model when an exception occurs'
-        it_should_behave_like 'any option and number of samples when no exception occurs'
+        it_should_behave_like 'any upload view model when no exception occurs'
       end
       
       describe 'when it has differenntial expression tests only' do
@@ -740,7 +710,7 @@ describe UploadCuffdiff do
         end
         
         it_should_behave_like 'any upload view model when an exception occurs'
-        it_should_behave_like 'any option and number of samples when no exception occurs'
+        it_should_behave_like 'any upload view model when no exception occurs'
       end
       
       describe 'when it has transcript isoforms only' do
@@ -802,7 +772,7 @@ describe UploadCuffdiff do
         end
         
         it_should_behave_like 'any upload view model when an exception occurs'
-        it_should_behave_like 'any option and number of samples when no exception occurs'
+        it_should_behave_like 'any upload view model when no exception occurs'
       end
       
       describe 'when it has neither differenntial expression tests nor transcript isoforms' do
@@ -815,7 +785,7 @@ describe UploadCuffdiff do
                               'no differential expression tests or ' +
                               'transcript isoforms'  
         it_should_behave_like 'any upload view model when an exception occurs'
-        it_should_behave_like 'any option and number of samples when no exception occurs'
+        it_should_behave_like 'any upload view model when no exception occurs'
       end
     end
     
@@ -889,7 +859,7 @@ describe UploadCuffdiff do
         end
         
         it_should_behave_like 'any upload view model when an exception occurs'
-        it_should_behave_like 'any option and number of samples when no exception occurs'
+        it_should_behave_like 'any upload view model when no exception occurs'
       end
       
       describe 'when it has differenntial expression tests only' do
@@ -951,7 +921,7 @@ describe UploadCuffdiff do
         end
         
         it_should_behave_like 'any upload view model when an exception occurs'
-        it_should_behave_like 'any option and number of samples when no exception occurs'
+        it_should_behave_like 'any upload view model when no exception occurs'
       end
       
       describe 'when it transcript isoforms only' do
@@ -1013,7 +983,7 @@ describe UploadCuffdiff do
         end
         
         it_should_behave_like 'any upload view model when an exception occurs'
-        it_should_behave_like 'any option and number of samples when no exception occurs'
+        it_should_behave_like 'any upload view model when no exception occurs'
       end
       
       describe 'when it has neither differenntial expression tests nor transcript isoforms' do
@@ -1026,7 +996,7 @@ describe UploadCuffdiff do
                               'no differential expression tests or ' +
                               'transcript isoforms'
         it_should_behave_like 'any upload view model when an exception occurs'
-        it_should_behave_like 'any option and number of samples when no exception occurs'
+        it_should_behave_like 'any upload view model when no exception occurs'
       end
     end
   end   
