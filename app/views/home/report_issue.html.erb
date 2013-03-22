@@ -1,7 +1,6 @@
+<h1>Issue Report Form</h1>
 <%= render 'shared/error_messages', :object => @ri %>
 <%= form_for(@ri, :url => '/home/report_issue') do |ri| %>
-  <h1>Issue Report Form</h1>
-  
   
   <% if @current_user.nil? %>
     <div>
