@@ -10,8 +10,16 @@ describe UploadTrinityWithEdgeRTranscripts do
     #Stub the file delete method so that test files aren't delete
     File.stub(:delete){}
     @test_files_path = "#{Rails.root}/spec/view_models/query_analysis/" +
-                       "test_files/cuffdiff"
-    UploadUtil.stub(:generate_go_terms){"#{@test_files_path}/3_samples/go_terms.annot"}
+                       "test_files/trinity_with_edger"
+#    g = GoTermFinderAndProcessor.new(get_uploaded_trinity_fasta_file(),Dataset.new)
+#    g.stub(:find_go_terms)
+#    g.instance_eval("@go_terms_file_path = '#{@test_files_path}/go_terms.annot'")
+#    GoTermFinderAndProcessor.stub(:new){g}
+    GoTermFinderAndProcessor.any_instance.stub(:run_blastx)
+    GoTermFinderAndProcessor.any_instance.stub(:run_blast2go){
+      "#{@test_files_path}/go_terms.annot"
+    }
+    #UploadUtil.stub(:generate_go_terms){"#{@test_files_path}/3_samples/go_terms.annot"}
   end
   
   after(:each) do
@@ -102,12 +110,12 @@ describe UploadTrinityWithEdgeRTranscripts do
           det.sample_2_fpkm.should_not be_nil
         end
       end
-      it 'should add 250 transcript has go terms to the database' 
-#       do
-#         lambda do
-#           @it.save
-#         end.should change(TranscriptHasGoTerm,:count).by(250)
-#       end
+      it 'should add 26 transcript has go terms to the database' 
+       do
+         lambda do
+           @it.save
+         end.should change(TranscriptHasGoTerm,:count).by(250)
+       end
       it 'should add 0 transcript fpkm tracking informations to the database' do
         lambda do
           @it.save

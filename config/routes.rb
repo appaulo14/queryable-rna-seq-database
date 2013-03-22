@@ -2,7 +2,7 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
   ###########################################################################
   ##########          Configure routes for home controller     ###############
   ###########################################################################
-  get 'admin/view_user_information'
+  get 'admin/view_confirmed_users'
 
   get 'admin/add_new_user_to_system'
 
@@ -31,6 +31,9 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
   
   match 'home', :to => 'home#welcome'
   get 'home/welcome'
+  
+  get 'home/report_issue'
+  post 'home/report_issue'
 
   ###########################################################################
   ##########     Configure routes for query analysis controller   ###########
@@ -62,11 +65,11 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
   
   get 'query_analysis/blast_main_menu'
 
-  get  'query_analysis/blastn'
-  post 'query_analysis/blastn'
+  get  'query_analysis/query_using_blastn'
+  post 'query_analysis/query_using_blastn'
 
-  get  'query_analysis/tblastn'
-  post 'query_analysis/tblastn'
+  get  'query_analysis/query_using_tblastn'
+  post 'query_analysis/query_using_tblastn'
   
   get 'query_analysis/get_transcript_fasta'
   
@@ -76,8 +79,8 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
   
   get 'query_analysis/get_tblastn_gap_costs_for_matrix'
   
-  get 'query_analysis/tblastx'
-  post 'query_analysis/tblastx'
+  get 'query_analysis/query_using_tblastx'
+  post 'query_analysis/query_using_tblastx'
 
 
     # The priority is based upon order of creation:

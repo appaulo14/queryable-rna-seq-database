@@ -1,13 +1,14 @@
-class QueryAnalysisMailer < ActionMailer::Base
+class HomeMailer < ActionMailer::Base
    
    
-   def report_issue(report_issue)
+   def send_report_on_issue(report_issue)
      @issue_report = report_issue
      admins = User.where(:admin => true)
-     raise Exception, "Cannot find any admin users" if admin.empty?
+     raise Exception, "Cannot find any admin users" if admins.empty?
      from = "Queryable RNA-Seq Database Mailer Bot " +
             "<#{MAILER_BOT_CONFIG['email']}>"
-     admins.each do |@admin|
+     admins.each do |admin|
+       @admin = admin
        mail(:to => @admin.email,
           :from => from,
           :subject => 'New issue reported').deliver

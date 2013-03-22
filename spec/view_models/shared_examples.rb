@@ -157,7 +157,7 @@ end
 
 shared_examples_for 'any upload view model when an exception occurs' do
   before (:each) do
-    UploadUtil.stub('create_blast_database') do
+    BlastUtil.stub('create_blast_database') do
       fasta_file_path = 
         @it.instance_eval('@transcripts_fasta_file').tempfile.path
       dataset = @it.instance_eval('@dataset')

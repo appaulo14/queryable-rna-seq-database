@@ -375,6 +375,7 @@ def make_go_terms
   #Read the go terms file, writing the go terms to the database
   go_term_file = File.open('lib/tasks/GO.terms_and_ids')
   count = 0
+  start_time = Time.now.to_i
   while (not go_term_file.eof?)
     line = go_term_file.readline
     next if line.match(/\AGO/).nil? #skip if line has no term 
@@ -383,6 +384,9 @@ def make_go_terms
     count += 1
     break if count > 1000
   end
+  end_time = Time.now.to_i
+  puts "Wrote #{count} go terms"
+  puts "Writing took #{end_time - start_time} seconds"
   puts 'Done'
 end
 

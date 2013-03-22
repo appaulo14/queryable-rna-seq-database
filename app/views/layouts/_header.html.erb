@@ -10,19 +10,9 @@
         <li><%= link_to 'Upload processed dataset',
                         '/query_analysis/upload_main_menu' %>
           <ul class='drop-down-menu'>
+            <li><%= link_to 'Cuffdiff', '/query_analysis/upload_cuffdiff' %></li>
             <li><%= link_to 'Fasta Sequences (From Any Program)', '#' %></li>
             <li><%= link_to 'Trinity with EdgeR >', '#' %>
-              <ul class='drop-down-sub-menu'>
-                <li><%= link_to 'Genes and Transcripts', 
-                  '/query_analysis/upload_trinity_with_edger_transcripts_and_genes' %>
-                </li>
-                <li><%= link_to 'Transcripts Only', '#' %></li>
-              </ul>
-            </li>
-            <br/>
-            <br/>
-            <br/>
-            <li><%= link_to 'Cuffdiff', '/query_analysis/upload_cuffdiff' %>
               <ul class='drop-down-sub-menu'>
                 <li><%= link_to 'Genes and Transcripts', 
                   '/query_analysis/upload_trinity_with_edger_transcripts_and_genes' %>
@@ -52,9 +42,9 @@
         <li><%= link_to 'BLAST', 
                         '/query_analysis/blast_main_menu' %>
           <ul  class='drop-down-menu'>
-            <li><%= link_to 'BLASTN', '/query_analysis/blastn' %></li>
-            <li><%= link_to 'TBLASTN', '/query_analysis/tblastn' %></li>
-            <li><%= link_to 'TBLASTX', '/query_analysis/tblastx' %></li>
+            <li><%= link_to 'BLASTN', '/query_analysis/query_using_blastn' %></li>
+            <li><%= link_to 'TBLASTN', '/query_analysis/query_using_tblastn' %></li>
+            <li><%= link_to 'TBLASTX', '/query_analysis/query_using_tblastx' %></li>
           </ul>
         </li>
         <% if current_user.admin? %>

@@ -23,6 +23,8 @@ describe Dataset do
     @it = FactoryGirl.build(:dataset, :program_used => :cuffdiff)
   end
   
+  it 'should not use symbols in validation'
+  
   describe 'associations', :type => :associations do
     it 'should have a user attribute' do
       @it.should respond_to(:user)

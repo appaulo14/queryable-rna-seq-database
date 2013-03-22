@@ -1,22 +1,20 @@
-<h1>Unconfirmed Users</h1>
+<h1>Confirmed Users</h1>
 <table style="margin-left:auto;margin-right:auto">
   <thead>
     <tr>
-      <th>Name</th><th>Email</th><th>Confirm</th><th>Delete</th>
+      <th>Name</th><th>Email</th><th>Creation Date</th><th>Description</th>
     </tr>
   </thead>
   <tbody>
-    <% @unconfirmed_users.each do |user| %>
+    <% @confirmed_users.each do |user| %>
       <tr class="rounded-corners sub-section">
         <td class="rounded-corners"><%= user.name %></td>
         <td class="rounded-corners"><%= user.email %></td>
         <td class="rounded-corners">
-          <%= link_to('Go To Confirm User Page',
-            "/admin/confirm_user?user_id=#{user.id}") %>
+          <%= user.created_at.strftime("%m/%d/%Y at %I:%M %p") %>
         </td>
         <td class="rounded-corners">
-          <%= link_to('Go To Delete User Page',
-            "/admin/delete_user?user_id=#{user.id}") %>
+          <%= user.description %>
         </td>
       </tr>
     <% end %>

@@ -13,16 +13,19 @@
       <tr>
         <td style="font-weight:bold">Name:</td>
         <td><%= @issue_report.name %></td>
-        
+      </tr>
+      <tr>
         <td style="font-weight:bold">Email:</td>
         <td><%= @issue_report.email %></td>
-        
+      </tr>
+      <tr>
         <td style="font-weight:bold">Category:</td>
         <td><%= @issue_report.category %></td>
-        
+      </tr>
+      <tr>  
         <td style="font-weight:bold">Date/Time When Issue Occured:</td>
-        <td><%= @issue_report.datetime_when_issue_occured %></td>
-        
+        <td><%= @issue_report.when_issue_occured.strftime("%m/%d/%Y at %I:%M %p") %></td>
+      </tr>
         <td style="font-weight:bold">Description:</td>
         <td><%= @issue_report.description %></td>
       </tr>

@@ -1,0 +1,48 @@
+<%= render 'shared/error_messages', :object => @ri %>
+<%= form_for(@ri, :url => '/home/report_issue') do |ri| %>
+  <h1>Issue Report Form</h1>
+  
+  
+  <% if @current_user.nil? %>
+    <div>
+      <%= ri.label(:name, "Name") %>
+      <%= ri.text_field :name %>
+    </div>
+    
+    <div>
+      <%= ri.label(:email, "Email") %>
+      <%= ri.text_field :email %>
+    </div>
+  <% end %>
+  
+  <div>
+    <%= label(:category, "Category") %>
+    <%= ri.select(:category, 
+        options_for_select(@ri.available_categories)) %>
+  </div>
+  <br/>
+  <div>
+    <%= label(:when_issue_occured, 
+      "Approximately When Did the Issue Occur? (If Applicable)") %><br/>
+    <%= ri.datetime_select(:when_issue_occured) %>
+  <div>
+    
+  </div>
+  <br/>
+  <br/>
+  <div>
+    <%= ri.label(:description, "Description") %><br/>
+    <%= ri.text_area :description, {:cols=>80, :rows => 10} %>
+  </div>
+  
+  <div>
+    <% if @current_user.nil? %>
+      <%= ri.simple_captcha :label => "Confirm Your Humanity" %>
+    <% end %>
+  </div>
+  
+  <p>
+    <%= submit_tag('Report Issue', 
+      :disable_with => 'Reporting...', :id => :submit_query) %>
+  </p>
+<% end %>

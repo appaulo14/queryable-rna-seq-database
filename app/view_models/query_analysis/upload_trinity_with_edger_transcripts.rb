@@ -1,5 +1,7 @@
 require 'upload/trinity_transcript_diff_exp_file_processor.rb'
 require 'upload/trinity_transcript_fpkm_file_processor.rb'
+require 'upload/go_term_finder_and_processor.rb'
+require 'upload/blast_util.rb'
 
 class UploadTrinityWithEdgeRTranscripts
   include ActiveModel::Validations
@@ -38,12 +40,12 @@ class UploadTrinityWithEdgeRTranscripts
         process_args_to_create_dataset()
         process_transcript_diff_exp_files()
         process_transcript_fpkm_file()
-        #find_and_process_go_terms()
-        UploadUtil.create_blast_database(@transcripts_fasta_file.tempfile.path,
+        find_and_process_go_terms()
+        BlastUtil.create_blast_database(@transcripts_fasta_file.tempfile.path,
                                           @dataset)
       end
     rescue Exception => ex
-      UploadUtil.rollback_blast_database(@dataset)
+      BlastUtil.rollback_blast_database(@dataset)
       QueryAnalysisMailer.notify_user_of_upload_failure(@current_user,
                                                           @dataset,
                                                           ex.message)
@@ -94,25 +96,9 @@ class UploadTrinityWithEdgeRTranscripts
   end
   
   def find_and_process_go_terms()
-    go_terms_file_path = 
-        UploadUtil.generate_go_terms(@transcripts_fasta_file.tempfile.path)
-    go_terms_file = File.open(go_terms_file_path)
-    while not go_terms_file.eof?
-      line = go_terms_file.readline
-      next if line.blank?
-      line_regex = /\A(\S+)\s+(\S+)\s+(.+)\z/
-      (transcript_name, go_id, term) = line.strip.match(line_regex).captures
-      go_term = GoTerm.find_by_id(go_id)
-      if go_term.nil?
-        go_term = GoTerm.create!(:id => go_id, :term => term)
-      end
-      transcript = Transcript.where(:dataset_id => @dataset.id, 
-                                    :name_from_program => transcript_name)[0]
-      TranscriptHasGoTerm.create!(:transcript => transcript, 
-                                     :go_term => go_term)
-    end
-    go_terms_file.close
-    File.delete(go_terms_file.path)
+    gtfp = GoTermFinderAndProcessor.new(@transcripts_fasta_file, @dataset)
+    gtfp.find_go_terms()
+    gtfp.process_go_terms()
   end
   
   def delete_uploaded_files

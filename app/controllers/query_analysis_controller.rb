@@ -12,29 +12,26 @@ class QueryAnalysisController < ApplicationController
     require 'query_analysis/query_using_tblastx.rb'
     
     before_filter :authenticate_user!
-
+    
+    before_filter :confirm_datasets_available, 
+      :only => [
+        :query_gene_exp_transcripts, :query_diff_exp_genes, 
+        :query_using_blastn, :query_using_tblastn, :query_using_tblastx
+      ]
+    before_filter :confirm_transcript_isoform_datasets_available,
+      :only => [:query_transcript_isoforms]
+    before_filter :confirm_transcript_diff_exp_datasets_available, 
+      :only => [:query_diff_exp_transcripts]
+    before_filter :confirm_transcript_diff_exp_datasets_available, 
+      :only => [:query_diff_exp_transcripts]
+    before_filter :confirm_gene_diff_exp_datasets_available, 
+      :only => [:query_diff_exp_genes]
+   
     def upload_main_menu
     end
 
     def welcome
-      #flash[:notice] = "Success"
     end
-
-#     def upload_reference_cuffdiff
-#     end
-# 
-#     def upload_de_novo_cuffdiff
-#     end
-    
-#     def ajax_test
-# #       @name = params[:name]
-# #       @goats = ['tom','dick','harry'] if @goats.nil?
-# #       if (request.post?)
-# #         @goats << params[:add_goat]
-# #       end
-#       render :json => QueryUsingBlastn.new(current_user)
-#       #render :text => open('/media/sf_MSE_Project/Workshop_Of_Paul/BLAST/outputs/Query_1.png', "rb").read
-#     end
     
     def upload_cuffdiff
       if request.get?
@@ -80,6 +77,12 @@ class QueryAnalysisController < ApplicationController
       @qdet = QueryDiffExpTranscripts.new(current_user)
       #Which type of request was received?
       if request.get?
+        #Display a no datasets warning if the user 
+        #  has no datasets with transcript differential expression tests
+        if current_user.datasets.where(:has_transcript_diff_exp => true).empty?
+          render 'no_diff_exp_transcripts'
+          return
+        end
         #If the dataset_id parameter makes the view model invalid, 
         #    don't use the dataset_id parameter
         @qdet.set_attributes_and_defaults(:dataset_id => params[:dataset_id])
@@ -98,15 +101,6 @@ class QueryAnalysisController < ApplicationController
         end
       end
     end
-    
-#     def get_diff_exp_transcripts_file
-# #       text = ''
-# #       100_000.times do |n|
-# #         text += "Good morning!\n"
-# #       end
-# #       render :text => text, :content_type => 'text/plain'
-#       render :file => '/media/sf_MSE_Project/Workshop_Of_Paul/BLAST/outputs/searchio.html'
-#     end
     
     def get_transcript_fasta
       #Create/fill in the view model
@@ -150,6 +144,12 @@ class QueryAnalysisController < ApplicationController
       @qdeg = QueryDiffExpGenes.new(current_user)
       #Which type of request was received?
       if request.get?
+        #Display a no datasets warning if the user 
+        #  has no datasets with gene differential expression tests
+        if current_user.datasets.where(:has_gene_diff_exp => true).empty?
+          render 'no_gene_exp_transcripts'
+          return
+        end
         #If the dataset_id parameter makes the view model invalid, 
         #    ignore the dataset_id parameter
         @qdeg.set_attributes_and_defaults(:dataset_id => params[:dataset_id])
@@ -201,12 +201,12 @@ class QueryAnalysisController < ApplicationController
         @query_using_blastn = QueryUsingBlastn.new(current_user)
         @query_using_blastn.set_attributes_and_defaults(params[:query_using_blastn])
         debugger if ENV['RAILS_DEBUG'] == "true"
-        #TODO: Move this code back into the view model
         if @query_using_blastn.valid?
             flash[:success] = "Success"
             #Run the blast query and get the file path of the result
             blast_results_file_path = @query_using_blastn.blast!
             #Parse the xml into Blast reports
+            #TODO: Move this code back into the view model
             f = File.open(blast_results_file_path)
             xml_string = ''
             while not f.eof?
@@ -276,34 +276,60 @@ class QueryAnalysisController < ApplicationController
       render :partial => 'gap_costs', :locals => {:object => @query_using_blastn}
     end
     
-    def query_using_tblastx  #changed after the architecture design
-      if request.get?
-        @query_using_tblastx = QueryUsingTblastx.new(current_user)
-        @query_using_tblastx.set_attributes_and_defaults()
-      elsif request.post?
-        @query_using_tblastx = QueryUsingTblastx.new(current_user)
-        @query_using_tblastx.set_attributes_and_defaults(params[:query_using_tblastx])
-        debugger if ENV['RAILS_DEBUG'] == "true"
-        if @query_using_tblastx.valid?
-          flash[:success] = "Success"
-          #Run the blast query and get the file path of the result
-          blast_results_file_path = @query_using_tblastx.blast!
-          #Parse the xml into Blast reports
-          f = File.open(blast_results_file_path)
-          xml_string = ''
-          while not f.eof?
-            xml_string += f.readline
-          end
-          f.close()
-          @program = :tblastx
-          @blast_report = Bio::Blast::Report.new(xml_string,'xmlparser')
-          #Send the result to the user
-          render :file => 'query_analysis/blast_results'
-          #Delete the result file since it is no longer needed
-          #File.delete(blast_results_file_path)
-        else
-          flash[:success]="Failure"
+  def query_using_tblastx  #changed after the architecture design
+    if request.get?
+      @query_using_tblastx = QueryUsingTblastx.new(current_user)
+      @query_using_tblastx.set_attributes_and_defaults()
+    elsif request.post?
+      @query_using_tblastx = QueryUsingTblastx.new(current_user)
+      @query_using_tblastx.set_attributes_and_defaults(params[:query_using_tblastx])
+      debugger if ENV['RAILS_DEBUG'] == "true"
+      if @query_using_tblastx.valid?
+        flash[:success] = "Success"
+        #Run the blast query and get the file path of the result
+        blast_results_file_path = @query_using_tblastx.blast!
+        #Parse the xml into Blast reports
+        f = File.open(blast_results_file_path)
+        xml_string = ''
+        while not f.eof?
+          xml_string += f.readline
         end
+        f.close()
+        @program = :tblastx
+        @blast_report = Bio::Blast::Report.new(xml_string,'xmlparser')
+        #Send the result to the user
+        render :file => 'query_analysis/blast_results'
+        #Delete the result file since it is no longer needed
+        #File.delete(blast_results_file_path)
+      else
+        flash[:success]="Failure"
       end
+    end
+  end
+  
+  private 
+  
+  def confirm_datasets_available
+    if current_user.datasets.empty?
+      render :no_datasets
+    end
+  end
+  
+  def confirm_transcript_isoform_datasets_available
+    if current_user.datasets.where(:has_transcript_isoforms => true).empty?
+      render :no_transcript_isoforms
+    end
+  end
+  
+  def confirm_transcript_diff_exp_datasets_available
+    if current_user.datasets.where(:has_transcript_diff_exp => true).empty?
+      render :no_diff_exp_transcripts
+    end
+  end
+  
+  def confirm_gene_diff_exp_datsets_available
+    if current_user.datasets.where(:has_gene_diff_exp => true).empty?
+      render :no_diff_exp_genes
+    end
   end
 end

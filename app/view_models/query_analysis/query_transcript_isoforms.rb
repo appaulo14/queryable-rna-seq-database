@@ -34,14 +34,42 @@ class QueryTranscriptIsoforms
     :class_code_s => 's',
     :class_code_dot => '.'
   }
+
+  #TODO: Add validation 
+  validates :dataset_id, :presence => true,
+                        :dataset_belongs_to_user => true
+  validates :sample_id, :presence => true,
+                        :sample_belongs_to_user => true
+  validates :filter_by_class_codes, :presence => true,
+                                    :view_model_boolean => true
+  validates :class_code_equal, :view_model_boolean => true
+  validates :class_code_c, :view_model_boolean => true
+  validates :class_code_j, :view_model_boolean => true
+  validates :class_code_e, :view_model_boolean => true
+  validates :class_code_i, :view_model_boolean => true
+  validates :class_code_o, :view_model_boolean => true
+  validates :class_code_p, :view_model_boolean => true
+  validates :class_code_r, :view_model_boolean => true
+  validates :class_code_u, :view_model_boolean => true
+  validates :class_code_x, :view_model_boolean => true
+  validates :class_code_s, :view_model_boolean => true
+  validates :class_code_dot, :view_model_boolean => true
+  validates :filter_by_go_terms, :presence => true,
+                                 :view_model_boolean => true
+  validates :filter_by_go_ids, :presence => true,
+                               :view_model_boolean => true
+  validates :filter_by_transcript_length, :presence => true,
+                                          :view_model_boolean => true
+  validates :filter_by_transcript_name, :presence => true,
+                                        :view_model_boolean => true
+  validates :transcript_length_comparison_sign, 
+                              :inclusion => {:in => [['>','>=','<','=<','=']]}
+  validates :transcript_length_value, :numericality => true
+  #validate if filter box is checked then some options are selected
   
   def show_results?
     return @show_results
   end
-  
-  #TODO: Add validation 
-  validate :user_has_permission_to_access_dataset
-  #validate if filter box is checked then some options are selected
   
   def initialize(current_user)
     @current_user = current_user
