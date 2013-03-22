@@ -1,11 +1,11 @@
+require 'query/transcript_name_query_condition_generator.rb'
+require 'query/go_ids_query_condition_generator.rb'
+require 'query/go_terms_query_condition_generator.rb'
+
 class QueryTranscriptIsoforms
   include ActiveModel::Validations
   include ActiveModel::Conversion
   extend ActiveModel::Naming
-  
-  require 'query/transcript_name_query_condition_generator.rb'
-  require 'query/go_ids_query_condition_generator.rb'
-  require 'query/go_terms_query_condition_generator.rb'
   
   attr_accessor :dataset_id, :sample_id,
                 :filter_by_class_codes,

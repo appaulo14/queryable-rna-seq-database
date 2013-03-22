@@ -1,5 +1,6 @@
+require 'upload/uploaded_trinity_fpkm_file.rb'
+
 class TrinityFpkmFileProcessor
-  require 'upload/uploaded_trinity_fpkm_file.rb'
 
   def initialize(uploaded_fpkm_file,dataset)
     @uploaded_fpkm_file = UploadedTrinityFpkmFile.new(uploaded_fpkm_file)

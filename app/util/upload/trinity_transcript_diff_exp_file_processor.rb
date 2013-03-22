@@ -1,14 +1,21 @@
+require 'upload/trinity_diff_exp_file_processor.rb'
+
 class TrinityTranscriptDiffExpFileProcessor < TrinityDiffExpFileProcessor
   def process_file()
     super
-    while not @uploaded_diff_exp_file .eof?
+    while not @uploaded_diff_exp_file.eof?
       diff_exp_line = @uploaded_diff_exp_file.get_next_line
       next if diff_exp_line.nil?
       transcript = Transcript.where(:dataset_id => @dataset.id,
                                      :name_from_program => diff_exp_line.item)[0]
       if transcript.nil?
+        #Find the associated gene if available
+        gene_name = diff_exp_line.item.match(/\A(.+)(_seq.+)\z/).captures[0]
+        gene = Gene.where(:dataset_id => @dataset.id,
+                           :name_from_program => gene_name)[0]
         transcript =  Transcript.create!(:dataset => @dataset,
-                                          :name_from_program => diff_exp_line.item)
+                                          :name_from_program => diff_exp_line.item,
+                                          :gene => gene)
       end
       det = DifferentialExpressionTest.new()
       det.transcript = transcript

@@ -1,8 +1,8 @@
+require 'upload/trinity_fpkm_file_processor.rb' 
+
 class TrinityGeneFpkmFileProcessor < TrinityFpkmFileProcessor
-  require 'upload/uploaded_trinity_fpkm_file.rb'
-  
   def process_file()
-   while not @uploaded_fpkm_file.eof?
+    while not @uploaded_fpkm_file.eof?
       fpkm_line = @uploaded_fpkm_file.get_next_line
       next if fpkm_line.nil?
       gene = Gene.where(:dataset_id => @dataset.id,

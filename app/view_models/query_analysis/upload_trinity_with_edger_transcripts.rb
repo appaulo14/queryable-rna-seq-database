@@ -1,10 +1,10 @@
+require 'upload/trinity_transcript_diff_exp_file_processor.rb'
+require 'upload/trinity_transcript_fpkm_file_processor.rb'
+
 class UploadTrinityWithEdgeRTranscripts
   include ActiveModel::Validations
   include ActiveModel::Conversion
   extend ActiveModel::Naming
-  
-  require 'upload/trinity_transcript_diff_exp_file_processor.rb'
-  require 'upload/trinity_transcript_fpkm_file_processor.rb'
 
   attr_accessor :transcripts_fasta_file, 
                 :transcript_diff_exp_files, #Array 

@@ -176,8 +176,8 @@ FactoryGirl.define do
       transcripts_fasta_file    {get_uploaded_trinity_fasta_file()}
       gene_diff_exp_files       {get_trinity_diff_exp_files('gene', 2)}
       transcript_diff_exp_files {get_trinity_diff_exp_files('trans', 2)}
-      gene_fpkm_file            {get_trinity_transcript_fpkm_file(2)}
-      transcript_fpkm_file      {get_trinity_gene_fpkm_file(2)}
+      gene_fpkm_file            {get_trinity_gene_fpkm_file(2)}
+      transcript_fpkm_file      {get_trinity_transcript_fpkm_file(2)}
       dataset_name              {Faker::Name.name}
     end
     
@@ -188,8 +188,8 @@ FactoryGirl.define do
       transcripts_fasta_file    {get_uploaded_trinity_fasta_file()}
       gene_diff_exp_files       {get_trinity_diff_exp_files('gene', 3)}
       transcript_diff_exp_files {get_trinity_diff_exp_files('trans', 3)}
-      gene_fpkm_file            {get_trinity_transcript_fpkm_file(3)}
-      transcript_fpkm_file      {get_trinity_gene_fpkm_file(3)}
+      gene_fpkm_file            {get_trinity_gene_fpkm_file(3)}
+      transcript_fpkm_file      {get_trinity_transcript_fpkm_file(3)}
       dataset_name              {Faker::Name.name}
     end
     
@@ -200,8 +200,8 @@ FactoryGirl.define do
       transcripts_fasta_file    {get_uploaded_trinity_fasta_file()}
       gene_diff_exp_files       {get_trinity_diff_exp_files('gene', 4)}
       transcript_diff_exp_files {get_trinity_diff_exp_files('trans', 4)}
-      gene_fpkm_file            {get_trinity_transcript_fpkm_file(4)}
-      transcript_fpkm_file      {get_trinity_gene_fpkm_file(4)}
+      gene_fpkm_file            {get_trinity_gene_fpkm_file(4)}
+      transcript_fpkm_file      {get_trinity_transcript_fpkm_file(4)}
       dataset_name              {Faker::Name.name}
     end
 end

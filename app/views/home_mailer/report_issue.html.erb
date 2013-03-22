@@ -1,0 +1,31 @@
+<html>
+  <head>
+    <title>New Issue Report</title>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+    <style></style>
+  </head>
+  <body>
+    <p>Hello <%= @admin.name %>,</p>
+    
+    <p>A new issue has been reported. Below are the details.</p>
+    
+    <table border="1">
+      <tr>
+        <td style="font-weight:bold">Name:</td>
+        <td><%= @issue_report.name %></td>
+        
+        <td style="font-weight:bold">Email:</td>
+        <td><%= @issue_report.email %></td>
+        
+        <td style="font-weight:bold">Category:</td>
+        <td><%= @issue_report.category %></td>
+        
+        <td style="font-weight:bold">Date/Time When Issue Occured:</td>
+        <td><%= @issue_report.datetime_when_issue_occured %></td>
+        
+        <td style="font-weight:bold">Description:</td>
+        <td><%= @issue_report.description %></td>
+      </tr>
+    </table>
+  </body>
+</html>

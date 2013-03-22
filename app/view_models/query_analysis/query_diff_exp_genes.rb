@@ -1,11 +1,11 @@
+require 'query/gene_name_query_condition_generator.rb'
+require 'query/go_ids_query_condition_generator.rb'
+require 'query/go_terms_query_condition_generator.rb'
+
 class QueryDiffExpGenes
   include ActiveModel::Validations
   include ActiveModel::Conversion
   extend ActiveModel::Naming
-  
-  require 'query/gene_name_query_condition_generator.rb'
-  require 'query/go_ids_query_condition_generator.rb'
-  require 'query/go_terms_query_condition_generator.rb'
   
   attr_accessor :dataset_id, :sample_comparison_id_pair,
                 :fdr_or_p_value, :cutoff, :filter_by_go_terms, :go_terms,

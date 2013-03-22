@@ -1,3 +1,8 @@
+ require 'upload/trinity_transcript_diff_exp_file_processor.rb'
+require 'upload/trinity_transcript_fpkm_file_processor.rb'
+require 'upload/trinity_gene_diff_exp_file_processor.rb'
+require 'upload/trinity_gene_fpkm_file_processor.rb'
+
 class UploadTrinityWithEdgeRTranscriptsAndGenes
   include ActiveModel::Validations
   include ActiveModel::Conversion
@@ -89,16 +94,23 @@ class UploadTrinityWithEdgeRTranscriptsAndGenes
   end
   
   def process_gene_diff_exp_files
+    @gene_diff_exp_files.each do |gene_diff_exp_file|
+      tgdefp = TrinityGeneDiffExpFileProcessor.new(gene_diff_exp_file,
+                                                      @dataset)
+      tgdefp.process_file()
+    end
   end
   
   def process_gene_fpkm_file
+    tgffp = TrinityGeneFpkmFileProcessor.new(@gene_fpkm_file,
+                                                 @dataset)
+    tgffp.process_file()
   end
   
   def process_transcript_diff_exp_files
     @transcript_diff_exp_files.each do |transcript_diff_exp_file|
-      #Process the file
-      tdefp = TranscriptDiffExpFileProcessor.new(transcript_diff_exp_file,
-                                                 @dataset)
+      tdefp = TrinityTranscriptDiffExpFileProcessor.new(transcript_diff_exp_file,
+                                                             @dataset)
       tdefp.process_file()
     end
   end

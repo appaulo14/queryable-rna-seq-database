@@ -108,12 +108,11 @@ describe UploadTrinityWithEdgeRTranscripts do
 #           @it.save
 #         end.should change(TranscriptHasGoTerm,:count).by(250)
 #       end
-      it 'should add 24 transcript fpkm tracking informations to the database' 
-#       do
-#         lambda do
-#           @it.save
-#         end.should change(TranscriptFpkmTrackingInformation,:count).by(24)
-#       end
+      it 'should add 0 transcript fpkm tracking informations to the database' do
+        lambda do
+          @it.save
+        end.should change(TranscriptFpkmTrackingInformation,:count).by(0)
+      end
       it 'should add 88 go terms to the database'
 #       do
 #         lambda do
@@ -180,12 +179,11 @@ describe UploadTrinityWithEdgeRTranscripts do
 #           @it.save
 #         end.should change(TranscriptHasGoTerm,:count).by(250)
 #       end
-      it 'should add 24 transcript fpkm tracking informations to the database' 
-#       do
-#         lambda do
-#           @it.save
-#         end.should change(TranscriptFpkmTrackingInformation,:count).by(24)
-#       end
+      it 'should add 0 transcript fpkm tracking informations to the database' do
+        lambda do
+          @it.save
+        end.should change(TranscriptFpkmTrackingInformation,:count).by(0)
+      end
       it 'should add 88 go terms to the database'
 #       do
 #         lambda do
@@ -252,12 +250,11 @@ describe UploadTrinityWithEdgeRTranscripts do
 #           @it.save
 #         end.should change(TranscriptHasGoTerm,:count).by(250)
 #       end
-      it 'should add 24 transcript fpkm tracking informations to the database' 
-#       do
-#         lambda do
-#           @it.save
-#         end.should change(TranscriptFpkmTrackingInformation,:count).by(24)
-#       end
+      it 'should add 0 transcript fpkm tracking informations to the database' do
+        lambda do
+          @it.save
+        end.should change(TranscriptFpkmTrackingInformation,:count).by(0)
+      end
       it 'should add 88 go terms to the database'
 #       do
 #         lambda do

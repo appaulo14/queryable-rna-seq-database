@@ -1,5 +1,6 @@
+require 'upload/trinity_fpkm_file_processor.rb' 
+
 class TrinityTranscriptFpkmFileProcessor < TrinityFpkmFileProcessor
-  require 'upload/uploaded_trinity_fpkm_file.rb'
   
   def process_file()
     while not @uploaded_fpkm_file.eof?
