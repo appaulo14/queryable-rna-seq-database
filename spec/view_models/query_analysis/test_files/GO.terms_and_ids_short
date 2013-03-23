@@ -1,0 +1,25 @@
+! Generated from file ontology/editors/gene_ontology_write.obo,
+! CVS revision:  1.3145; date:  31:05:2012 22:04
+!
+! GO IDs (primary only) and name text strings
+! GO:0000000 [tab] text string [tab] F|P|C
+! where F = molecular function, P = biological process, C = cellular component
+!
+GO:0000001      mitochondrion inheritance       P
+GO:0000002      mitochondrial genome maintenance        P
+GO:0000003      reproduction    P
+GO:0000005      ribosomal chaperone activity    F
+GO:0000006      high affinity zinc uptake transmembrane transporter activity    F
+GO:0000007      low-affinity zinc ion transmembrane transporter activity        F
+GO:0000008      thioredoxin     F
+GO:0000009      alpha-1,6-mannosyltransferase activity  F
+GO:0000010      trans-hexaprenyltranstransferase activity       F
+GO:0000011      vacuole inheritance     P
+GO:0000012      single strand break repair      P
+GO:0000014      single-stranded DNA specific endodeoxyribonuclease activity     F
+GO:0000015      phosphopyruvate hydratase complex       C
+GO:0000016      lactase activity        F
+GO:0000017      alpha-glucoside transport       P
+GO:0000018      regulation of DNA recombination P
+GO:0000019      regulation of mitotic recombination     P
+GO:0000020      negative regulation of recombination within rDNA repeats        P
