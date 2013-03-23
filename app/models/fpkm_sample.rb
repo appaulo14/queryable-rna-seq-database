@@ -4,7 +4,7 @@
 #
 #  id            :integer          not null, primary key
 #  transcript_id :integer          not null
-#  sample_id     :integer
+#  sample_id     :integer          not null
 #  fpkm          :string(255)      not null
 #  fpkm_hi       :string(255)
 #  fpkm_lo       :string(255)
@@ -25,38 +25,14 @@ class FpkmSample < ActiveRecord::Base
   validates :transcript, :presence => true
   validates :sample, :presence => true
   
-  validates :fpkm, :presence => true
-  validate  :fpkm_is_greater_than_or_equal_to_zero
-  
-  validate  :fpkm_lo_is_greater_than_or_equal_to_zero
-  
-  validate  :fpkm_hi_is_greater_than_or_equal_to_zero
+  validates :fpkm, :presence => true,
+                   :numericality => true
+  validates :fpkm_lo, :allow_nil => true,
+                      :numericality => true
+  validates :fpkm_hi, :allow_nil => true,
+                      :numericality => true
 
   validates :status,:presence => true,
                     :inclusion => { :in => POSSIBLE_STATUSES }
 
-  private
-  
-  def fpkm_is_greater_than_or_equal_to_zero
-    is_greater_than_or_equal_to_zero('fpkm')
-  end
-  
-  def fpkm_lo_is_greater_than_or_equal_to_zero
-    is_greater_than_or_equal_to_zero('fpkm_lo')
-  end
-  
-  def fpkm_hi_is_greater_than_or_equal_to_zero
-    is_greater_than_or_equal_to_zero('fpkm_hi')
-  end
-  
-  def is_greater_than_or_equal_to_zero(attribute)
-    return if self.send(attribute).nil?
-    begin
-      if self.send(attribute).to_f < 0.0
-        errors[attribute] << 'must be greater than or equal to zero'
-      end
-    rescue NoMethodError => ex
-      errors[attribute] << 'must be float or double'
-    end
-  end
 end

@@ -41,7 +41,7 @@ class Dataset < ActiveRecord::Base
   validate :when_last_queried_is_valid_datetime_or_nil
   validates :program_used, 
       :allow_nil => false,
-      :inclusion => [:trinity_with_edger, :cuffdiff, :generic_fasta_file]
+      :inclusion => ['trinity_with_edger', 'cuffdiff', 'generic_fasta_file']
   
   belongs_to :user
   has_many :transcripts, :dependent => :destroy

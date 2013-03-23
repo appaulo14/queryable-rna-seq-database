@@ -73,7 +73,7 @@ describe TranscriptFpkmTrackingInformation do
     
     describe 'length' do
       before(:each) do @attribute = 'length' end
-    
+
       it_should_behave_like 'a required attribute'  
       it_should_behave_like 'an ActiveRecord-customized integer >= 0'
     end

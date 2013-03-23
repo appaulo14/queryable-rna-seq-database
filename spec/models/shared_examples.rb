@@ -159,18 +159,25 @@ shared_examples_for 'an ActiveRecord-customized integer >= 0' do
   end
 end
 
-shared_examples_for 'a float >= 0 that is stored as a string' do
-  it 'should be valid for numbers 0 or greater' do
-    [0, 0.0001, 1, 10000].each do |number_greater_than_0|
-      @it.send("#{@attribute}=", number_greater_than_0)
+shared_examples_for 'a number' do  
+  it 'should not be valid when a non-numeric string' do
+    ['kittens', "", "true","false"].each do |string|
+      @it.send("#{@attribute}=", string)
+      @it.should_not be_valid
+    end
+  end
+  
+  it 'should be valid for numeric strings' do
+    ['-5','0',"4.5", '62'].each do |numeric_string|
+      @it.send("#{@attribute}=", numeric_string)
       @it.should be_valid
     end
   end
   
-  it 'should not be valid for numbers less than 0' do
-    [-0.0001, -1, -10000].each do |zero_or_less_than|
-      @it.send("#{@attribute}=", zero_or_less_than)
-      @it.should_not be_valid
+  it 'should be valid for numbers' do
+     [-5,0,4.5,62].each do |number|
+      @it.send("#{@attribute}=", number)
+      @it.should be_valid
     end
   end
   
@@ -188,28 +195,28 @@ shared_examples_for 'a float >= 0 that is stored as a string' do
    @it.send("#{@attribute}").should eq('1552355312.5445124234232343232')
   end
   
-  it 'should be valid for strings since they can be converted' do
-    ["goats","11","1x10"].each do |string|
-      @it.send("#{@attribute}=",string)
-      @it.should be_valid
-    end
+  it 'should not be valid for true' do
+    @it.send("#{@attribute}=", true)
+    @it.should_not be_valid
   end
-  it 'should not be valid for booleans' do
-    [true, false].each do |boolean|
-      @it.send("#{@attribute}=", boolean)
-      @it.should_not be_valid
-    end
+  
+  it 'should not be valid for false' do
+    @it.send("#{@attribute}=", false)
+    @it.should_not be_valid
   end
+  
   it 'should not be valid for arrays' do
     @it.send("#{@attribute}=", [])
     @it.should_not be_valid
   end
+  
   it 'should not be valid for hashes' do
-    @it.send("#{@attribute}=",{})
+    @it.send("#{@attribute}=", {})
     @it.should_not be_valid
   end
+  
   it 'should not be valid for objects' do
-    @it.send("#{@attribute}=",Object.new)
+    @it.send("#{@attribute}=", Object.new)
     @it.should_not be_valid
   end
 end

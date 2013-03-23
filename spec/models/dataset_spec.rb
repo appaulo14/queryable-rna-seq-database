@@ -20,10 +20,8 @@ require 'models/shared_examples.rb'
 
 describe Dataset do
   before(:each) do
-    @it = FactoryGirl.build(:dataset, :program_used => :cuffdiff)
+    @it = FactoryGirl.build(:dataset, :program_used => 'cuffdiff')
   end
-  
-  it 'should not use symbols in validation'
   
   describe 'associations', :type => :associations do
     it 'should have a user attribute' do
@@ -149,16 +147,16 @@ describe Dataset do
     describe 'program_used' do 
       before(:each) do @attribute = 'program_used' end
     
-      it 'should be valid for :trinity_with_edger' do
-        @it.program_used = :trinity_with_edger
+      it 'should be valid for "trinity_with_edger"' do
+        @it.program_used = 'trinity_with_edger'
         @it.should be_valid
       end
-      it 'should be valid for :cuffdiff' do
-        @it.program_used = :cuffdiff
+      it 'should be valid for "cuffdiff"' do
+        @it.program_used = 'cuffdiff'
         @it.should be_valid
       end
-      it 'should be valid for :generic_fasta_file' do
-        @it.program_used = :generic_fasta_file
+      it 'should be valid for "generic_fasta_file"' do
+        @it.program_used = 'generic_fasta_file'
         @it.should be_valid
       end
       

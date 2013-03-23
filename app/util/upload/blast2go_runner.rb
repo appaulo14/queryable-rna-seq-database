@@ -13,7 +13,7 @@ class Blast2go_Runner
     f=File.open("#{blast2go_output_file.path}.annot}")
     while not f.eof?
       line = f.readline
-      (transcript_name, go_id, term) = line.split("\t")
+      (transcript_name, go_id, term) = line.split(/\s+/)
       go_term = GoTerm.find_by_id(go_id)
       if (go_term.nil?)
         GoTerm.create!(:id=>go_id,:term => term)

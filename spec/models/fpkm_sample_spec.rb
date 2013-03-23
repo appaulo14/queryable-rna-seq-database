@@ -4,7 +4,7 @@
 #
 #  id            :integer          not null, primary key
 #  transcript_id :integer          not null
-#  sample_id     :integer
+#  sample_id     :integer          not null
 #  fpkm          :string(255)      not null
 #  fpkm_hi       :string(255)
 #  fpkm_lo       :string(255)
@@ -48,21 +48,21 @@ describe FpkmSample do
       before(:each) do @attribute = 'fpkm' end
       
       it_should_behave_like 'a required attribute'
-      it_should_behave_like 'a float >= 0 that is stored as a string'
+      it_should_behave_like 'a number'
     end
     
     describe 'fpkm_lo' do
       before(:each) do @attribute = 'fpkm_lo' end
       
       it_should_behave_like 'an optional attribute'
-      it_should_behave_like 'a float >= 0 that is stored as a string'
+      it_should_behave_like 'a number'
     end
     
     describe 'fpkm_hi' do 
       before(:each) do @attribute = 'fpkm_hi' end
       
       it_should_behave_like 'an optional attribute'
-      it_should_behave_like 'a float >= 0 that is stored as a string'
+      it_should_behave_like 'a number'
     end
    
     describe 'status' do

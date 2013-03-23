@@ -7,8 +7,8 @@
 #  transcript_id        :integer
 #  sample_comparison_id :integer          not null
 #  test_status          :string(255)
-#  sample_1_fpkm        :string(255)      not null
-#  sample_2_fpkm        :string(255)      not null
+#  sample_1_fpkm        :string(255)
+#  sample_2_fpkm        :string(255)
 #  log_fold_change      :string(255)      not null
 #  test_statistic       :string(255)
 #  p_value              :string(255)      not null
@@ -100,43 +100,43 @@ describe DifferentialExpressionTest do
     describe 'sample_1_fpkm' do
       before(:each) do @attribute = 'sample_1_fpkm' end
       
-      it_should_behave_like 'a required attribute'
-      it_should_behave_like 'a float >= 0 that is stored as a string'
+      it_should_behave_like 'an optional attribute'
+      it_should_behave_like 'a number'
     end
     
     describe 'sample_2_fpkm' do
       before(:each) do @attribute = 'sample_2_fpkm' end
       
-      it_should_behave_like 'a required attribute'
-      it_should_behave_like 'a float >= 0 that is stored as a string'
+      it_should_behave_like 'an optional attribute'
+      it_should_behave_like 'a number'
     end
     
     describe 'log_fold_change' do
       before(:each) do @attribute = 'log_fold_change' end
       
       it_should_behave_like 'a required attribute'
-      it_should_behave_like 'a float >= 0 that is stored as a string'
+      it_should_behave_like 'a number'
     end
     
     describe 'test_statistic' do
       before(:each) do @attribute = 'test_statistic' end
       
       it_should_behave_like 'an optional attribute'
-      it_should_behave_like 'a float >= 0 that is stored as a string'
+      it_should_behave_like 'a number'
     end
     
     describe 'fdr' do
       before(:each) do @attribute = 'fdr' end
       
       it_should_behave_like 'a required attribute'
-      it_should_behave_like 'a float >= 0 that is stored as a string'
+      it_should_behave_like 'a number'
     end
     
     describe 'p_value' do
       before(:each) do @attribute = 'p_value' end
       
       it_should_behave_like 'a required attribute'
-      it_should_behave_like 'a float >= 0 that is stored as a string'
+      it_should_behave_like 'a number'
     end
   end
 end
