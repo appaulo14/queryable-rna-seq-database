@@ -1,8 +1,9 @@
+require 'tempfile'
+
 class QueryUsingTblastn #< Blast_Query::Base
   include ActiveModel::Validations
   include ActiveModel::Conversion
   extend ActiveModel::Naming
-  require 'tempfile'
   
   #TODO: Describe meaning of these?
   attr_accessor :dataset_id, :fasta_sequence, :fasta_file, :num_alignments, :e_value,

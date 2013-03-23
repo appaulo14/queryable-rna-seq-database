@@ -202,7 +202,6 @@ class QueryAnalysisController < ApplicationController
         @query_using_blastn.set_attributes_and_defaults(params[:query_using_blastn])
         debugger if ENV['RAILS_DEBUG'] == "true"
         if @query_using_blastn.valid?
-            flash[:success] = "Success"
             #Run the blast query and get the file path of the result
             blast_results_file_path = @query_using_blastn.blast!
             #Parse the xml into Blast reports
@@ -219,8 +218,6 @@ class QueryAnalysisController < ApplicationController
             render :file => 'query_analysis/blast_results'
             #Delete the result file since it is no longer needed
             #File.delete(blast_results_file_path)
-        else
-            flash[:success]="Failure"
         end
       end
     end
@@ -245,24 +242,8 @@ class QueryAnalysisController < ApplicationController
             @query_using_blastn.set_attributes_and_defaults(params[:query_using_blastn])
             debugger if ENV['RAILS_DEBUG'] == "true"
             if @query_using_blastn.valid?
-              flash[:success] = "Success"
               #Run the blast query and get the file path of the result
-              blast_results_file_path = @query_using_blastn.blast!
-              #Parse the xml into Blast reports
-              f = File.open(blast_results_file_path)
-              xml_string = ''
-              while not f.eof?
-                xml_string += f.readline
-              end
-              f.close()
-              @program = :tblastn
-              @blast_report = Bio::Blast::Report.new(xml_string,'xmlparser')
-              #Send the result to the user
-              render :file => 'query_analysis/blast_results'
-              #Delete the result file since it is no longer needed
-              #File.delete(blast_results_file_path)
-            else
-                flash[:success]="Failure"
+              @blast_report = @query_using_blastn.blast()
             end
         end
     end
@@ -285,7 +266,6 @@ class QueryAnalysisController < ApplicationController
       @query_using_tblastx.set_attributes_and_defaults(params[:query_using_tblastx])
       debugger if ENV['RAILS_DEBUG'] == "true"
       if @query_using_tblastx.valid?
-        flash[:success] = "Success"
         #Run the blast query and get the file path of the result
         blast_results_file_path = @query_using_tblastx.blast!
         #Parse the xml into Blast reports
@@ -301,8 +281,6 @@ class QueryAnalysisController < ApplicationController
         render :file => 'query_analysis/blast_results'
         #Delete the result file since it is no longer needed
         #File.delete(blast_results_file_path)
-      else
-        flash[:success]="Failure"
       end
     end
   end

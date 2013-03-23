@@ -1,8 +1,9 @@
-class QueryUsingBlastn #< Blast_Query::Base
+require 'tempfile'
+
+class QueryUsingBlastn
   include ActiveModel::Validations
   include ActiveModel::Conversion
   extend ActiveModel::Naming
-  require 'tempfile'
   
   #TODO: Describe meaning of these?
   attr_accessor :dataset_id, :fasta_sequence, :fasta_file, :num_alignments, :e_value,
@@ -10,9 +11,12 @@ class QueryUsingBlastn #< Blast_Query::Base
                 :use_lowercase_masking, :gap_costs,
                 :match_and_mismatch_scores, :filter_low_complexity_regions
     
-    attr_reader :available_datasets, :available_word_sizes, 
-                :available_match_and_mismatch_scores, :available_gap_costs,
-                :available_num_alignments
+  attr_reader :available_datasets, :available_word_sizes, 
+              :available_match_and_mismatch_scores, :available_gap_costs,
+              :available_num_alignments
+                                  
+    AVAILABLE_NUM_ALIGNMENTS = [0,10,50,100,250,500]
+    AVAILABLE_WORD_SIZES = [16,20,24,28,32,48,64,128,256]
     
     #Declare Constants
     AVAILABLE_MATCH_AND_MISMATCH_SCORES = {
@@ -94,9 +98,35 @@ class QueryUsingBlastn #< Blast_Query::Base
       },
     }
     
-    #TODO: Add validation 
-    validate :user_has_permission_to_access_dataset
-    validate :fasta_file_uploaded_when_fasta_file_selected
+  #Validation
+  validates :dataset_id, :presence => true,
+                         :dataset_belongs_to_user => true
+  validates :fasta_sequence, :nucleotide_fasta_sequences => true
+  validates :fasta_file, :uploaded_file => true
+  validates :num_alignments, :presence => true,
+                             :inclusion => {:in => AVAILABLE_NUM_ALIGNMENTS}
+  validates :e_value, :presence => true,
+                      :numericality => true
+  validates :word_size, :presence => true,
+                        :inclusion => {:in => AVAILABLE_WORD_SIZES}
+  
+  validates :use_fasta_sequence_or_file, :presence => true,
+                                          :inclusion => {:in =>[
+                                            'use_fasta_sequence',
+                                            'use_fasta_file']
+                                          }
+  validate  :fasta_sequence_or_file_is_present_as_selected
+  
+  validates :user_soft_masking, :presence => true,
+                                :view_model_boolean => true
+  validates :use_lowercase_masking, :presence => true,
+                                    :view_model_boolean => true
+  validates :gap_costs, :presence => true
+  validate  :gap_costs_valid_for_selected_match_and_mismatch_scores              
+  validates :match_and_mismatch_scores, :presence => true,
+                :inclusion => {:in => AVAILABLE_MATCH_AND_MISMATCH_SCORES.keys}
+  validates :filter_low_complexity_regions, :presence => true,
+                                            :view_model_boolean => true
     
     def initialize(current_user)
       #Set the current user
@@ -105,11 +135,11 @@ class QueryUsingBlastn #< Blast_Query::Base
       all_datasets_for_user = Dataset.find_all_by_user_id(@current_user)
       @available_datasets = all_datasets_for_user.map{|ds| [ds.name, ds.id]}
       #Set the available word sizes
-      @available_word_sizes = [16,20,24,28,32,48,64,128,256]
+      @available_word_sizes = AVAILABLE_WORD_SIZES
       #Set available match/mismatch scores
       @available_match_and_mismatch_scores = AVAILABLE_MATCH_AND_MISMATCH_SCORES.keys
       #Set the available options for the number of alignments
-      @available_num_alignments = [0,10,50,100,250,500]
+      @available_num_alignments = AVAILABLE_NUM_ALIGNMENTS
     end
   
     def set_attributes_and_defaults(attributes = {})
@@ -193,10 +223,11 @@ class QueryUsingBlastn #< Blast_Query::Base
       match = selected_match_and_mismatch_scores[:match]
       mismatch = selected_match_and_mismatch_scores[:mismatch]
       blastn_execution_string += "-reward #{match} -penalty #{mismatch}"
-      #TODO: Decide how to handle failures
+      blastn_execution_string = generate_blastn_execution_string
       #Execute blastn
-      system(blastn_execution_string)
-      return blast_xml_output_file.path
+      SystemUtil.system!(blastn_execution_string)
+      #Run the blast query and get the file path of the result
+      return generate_blast_report_from_xml_results(blast_xml_output_file.path)
     end
     
     #Accoring http://railscasts.com/episodes/219-active-model?view=asciicast,
@@ -206,16 +237,28 @@ class QueryUsingBlastn #< Blast_Query::Base
     end
     
     private
-    def user_has_permission_to_access_dataset
+    
+    def generate_blastn_execution_string
     end
     
-    def fasta_file_uploaded_when_fasta_file_selected
-      if @use_fasta_sequence_or_file == 'use_fasta_sequence'
-        return
-      else
-        if @fasta_file.nil?
-          errors[:fasta_file] << 'Error'
-        end
+    def generate_blast_report_from_xml_results(xml_results_file_path)
+      #Parse the xml into Blast reports
+      f = File.open(xml_results_file)
+      xml_string = ''
+      while not f.eof?
+        xml_string += f.readline
       end
+      f.close()
+      blast_report = Bio::Blast::Report.new(xml_string,'xmlparser')
+      File.delete(xml_results_file_path)
+      return blast_report
+    end
+    
+    def fasta_sequence_or_file_is_present_as_selected
+      #TODO: Implement
+    end
+    
+    def gap_costs_valid_for_selected_match_and_mismatch_scores
+      #TODO: Implement
     end
 end
