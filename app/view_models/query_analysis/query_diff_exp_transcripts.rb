@@ -15,9 +15,9 @@ class QueryDiffExpTranscripts
                 :available_sample_comparisons, 
                 :show_results, :results, :sample_1_name, :sample_2_name
   
-  #TODO: Add validation 
-  validate :user_has_permission_to_access_dataset
-  validate :user_has_permission_to_access_comparison
+  validates :dataset_id, :presence => true,
+                         :dataset_belongs_to_user => true
+  
   
   def initialize(user)
     @current_user = user

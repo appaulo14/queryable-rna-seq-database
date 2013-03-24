@@ -1,6 +1,7 @@
+require 'admin/confirm_user'
+require 'admin/delete_unconfirmed_user'
+
 class AdminController < ApplicationController
-  require 'admin/confirm_user'
-  require 'admin/delete_unconfirmed_user'
   
   before_filter :authenticate_admin_user!
   
@@ -28,25 +29,35 @@ class AdminController < ApplicationController
   
   def confirm_user
     if request.get?
-      @user = User.find_by_id(params[:user_id])
-      if (@user.nil?)
-        flash[:alert] = 'Please select an unconfirmed user'
+      @confirm_user = ConfirmUser.new(params)
+      if not @confirm_user.valid?
+        flash[:alert] = 'Select an unconfirmed user'
         redirect_to :action => 'view_unconfirmed_users'
       end
-      @confirm_user = ConfirmUser.new()
     elsif request.post?
       @confirm_user = Confirm_User.new(params[:confirm_user])
-      @confirm_user.send_confirmation_emails!
-      flash[:notice] = 'Emails successfully sent'
-      redirect_to :action => 'view_unconfirmed_users'
+      if @confirm_user.valid?
+        @confirm_user.send_confirmation_emails!
+        flash[:notice] = 'Emails successfully sent'
+        redirect_to :action => 'view_unconfirmed_users'
+      end
     end
   end
   
   def delete_unconfirmed_user
-    @user = User.find_by_id(params[:user_id])
-    if (@user.id)
-      flash[:alert] = 'Please select an unconfirmed user'
-      redirect_to :view_unconfirmed_users
+    if request.get?
+      @delete_unconfirmed_user = DeleteUnConfirmUser.new(params)
+      if not @delete_unconfirmed_user.valid?
+        flash[:alert] = 'Select an unconfirmed user'
+        redirect_to :action => 'view_unconfirmed_users'
+      end
+    elsif request.post?
+      @delete_unconfirmed_user = DeleteUnConfirmUser.new(params[:delete_unconfirm_user])
+      if @delete_unconfirmed_user.valid?
+        @delete_unconfirmed_user.send_send_rejection_email_and_destroy_user
+        flash[:notice] = 'Email successfully sent and user destroyed'
+        redirect_to :action => 'view_unconfirmed_users'
+      end
     end
   end
   

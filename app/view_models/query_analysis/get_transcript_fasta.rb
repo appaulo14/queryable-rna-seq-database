@@ -6,14 +6,11 @@ class GetTranscriptFasta
   
   attr_accessor :dataset_id, :transcript_name
   
-  TRANSCRIPT_NAME_REGEX = /\A(\w|\s|\.)+\z/
+  #TRANSCRIPT_NAME_REGEX = /\A(\w|\s|\.)+\z/
   
   validates :dataset_id, :presence => true,
-                         :numericality => { :only_integer => true, 
-                                            :greater_than => 0 }
-  validates :transcript_name, :presence => true,
-                        :format => { :with => TRANSCRIPT_NAME_REGEX }   
-  validate :user_has_permission_to_access_dataset
+                         :dataset_belongs_to_user => true
+  validates :transcript_name, :presence => true
   
   def initialize(user)
     @current_user = user
@@ -48,10 +45,6 @@ class GetTranscriptFasta
   #     this defines that this model does not persist in the database.
   def persisted?
       return false
-  end
-  
-  private
-  def user_has_permission_to_access_dataset
   end
 end
  

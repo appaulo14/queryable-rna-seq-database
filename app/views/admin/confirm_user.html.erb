@@ -1,13 +1,13 @@
 <%= render 'shared/error_messages', :object => @confirm_user %>
 <%= form_for(@confirm_user, :url => 'confirm_user') do |cu| %>
-  <h1>Confirm User <%= @user.id %> (<%= @user.name %>)</h1>
+  <h1>Confirm User <%= cu.object.user.id %> (<%= cu.object.user.name %>)</h1>
   <table>
-    <tr><td>Id</td><td><%= @user.id %></td></tr>
-    <tr><td>Name</td><td><%= @user.name %></td></tr>
-    <tr><td>Email Address</td><td><%= @user.email %></td></tr>
-    <tr><td>Why they want to use the system</td><td><%= @user.description %></td></tr>
+    <tr><td>Id</td><td><%= cu.object.user.id %></td></tr>
+    <tr><td>Name</td><td><%= cu.object.user.name %></td></tr>
+    <tr><td>Email Address</td><td><%= cu.object.user.email %></td></tr>
+    <tr><td>Why they want to use the system</td><td><%= cu.object.user.description %></td></tr>
   </table>
-  <%= cu.hidden_field :user_id, :value => @user.id %>
+  <%= cu.hidden_field :user_id, :value => cu.object.user %>
   <p>
     <%= cu.label :optional_note_to_user, 'Optional Note to User' %><br/>
     <%= cu.text_area :optional_note_to_user, :size => '80x10' %>

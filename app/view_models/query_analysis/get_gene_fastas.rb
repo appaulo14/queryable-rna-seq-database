@@ -6,14 +6,12 @@ class GetGeneFastas
   
   attr_accessor :dataset_id, :gene_name
   
-  GENE_NAME_REGEX = /\A(\w|\s|\.)+\z/
+  #GENE_NAME_REGEX = /\A(\w|\s|\.)+\z/
   
   validates :dataset_id, :presence => true,
-                         :numericality => { :only_integer => true, 
-                                            :greater_than => 0 }
-  validates :gene_name, :presence => true,
-                        :format => { :with => GENE_NAME_REGEX }   
-  validate :user_has_permission_to_access_dataset
+                         :dataset_belongs_to_user => true
+  validates :gene_name, :presence => true
+                        #:format => { :with => GENE_NAME_REGEX }   
   
   def initialize(current_user)
     @current_user = current_user
@@ -50,9 +48,5 @@ class GetGeneFastas
   #     this defines that this model does not persist in the database.
   def persisted?
       return false
-  end
-  
-  private
-  def user_has_permission_to_access_dataset
   end
 end

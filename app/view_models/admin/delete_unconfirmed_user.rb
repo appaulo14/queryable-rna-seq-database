@@ -2,57 +2,36 @@ class DeleteUnconfirmedUser
   include ActiveModel::Validations
   include ActiveModel::Conversion
   extend ActiveModel::Naming
-  require 'open3'
   
-  attr_accessor :dataset_id, :gene_name
+  attr_accessor :user_id, :optional_note_to_user
   
-  GENE_NAME_REGEX = /\A(\w|\s|\.)+\z/
+  attr_reader :user
   
-  validates :dataset_id, :presence => true,
-                         :numericality => { :only_integer => true, 
-                                            :greater_than => 0 }
-  validates :gene_name, :presence => true,
-                        :format => { :with => GENE_NAME_REGEX }   
-  validate :user_has_permission_to_access_dataset
+  vaidates :user_id, :presence => true,
+                     :numericality => {
+                        :only_integer => true, :greater_than => 0 
+                     }
+ 
+  validate :user, :presence => true
   
-  def initialize(current_user)
-    @current_user = current_user
-  end
-  
-  def set_attributes(attributes = {})
-    @dataset_id = attributes[:dataset_id]
-    @gene_name = attributes[:gene_name]
-  end
-  
-  def query
-    #Get the transcripts from the parameters
-    raise(ActiveRecord::RecordInvalid,self) if not self.valid?
-    gene = Gene.where(:dataset_id => @dataset_id, 
-                      :name_from_program => @gene_name)[0]
-    #Create the fasta string from the gene's transcripts
-    if gene.nil?
-      return 'No fasta sequences found.'
-    else
-      seq_ids = []
-      gene.transcripts.each do |t|
-        seq_ids << t.blast_seq_id
+  def initialize(attributes = {})
+    #Load in any values from the form
+      attributes.each do |name, value|
+          send("#{name}=", value)
       end
-      stdin, stdout, stderr = 
-        Open3.popen3('bin/blast/bin/blastdbcmd', 
-                     '-entry',"#{seq_ids.join(',')}", 
-                     '-db',"#{gene.dataset.blast_db_location}", 
-                     '-dbtype','nucl')
-      return stdout.gets(nil)
-    end
+      @user = User.find(@user_id)
+  end
+  
+  def send_send_rejection_email_and_destroy_user
+    return if not self.valid?
+    user = User.find_by_id(@user_id)
+    RegistrationMailer.notify_user_of_rejection(user, @optional_note_to_user)
+    user.destroy
   end
   
   #Accoring http://railscasts.com/episodes/219-active-model?view=asciicast,
   #     this defines that this model does not persist in the database.
   def persisted?
       return false
-  end
-  
-  private
-  def user_has_permission_to_access_dataset
   end
 end
