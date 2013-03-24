@@ -178,7 +178,7 @@ class QueryUsingTblastn #< Blast_Query::Base
       all_datasets_for_user = Dataset.find_all_by_user_id(@current_user)
       @available_datasets = all_datasets_for_user.map{|ds| [ds.name, ds.id]}
       #Set the available options for the number of alignments
-      @available_num_alignments = AVAILABE_NUM_ALIGNMENTS
+      @available_num_alignments = AVAILABLE_NUM_ALIGNMENTS
       @available_compositional_adjustments = AVAILABLE_COMPOSITIONAL_ADJUSTMENTS
       @available_matrices = AVAILABLE_MATRICES
       @available_word_sizes = AVAILABLE_WORD_SIZES

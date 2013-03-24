@@ -1,6 +1,6 @@
 require 'tempfile'
 
-class QueryUsingTblastn #< Blast_Query::Base
+class QueryUsingTblastx #< Blast_Query::Base
   include ActiveModel::Validations
   include ActiveModel::Conversion
   extend ActiveModel::Naming

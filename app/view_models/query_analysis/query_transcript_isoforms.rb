@@ -8,16 +8,14 @@ class QueryTranscriptIsoforms
   extend ActiveModel::Naming
   
   attr_accessor :dataset_id, :sample_id,
-                :filter_by_class_codes,
                 :class_code_equal, :class_code_c, :class_code_j, :class_code_e,
                 :class_code_i, :class_code_o, :class_code_p, :class_code_r,
                 :class_code_u, :class_code_x, :class_code_s, :class_code_dot,
-                :filter_by_go_terms, :go_terms,
-                :filter_by_go_ids, :go_ids, :filter_by_transcript_length, 
+                :go_terms,:go_ids,
                 :transcript_length_comparison_sign, :transcript_length_value,
-                :filter_by_transcript_name, :transcript_name 
+                :transcript_name 
   attr_reader  :names_and_ids_for_available_datasets, 
-                :available_samples,
+                :available_samples, :available_transcript_length_comparison_signs,
                 :show_results, :results, :sample_name
   
   CLASS_CODES = {
@@ -34,14 +32,13 @@ class QueryTranscriptIsoforms
     :class_code_s => 's',
     :class_code_dot => '.'
   }
+  
+  AVAILABLE_TRANSCRIPT_LENGTH_COMPARISON_SIGNS = ['>','>=','<','=<','=']
 
-  #TODO: Add validation 
   validates :dataset_id, :presence => true,
                         :dataset_belongs_to_user => true
   validates :sample_id, :presence => true,
                         :sample_belongs_to_user => true
-  validates :filter_by_class_codes, :presence => true,
-                                    :view_model_boolean => true
   validates :class_code_equal, :view_model_boolean => true
   validates :class_code_c, :view_model_boolean => true
   validates :class_code_j, :view_model_boolean => true
@@ -54,18 +51,9 @@ class QueryTranscriptIsoforms
   validates :class_code_x, :view_model_boolean => true
   validates :class_code_s, :view_model_boolean => true
   validates :class_code_dot, :view_model_boolean => true
-  validates :filter_by_go_terms, :presence => true,
-                                 :view_model_boolean => true
-  validates :filter_by_go_ids, :presence => true,
-                               :view_model_boolean => true
-  validates :filter_by_transcript_length, :presence => true,
-                                          :view_model_boolean => true
-  validates :filter_by_transcript_name, :presence => true,
-                                        :view_model_boolean => true
   validates :transcript_length_comparison_sign, 
-                              :inclusion => {:in => [['>','>=','<','=<','=']]}
+     :inclusion => {:in => AVAILABLE_TRANSCRIPT_LENGTH_COMPARISON_SIGNS}
   validates :transcript_length_value, :numericality => true
-  #validate if filter box is checked then some options are selected
   
   def show_results?
     return @show_results
@@ -87,18 +75,12 @@ class QueryTranscriptIsoforms
     all_datasets_for_current_user.each do |ds|
       @names_and_ids_for_available_datasets << [ds.name, ds.id]
     end
+    @available_transcript_length_comparison_signs =
+      AVAILABLE_TRANSCRIPT_LENGTH_COMPARISON_SIGNS
     #Set default values for the relavent blank attributes
     @dataset_id = all_datasets_for_current_user.first.id if @dataset_id.blank?
-    @filter_by_go_terms = false if filter_by_go_terms.blank?
-    @filter_by_go_ids = false if filter_by_go_ids.blank?
-    if filter_by_transcript_length.blank?
-      @filter_by_transcript_length = false
-    end
-    if @transcript_length_comparison_sign.blank?
-      @transcript_length_comparison_sign = '>' 
-    end
     @transcript_length_value = '0' if transcript_length_value.blank?
-    @filter_by_transcript_name = false if filter_by_transcript_name.blank?
+    @transcript_length_comparison_sign = '>' if @transcript_length_comparison_sign.blank?
     #Set available samples for querying
     ds = Dataset.find_by_id(@dataset_id)
     @available_samples = []
@@ -126,34 +108,32 @@ class QueryTranscriptIsoforms
     where_clause = ds_t[:id].eq(@dataset_id)
     fs_t = FpkmSample.arel_table
     where_clause = where_clause.and(fs_t[:sample_id].eq(@sample_id))
-    if @filter_by_class_codes == '1'
-      where_clause = where_clause.and(class_codes_where_clause())
+    class_codes_where_clause = class_codes_where_clause()
+    if not class_codes_where_clause.nil?
+      where_clause = where_clause.and(class_codes_where_clause)
     end
-    if @filter_by_transcript_length == '1'
-      where_clause = where_clause.and(transcript_length_query_condition())
-    end
-    if @filter_by_transcript_name == '1'
+    where_clause = where_clause.and(transcript_length_query_condition())
+    if not @transcript_name.blank?
       tnqcg = TranscriptNameQueryConditionGenerator.new()
       tnqcg.name = @transcript_name
       where_clause = where_clause.and(tnqcg.generate_query_condition())
     end
     query_results = 
-     Dataset.joins(
-        :transcripts => [:transcript_fpkm_tracking_information, :gene, :fpkm_samples]
-      ).
-      where(where_clause).select(select_string)
+       Dataset.joins(
+          :transcripts => [:transcript_fpkm_tracking_information, :gene, :fpkm_samples]
+        ).where(where_clause).select(select_string)
     #Extract the query results to form that can be put in the view
     @sample_name = Sample.find_by_id(@sample_id).name
     @results = []
     query_results.each do |query_result|
       #Do a few more minor queries to get the data in the needed format
       transcript = Transcript.find_by_id(query_result.transcript_id)
-      if @filter_by_go_ids == '1'
+      if not @go_ids.blank?
         giqcg = GoIdsQueryConditionGenerator.new(@go_ids)
         query_condition = giqcg.generate_query_condition()
         next if (transcript.go_terms & GoTerm.where(query_condition)).empty?
       end
-      if @filter_by_go_terms == '1'
+      if not @go_terms.blank?
         gtqcg = GoTermsQueryConditionGenerator.new(@go_terms)
         query_condition = gtqcg.generate_query_condition()
         next if (transcript.go_terms & GoTerm.where(query_condition)).empty?
@@ -198,50 +178,9 @@ class QueryTranscriptIsoforms
     return tfti_w
   end
   
-#  def generate_go_ids_where_clause
-#    go_terms = @go_ids.split(';')
-#    gt_t = GoTerm.arel_table
-#    where_clauses = []
-#    go_terms.each do |go_term|
-#      where_clauses << gt_t[:id].eq(go_term.strip)
-#    end
-#    if where_clauses.count > 1
-#      combined_where_clause = where_clauses[0]
-#      (1..where_clauses.count-1).each do |i|
-#        combined_where_clause = combined_where_clause.or(where_clauses[i])
-#      end
-#      return combined_where_clause
-#    else
-#      return where_clauses[0]
-#    end
-#  end
-  
-#  def generate_go_terms_where_clause
-#    go_terms = @go_terms.split(';')
-#    gt_t = GoTerm.arel_table
-#    where_clauses = []
-#    go_terms.each do |go_term|
-#      where_clauses << gt_t[:term].matches("%#{go_term.strip}%")
-#    end
-#    if where_clauses.count > 1
-#      combined_where_clause = where_clauses[0]
-#      (1..where_clauses.count-1).each do |i|
-#        combined_where_clause = combined_where_clause.or(where_clauses[i])
-#      end
-#      return combined_where_clause
-#    else
-#      return where_clauses[0]
-#    end
-#  end
-  
-#  def generate_transcript_name_where_clause
-#    t_t = Transcript.arel_table
-#    return t_t[:name_from_program].eq(@transcript_name)
-#  end
-  
   def transcript_length_query_condition
     tfti_t = TranscriptFpkmTrackingInformation.arel_table
-    case transcript_length_comparison_sign
+    case @transcript_length_comparison_sign
     when '>'
       tfti_w = tfti_t[:length].gt(@transcript_length_value)
     when '>='
@@ -257,11 +196,5 @@ class QueryTranscriptIsoforms
       #???
     end
     return tfti_w
-  end
-  
-  def user_has_permission_to_access_dataset
-  end
-  
-  def sample_is_not_compared_against_itself
   end
 end

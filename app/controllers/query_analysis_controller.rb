@@ -52,10 +52,10 @@ class QueryAnalysisController < ApplicationController
     
     def upload_trinity_with_edger_transcripts
       if (request.get?)
-        @upload_files = Upload_Trinity_With_EdgeR_Transcripts.new(current_user)
-        @upload_files.set_attributes_and_defaults({})
+        @upload_files = UploadTrinityWithEdgeRTranscripts.new(current_user)
+        @upload_files.set_attributes_and_defaults()
       elsif (request.post?)
-        @upload_files = Upload_Trinity_With_EdgeR_Transcripts.new(current_user)
+        @upload_files = UploadTrinityWithEdgeRTranscripts.new(current_user)
         @upload_files.set_attributes_and_defaults(params[:upload_trinity_with_edger_transcripts])
         @upload_files.save!
       end
@@ -63,13 +63,16 @@ class QueryAnalysisController < ApplicationController
     
     def upload_trinity_with_edger_transcripts_and_genes
       if (request.get?)
-        @upload_files = Upload_Trinity_With_EdgeR_Transcripts_And_Genes.new(current_user)
+        @upload_files = UploadTrinityWithEdgeRTranscriptsAndGenes.new(current_user)
         @upload_files.set_attributes_and_defaults({})
       elsif (request.post?)
-        @upload_files = Upload_Trinity_With_EdgeR_Transcripts_And_Genes.new(current_user)
+        @upload_files = UploadTrinityWithEdgeRTranscriptsAndGenes.new(current_user)
         @upload_files.set_attributes_and_defaults(params[:upload_trinity_with_edger_transcripts_and_genes])
         @upload_files.save!
       end
+    end
+
+    def upload_fasta_sequences
     end
 
     def query_diff_exp_transcripts
@@ -77,12 +80,6 @@ class QueryAnalysisController < ApplicationController
       @qdet = QueryDiffExpTranscripts.new(current_user)
       #Which type of request was received?
       if request.get?
-        #Display a no datasets warning if the user 
-        #  has no datasets with transcript differential expression tests
-        if current_user.datasets.where(:has_transcript_diff_exp => true).empty?
-          render 'no_diff_exp_transcripts'
-          return
-        end
         #If the dataset_id parameter makes the view model invalid, 
         #    don't use the dataset_id parameter
         @qdet.set_attributes_and_defaults(:dataset_id => params[:dataset_id])
@@ -144,12 +141,6 @@ class QueryAnalysisController < ApplicationController
       @qdeg = QueryDiffExpGenes.new(current_user)
       #Which type of request was received?
       if request.get?
-        #Display a no datasets warning if the user 
-        #  has no datasets with gene differential expression tests
-        if current_user.datasets.where(:has_gene_diff_exp => true).empty?
-          render 'no_gene_exp_transcripts'
-          return
-        end
         #If the dataset_id parameter makes the view model invalid, 
         #    ignore the dataset_id parameter
         @qdeg.set_attributes_and_defaults(:dataset_id => params[:dataset_id])
@@ -162,9 +153,6 @@ class QueryAnalysisController < ApplicationController
         # If valid, query and return results; otherwise return failure
         if @qdeg.valid?
           @qdeg.query()
-          flash[:success] = "Success"
-        else
-          flash[:success]="Failure"
         end
       end
     end
@@ -186,9 +174,6 @@ class QueryAnalysisController < ApplicationController
         # If valid, query and return results; otherwise return failure
         if @qti.valid?
           @qti.query()
-          flash[:notice] = "Success"
-        else
-          flash[:notice]="Failure"
         end
       end
     end

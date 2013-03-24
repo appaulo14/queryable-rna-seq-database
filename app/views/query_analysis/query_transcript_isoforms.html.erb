@@ -20,10 +20,6 @@
     <div>
         <table>
         <tr>
-          <td>
-            <%= qti.check_box(:filter_by_class_codes) %>
-            <%= qti.label(:class_codes, "Class codes:\t") %>
-          </td>
           <td class='rounded-corners sub-section' style='padding-right:10px'>
             <%= qti.check_box(:class_code_equal) %>
             <%= qti.label(:class_code_equal, '=') %>
@@ -79,25 +75,23 @@
         </table>
     </div>
     <div>
-        <%= qti.check_box(:filter_by_go_terms) %>
         <%= qti.label(:go_terms, "GO Terms, separated by semicolons") %>
         <%= qti.text_field(:go_terms, :size => 70) %>
         <%= link_to('Browse GO Terms','http://amigo.geneontology.org/cgi-bin/amigo/browse.cgi', :target => '_blank') %>
     </div>
     <div>
-        <%= qti.check_box(:filter_by_go_ids) %>
         <%= qti.label(:go_ids, "GO IDs (a.k.a Accessions), separated by semicolons") %>
         <%= qti.text_field(:go_ids) %>
         <%= link_to('Browse GO Terms','http://amigo.geneontology.org/cgi-bin/amigo/browse.cgi', :target => '_blank') %>
     </div>
     <div>
-        <%= qti.check_box(:filter_by_transcript_length) %>
         <%= label(:transcript_length, "Transcript length") %>
-        <%= qti.select(:transcript_length_comparison_sign, options_for_select(['>','>=','<','=<','='],'>')) %>
+        <%= qti.select(:transcript_length_comparison_sign, 
+            options_for_select(qti.object.available_transcript_length_comparison_signs,
+              qti.object.transcript_length_comparison_sign)) %>
         <%= qti.text_field(:transcript_length_value) %>
     </div>
     <div>
-        <%= qti.check_box(:filter_by_transcript_name) %>
         <%= qti.label(:transcript_name, "Transcript name:") %>
         <%= qti.text_field(:transcript_name) %>
     </div>

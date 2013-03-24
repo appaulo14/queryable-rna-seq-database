@@ -8,7 +8,7 @@ namespace :db do
 #    Rake::Task['db:test:prepare'].invoke
     #Rake::Task['db:test:populate'].invoke
      make_admin_user #1
-     make_paul_cain_unconfirmed_user
+     #make_paul_cain_unconfirmed_user
      make_unconfirmed_users(10)
      make_datasets('dev')
      make_genes #500
