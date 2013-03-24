@@ -15,17 +15,17 @@ class QueryAnalysisController < ApplicationController
     
     before_filter :confirm_datasets_available, 
       :only => [
-        :query_gene_exp_transcripts, :query_diff_exp_genes, 
+        :query_diff_exp_transcripts, :query_diff_exp_genes, 
+        :query_transcript_isoforms, 
         :query_using_blastn, :query_using_tblastn, :query_using_tblastx
       ]
     before_filter :confirm_transcript_isoform_datasets_available,
       :only => [:query_transcript_isoforms]
     before_filter :confirm_transcript_diff_exp_datasets_available, 
       :only => [:query_diff_exp_transcripts]
-    before_filter :confirm_transcript_diff_exp_datasets_available, 
-      :only => [:query_diff_exp_transcripts]
     before_filter :confirm_gene_diff_exp_datasets_available, 
       :only => [:query_diff_exp_genes]
+    
    
     def upload_main_menu
     end
@@ -305,7 +305,7 @@ class QueryAnalysisController < ApplicationController
     end
   end
   
-  def confirm_gene_diff_exp_datsets_available
+  def confirm_gene_diff_exp_datasets_available
     if current_user.datasets.where(:has_gene_diff_exp => true).empty?
       render :no_diff_exp_genes
     end
