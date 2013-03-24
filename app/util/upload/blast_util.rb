@@ -1,6 +1,7 @@
+require 'system_util.rb'
+require 'open3'
+  
 class BlastUtil
-  require 'system_util.rb'
-  require 'open3'
   
   def self.create_blast_database(fasta_file_path, dataset)
     SystemUtil.system!("#{Rails.root}/bin/blast/bin/makeblastdb " +

@@ -31,8 +31,8 @@
   <%= uf.check_box :has_transcript_isoforms %>
   <div class="sub-section rounded-corners" id="transcript_isoforms_section">
     <div class="sub-section-heading">Transcript Isoform Classification File</div>
-    <%= uf.label(:transcript_isoform_file, "isoforms.fpkm_tracking") %>
-    <%= uf.file_field :transcript_isoform_file, :class=>'rounded-corners' %>
+    <%= uf.label(:transcript_isoforms_file, "isoforms.fpkm_tracking") %>
+    <%= uf.file_field :transcript_isoforms_file, :class=>'rounded-corners' %>
     <br/>
   </div>
   <p><%= submit_tag('Upload files', :disable_with => 'Uploading...') %></p>

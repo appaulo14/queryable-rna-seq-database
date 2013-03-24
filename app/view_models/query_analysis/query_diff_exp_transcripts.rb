@@ -34,13 +34,13 @@ class QueryDiffExpTranscripts
     end
     #Set available datasets
     @names_and_ids_for_available_datasets = []
-    all_datasets_for_current_user = 
-        Dataset.find_all_by_user_id(@current_user.id)
-    all_datasets_for_current_user.each do |ds|
+    available_datasets = Dataset.where(:user_id => @current_user.id, 
+                                        :has_transcript_diff_exp => true)
+    available_datasets.each do |ds|
       @names_and_ids_for_available_datasets << [ds.name, ds.id]
     end
     #Set default values for the relavent blank attributes
-    @dataset_id = all_datasets_for_current_user.first.id if @dataset_id.blank?
+    @dataset_id = available_datasets.first.id if @dataset_id.blank?
     @fdr_or_p_value = :p_value if fdr_or_p_value.blank?
     @cutoff = '0.05' if cutoff.blank?
     @filter_by_go_terms = false if filter_by_go_terms.blank?

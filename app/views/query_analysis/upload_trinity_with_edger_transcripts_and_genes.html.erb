@@ -17,8 +17,8 @@
       Transcript Fasta File
       <%= image_tag('question_mark.png', :id=>'trinity_fasta_tooltip') %>
     </div>
-    <%= uf.label( :trinity_fasta_file, "Trinity.fasta file" ) %>
-    <%= uf.file_field :trinity_fasta_file %>
+    <%= uf.label( :transcripts_fasta_file, "Trinity.fasta file" ) %>
+    <%= uf.file_field :transcripts_fasta_file %>
   </div>
   <br/><br/>
   <div class="sub-section rounded-corners" id="differential_expression_section">
@@ -26,12 +26,13 @@
       Differential Expression Test Files
       <%= image_tag('question_mark.png', :id=>'differential_expression_tooltip')%>
     </div>
-    <div><b>Sample Comparison 1:</b>
-      <%= uf.label('transcript_diff_exp_files') %>
-      <%= file_field_tag('upload_trinity_with_edge_r_transcripts_and_genes[transcript_diff_exp_files][]') %>
-      <%= uf.label('gene_diff_exp_files') %>
-      <%= file_field_tag('upload_trinity_with_edge_r_transcripts_and_genes[gene_diff_exp_files][]') %>
+    <div id="sample_comparisons_div">
     </div>
+    <br/>
+    <%= button_tag("Add Another Sample Comparison",
+                  {:type => :button, :id => 'btn_add_sample_cmp'}) %>
+    <%= button_tag("Remove a Sample Comparison",
+                  {:type => :button, :id => 'btn_remove_sample_comparison'}) %>
   </div>
   <br/><br/>
   <div class="sub-section rounded-corners" id="differential_expression_section">

@@ -70,15 +70,15 @@ class QueryTranscriptIsoforms
     end
     #Set available datasets
     @names_and_ids_for_available_datasets = []
-    all_datasets_for_current_user = 
-        Dataset.find_all_by_user_id(@current_user.id)
-    all_datasets_for_current_user.each do |ds|
+    available_datasets = Dataset.where(:user_id => @current_user.id,
+                                        :has_transcript_isoforms => true)
+    available_datasets.each do |ds|
       @names_and_ids_for_available_datasets << [ds.name, ds.id]
     end
     @available_transcript_length_comparison_signs =
       AVAILABLE_TRANSCRIPT_LENGTH_COMPARISON_SIGNS
     #Set default values for the relavent blank attributes
-    @dataset_id = all_datasets_for_current_user.first.id if @dataset_id.blank?
+    @dataset_id = available_datasets.first.id if @dataset_id.blank?
     @transcript_length_value = '0' if transcript_length_value.blank?
     @transcript_length_comparison_sign = '>' if @transcript_length_comparison_sign.blank?
     #Set available samples for querying

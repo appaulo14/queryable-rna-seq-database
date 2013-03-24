@@ -3,6 +3,9 @@
 
 en:
   hello: "Hello world"
+  added_to_upload_queue: Your upload job has been queued. 
+                         You will receive an email when your data 
+                         has been processed and is ready to query.
   simple_captcha:
     label: "Confirm Your Humanity"
     message:

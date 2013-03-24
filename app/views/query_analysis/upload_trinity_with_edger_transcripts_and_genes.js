@@ -1,6 +1,10 @@
+SAMPLE_CMP_COUNT = 0;
+
 $(document).ready(function()
 {
-  
+  request_sample_cmp();
+  $('#btn_add_sample_cmp').click(request_sample_cmp);
+  $('#btn_remove_sample_cmp').click(remove_sample_cmp);
   create_tooltips();
 }); 
 
@@ -53,4 +57,20 @@ function create_tooltips(){
                   }
           });
   }
+}
+
+function request_sample_cmp(){
+  SAMPLE_CMP_COUNT += 1;
+  var request_str = 'add_sample_cmp_for_trinity_with_edger_transcripts_and_genes' +
+                    '?sample_cmp_count=' + SAMPLE_CMP_COUNT;
+  $.get(request_str,add_sample_cmp)
+}
+
+function add_sample_cmp(sample_cmp_html){
+  $('#sample_comparisons_div').append(sample_cmp_html);
+}
+
+function remove_sample_cmp(){
+  SAMPLE_CMP_COUNT -= 1;
+  $('#sample_comparisons_div').children().last().remove();
 }

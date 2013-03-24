@@ -64,11 +64,4 @@ class UploadFastaSequences
       "#{Rails.root}/db/blast_databases/#{Rails.env}/#{@dataset.id}"
     @dataset.save!
   end
-  
-  def transcripts_fasta_file_is_uploaded_file
-    return if @transcripts_fasta_file.nil?
-    if not @transcripts_fasta_file.kind_of? ActionDispatch::Http::UploadedFile
-      errors[:transcripts_fasta_file] << "Must be an uploaded file."
-    end
-  end
 end

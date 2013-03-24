@@ -5,6 +5,7 @@ class QueryAnalysisMailer < ActionMailer::Base
     @base_url = get_base_url
     @user = user
     @dataset = dataset
+    #Calculate the number of datasets uploaded
     transcripts_det_count = DifferentialExpressionTest.joins(
       :transcript
     ).where('transcripts.dataset_id' => dataset.id).count
@@ -12,6 +13,14 @@ class QueryAnalysisMailer < ActionMailer::Base
       :gene
     ).where('genes.dataset_id' => dataset.id).count
     @de_tests_count = transcripts_det_count + genes_det_count
+    #Calculate the number of transcripts uploaded
+    @fpkm_sample_count = FpkmSample.joins(
+      :transcript
+    ).where('transcripts.dataset_id' => dataset.id).count
+    #Calculate the number of GO terms
+    @go_terms_count = TranscriptHasGoTerm.joins(
+      :transcript
+    ).where('transcripts.dataset_id' => dataset.id).count 
     mail(:to => @user.email,
          # Name <email>
          :from => "Queryable RNA-Seq Database Mailer Bot <#{MAILER_BOT_CONFIG['email']}>",
@@ -21,11 +30,11 @@ class QueryAnalysisMailer < ActionMailer::Base
     #mail(:to => user.email, :subject => "Welcome to My Awesome Site")
   end
   
-  def notify_user_of_upload_failure(user, dataset, error_message)
+  def notify_user_of_upload_failure(user, dataset)
     @base_url = get_base_url
+    @report_issue_url = "#{@base_url}/home/report_issue"
     @user = user
     @dataset = dataset
-    @error_message = error_message
     mail(:to => @user.email,
          # Name <email>
          :from => "Queryable RNA-Seq Database Mailer Bot <#{MAILER_BOT_CONFIG['email']}>",

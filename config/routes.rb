@@ -49,6 +49,8 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
   get 'query_analysis/upload_trinity_with_edger_transcripts_and_genes'
   post 'query_analysis/upload_trinity_with_edger_transcripts_and_genes'
   
+  get 'query_analysis/add_sample_cmp_for_trinity_with_edger_transcripts_and_genes'
+  
   get 'query_analysis/upload_trinity_with_edger_transcripts'
   post 'query_analysis/upload_trinity_with_edger_transcripts'
 

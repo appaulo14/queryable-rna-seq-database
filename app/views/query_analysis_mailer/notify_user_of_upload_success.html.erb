@@ -12,10 +12,12 @@
     <h3>Dataset Information</h3>
     <div>Id = <%= @dataset.id %></div>
     <div>Name = <%= @dataset.name %></div>
+    <div>Number of Blast Databases = 1</div>
     <div>Number of Transcripts = <%= @dataset.transcripts.count %></div>
     <div>Number of Genes = <%= @dataset.genes.count %></div>
     <div>Number of Samples = <%= @dataset.samples.count %></div>
     <div>Number of differential expression tests = <%= @de_tests_count %></div>
+    <div>Number of fpkm samples = <%= @fpkm_sample_count %></div>
     <div>Number of GO Terms = <%= @go_terms_count %></div>
   </body>
 </html>

@@ -47,8 +47,7 @@ class UploadTrinityWithEdgeRTranscripts
     rescue Exception => ex
       BlastUtil.rollback_blast_database(@dataset)
       QueryAnalysisMailer.notify_user_of_upload_failure(@current_user,
-                                                          @dataset,
-                                                          ex.message)
+                                                          @dataset)
       raise ex
     ensure
       delete_uploaded_files()
@@ -68,7 +67,7 @@ class UploadTrinityWithEdgeRTranscripts
   def process_args_to_create_dataset()
     @dataset = Dataset.new(:user => @current_user,
                             :name => @dataset_name,
-                            :program_used => :trinity_with_edger)
+                            :program_used => 'trinity_with_edger')
     @dataset.has_transcript_diff_exp = true
     @dataset.has_gene_diff_exp = false
     @dataset.has_transcript_isoforms = false

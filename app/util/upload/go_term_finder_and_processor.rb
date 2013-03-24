@@ -7,28 +7,28 @@ class GoTermFinderAndProcessor
   end
   
   def find_go_terms()
-    run_blastx()
-    @go_terms_file_path = run_blast2go()
+    #run_blastx()
+    #@go_terms_file_path = run_blast2go()
   end
   
   def process_go_terms()
-    go_terms_file = File.open(@go_terms_file_path)
-    while not go_terms_file.eof?
-      line = go_terms_file.readline
-      next if line.blank?
-      line_regex = /\A(\S+)\s+(\S+)\s+(.+)\z/
-      (transcript_name, go_id, term) = line.strip.match(line_regex).captures
-      go_term = GoTerm.find_by_id(go_id)
-      if go_term.nil?
-        go_term = GoTerm.create!(:id => go_id, :term => term)
-      end
-      transcript = Transcript.where(:dataset_id => @dataset.id, 
-                                    :name_from_program => transcript_name)[0]
-      TranscriptHasGoTerm.create!(:transcript => transcript, 
-                                     :go_term => go_term)
-    end
-    go_terms_file.close
-    File.delete(go_terms_file.path)
+#    go_terms_file = File.open(@go_terms_file_path)
+#    while not go_terms_file.eof?
+#      line = go_terms_file.readline
+#      next if line.blank?
+#      line_regex = /\A(\S+)\s+(\S+)\s+(.+)\z/
+#      (transcript_name, go_id, term) = line.strip.match(line_regex).captures
+#      go_term = GoTerm.find_by_id(go_id)
+#      if go_term.nil?
+#        go_term = GoTerm.create!(:id => go_id, :term => term)
+#      end
+#      transcript = Transcript.where(:dataset_id => @dataset.id, 
+#                                    :name_from_program => transcript_name)[0]
+#      TranscriptHasGoTerm.create!(:transcript => transcript, 
+#                                     :go_term => go_term)
+#    end
+#    go_terms_file.close
+#    File.delete(go_terms_file.path)
   end
   
   private

@@ -17,22 +17,24 @@ class UploadTrinityWithEdgeRTranscriptsAndGenes
                 :transcript_fpkm_file,
                 :dataset_name
   
-  validates :transcripts_fasta_file, :presence => true,
-                                     :uploaded_file => true
-  
-  validates :gene_diff_exp_files, :presence => true,
-                                  :array => true,
-                                  :array_of_uploaded_files => true
-  validates :transcript_diff_exp_files, :presence => true,
-                                        :array => true,
-                                        :array_of_uploaded_files => true
-  validate :same_number_of_gene_and_transcript_diff_exp_files
-  
-  validates :gene_fpkm_file, :presence => true,
-                             :uploaded_file => true
-  validates :transcript_fpkm_file, :presence => true,
-                                   :uploaded_file => true
-  validates :dataset_name, :presence => true
+#  validates :transcripts_fasta_file, :presence => true,
+#                                     :uploaded_file => true
+#  
+#  validates :gene_diff_exp_files, :presence => true,
+#                                  :array => true,
+#                                  :array_of_uploaded_files => true
+#  #TODO:Validate name = XvsY???
+#  validates :transcript_diff_exp_files, :presence => true,
+#                                        :array => true,
+#                                        :array_of_uploaded_files => true
+#  validate :same_number_of_gene_and_transcript_diff_exp_files
+#  
+#  validates :gene_fpkm_file, :presence => true,
+#                             :uploaded_file => true
+#  validates :transcript_fpkm_file, :presence => true,
+#                                   :uploaded_file => true
+#  validates :dataset_name, :presence => true
+#                           :dataset_name_unique_for_user => true
   
   
   def initialize(current_user)
@@ -62,8 +64,7 @@ class UploadTrinityWithEdgeRTranscriptsAndGenes
     rescue Exception => ex
       BlastUtil.rollback_blast_database(@dataset)
       QueryAnalysisMailer.notify_user_of_upload_failure(@current_user,
-                                                          @dataset,
-                                                          ex.message)
+                                                          @dataset)
       raise ex
     ensure
       delete_uploaded_files()
@@ -83,7 +84,7 @@ class UploadTrinityWithEdgeRTranscriptsAndGenes
   def process_args_to_create_dataset()
     @dataset = Dataset.new(:user => @current_user,
                             :name => @dataset_name,
-                            :program_used => :trinity_with_edger)
+                            :program_used => 'trinity_with_edger')
     @dataset.has_transcript_diff_exp = true
     @dataset.has_gene_diff_exp = false
     @dataset.has_transcript_isoforms = false

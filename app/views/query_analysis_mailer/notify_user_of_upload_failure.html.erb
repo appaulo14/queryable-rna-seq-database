@@ -11,10 +11,11 @@
      An error occured and your dataset named "<%= @dataset.name %>" 
      could not be uploaded. 
      Please try again. If problems persist, contact the 
-     administrator.
+     administrator at 
+     <a href="<%= @report_issue_url %>"><%= @report_issue_url %></a>.
     </p>
     
-    <h3>Error Information</h3>
-    <p><%= @error_message %></p>
+<!--    <h3>Error Information</h3>-->
+<!--    <p><%= @error_message %></p>-->
   </body>
 </html>

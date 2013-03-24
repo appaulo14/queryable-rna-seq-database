@@ -20,17 +20,17 @@ class UploadCuffdiff
   #validate :validate_all_or_none_gene_files
   ##Validte for file presence only???
   
-  validates :transcripts_fasta_file, :presence => true,
-                                     :uploaded_file => true
-  #validate :transcripts_fasta_file_is_uploaded_file
-  
-  validates :has_diff_exp, :presence => true,
-                           :format => {:with => /\A[01]\z/}
-  
-  validates :has_transcript_isoforms, :presence => true,
-                                      :inclusion => {:in => ['1','0']}
-  
-  validates :dataset_name, :presence => true
+#  validates :transcripts_fasta_file, :presence => true,
+#                                     :uploaded_file => true
+#  
+#  validates :has_diff_exp, :presence => true,
+#                           :view_model_boolean => true
+#  
+#  validates :has_transcript_isoforms, :presence => true,
+#                                      :view_model_boolean => true
+#  
+#  validates :dataset_name, :presence => true
+#                           :dataset_name_unique_for_user => true
   
   def initialize(current_user)
     @current_user = current_user
@@ -64,8 +64,7 @@ class UploadCuffdiff
     rescue Exception => ex
       BlastUtil.rollback_blast_database(@dataset)
       QueryAnalysisMailer.notify_user_of_upload_failure(@current_user,
-                                                          @dataset,
-                                                          ex.message)
+                                                          @dataset)
       raise ex
     ensure
       delete_uploaded_files()
@@ -108,7 +107,7 @@ class UploadCuffdiff
   def process_args_to_create_dataset()
     @dataset = Dataset.new(:user => @current_user,
                           :name => @dataset_name,
-                          :program_used => :cuffdiff)
+                          :program_used => 'cuffdiff')
     if @has_diff_exp == '1'
       @dataset.has_transcript_diff_exp = true
       @dataset.has_gene_diff_exp = true

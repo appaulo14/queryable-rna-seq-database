@@ -33,9 +33,9 @@ function has_diff_exp_checked_changed(){
 function has_transcript_isoforms_checked_changed(){
   has_transcript_isoforms = $('#upload_cuffdiff_has_transcript_isoforms');
   if (has_transcript_isoforms.is(':checked')){
-    $('#upload_cuffdiff_transcript_isoform_file').removeAttr("disabled");
+    $('#upload_cuffdiff_transcript_isoforms_file').removeAttr("disabled");
   }
   else{
-    $('#upload_cuffdiff_transcript_isoform_file').attr("disabled", "disabled");
+    $('#upload_cuffdiff_transcript_isoforms_file').attr("disabled", "disabled");
   }
 }

@@ -1,3 +1,5 @@
+require 'upload/uploaded_trinity_diff_exp_file.rb'
+
 class TrinityDiffExpFileProcessor
   
   def initialize(uploaded_file, dataset)

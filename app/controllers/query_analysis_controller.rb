@@ -38,14 +38,14 @@ class QueryAnalysisController < ApplicationController
         @upload_cuffdiff = UploadCuffdiff.new(current_user)
         @upload_cuffdiff.set_attributes_and_defaults()
       elsif request.post?
-        redirect_to('/')
         @upload_cuffdiff = UploadCuffdiff.new(current_user)
         @upload_cuffdiff.set_attributes_and_defaults(params[:upload_cuffdiff])
         if (@upload_cuffdiff.valid?)
           SuckerPunch::Queue[:upload_cuffdiff_queue].async.perform(@upload_cuffdiff)
-          #@upload_cuffdiff.save!
-        else
-          flash[:alert] = 'Validation failed'
+          #Reset the upload cuffdiff form
+          @upload_cuffdiff = UploadCuffdiff.new(current_user)
+          @upload_cuffdiff.set_attributes_and_defaults()
+          flash[:notice] = I18n.t :added_to_upload_queue
         end
       end
     end
@@ -64,14 +64,28 @@ class QueryAnalysisController < ApplicationController
     def upload_trinity_with_edger_transcripts_and_genes
       if (request.get?)
         @upload_files = UploadTrinityWithEdgeRTranscriptsAndGenes.new(current_user)
-        @upload_files.set_attributes_and_defaults({})
+        @upload_files.set_attributes_and_defaults()
       elsif (request.post?)
         @upload_files = UploadTrinityWithEdgeRTranscriptsAndGenes.new(current_user)
-        @upload_files.set_attributes_and_defaults(params[:upload_trinity_with_edger_transcripts_and_genes])
-        @upload_files.save!
+        upload_params = params[:upload_trinity_with_edge_r_transcripts_and_genes]
+        @upload_files.set_attributes_and_defaults(upload_params)
+        if @upload_files.valid?
+          queue_name = :upload_trinity_with_edger_transcripts_and_genes_queue
+          SuckerPunch::Queue[queue_name].async.perform(@upload_files)
+          #Reset the upload form
+          @upload_files = UploadTrinityWithEdgeRTranscriptsAndGenes.new(current_user)
+          @upload_files.set_attributes_and_defaults()
+          flash[:notice] = I18n.t :added_to_upload_queue
+        end
       end
     end
-
+    
+    def add_sample_cmp_for_trinity_with_edger_transcripts_and_genes
+      @sample_cmp_count = params[:sample_cmp_count]
+      render :partial => 'trinity_with_edger_transcript_and_gene_sample_cmp', 
+             :locals  => {:object => @sample_cmp_count}
+    end
+    
     def upload_fasta_sequences
     end
 
