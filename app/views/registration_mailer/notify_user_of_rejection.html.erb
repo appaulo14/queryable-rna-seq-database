@@ -12,9 +12,13 @@
       Queryable RNA-Seq Database. 
     </p>
   
-    <% if not @optional_note_to_user.nil? %>
+    <% if not @optional_note_to_user.blank? %>
       <h3>Additional Note</h3>
       <p><%= @optional_note_to_user %></p>
     <% end %>
+    
+    <p>Sincerely,</p>
+    
+    <p>Queryable RNA-Seq Database Mailer Bot</p>
   </body>
 </html>

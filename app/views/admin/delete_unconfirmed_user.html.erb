@@ -1,16 +1,16 @@
-<%= render 'shared/error_messages', :object => @delete_unconfirm_user %>
-<%= form_for(@delete_unconfirm_user, :url => 'delete_unconfirm_user') do |duu| %>
+<%= render 'shared/error_messages', :object => @delete_unconfirmed_user %>
+<%= form_for(@delete_unconfirmed_user, :url => 'delete_unconfirmed_user') do |duu| %>
   <h1>Delete Unconfirmed User <%= duu.object.user.id %> (<%= duu.object.user.name %>)</h1>
-  <table>
-    <tr><td>Id</td><td><%= duu.object.user.id %></td></tr>
-    <tr><td>Name</td><td><%= duu.object.user.name %></td></tr>
-    <tr><td>Email Address</td><td><%= duu.object.user.email %></td></tr>
-    <tr><td>Why they want to use the system</td><td><%= duu.object.user.description %></td></tr>
+  <table border="1">
+    <tr><th>Id</th><td><%= duu.object.user.id %></td></tr>
+    <tr><th>Name</td><td><%= duu.object.user.name %></td></tr>
+    <tr><th>Email Address</th><td><%= duu.object.user.email %></td></tr>
+    <tr><th>Why they want to use the system</th><td><%= duu.object.user.description %></td></tr>
   </table>
-  <%= cu.hidden_field :user_id, :value => duu.object.user.id %>
+  <%= duu.hidden_field :user_id, :value => duu.object.user.id %>
   <p>
-    <%= cu.label :optional_note_to_user, 'Optional Note to User' %><br/>
-    <%= cu.text_area :optional_note_to_user, :size => '80x10' %>
+    <%= duu.label :optional_note_to_user, 'Optional Note to User' %><br/>
+    <%= duu.text_area :optional_note_to_user, :size => '80x10' %>
   </p>
   <p><%= submit_tag('Send Rejection Email And Delete', :disable_with => "Sending And Deleting...") %></p>
 <% end %>

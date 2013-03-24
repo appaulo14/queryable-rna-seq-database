@@ -29,15 +29,15 @@ class AdminController < ApplicationController
   
   def confirm_user
     if request.get?
-      @confirm_user = ConfirmUser.new(params)
+      @confirm_user = ConfirmUser.new({:user_id => params[:user_id]})
       if not @confirm_user.valid?
         flash[:alert] = 'Select an unconfirmed user'
         redirect_to :action => 'view_unconfirmed_users'
       end
     elsif request.post?
-      @confirm_user = Confirm_User.new(params[:confirm_user])
+      @confirm_user = ConfirmUser.new(params[:confirm_user])
       if @confirm_user.valid?
-        @confirm_user.send_confirmation_emails!
+        @confirm_user.send_confirmation_emails
         flash[:notice] = 'Emails successfully sent'
         redirect_to :action => 'view_unconfirmed_users'
       end
@@ -46,13 +46,15 @@ class AdminController < ApplicationController
   
   def delete_unconfirmed_user
     if request.get?
-      @delete_unconfirmed_user = DeleteUnConfirmUser.new(params)
+      @delete_unconfirmed_user = 
+          DeleteUnconfirmedUser.new({:user_id => params[:user_id]})
       if not @delete_unconfirmed_user.valid?
         flash[:alert] = 'Select an unconfirmed user'
         redirect_to :action => 'view_unconfirmed_users'
       end
     elsif request.post?
-      @delete_unconfirmed_user = DeleteUnConfirmUser.new(params[:delete_unconfirm_user])
+      @delete_unconfirmed_user = 
+          DeleteUnconfirmedUser.new(params[:delete_unconfirmed_user])
       if @delete_unconfirmed_user.valid?
         @delete_unconfirmed_user.send_send_rejection_email_and_destroy_user
         flash[:notice] = 'Email successfully sent and user destroyed'

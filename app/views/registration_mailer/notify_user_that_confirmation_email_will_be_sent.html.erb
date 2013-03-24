@@ -11,12 +11,18 @@
       You have been approved to use the Queryable RNA-Seq Database. 
       A confirmation email should be arriving shortly to give you access 
       to the system. If it does 
-      not arrive within the next few hours feel free to notify me.
+      not arrive within a day then contact the administrator using this form:
+      <a href="<%= @report_issue_url %>"><%= @report_issue_url %></a>. 
+      Do not reply to this email because it is not monitored.
     </p>
     
-    <% if not @optional_note_to_user.nil? %>
+    <% if not @optional_note_to_user.blank? %>
       <h3>Additional Note</h3>
       <p><%= @optional_note_to_user %></p>
     <% end %>
+    
+    <p>Sincerely,</p>
+    
+    <p>Queryable RNA-Seq Database Mailer Bot</p>
   </body>
 </html>

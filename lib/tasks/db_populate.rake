@@ -8,6 +8,7 @@ namespace :db do
 #    Rake::Task['db:test:prepare'].invoke
     #Rake::Task['db:test:populate'].invoke
      make_admin_user #1
+     make_paul_cain_unconfirmed_user
      make_unconfirmed_users(10)
      make_datasets('dev')
      make_genes #500
@@ -31,6 +32,20 @@ def make_admin_user
   @user.admin = true
   @user.skip_confirmation!
   @user.save!
+  puts 'Done'
+end
+
+def make_paul_cain_unconfirmed_user
+  print 'Making paul cain unconfirmed user.'
+  user = User.new(:email => "paul_edward_cain@outlook.com")
+  user.name = Faker::Name.name
+  user.description = Faker::Lorem.paragraph
+  user.password = 'cis895'
+  user.password_confirmation = 'cis895'
+  user.skip_confirmation!
+  user.save!
+  user.confirmed_at = nil
+  user.save!
   puts 'Done'
 end
 
@@ -62,7 +77,7 @@ def make_datasets(env)
                     :has_transcript_diff_exp => true,
                     :has_transcript_isoforms => true,
                     :has_gene_diff_exp       => true,
-                    :program_used            => :cuffdiff)
+                    :program_used            => 'cuffdiff')
   end
   puts 'Done'
 end

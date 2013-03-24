@@ -7,24 +7,20 @@ class DeleteUnconfirmedUser
   
   attr_reader :user
   
-  vaidates :user_id, :presence => true,
-                     :numericality => {
-                        :only_integer => true, :greater_than => 0 
-                     }
- 
-  validate :user, :presence => true
+  validates :user_id, :presence => true
+  validates :user, :presence => true,
+                   :unconfirmed_user => true
   
   def initialize(attributes = {})
     #Load in any values from the form
       attributes.each do |name, value|
           send("#{name}=", value)
       end
-      @user = User.find(@user_id)
+      @user = User.find_by_id(@user_id)
   end
   
   def send_send_rejection_email_and_destroy_user
     return if not self.valid?
-    user = User.find_by_id(@user_id)
     RegistrationMailer.notify_user_of_rejection(user, @optional_note_to_user)
     user.destroy
   end

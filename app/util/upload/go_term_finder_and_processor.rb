@@ -42,7 +42,7 @@ class GoTermFinderAndProcessor
                     "-remote -db nr " +
                     "-query #{@uploaded_transcripts_file.tempfile.path} " +
                     "-out #{@blast_xml_output_file.path} " +
-                    "-show_gis -outfmt '5' ")
+                    "-show_gis -outfmt '5' -evalue 1e-6")
     #Raise an exception if there were errors with blastx
     if not stderr.blank?
       raise StandardError, stderr
@@ -54,7 +54,7 @@ class GoTermFinderAndProcessor
     blast2go_output_file.close
     blast2go_dir = "#{Rails.root}/bin/blast2go"
     stdout, stderr, status = 
-      Open3.capture3("java -Xmx4000m " +
+      Open3.capture3("java -Xmx2000m " +
                       "-cp *:#{blast2go_dir}/ext/*:#{blast2go_dir}/* " +
                       "es.blast2go.prog.B2GAnnotPipe " +
                       "-in #{@blast_xml_output_file.path} " +

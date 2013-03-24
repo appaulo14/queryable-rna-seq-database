@@ -1,16 +1,16 @@
 <%= render 'shared/error_messages', :object => @confirm_user %>
 <%= form_for(@confirm_user, :url => 'confirm_user') do |cu| %>
   <h1>Confirm User <%= cu.object.user.id %> (<%= cu.object.user.name %>)</h1>
-  <table>
-    <tr><td>Id</td><td><%= cu.object.user.id %></td></tr>
-    <tr><td>Name</td><td><%= cu.object.user.name %></td></tr>
-    <tr><td>Email Address</td><td><%= cu.object.user.email %></td></tr>
-    <tr><td>Why they want to use the system</td><td><%= cu.object.user.description %></td></tr>
+  <table border="1">
+    <tr><th>Id</th><td><%= cu.object.user.id %></td></tr>
+    <tr><th>Name</th><td><%= cu.object.user.name %></td></tr>
+    <tr><th>Email Address</th><td><%= cu.object.user.email %></td></tr>
+    <tr><th>Why they want to use the system</th><td><%= cu.object.user.description %></td></tr>
   </table>
-  <%= cu.hidden_field :user_id, :value => cu.object.user %>
+  <%= cu.hidden_field :user_id, :value => cu.object.user.id %>
   <p>
     <%= cu.label :optional_note_to_user, 'Optional Note to User' %><br/>
     <%= cu.text_area :optional_note_to_user, :size => '80x10' %>
   </p>
-  <p><%= submit_tag('Send confirmation email', :disable_with => "Sending...") %></p>
+  <p><%= submit_tag('Send confirmation emails', :disable_with => "Sending...") %></p>
 <% end %>

@@ -34,10 +34,11 @@
 
 .DS_Store
 
-#Ignore config files
-*.yml
-*.yml~
+#Ignore config files containing passwords
+mailer_bot_config.yml
+database.yml
 
+#Ingore the SSL certificate files
 cert
 cert/*
 

@@ -18,6 +18,7 @@ class RegistrationMailer < ActionMailer::Base
   end
   
   def notify_user_that_confirmation_email_will_be_sent(user, optional_note_to_user)
+    @report_issue_url = "#{get_base_url}/home/report_issue"
     @user = user
     @optional_note_to_user = optional_note_to_user
     subject = 'You Have Been Approved to User the Queryable RNA-Seq Database'

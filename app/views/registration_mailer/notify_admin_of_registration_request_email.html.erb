@@ -6,12 +6,13 @@
   </head>
   <body>
     <h1>New User Registration Request Received for user: <%= @user.name %></h1>
-    <table>
-      <tr><td>Id</td><td><%= @user.id %></td></tr>
-      <tr><td>Name</td><td><%= @user.name %></td></tr>
-      <tr><td>Email Address</td><td><%= @user.email %></td></tr>
-      <tr><td>Why they want to use the system</td><td><%= @user.description %></td></tr>
+    <table border="1">
+      <tr><th>Id</th><td><%= @user.id %></td></tr>
+      <tr><th>Name</th><td><%= @user.name %></td></tr>
+      <tr><th>Email Address</th><td><%= @user.email %></td></tr>
+      <tr><th>Why they want to use the system</th><td><%= @user.description %></td></tr>
     </table>
+    <br/>
     <div>
       <%= link_to('Go to confirm user page',
                   "#{@base_url}/admin/confirm_user?user_id=#{@user.id}") %>
