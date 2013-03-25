@@ -137,6 +137,7 @@ def make_transcripts_and_blast_databases(env)
     #Create the blast database file for the dataset and save its location
     is_success = system("bin/blast/bin/makeblastdb " +
                      "-in #{tmpfasta.path} -title #{ds.id}_db " +
+                     "-parse_seqids " +
                      "-out #{ds.blast_db_location} -hash_index -dbtype nucl ")
     exit if is_success == false
     #Close and unlink the temporary file when finished

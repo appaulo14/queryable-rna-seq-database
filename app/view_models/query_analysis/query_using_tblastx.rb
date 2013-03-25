@@ -15,10 +15,10 @@ class QueryUsingTblastx #< Blast_Query::Base
                 :available_matrices, :available_num_alignments,
                 :available_genetic_codes
     
-  AVAILABLE_NUM_ALIGNMENTS = [0,10,50,100,250,500]  
+  AVAILABLE_NUM_ALIGNMENTS = [0,10,50,'100',250,500]  
   AVAILABLE_WORD_SIZES = [2,3]
   AVAILABLE_GENETIC_CODES = {
-    'Standard (1)' => 1,
+    'Standard (1)' => '1',
     'Vertebrate Mitochondrial (2)' => 2,
     'Yeast Mitochondrial (3)' => 3,
     'Mold Mitochondrial (4)' => 4,
@@ -54,7 +54,7 @@ class QueryUsingTblastx #< Blast_Query::Base
                                           }
   validate  :fasta_sequence_or_file_is_present_as_selected
   
-  validates :user_soft_masking, :presence => true,
+  validates :use_soft_masking, :presence => true,
                                 :view_model_boolean => true
   validates :use_lowercase_masking, :presence => true,
                                     :view_model_boolean => true

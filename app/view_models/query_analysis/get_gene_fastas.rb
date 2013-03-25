@@ -33,7 +33,7 @@ class GetGeneFastas
     else
       seq_ids = []
       gene.transcripts.each do |t|
-        seq_ids << t.blast_seq_id
+        seq_ids << t.name_from_program
       end
       stdin, stdout, stderr = 
         Open3.popen3('bin/blast/bin/blastdbcmd', 

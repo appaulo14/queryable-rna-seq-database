@@ -1,6 +1,6 @@
 <%= render 'shared/error_messages', :object => @query_using_tblastx %>
-<script type='text/javascript' src='tblastx.js'></script>
-<%= form_for(@query_using_tblastx,{:url => "tblastx"}) do |bq| %>
+<script type='text/javascript' src='query_using_tblastx.js'></script>
+<%= form_for(@query_using_tblastx,{:url => "query_using_tblastx"}) do |bq| %>
   <h2>
     Choose Data Set to Search Using TBlastx
     <%= image_tag('question_mark.png', :id=>'tblastx_qtip')%>
