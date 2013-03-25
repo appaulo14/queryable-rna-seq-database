@@ -2,6 +2,11 @@ require 'upload/trinity_diff_exp_file_processor.rb'
 
 class TrinityGeneDiffExpFileProcessor < TrinityDiffExpFileProcessor
   
+  def initialize(uploaded_file, dataset)
+    super
+    @sample_type = 'gene'
+  end
+  
   def process_file()
     super
     while not @uploaded_diff_exp_file.eof?

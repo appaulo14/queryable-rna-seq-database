@@ -1,0 +1,19 @@
+<%= render 'shared/error_messages', :object => @upload %>
+<%= form_for @upload, {:url => "upload_fasta_sequences",:remote => true} do |u| %>
+  <h1>Upload Your Fasta Sequences</h1>
+  
+  <div class="sub-section rounded-corners" id="dataset_name_section">
+    <div class="sub-section-heading">Name Your Dataset</div>
+    <p style="text-align:center">
+      <%= label(:dataset_name, "Dataset Name") %>
+      <%= u.text_field :dataset_name %>
+    </p>
+  </div>
+  <br/><br/>
+  <div class="sub-section rounded-corners" id="transcript_fasta_section">
+    <div class="sub-section-heading">Transcript Fasta File</div>
+    <%= label(:transcripts_fasta, "Transcripts fasta") %>
+    <%= u.file_field :transcripts_fasta_file %><br/>
+  </div>
+  <p><%= submit_tag('Upload files', :disable_with => 'Uploading...') %></p>
+<% end %>

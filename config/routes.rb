@@ -45,6 +45,12 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
 
   get  'query_analysis/upload_cuffdiff'
   post 'query_analysis/upload_cuffdiff'
+  
+  get  'query_analysis/upload_fasta_sequences'
+  post 'query_analysis/upload_fasta_sequences'
+  
+  get  'query_analysis/upload_trinity_with_edger'
+  post 'query_analysis/upload_trinity_with_edger'
 
   get 'query_analysis/upload_trinity_with_edger_transcripts_and_genes'
   post 'query_analysis/upload_trinity_with_edger_transcripts_and_genes'

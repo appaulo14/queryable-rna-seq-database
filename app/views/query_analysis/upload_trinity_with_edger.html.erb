@@ -1,0 +1,67 @@
+<script src='upload_trinity_with_edger_transcripts_and_genes.js'
+  type='text/javascript' ></script>
+<%= render 'shared/error_messages', :object => @upload %>
+<%= form_for( @upload,{:url => "upload_trinity_with_edger"} ) do |u| %>
+<h1>Upload Your Trinity With EdgeR Data</h1>
+
+<div class="sub-section rounded-corners" id="dataset_name_section">
+  <div class="sub-section-heading">Name Your Dataset</div>
+  <p style="text-align:center">
+    <%= u.label(:dataset_name, "Dataset Name") %>
+    <%= u.text_field :dataset_name %>
+  </p>
+</div>
+<br/><br/>
+<div class="sub-section rounded-corners" id="transcript_fasta_section">
+  <div class="sub-section-heading">
+    Transcript Fasta File
+    <%= image_tag('question_mark.png', :id=>'trinity_fasta_tooltip') %>
+  </div>
+  <%= u.label( :transcripts_fasta_file, "Trinity.fasta file" ) %>
+  <%= u.file_field :transcripts_fasta_file %>
+</div>
+<br/><br/>
+<div class="sub-section rounded-corners" id="transcript_section">
+  <div class="sub-section-heading">
+    Transcript FPKM File
+    <%= image_tag('question_mark.png', :id=>'fpkm_tooltip') %>
+  </div>
+  <%= u.label(:transcript_fpkm_file, 'Transcript FPKM File') %>
+  <%= u.file_field :transcript_fpkm_file %><br/>
+  <div class="sub-section-heading">
+    Differential Expression Test Files
+    <%= image_tag('question_mark.png', :id=>'differential_expression_tooltip')%>
+  </div>
+  <div id="transcript_sample_comparisons_div">
+  </div>
+  <br/>
+  <%= button_tag("Add Another Sample Comparison",
+                {:type => :button, :id => 'btn_add_sample_cmp'}) %>
+  <%= button_tag("Remove a Sample Comparison",
+                {:type => :button, :id => 'btn_remove_sample_comparison'}) %>
+</div>
+<div class="sub-section rounded-corners" id="gene_section">
+  <div class="sub-section-heading">
+    Gene FPKM File
+    <%= image_tag('question_mark.png', :id=>'fpkm_tooltip') %>
+  </div>
+  <div class="sub-section rounded-corners">
+    <%= u.label(:gene_fpkm_file, 'Gene FPKM File') %>
+    <%= u.file_field :gene_fpkm_file %>
+  </div>
+  <div class="sub-section-heading">
+    Differential Expression Test Files
+    <%= image_tag('question_mark.png', :id=>'differential_expression_tooltip')%>
+  </div>
+  <div id="gene_sample_comparisons_div">
+  </div>
+  <br/>
+  <%= button_tag("Add Another Sample Comparison",
+                {:type => :button, :id => 'btn_add_sample_cmp'}) %>
+  <%= button_tag("Remove a Sample Comparison",
+                {:type => :button, :id => 'btn_remove_sample_comparison'}) %>
+</div>
+
+
+
+

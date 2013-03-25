@@ -1,15 +1,17 @@
+require 'bio'
+require 'query_analysis/upload_cuffdiff.rb'
+require 'query_analysis/upload_fasta_sequences.rb'
+require 'query_analysis/upload_trinity_with_edger_transcripts_and_genes.rb'
+require 'query_analysis/query_diff_exp_transcripts.rb'
+require 'query_analysis/query_transcript_isoforms.rb'
+require 'query_analysis/query_diff_exp_genes.rb'
+require 'query_analysis/get_gene_fastas.rb'
+require 'query_analysis/get_transcript_fasta.rb'
+require 'query_analysis/query_using_blastn.rb'
+require 'query_analysis/query_using_tblastn.rb'
+require 'query_analysis/query_using_tblastx.rb'
+
 class QueryAnalysisController < ApplicationController
-    require 'bio'
-    require 'query_analysis/upload_cuffdiff.rb'
-    require 'query_analysis/upload_trinity_with_edger_transcripts_and_genes.rb'
-    require 'query_analysis/query_diff_exp_transcripts.rb'
-    require 'query_analysis/query_transcript_isoforms.rb'
-    require 'query_analysis/query_diff_exp_genes.rb'
-    require 'query_analysis/get_gene_fastas.rb'
-    require 'query_analysis/get_transcript_fasta.rb'
-    require 'query_analysis/query_using_blastn.rb'
-    require 'query_analysis/query_using_tblastn.rb'
-    require 'query_analysis/query_using_tblastx.rb'
     
     before_filter :authenticate_user!
     
@@ -45,6 +47,42 @@ class QueryAnalysisController < ApplicationController
           #Reset the upload cuffdiff form
           @upload_cuffdiff = UploadCuffdiff.new(current_user)
           @upload_cuffdiff.set_attributes_and_defaults()
+          flash[:notice] = I18n.t :added_to_upload_queue
+        end
+      end
+    end
+    
+    def upload_fasta_sequences
+      if request.get?
+        @upload = UploadFastaSequences.new(current_user)
+        @upload.set_attributes_and_defaults()
+      elsif request.post?
+        @upload = UploadFastaSequences.new(current_user)
+        @upload.set_attributes_and_defaults(params[:upload_fasta_sequences])
+        if (@upload.valid?)
+          SuckerPunch::Queue[:upload_fasta_sequences_queue].async.perform(@upload)
+          #Reset the upload cuffdiff form
+          @upload = UploadFastaSequences.new(current_user)
+          @upload.set_attributes_and_defaults()
+          flash[:notice] = I18n.t :added_to_upload_queue
+        end
+      end
+    end
+    
+    def upload_trinity_with_edger
+      if (request.get?)
+        @upload = UploadTrinityWithEdgeR.new(current_user)
+        @upload.set_attributes_and_defaults()
+      elsif (request.post?)
+        @upload = UploadTrinityWithEdgeR.new(current_user)
+        upload_params = params[:upload_trinity_with_edge_]
+        @upload.set_attributes_and_defaults(upload_params)
+        if @upload.valid?
+          queue_name = :upload_trinity_with_edger_queue
+          SuckerPunch::Queue[queue_name].async.perform(@upload)
+          #Reset the upload form
+          @upload = UploadTrinityWithEdgeR.new(current_user)
+          @upload.set_attributes_and_defaults()
           flash[:notice] = I18n.t :added_to_upload_queue
         end
       end
@@ -86,9 +124,6 @@ class QueryAnalysisController < ApplicationController
              :locals  => {:object => @sample_cmp_count}
     end
     
-    def upload_fasta_sequences
-    end
-
     def query_diff_exp_transcripts
       #Create the view model, giving the current user
       @qdet = QueryDiffExpTranscripts.new(current_user)

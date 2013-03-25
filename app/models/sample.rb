@@ -8,10 +8,14 @@
 #
 
 class Sample < ActiveRecord::Base
-  attr_accessible :dataset, :name
+  attr_accessible :dataset, :name, :sample_type
+  
+  AVAILABLE_SAMPLE_TYPES = ['transcript','gene','both']
   
   validates :name, :presence => true
   validates :dataset, :presence => true
+  validates :sample_type, :presence => true,
+                   :inclusion => {:in => AVAILABLE_SAMPLE_TYPES}
   
   belongs_to :dataset
   has_many :fpkm_samples, :dependent => :destroy

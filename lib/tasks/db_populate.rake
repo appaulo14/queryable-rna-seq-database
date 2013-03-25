@@ -150,7 +150,8 @@ def make_samples
   Dataset.all.each do |ds|
     3.times do |n|
       Sample.create!(:dataset => ds,
-                     :name => Faker::Lorem.word)
+                     :name => Faker::Lorem.word,
+                     :sample_type => 'both')
     end
   end
   puts 'Done'

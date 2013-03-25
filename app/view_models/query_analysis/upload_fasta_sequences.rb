@@ -1,3 +1,5 @@
+require 'upload/blast_util.rb'
+
 class UploadFastaSequences
   include ActiveModel::Validations
   include ActiveModel::Conversion
@@ -26,14 +28,13 @@ class UploadFastaSequences
     begin
       ActiveRecord::Base.transaction do   #Transactions work with sub-methods 
         process_args_to_create_dataset()
-        UploadUtil.create_blast_database(@transcripts_fasta_file.tempfile.path,
+        BlastUtil.create_blast_database(@transcripts_fasta_file.tempfile.path,
                                           @dataset)
       end
     rescue Exception => ex
-      UploadUtil.rollback_blast_database(@dataset)
+      BlastUtil.rollback_blast_database(@dataset)
       QueryAnalysisMailer.notify_user_of_upload_failure(@current_user,
-                                                          @dataset,
-                                                          ex.message)
+                                                          @dataset)
       raise ex
     ensure
       File.delete(@transcripts_fasta_file.tempfile.path)
@@ -53,7 +54,7 @@ class UploadFastaSequences
   def process_args_to_create_dataset()
     @dataset = Dataset.new(:user => @current_user,
                             :name => @dataset_name,
-                            :program_used => :generic_fasta_file)
+                            :program_used => 'generic_fasta_file')
     @dataset.has_transcript_diff_exp = false
     @dataset.has_gene_diff_exp = false
     @dataset.has_transcript_isoforms = false

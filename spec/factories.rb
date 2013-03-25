@@ -1,4 +1,5 @@
 require 'query_analysis/upload_cuffdiff.rb'
+require 'query_analysis/upload_trinity_with_edger.rb'
 require 'spec_helper'
 
 FactoryGirl.define do
@@ -69,6 +70,7 @@ FactoryGirl.define do
     
     factory :sample do
       name                      {Faker::Name.name}
+      sample_type                      'both'
       dataset
     end
     
@@ -192,6 +194,19 @@ FactoryGirl.define do
       transcript_diff_exp_files {get_trinity_diff_exp_files('trans', 4)}
       gene_fpkm_file            {get_trinity_gene_fpkm_file(4)}
       transcript_fpkm_file      {get_trinity_transcript_fpkm_file(4)}
+      dataset_name              {Faker::Name.name}
+    end
+    
+    factory :upload_trinity_with_edger_with_2_samples, 
+    class: UploadTrinityWithEdgeR do
+      initialize_with           {new(FactoryGirl.create(:user))}
+      after(:build)             {|object| object.set_attributes_and_defaults() }
+      transcripts_fasta_file    {get_uploaded_trinity_fasta_file()}
+      gene_diff_exp_files       {get_trinity_diff_exp_files('gene', 2)}
+      transcript_diff_exp_files {get_trinity_diff_exp_files('trans', 2)}
+      gene_fpkm_file            {get_trinity_gene_fpkm_file(2)}
+      transcript_fpkm_file      {get_trinity_transcript_fpkm_file(2)}
+      has_gene_diff_exp         '1'
       dataset_name              {Faker::Name.name}
     end
 end

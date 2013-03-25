@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'view_models/shared_examples.rb'
+require 'upload/blast_util.rb'
 
 describe UploadCuffdiff do
   before(:all) do
@@ -74,15 +75,15 @@ describe UploadCuffdiff do
       @it.stub(:process_transcript_isoforms_file)
       @it.stub(:find_and_process_go_terms)
       @it.stub(:delete_uploaded_files)
-      UploadUtil.stub(:create_blast_database)
-      UploadUtil.stub(:rollback_blast_database)
+      BlastUtil.stub(:create_blast_database)
+      BlastUtil.stub(:rollback_blast_database)
       QueryAnalysisMailer.stub(:notify_user_of_upload_success)
       QueryAnalysisMailer.stub(:notify_user_of_upload_failure)
     end
     
     shared_examples_for 'all options when an exception occurs' do
       before (:each) do
-        UploadUtil.stub(:create_blast_database){raise SeededTestException}
+        BlastUtil.stub(:create_blast_database){raise SeededTestException}
       end
       
       it 'should call QueryAnalysisMailer.notify_user_of_upload_failure' do
@@ -101,7 +102,7 @@ describe UploadCuffdiff do
       end
       it 'should rollback the blast database' do
         begin
-          UploadUtil.should_receive(:rollback_blast_database)
+          BlastUtil.should_receive(:rollback_blast_database)
           @it.save
         rescue SeededTestException => ex
         end
@@ -176,8 +177,8 @@ describe UploadCuffdiff do
         @it.should_receive(:process_args_to_create_dataset)
         @it.save
       end
-      it 'should call UploadUtil.create_blast_database' do
-        UploadUtil.should_receive(:create_blast_database)
+      it 'should call BlastUtil.create_blast_database' do
+        BlastUtil.should_receive(:create_blast_database)
         @it.save
       end
       it 'should call QueryAnalysisMailer.notify_user_of_upload_success' do
@@ -188,8 +189,8 @@ describe UploadCuffdiff do
         QueryAnalysisMailer.should_not_receive(:notify_user_of_upload_failure)
         @it.save
       end
-      it 'should not call UploadUtil.rollback_blast_database' do
-        UploadUtil.should_not_receive(:rollback_blast_database)
+      it 'should not call BlastUtil.rollback_blast_database' do
+        BlastUtil.should_not_receive(:rollback_blast_database)
         @it.save
       end
       it 'should delete the uploaded files' do
@@ -374,7 +375,7 @@ describe UploadCuffdiff do
       before(:each) do 
         @it = FactoryGirl.build(:upload_cuffdiff_with_2_samples)
         #Stub the generate go terms method so we don't need to run blast2go
-        UploadUtil.stub(:generate_go_terms){
+        BlastUtil.stub(:generate_go_terms){
           "#{@test_files_path}/2_samples/go_terms.annot"
         }
       end
@@ -584,7 +585,7 @@ describe UploadCuffdiff do
       before(:each) do 
         @it = FactoryGirl.build(:upload_cuffdiff_with_3_samples)
         #Stub the generate go terms method so we don't need to run blast2go
-        UploadUtil.stub(:generate_go_terms){
+        BlastUtil.stub(:generate_go_terms){
           "#{@test_files_path}/3_samples/go_terms.annot"
         }
       end
@@ -795,7 +796,7 @@ describe UploadCuffdiff do
       before(:each) do 
         @it = FactoryGirl.build(:upload_cuffdiff_with_4_samples)
         #Stub the generate go terms method so we don't need to run blast2go
-        UploadUtil.stub(:generate_go_terms){
+        BlastUtil.stub(:generate_go_terms){
           "#{@test_files_path}/4_samples/go_terms.annot"
         }
       end

@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'view_models/shared_examples.rb'
+require 'upload/blast_util.rb'
 
 describe UploadFastaSequences do
   before(:each) do
@@ -35,15 +36,15 @@ describe UploadFastaSequences do
     before (:each) do
       @it.stub(:process_args_to_create_dataset)
       File.stub(:delete)
-      UploadUtil.stub(:create_blast_database)
-      UploadUtil.stub(:rollback_blast_database)
+      BlastUtil.stub(:create_blast_database)
+      BlastUtil.stub(:rollback_blast_database)
       QueryAnalysisMailer.stub(:notify_user_of_upload_success)
       QueryAnalysisMailer.stub(:notify_user_of_upload_failure)
     end
   
     describe 'when an exception occurs' do
       before (:each) do
-        UploadUtil.stub(:create_blast_database){raise SeededTestException}
+        BlastUtil.stub(:create_blast_database){raise SeededTestException}
       end
       
       it 'should call QueryAnalysisMailer.notify_user_of_upload_failure' do
@@ -62,7 +63,7 @@ describe UploadFastaSequences do
       end
       it 'should rollback the blast database' do
         begin
-          UploadUtil.should_receive(:rollback_blast_database)
+          BlastUtil.should_receive(:rollback_blast_database)
           @it.save
         rescue SeededTestException => ex
         end
@@ -88,8 +89,8 @@ describe UploadFastaSequences do
         @it.should_receive(:process_args_to_create_dataset)
         @it.save
       end
-      it 'should call UploadUtil.create_blast_database' do
-        UploadUtil.should_receive(:create_blast_database)
+      it 'should call BlastUtil.create_blast_database' do
+        BlastUtil.should_receive(:create_blast_database)
         @it.save
       end
       it 'should call QueryAnalysisMailer.notify_user_of_upload_success' do
@@ -100,8 +101,8 @@ describe UploadFastaSequences do
         QueryAnalysisMailer.should_not_receive(:notify_user_of_upload_failure)
         @it.save
       end
-      it 'should not call UploadUtil.rollback_blast_database' do
-        UploadUtil.should_not_receive(:rollback_blast_database)
+      it 'should not call BlastUtil.rollback_blast_database' do
+        BlastUtil.should_not_receive(:rollback_blast_database)
         @it.save
       end
     end

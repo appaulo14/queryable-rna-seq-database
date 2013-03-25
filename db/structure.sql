@@ -13,7 +13,7 @@ CREATE TABLE `datasets` (
   PRIMARY KEY (`id`),
   KEY `datasets_users_fk` (`user_id`),
   CONSTRAINT `datasets_users_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `differential_expression_tests` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -34,7 +34,7 @@ CREATE TABLE `differential_expression_tests` (
   CONSTRAINT `differential_expression_tests_sample_comparisons_fk` FOREIGN KEY (`sample_comparison_id`) REFERENCES `sample_comparisons` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `differential_expression_tests_genes_fk` FOREIGN KEY (`gene_id`) REFERENCES `genes` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `differential_expression_tests_transcripts_fk` FOREIGN KEY (`transcript_id`) REFERENCES `transcripts` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=129 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `fpkm_samples` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -49,7 +49,7 @@ CREATE TABLE `fpkm_samples` (
   KEY `fpkm_samples_samples_fk` (`sample_id`),
   CONSTRAINT `fpkm_samples_samples_fk` FOREIGN KEY (`sample_id`) REFERENCES `samples` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fpkm_samples_transcripts_fk` FOREIGN KEY (`transcript_id`) REFERENCES `transcripts` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=187 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `genes` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -58,7 +58,7 @@ CREATE TABLE `genes` (
   PRIMARY KEY (`id`),
   KEY `genes_datasets_fk` (`dataset_id`),
   CONSTRAINT `genes_datasets_fk` FOREIGN KEY (`dataset_id`) REFERENCES `datasets` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `go_terms` (
   `id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -71,14 +71,15 @@ CREATE TABLE `sample_comparisons` (
   `sample_1_id` int(11) NOT NULL,
   `sample_2_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `samples` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `sample_type` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `dataset_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `schema_migrations` (
   `version` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -123,7 +124,7 @@ CREATE TABLE `transcripts` (
   KEY `transripts_genes_fk` (`gene_id`),
   CONSTRAINT `transripts_genes_fk` FOREIGN KEY (`gene_id`) REFERENCES `genes` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `transripts_datasets_fk` FOREIGN KEY (`dataset_id`) REFERENCES `datasets` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=87 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
