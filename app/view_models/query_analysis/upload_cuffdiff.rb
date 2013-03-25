@@ -147,7 +147,8 @@ class UploadCuffdiff
                               :name => sample_1_name)[0]
       if sample_1.nil?
         sample_1 = Sample.create!(:name => sample_1_name, 
-                                  :dataset => @dataset)
+                                  :dataset => @dataset,
+                                  :sample_type => 'both')
       end
       #Create sample 2 if not already created
       sample_2_name = cells[5]
@@ -155,7 +156,8 @@ class UploadCuffdiff
                               :name => sample_2_name)[0]
       if sample_2.nil?
         sample_2 = Sample.create!(:name => sample_2_name, 
-                                  :dataset => @dataset)
+                                  :dataset => @dataset,
+                                  :sample_type => 'both')
       end
       #Create the sample comparison if not already created
       sample_comparison = 
@@ -203,7 +205,8 @@ class UploadCuffdiff
                               :name => sample_1_name)[0]
       if sample_1.nil?
         sample_1 = Sample.create!(:name => sample_1_name, 
-                                  :dataset => @dataset)
+                                  :dataset => @dataset,
+                                  :sample_type => 'both')
       end
       #Create sample 2 if not already created
       sample_2_name = cells[5]
@@ -211,7 +214,8 @@ class UploadCuffdiff
                               :name => sample_2_name)[0]
       if sample_2.nil?
         sample_2 = Sample.create!(:name => sample_2_name, 
-                                  :dataset => @dataset)
+                                  :dataset => @dataset,
+                                  :sample_type => 'both')
       end
       #Create the sample comparison if not already created
       sample_comparison = 
@@ -245,7 +249,8 @@ class UploadCuffdiff
                                :name => sample_name)[0]
       if sample.nil?
         sample = Sample.create!(:name => sample_name, 
-                                 :dataset => @dataset)
+                                 :dataset => @dataset,
+                                 :sample_type => 'both')
       end
       samples << sample
       next_index = next_index + 4

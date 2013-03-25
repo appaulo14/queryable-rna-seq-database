@@ -1,6 +1,6 @@
 <script type='text/javascript' src='query_using_blastn.js'></script>
 <%= render 'shared/error_messages', :object => @query_using_blastn %>
-<%= form_for(@query_using_blastn,{:url => "blastn"}) do |bq| %>
+<%= form_for(@query_using_blastn,{:url => "query_using_blastn"}) do |bq| %>
   <%= #render 'blast_generic_args', :bq => bq 
   %>
   <h2>

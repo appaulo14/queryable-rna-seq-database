@@ -249,22 +249,10 @@ class QueryAnalysisController < ApplicationController
         @query_using_blastn.set_attributes_and_defaults(params[:query_using_blastn])
         debugger if ENV['RAILS_DEBUG'] == "true"
         if @query_using_blastn.valid?
-            #Run the blast query and get the file path of the result
-            blast_results_file_path = @query_using_blastn.blast!
-            #Parse the xml into Blast reports
-            #TODO: Move this code back into the view model
-            f = File.open(blast_results_file_path)
-            xml_string = ''
-            while not f.eof?
-              xml_string += f.readline
-            end
-            f.close()
             @program = :blastn
-            @blast_report = Bio::Blast::Report.new(xml_string,'xmlparser')
+            @blast_report = @query_using_blastn.blast
             #Send the result to the user
             render :file => 'query_analysis/blast_results'
-            #Delete the result file since it is no longer needed
-            #File.delete(blast_results_file_path)
         end
       end
     end
@@ -282,15 +270,15 @@ class QueryAnalysisController < ApplicationController
 
     def query_using_tblastn #changed after the architecture design
         if request.get?
-            @query_using_blastn = QueryUsingTblastn.new(current_user)
-            @query_using_blastn.set_attributes_and_defaults()
+            @query_using_tblastn = QueryUsingTblastn.new(current_user)
+            @query_using_tblastn.set_attributes_and_defaults()
         elsif request.post?
-            @query_using_blastn = QueryUsingTblastn.new(current_user)
-            @query_using_blastn.set_attributes_and_defaults(params[:query_using_blastn])
+            @query_using_tblastn = QueryUsingTblastn.new(current_user)
+            @query_using_tblastn.set_attributes_and_defaults(params[:query_using_blastn])
             debugger if ENV['RAILS_DEBUG'] == "true"
-            if @query_using_blastn.valid?
+            if @query_using_tblastn.valid?
               #Run the blast query and get the file path of the result
-              @blast_report = @query_using_blastn.blast()
+              @blast_report = @query_using_tblastn.blast()
             end
         end
     end
@@ -314,7 +302,7 @@ class QueryAnalysisController < ApplicationController
       debugger if ENV['RAILS_DEBUG'] == "true"
       if @query_using_tblastx.valid?
         #Run the blast query and get the file path of the result
-        blast_results_file_path = @query_using_tblastx.blast!
+        blast_results_file_path = @query_using_tblastx.blast
         #Parse the xml into Blast reports
         f = File.open(blast_results_file_path)
         xml_string = ''

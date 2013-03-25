@@ -15,7 +15,7 @@ class QueryUsingBlastn
               :available_match_and_mismatch_scores, :available_gap_costs,
               :available_num_alignments
                                   
-    AVAILABLE_NUM_ALIGNMENTS = [0,10,50,100,250,500]
+    AVAILABLE_NUM_ALIGNMENTS = [0,10,50,"100",250,500]
     AVAILABLE_WORD_SIZES = [16,20,24,28,32,48,64,128,256]
     
     #Declare Constants
@@ -117,7 +117,7 @@ class QueryUsingBlastn
                                           }
   validate  :fasta_sequence_or_file_is_present_as_selected
   
-  validates :user_soft_masking, :presence => true,
+  validates :use_soft_masking, :presence => true,
                                 :view_model_boolean => true
   validates :use_lowercase_masking, :presence => true,
                                     :view_model_boolean => true
@@ -154,10 +154,10 @@ class QueryUsingBlastn
       @num_alignments = 100 if @num_alignments.blank?
       @e_value = 10.0 if @e_value.blank?
       @word_size = 28 if @word_size.blank?
-      @use_soft_masking = true if @use_soft_masking.blank?
-      @use_lowercase_masking = false if @use_lowercase_masking.blank?
+      @use_soft_masking = '1' if @use_soft_masking.blank?
+      @use_lowercase_masking = '0' if @use_lowercase_masking.blank?
       if @filter_low_complexity_regions.blank?
-        @filter_low_complexity_regions = true
+        @filter_low_complexity_regions = '1'
       end
       if @use_fasta_sequence_or_file.blank?
         @use_fasta_sequence_or_file = :use_fasta_sequence
@@ -223,9 +223,11 @@ class QueryUsingBlastn
       match = selected_match_and_mismatch_scores[:match]
       mismatch = selected_match_and_mismatch_scores[:mismatch]
       blastn_execution_string += "-reward #{match} -penalty #{mismatch}"
-      blastn_execution_string = generate_blastn_execution_string
+      #blastn_execution_string = generate_blastn_execution_string
       #Execute blastn
+      debugger
       SystemUtil.system!(blastn_execution_string)
+      File.delete(query_input_file.path)
       #Run the blast query and get the file path of the result
       return generate_blast_report_from_xml_results(blast_xml_output_file.path)
     end
@@ -243,7 +245,8 @@ class QueryUsingBlastn
     
     def generate_blast_report_from_xml_results(xml_results_file_path)
       #Parse the xml into Blast reports
-      f = File.open(xml_results_file)
+      debugger
+      f = File.open(xml_results_file_path)
       xml_string = ''
       while not f.eof?
         xml_string += f.readline

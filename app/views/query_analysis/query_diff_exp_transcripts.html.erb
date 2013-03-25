@@ -96,11 +96,11 @@
                             result[:transcript_name]) %>
                   </td>
                   <td>
-                    <% if not result[:gene_name].nil? %>
+                    <% if result[:gene_name].nil? %>
+                      Not available
+                    <% else %>
                       <%= link_to_fasta_sequences_for_gene(@qdet.dataset_id, 
                               result[:gene_name]) %>
-                    <% else %>
-                      Not available
                     <% end %>
                   </td>
                   <td>
@@ -121,13 +121,25 @@
                       No GO ids found.
                     <% end %>
                   </td>
-                  <td><%= result[:test_statistic].to_f.round(5) %></td>
+                  <td>
+                    <% if result[:test_statistic].nil? %>
+                      Not available
+                    <% else %>
+                      <%= result[:test_statistic].to_f.round(5) %>
+                    <% end %>
+                  </td>
                   <td><%= result[:p_value].to_f.round(5) %></td>
                   <td><%= result[:fdr].to_f.round(5) %></td>
                   <td><%= result[:sample_1_fpkm].to_f.round(3) %></td>
                   <td><%= result[:sample_2_fpkm].to_f.round(3) %></td>
                   <td><%= result[:log_fold_change].to_f.round(3) %></td>
-                  <td><%= result[:test_status] %></td>
+                  <td>
+                    <% if result[:test_status].nil? %>
+                      Not available
+                    <% else %>
+                      <%= result[:test_status] %>
+                    <% end %>
+                  </td>
               </tr>
           <% end %>
       </tbody>
