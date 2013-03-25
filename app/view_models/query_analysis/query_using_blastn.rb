@@ -225,7 +225,6 @@ class QueryUsingBlastn
       blastn_execution_string += "-reward #{match} -penalty #{mismatch}"
       #blastn_execution_string = generate_blastn_execution_string
       #Execute blastn
-      debugger
       SystemUtil.system!(blastn_execution_string)
       File.delete(query_input_file.path)
       #Run the blast query and get the file path of the result
