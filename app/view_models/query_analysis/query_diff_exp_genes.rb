@@ -35,7 +35,7 @@ class QueryDiffExpGenes
     #Set available datasets
     @names_and_ids_for_available_datasets = []
     available_datasets = Dataset.where(:user_id => @current_user.id, 
-                                       :has_gene_diff_exp => true)
+                                        :has_gene_diff_exp => true)
     available_datasets.each do |ds|
       @names_and_ids_for_available_datasets << [ds.name, ds.id]
     end
@@ -48,8 +48,14 @@ class QueryDiffExpGenes
     @filter_by_gene_name = false if filter_by_gene_name.blank?
     #Set available samples for comparison
     @available_sample_comparisons = []
+    s_t = Sample.arel_table
+    where_clause = s_t[:dataset_id].eq(@dataset_id)
+    sample_type_eq_both = s_t[:sample_type].eq('both')
+    sample_type_eq_gene = s_t[:sample_type].eq('gene')
+    sample_type_where_clause = sample_type_eq_gene.or(sample_type_eq_both)
+    where_clause = where_clause.and(sample_type_where_clause)
     sample_comparisons_query = SampleComparison.joins(:sample_1,:sample_2).
-        where('samples.dataset_id' => @dataset_id).
+        where(where_clause).
         select('samples.name as sample_1_name, '+
                'sample_2s_sample_comparisons.name as sample_2_name, ' +
                'samples.id as sample_1_id, ' +

@@ -89,7 +89,9 @@ class UploadTrinityWithEdgeR
                             :name => @dataset_name,
                             :program_used => 'trinity_with_edger')
     @dataset.has_transcript_diff_exp = true
-    @dataset.has_gene_diff_exp = false
+    if @has_gene_diff_exp == '1'
+      @dataset.has_gene_diff_exp = true
+    end
     @dataset.has_transcript_isoforms = false
     @dataset.blast_db_location = 
       "#{Rails.root}/db/blast_databases/#{Rails.env}/"

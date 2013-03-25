@@ -1,6 +1,7 @@
 require 'bio'
 require 'query_analysis/upload_cuffdiff.rb'
 require 'query_analysis/upload_fasta_sequences.rb'
+require 'query_analysis/upload_trinity_with_edger.rb'
 require 'query_analysis/upload_trinity_with_edger_transcripts_and_genes.rb'
 require 'query_analysis/query_diff_exp_transcripts.rb'
 require 'query_analysis/query_transcript_isoforms.rb'
@@ -75,7 +76,7 @@ class QueryAnalysisController < ApplicationController
         @upload.set_attributes_and_defaults()
       elsif (request.post?)
         @upload = UploadTrinityWithEdgeR.new(current_user)
-        upload_params = params[:upload_trinity_with_edge_]
+        upload_params = params[:upload_trinity_with_edge_r]
         @upload.set_attributes_and_defaults(upload_params)
         if @upload.valid?
           queue_name = :upload_trinity_with_edger_queue
@@ -86,6 +87,18 @@ class QueryAnalysisController < ApplicationController
           flash[:notice] = I18n.t :added_to_upload_queue
         end
       end
+    end
+    
+    def add_sample_cmp_for_trinity_with_edger_transcripts
+      @sample_cmp_count = params[:sample_cmp_count]
+      render :partial => 'trinity_with_edger_transcripts_sample_cmp', 
+             :locals  => {:object => @sample_cmp_count}
+    end
+    
+    def add_sample_cmp_for_trinity_with_edger_genes
+      @sample_cmp_count = params[:sample_cmp_count]
+      render :partial => 'trinity_with_edger_genes_sample_cmp', 
+             :locals  => {:object => @sample_cmp_count}
     end
     
     def upload_trinity_with_edger_transcripts

@@ -48,8 +48,14 @@ class QueryDiffExpTranscripts
     @filter_by_transcript_name = false if filter_by_transcript_name.blank?
     #Set available samples for comparison
     @available_sample_comparisons = []
+    s_t = Sample.arel_table
+    where_clause = s_t[:dataset_id].eq(@dataset_id)
+    sample_type_eq_both = s_t[:sample_type].eq('both')
+    sample_type_eq_transcript = s_t[:sample_type].eq('transcript')
+    sample_type_where_clause = sample_type_eq_transcript.or(sample_type_eq_both)
+    where_clause = where_clause.and(sample_type_where_clause)
     sample_comparisons_query = SampleComparison.joins(:sample_1,:sample_2).
-        where('samples.dataset_id' => @dataset_id).
+        where(where_clause).
         select('samples.name as sample_1_name, '+
                'sample_2s_sample_comparisons.name as sample_2_name, ' +
                'samples.id as sample_1_id, ' +
@@ -112,8 +118,12 @@ class QueryDiffExpTranscripts
         next if (transcript.go_terms & GoTerm.where(query_condition)).empty?
       end
       result = {}
-      result[:transcript_name] = transcript.name_from_program #det.transcript.name_from_program
-      result[:gene_name] = transcript.gene.name_from_program #det.transcript.gene.name_from_program
+      result[:transcript_name] = transcript.name_from_program
+      #det.transcript.name_from_program
+      if transcript.gene
+        result[:gene_name] =  transcript.gene.name_from_program 
+      end
+       #det.transcript.gene.name_from_program
       result[:go_terms] = transcript.go_terms #det.transcript.go_terms
       result[:test_statistic] = query_result.test_statistic
       result[:p_value] = query_result.p_value #det.p_value

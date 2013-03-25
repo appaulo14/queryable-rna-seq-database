@@ -1,4 +1,4 @@
-<script src='upload_trinity_with_edger_transcripts_and_genes.js'
+<script src='upload_trinity_with_edger.js'
   type='text/javascript' ></script>
 <%= render 'shared/error_messages', :object => @upload %>
 <%= form_for( @upload,{:url => "upload_trinity_with_edger"} ) do |u| %>
@@ -23,45 +23,43 @@
 <br/><br/>
 <div class="sub-section rounded-corners" id="transcript_section">
   <div class="sub-section-heading">
-    Transcript FPKM File
-    <%= image_tag('question_mark.png', :id=>'fpkm_tooltip') %>
+    Transcripts
   </div>
+  <%= image_tag('question_mark.png', :id=>'fpkm_tooltip') %>
   <%= u.label(:transcript_fpkm_file, 'Transcript FPKM File') %>
-  <%= u.file_field :transcript_fpkm_file %><br/>
-  <div class="sub-section-heading">
-    Differential Expression Test Files
-    <%= image_tag('question_mark.png', :id=>'differential_expression_tooltip')%>
-  </div>
+  <%= u.file_field :transcript_fpkm_file %>
+  <br/>
   <div id="transcript_sample_comparisons_div">
   </div>
   <br/>
   <%= button_tag("Add Another Sample Comparison",
-                {:type => :button, :id => 'btn_add_sample_cmp'}) %>
+                {:type => :button, :id => 'btn_add_transcript_sample_cmp'}) %>
   <%= button_tag("Remove a Sample Comparison",
-                {:type => :button, :id => 'btn_remove_sample_comparison'}) %>
+                {:type => :button, :id => 'btn_remove_transcript_sample_cmp'}) %>
 </div>
+<br/>
+<br/>
+<%= u.label :has_gene_diff_exp, 
+                'Do you have gene (component) different expression tests?' %>
+<%= u.check_box :has_gene_diff_exp %>
 <div class="sub-section rounded-corners" id="gene_section">
   <div class="sub-section-heading">
-    Gene FPKM File
-    <%= image_tag('question_mark.png', :id=>'fpkm_tooltip') %>
+    Genes
   </div>
   <div class="sub-section rounded-corners">
+    <%= image_tag('question_mark.png', :id=>'fpkm_tooltip') %>
     <%= u.label(:gene_fpkm_file, 'Gene FPKM File') %>
     <%= u.file_field :gene_fpkm_file %>
-  </div>
-  <div class="sub-section-heading">
-    Differential Expression Test Files
-    <%= image_tag('question_mark.png', :id=>'differential_expression_tooltip')%>
   </div>
   <div id="gene_sample_comparisons_div">
   </div>
   <br/>
   <%= button_tag("Add Another Sample Comparison",
-                {:type => :button, :id => 'btn_add_sample_cmp'}) %>
+                {:type => :button, :id => 'btn_add_gene_sample_cmp'}) %>
   <%= button_tag("Remove a Sample Comparison",
-                {:type => :button, :id => 'btn_remove_sample_comparison'}) %>
+                {:type => :button, :id => 'btn_remove_gene_sample_cmp'}) %>
 </div>
-
-
+<p><%= submit_tag('Upload files', :disable_with => 'Uploading...') %></p>
+<% end %>
 
 
