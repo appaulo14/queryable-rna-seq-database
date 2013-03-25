@@ -11,13 +11,14 @@
 /.bundle
 
 # Ignore the sass-cache
-.sass-cahe/*
+.sass-cache/*
 
 # Ignore the default SQLite database.
 /db/*.sqlite3
 
 #Ignore blast databases
 /db/blast_databases/*
+
 
 # Ignore all logfiles and tempfiles.
 /log/*.log
