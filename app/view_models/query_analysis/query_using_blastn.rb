@@ -150,7 +150,7 @@ class QueryUsingBlastn
       #Set default values for Megablast, which is the only blastn program we will use
       #Defaults taken from http://www.ncbi.nlm.nih.gov/books/NBK1763/#CmdLineAppsManual.Appendix_C_Options_for
       # and http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.blastn_application_o/?report=objectonly
-      @dataset_id = @available_datasets.first[1]
+      @dataset_id = @available_datasets.first[1] if @dataset_id.blank?
       @num_alignments = 100 if @num_alignments.blank?
       @e_value = 10.0 if @e_value.blank?
       @word_size = 28 if @word_size.blank?
