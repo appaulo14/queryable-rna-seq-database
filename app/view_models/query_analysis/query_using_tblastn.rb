@@ -13,10 +13,10 @@ class QueryUsingTblastn #< Blast_Query::Base
                 :gap_costs,
                 :matrix, :compositional_adjustment
     
-    attr_reader :available_datasets, :available_word_sizes,
-                :available_matrices,
-                :available_gap_costs, :available_num_alignments,
-                :available_compositional_adjustments                             
+  attr_reader :available_datasets, :available_word_sizes,
+              :available_matrices,
+              :available_gap_costs, :available_num_alignments,
+              :available_compositional_adjustments                             
     
     #Declare Constants
     AVAILABLE_NUM_ALIGNMENTS = [0,10,50,100,250,500]

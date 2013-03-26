@@ -177,28 +177,48 @@ class QueryUsingBlastn
     def blast()
       #Don't query if it is not valid
       return if not self.valid?
+      #Build the execution string
+      blastn_execution_string = generate_blastn_execution_string()
+      #Execute blastn
+      SystemUtil.system!(blastn_execution_string)
+      File.delete(query_input_file.path)
+      #Run the blast query and get the file path of the result
+      blast_report = generate_blast_report_from_xml_results()
+      cleanup_files()
+      return blast_report
+    end
+    
+    #Accoring http://railscasts.com/episodes/219-active-model?view=asciicast,
+    #     this defines that this model does not persist in the database.
+    def persisted?
+      return false
+    end
+    
+    private
+    
+    def generate_blastn_execution_string
       #Filter by low complexity and soft masking map to soft masking due to
       #       http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.blastn_application_o/?report=objectonly
       #       and http://www.ncbi.nlm.nih.gov/BLAST/blastcgihelp.shtml#filter
       #If given a fasta sequence, write it to a temporary file so that it 
       # can be inputted into blastn
       if @use_fasta_sequence_or_file == 'use_fasta_sequence'
-        query_input_file = Tempfile.new('query_using_blastn')
-        query_input_file.write(@fasta_sequence)
-        query_input_file.close
+        @query_input_file = Tempfile.new('query_using_blastn')
+        @query_input_file.write(@fasta_sequence)
+        @query_input_file.close
       else
-        query_input_file = @fasta_file.tempfile
+        @query_input_file = @fasta_file.tempfile
       end
       #Create a temporary file to store the blast output in xml format
-      blast_xml_output_file = Tempfile.new('blastn')
-      blast_xml_output_file.close
+      @xml_results_file = Tempfile.new('blastn')
+      @xml_results_file.close
       #Create the blastn execution string that will be run on the command line,
       # including calculating all the options
       dataset = Dataset.find_by_id(@dataset_id)
       blastn_execution_string = "bin/blast/bin/blastn " +
-             "-query #{query_input_file.path} " +
+             "-query #{@query_input_file.path} " +
              "-db #{dataset.blast_db_location} " +
-             "-out #{blast_xml_output_file.path} " +
+             "-out #{@xml_results_file.path} " +
              "-evalue #{@e_value} -word_size #{@word_size} " +
              "-num_alignments #{@num_alignments} " +
              "-show_gis -outfmt '5' "
@@ -215,37 +235,21 @@ class QueryUsingBlastn
       else
         blastn_execution_string += "-dust 'no' "
       end
-      gapopen = AVAILABLE_GAP_COSTS[@match_and_mismatch_scores][@gap_costs][:existence]
-      gapextend = AVAILABLE_GAP_COSTS[@match_and_mismatch_scores][@gap_costs][:extention]
+      gapopen = 
+        AVAILABLE_GAP_COSTS[@match_and_mismatch_scores][@gap_costs][:existence]
+      gapextend = 
+        AVAILABLE_GAP_COSTS[@match_and_mismatch_scores][@gap_costs][:extention]
       blastn_execution_string += "-gapopen #{gapopen} -gapextend #{gapextend} "
       selected_match_and_mismatch_scores = 
         AVAILABLE_MATCH_AND_MISMATCH_SCORES[@match_and_mismatch_scores]
       match = selected_match_and_mismatch_scores[:match]
       mismatch = selected_match_and_mismatch_scores[:mismatch]
       blastn_execution_string += "-reward #{match} -penalty #{mismatch}"
-      #blastn_execution_string = generate_blastn_execution_string
-      #Execute blastn
-      SystemUtil.system!(blastn_execution_string)
-      File.delete(query_input_file.path)
-      #Run the blast query and get the file path of the result
-      return generate_blast_report_from_xml_results(blast_xml_output_file.path)
     end
     
-    #Accoring http://railscasts.com/episodes/219-active-model?view=asciicast,
-    #     this defines that this model does not persist in the database.
-    def persisted?
-      return false
-    end
-    
-    private
-    
-    def generate_blastn_execution_string
-    end
-    
-    def generate_blast_report_from_xml_results(xml_results_file_path)
+    def generate_blast_report_from_xml_results()
       #Parse the xml into Blast reports
-      debugger
-      f = File.open(xml_results_file_path)
+      f = File.open(@xml_results_file.path)
       xml_string = ''
       while not f.eof?
         xml_string += f.readline
@@ -256,6 +260,12 @@ class QueryUsingBlastn
       return blast_report
     end
     
+    def cleanup_files()
+      File.delete(@query_input_file.path)
+      File.delete(@xml_results_file.path)
+    end
+    
+    #### Validation methods ####
     def fasta_sequence_or_file_is_present_as_selected
       #TODO: Implement
     end

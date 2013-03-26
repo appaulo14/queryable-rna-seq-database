@@ -7,19 +7,17 @@
   <h1>Please select your gene differential expression search options</h1>
   <p>
     <%= qdeg.label :dataset_id, "Dataset to query" %>
-    <%= qdeg.select :dataset_id, options_for_select(@qdeg.names_and_ids_for_available_datasets, @qdeg.dataset_id) %><br/>
-    <%= #qdeg.label :samples_to_compare, "Samples to compare" 
-    %>
-    <%= #qdeg.select :samples_to_compare, options_for_select(@qdeg.available_samples_for_comparison) 
-    %>
-    <%= label :sample_comparison_id_pair, "Samples to compare" %>
+    <%= qdeg.select :dataset_id, 
+            options_for_select(@qdeg.names_and_ids_for_available_datasets,
+                @qdeg.dataset_id) %><br/>
+    <%= qdeg.label :sample_comparison_id_pair, "Samples to compare" %>
     <%= qdeg.select :sample_comparison_id_pair, 
       options_for_select(@qdeg.available_sample_comparisons,
         @qdeg.sample_comparison_id_pair)  %> 
   </p>
   <p>
     <div>
-        <%= label(:fdr_or_p_value, "Filter By:") %>
+        <%= qdeg.label(:fdr_or_p_value, "Filter By:") %>
         <%= qdeg.radio_button(:fdr_or_p_value, :p_value) %>
         <%= qdeg.label(:filter_by_p_value, "P-value") %>
         <%= qdeg.radio_button(:fdr_or_p_value, :fdr) %>
@@ -38,19 +36,16 @@
   <h2>Query filtering options</h2>
   <p>
     <div>
-        <%= qdeg.check_box(:filter_by_go_terms) %>
         <%= qdeg.label(:go_terms, "GO Terms, separated by semicolons") %>
         <%= qdeg.text_field(:go_terms, :size => 70) %>
         <%= link_to('Browse GO Terms','http://amigo.geneontology.org/cgi-bin/amigo/browse.cgi', :target => '_blank') %>
     </div>
     <div>
-        <%= qdeg.check_box(:filter_by_go_ids) %>
         <%= qdeg.label(:go_ids, "GO IDs (a.k.a Accessions), separated by semicolons") %>
         <%= qdeg.text_field(:go_ids) %>
         <%= link_to('Browse GO Terms','http://amigo.geneontology.org/cgi-bin/amigo/browse.cgi', :target => '_blank') %>
     </div>
     <div>
-        <%= qdeg.check_box(:filter_by_gene_name) %>
         <%= qdeg.label(:gene_name, "Gene name:") %>
         <%= qdeg.text_field(:gene_name) %>
     </div>

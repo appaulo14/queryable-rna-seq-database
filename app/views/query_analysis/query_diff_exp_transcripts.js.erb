@@ -1,7 +1,6 @@
 jQuery(document).ready(function($) {
   set_up_reload_on_dataset_changed();
   set_table_table_sorting();
-  set_up_events_for_filter_parameters();
   set_up_downloadify_for_query_results_downloading();
 });
 
@@ -40,82 +39,6 @@ function set_table_table_sorting(){
     else{
       th.find('.sort_arrow').get(data.column).outerHTML = '';
       th.get(data.column).innerHTML += '<%= j descending_sort_arrow %>';
-    }
-  }
-}
-
-/*
- *   Set up the events for the filter parameters
- */
-function set_up_events_for_filter_parameters(){
-  //Ensure the filter parameters are at their correct state or being 
-  //    enabled or disabled by running their changed events.
-  filter_by_go_terms_checked_changed();
-  filter_by_go_ids_checked_changed();
-  filter_by_transcript_name_checked_changed();
-  filter_by_transcript_length_checked_changed();
-  //Enable/disabled the go terms text box based on whether
-  //    the Filter by GO Terms check box is checked
-  filter_by_go_terms = $('#query_diff_exp_transcripts_filter_by_go_terms');
-  filter_by_go_terms.change(filter_by_go_terms_checked_changed);
-  function filter_by_go_terms_checked_changed(){
-    filter_by_go_terms = $('#query_diff_exp_transcripts_filter_by_go_terms');
-    if (filter_by_go_terms.is(':checked')){
-      $('#query_diff_exp_transcripts_go_terms').removeAttr("disabled");
-    }
-    else{
-      $('#query_diff_exp_transcripts_go_terms').attr("disabled", "disabled");
-    }
-  }
-  //Enable/disabled the GO IDs text box based on whether
-  //    the Filter by GO IDs check box is checked
-  filter_by_go_ids = $('#query_diff_exp_transcripts_filter_by_go_ids');
-    filter_by_go_ids.change(filter_by_go_ids_checked_changed);
-  function filter_by_go_ids_checked_changed(){
-    filter_by_go_ids = $('#query_diff_exp_transcripts_filter_by_go_ids');
-    if (filter_by_go_ids.is(':checked')){
-      $('#query_diff_exp_transcripts_go_ids').removeAttr("disabled");
-    }
-    else{
-      $('#query_diff_exp_transcripts_go_ids').attr("disabled", "disabled");
-    }
-  }
-  //Enable/disabled the transcript length select element and text box and 
-  //    based on whether the Filter by Transcript length check box is checked
-  filter_by_transcript_length = 
-    $('#query_diff_exp_transcripts_filter_by_transcript_length');
-    filter_by_transcript_length.change(
-      filter_by_transcript_length_checked_changed
-    );
-  function filter_by_transcript_length_checked_changed(){
-    filter_by_transcript_length = 
-      $('#query_diff_exp_transcripts_filter_by_transcript_length');
-    transcript_length_comparison_sign = 
-      $('#query_diff_exp_transcripts_transcript_length_comparison_sign');
-    transcript_length_value = 
-      $('#query_diff_exp_transcripts_transcript_length_value');
-    if (filter_by_transcript_length.is(':checked')){
-      transcript_length_comparison_sign.removeAttr("disabled");
-      transcript_length_value.removeAttr("disabled");
-    }
-    else{
-      transcript_length_comparison_sign.attr("disabled", "disabled");
-      transcript_length_value.attr("disabled", "disabled");
-    }
-  }
-  //Enable/disabled based on whether
-  //    the Filter by Transcript Name check box is checked
-  filter_by_transcript_name = 
-    $('#query_diff_exp_transcripts_filter_by_transcript_name');
-  filter_by_transcript_name.change(filter_by_transcript_name_checked_changed);
-  function filter_by_transcript_name_checked_changed(){
-    filter_by_transcript_name = 
-      $('#query_diff_exp_transcripts_filter_by_transcript_name');
-    if (filter_by_transcript_name.is(':checked')){
-      $('#query_diff_exp_transcripts_transcript_name').removeAttr("disabled");
-    }
-    else{
-      $('#query_diff_exp_transcripts_transcript_name').attr("disabled", "disabled");
     }
   }
 }

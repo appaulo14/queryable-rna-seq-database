@@ -4,6 +4,9 @@
 # or operating system, you probably want to add a global ignore instead:
 #   git config --global core.excludesfile ~/.gitignore_global
 
+# Ignore compiled assets
+/public/assets/*
+
 # #Ignore the file containing the history of R commands
 .Rhistory
 
@@ -18,6 +21,8 @@
 
 #Ignore blast databases
 /db/blast_databases/*
+
+/db/structure.sql
 
 
 # Ignore all logfiles and tempfiles.
