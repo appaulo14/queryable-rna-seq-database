@@ -5,7 +5,6 @@ class QueryUsingBlastn
   include ActiveModel::Conversion
   extend ActiveModel::Naming
   
-  #TODO: Describe meaning of these?
   attr_accessor :dataset_id, :fasta_sequence, :fasta_file, :num_alignments, :e_value,
                 :word_size, :use_fasta_sequence_or_file, :use_soft_masking, 
                 :use_lowercase_masking, :gap_costs,
@@ -102,7 +101,11 @@ class QueryUsingBlastn
   validates :dataset_id, :presence => true,
                          :dataset_belongs_to_user => true
   validates :fasta_sequence, :nucleotide_fasta_sequences => true
+  validates :fasta_sequence, :presence => true, 
+                   :if => "@use_fasta_sequence_or_file == 'use_fasta_sequence'"
   validates :fasta_file, :uploaded_file => true
+  validates :fasta_file, :presence => true, 
+                   :if => "@use_fasta_sequence_or_file == 'use_fasta_file'"
   validates :num_alignments, :presence => true,
                              :inclusion => {:in => AVAILABLE_NUM_ALIGNMENTS}
   validates :e_value, :presence => true,
@@ -115,7 +118,6 @@ class QueryUsingBlastn
                                             'use_fasta_sequence',
                                             'use_fasta_file']
                                           }
-  validate  :fasta_sequence_or_file_is_present_as_selected
   
   validates :use_soft_masking, :presence => true,
                                 :view_model_boolean => true
