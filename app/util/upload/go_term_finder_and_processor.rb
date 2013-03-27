@@ -35,7 +35,7 @@ class GoTermFinderAndProcessor
   
   def run_blastx
     #Run blastx
-    logger.info "Running blastx for dataset: #{@dataset.id}"
+    Rails.logger.info "Running blastx for dataset: #{@dataset.id}"
     @blast_xml_output_file = Tempfile.new('blastx')
     @blast_xml_output_file.close
     stdout, stderr, status = 
@@ -48,11 +48,11 @@ class GoTermFinderAndProcessor
     if not stderr.blank?
       raise StandardError, stderr
     end
-    logger.info "Finished blastx for dataset: #{@dataset.id}"
+    Rails.logger.info "Finished blastx for dataset: #{@dataset.id}"
   end
   
   def run_blast2go
-    logger.info "Running blast2go for dataset: #{@dataset.id}"
+    Rails.logger.info "Running blast2go for dataset: #{@dataset.id}"
     blast2go_output_file = Tempfile.new('blast2go')
     blast2go_output_file.close
     blast2go_dir = "#{Rails.root}/bin/blast2go"
@@ -67,7 +67,7 @@ class GoTermFinderAndProcessor
     if not stderr.blank?
       raise StandardError, stderr
     end
-    logger.info "Finished blast2go for dataset: #{@dataset.id}"
+    Rails.logger.info "Finished blast2go for dataset: #{@dataset.id}"
     #Delete the temporary files
     File.delete(@blast_xml_output_file.path)
     File.delete(blast2go_output_file.path)
