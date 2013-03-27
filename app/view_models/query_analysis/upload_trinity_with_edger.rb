@@ -68,7 +68,7 @@ class UploadTrinityWithEdgeR
       BlastUtil.rollback_blast_database(@dataset)
       QueryAnalysisMailer.notify_user_of_upload_failure(@current_user,
                                                           @dataset)
-      raise ex
+      raise ex, ex.message
     ensure
       delete_uploaded_files()
     end

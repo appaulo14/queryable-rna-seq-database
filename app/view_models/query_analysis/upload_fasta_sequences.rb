@@ -35,7 +35,7 @@ class UploadFastaSequences
       BlastUtil.rollback_blast_database(@dataset)
       QueryAnalysisMailer.notify_user_of_upload_failure(@current_user,
                                                           @dataset)
-      raise ex
+      raise ex, ex.message
     ensure
       File.delete(@transcripts_fasta_file.tempfile.path)
     end
