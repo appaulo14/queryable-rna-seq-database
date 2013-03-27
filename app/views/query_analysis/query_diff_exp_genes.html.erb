@@ -1,8 +1,8 @@
 <script type='text/javascript' src='query_diff_exp_genes.js' ></script>
 <%= render 'shared/error_messages', :object => @qdeg %>
-<!--<%= javascript_include_tag 'downloadify/swfobject.js' %>-->
-<!--<%= javascript_include_tag 'downloadify/downloadify.min.js' %>-->
-<!--<%= javascript_include_tag 'Stupid-Table-Plugin/stupidtable.min.js' %>-->
+<%= javascript_include_tag 'downloadify/swfobject.js' %>
+<%= javascript_include_tag 'downloadify/downloadify.min.js' %>
+<%= javascript_include_tag 'Stupid-Table-Plugin/stupidtable.min.js' %>
 <%= form_for(@qdeg, :url => 'query_diff_exp_genes') do |qdeg| %>
   <h1>Please select your gene differential expression search options</h1>
   <div><%= link_to_help_page_for_page('query_diff_exp_genes') %></div>
