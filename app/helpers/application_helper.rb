@@ -1,9 +1,12 @@
 module ApplicationHelper
     
     def logo
-        logo = image_tag("ksu/powercat-glowing-android.jpg", :alt => "RNA-Seq Analysis pipeline", :class => "logo")
+        logo = image_tag("ksu/powercat-glowing-android.jpg", 
+                :alt => "RNA-Seq Analysis pipeline", :class => "logo")
     end
-    def busy_indicator
-        busy_indicator = image_tag("rna.gif", :alt => "RNA-Seq Analysis pipeline", :class => "busy_indicator")
+    
+    def help_tip(id)
+      return  image_tag('question_mark.png', :id=> id, 
+                                              :alt => "Help tip for #{id}" ) 
     end
 end

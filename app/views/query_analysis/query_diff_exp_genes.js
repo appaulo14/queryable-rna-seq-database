@@ -1,7 +1,8 @@
 jQuery(document).ready(function($) {
+  create_helptips();
   set_up_reload_on_dataset_changed();
   set_table_table_sorting();
-  set_up_downloadify_for_query_results_downloading();
+  set_up_downloadify_for_query_results_downloading(); 
 });
 
 /*
@@ -99,4 +100,50 @@ function get_downloable_file_text(){
   }
   //Return the final output string
   return output_string;
+}
+
+function create_helptips(){
+  //Declare variables
+  var elements = [];
+  var titles = [];
+  var texts = [];
+  //Tooltip for Filter P-Value or FDR Cutoff
+  elements[0] = 'cutoff_helptip';
+  titles[0] = 'P-Value or FDR Cutoff';
+  texts[0] = 'The p-value measures the statistical significance of a ' +
+    "differential expression test. The FDR is a more stringent version of the " +
+    "p-value.";
+  //Tooltip for Differential expression files
+  elements[1] = 'go_terms_helptip';
+  titles[1] = 'Filter By Go Terms';
+  texts[1] = '<p>Enter more than one term separated by ' +
+    'a semicolon to find results than have any of the terms listed.</p> ' +
+    '<p>For example, "RNA;hair folicle" will find any genes with GO terms ' +
+    'containg the text "RNA" or "hair folicle".</p>'  
+    
+  for (var i = 0; i < elements.length; i++){
+    $('#' + elements[i])
+          .removeData('qtip') 
+          .qtip({
+                  content: {
+                          text: texts[i], 
+                          title: {
+                                  text: titles[i],
+                                  button: true
+                          }
+                  },
+                  position: {
+                          my: 'left center',
+                          at: 'right center' 
+                  },
+                  show: {
+                          event: 'click', 
+                          ready: false
+                  },
+                  hide: false,
+                  style: {
+                          classes: 'qtip-shadow qtip-' + 'dark'
+                  }
+          });
+  }
 }

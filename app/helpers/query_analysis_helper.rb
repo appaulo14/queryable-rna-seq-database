@@ -31,6 +31,11 @@ module QueryAnalysisHelper
     return link_to(body, link_address, :target => '_blank')
   end
   
+  def link_to_help_page_for_page(page_name)
+    #TODO: Decide where to really put this
+    return link_to("Help For This Page",page_name, :target => '_blank')
+  end
+  
   ### Blast Helpers 
   def link_to_ncbi_search_for(search_term)
     link_address = "http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?" +

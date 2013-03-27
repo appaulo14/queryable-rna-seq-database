@@ -1,10 +1,11 @@
-<%= render 'shared/error_messages', :object => @qdeg %>
 <script type='text/javascript' src='query_diff_exp_genes.js' ></script>
-<%= javascript_include_tag 'downloadify/swfobject.js' %>
-<%= javascript_include_tag 'downloadify/downloadify.min.js' %>
-<%= javascript_include_tag 'Stupid-Table-Plugin/stupidtable.min.js' %>
+<%= render 'shared/error_messages', :object => @qdeg %>
+<!--<%= javascript_include_tag 'downloadify/swfobject.js' %>-->
+<!--<%= javascript_include_tag 'downloadify/downloadify.min.js' %>-->
+<!--<%= javascript_include_tag 'Stupid-Table-Plugin/stupidtable.min.js' %>-->
 <%= form_for(@qdeg, :url => 'query_diff_exp_genes') do |qdeg| %>
   <h1>Please select your gene differential expression search options</h1>
+  <div><%= link_to_help_page_for_page('query_diff_exp_genes') %></div>
   <p>
     <%= qdeg.label :dataset_id, "Dataset to query" %>
     <%= qdeg.select :dataset_id, 
@@ -17,6 +18,7 @@
   </p>
   <p>
     <div>
+        <%= help_tip(:cutoff_helptip) %>
         <%= qdeg.label(:fdr_or_p_value, "Filter By:") %>
         <%= qdeg.radio_button(:fdr_or_p_value, :p_value) %>
         <%= qdeg.label(:filter_by_p_value, "P-value") %>
@@ -38,12 +40,15 @@
     <div>
         <%= qdeg.label(:go_terms, "GO Terms, separated by semicolons") %>
         <%= qdeg.text_field(:go_terms, :size => 70) %>
+        <%= help_tip(:go_terms_helptip) %>
         <%= link_to('Browse GO Terms','http://amigo.geneontology.org/cgi-bin/amigo/browse.cgi', :target => '_blank') %>
     </div>
     <div>
         <%= qdeg.label(:go_ids, "GO IDs (a.k.a Accessions), separated by semicolons") %>
         <%= qdeg.text_field(:go_ids) %>
-        <%= link_to('Browse GO Terms','http://amigo.geneontology.org/cgi-bin/amigo/browse.cgi', :target => '_blank') %>
+        <%= link_to('Browse GO Terms',
+            'http://amigo.geneontology.org/cgi-bin/amigo/browse.cgi', 
+            :target => '_blank') %>
     </div>
     <div>
         <%= qdeg.label(:gene_name, "Gene name:") %>
