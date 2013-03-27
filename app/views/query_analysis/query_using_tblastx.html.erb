@@ -6,8 +6,8 @@
     <%= image_tag('question_mark.png', :id=>'tblastx_qtip')%>
   </h2>
   <p>
-      <%= label(:dataset_id, "Dataset:") %>
-      <%= select_tag(:dataset_id, options_for_select(bq.object.available_datasets,bq.object.dataset_id)) %>
+      <%= bq.label(:dataset_id, "Dataset:") %>
+      <%= bq.select(:dataset_id, options_for_select(bq.object.available_datasets,bq.object.dataset_id)) %>
       <%= image_tag('question_mark.png', :id=>'dataset_id_qtip') %>
   </p>
   <hr/>

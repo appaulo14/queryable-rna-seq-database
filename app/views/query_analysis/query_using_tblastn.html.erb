@@ -1,13 +1,13 @@
-<%= render 'shared/error_messages', :object => @query_using_blastn %>
+<%= render 'shared/error_messages', :object => @query_using_tblastn %>
 <script type='text/javascript' src='query_using_tblastn.js'></script>
-<%= form_for(@query_using_blastn,{:url => "query_using_tblastn"}) do |bq| %>
+<%= form_for(@query_using_tblastn,{:url => "query_using_tblastn"}) do |bq| %>
   <h2>
     Choose Data Set to Search Using TBlastn
     <%= image_tag('question_mark.png', :id=>'tblastn_qtip')%>
   </h2>
   <p>
-      <%= label(:dataset_id, "Dataset:") %>
-      <%= select_tag(:dataset_id, options_for_select(bq.object.available_datasets,bq.object.dataset_id)) %>
+      <%= bq.label(:dataset_id, "Dataset:") %>
+      <%= bq.select(:dataset_id, options_for_select(bq.object.available_datasets,bq.object.dataset_id)) %>
       <%= image_tag('question_mark.png', :id=>'dataset_id_qtip')%>
   </p>
   <hr/>
