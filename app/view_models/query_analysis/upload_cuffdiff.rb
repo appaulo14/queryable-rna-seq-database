@@ -46,7 +46,7 @@ class UploadCuffdiff
   def save
     return if not self.valid?
     begin
-      ActiveRecord::Base.transaction do   #Transactions work with sub-methods 
+      ActiveRecord::Base.transaction do   #Transactions work with sub-methods
         process_args_to_create_dataset()
         if @has_diff_exp == '1'
           process_gene_differential_expression_file()
@@ -59,18 +59,20 @@ class UploadCuffdiff
           find_and_process_go_terms()
         end
         BlastUtil.create_blast_database(@transcripts_fasta_file.tempfile.path,
-                                          @dataset)
+                                        @dataset)
+        QueryAnalysisMailer.notify_user_of_upload_success(@current_user,
+                                                          @dataset)
       end
     rescue Exception => ex
       BlastUtil.rollback_blast_database(@dataset)
       QueryAnalysisMailer.notify_user_of_upload_failure(@current_user,
-                                                          @dataset)
-      raise ex, ex.message
+                                                        @dataset)
+      #Log the exception manually because Rails doesn't want to in this case
+      Rails.logger.error "#{ex.message}\n#{ex.backtrace.join("\n")}"
+      raise
     ensure
       delete_uploaded_files()
     end
-    QueryAnalysisMailer.notify_user_of_upload_success(@current_user,
-                                                        @dataset)
   end
   
   #According http://railscasts.com/episodes/219-active-model?view=asciicast,

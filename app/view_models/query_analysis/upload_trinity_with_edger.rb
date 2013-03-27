@@ -63,17 +63,19 @@ class UploadTrinityWithEdgeR
         find_and_process_go_terms()
         BlastUtil.create_blast_database(@transcripts_fasta_file.tempfile.path,
                                           @dataset)
+        QueryAnalysisMailer.notify_user_of_upload_success(@current_user,
+                                                        @dataset)
       end
     rescue Exception => ex
       BlastUtil.rollback_blast_database(@dataset)
       QueryAnalysisMailer.notify_user_of_upload_failure(@current_user,
                                                           @dataset)
-      raise ex, ex.message
+      #Log the exception manually because Rails doesn't want to in this case
+      Rails.logger.error "#{ex.message}\n#{ex.backtrace.join("\n")}"
+      raise
     ensure
       delete_uploaded_files()
     end
-    QueryAnalysisMailer.notify_user_of_upload_success(@current_user,
-                                                        @dataset)
   end
   
   #Accoring http://railscasts.com/episodes/219-active-model?view=asciicast,

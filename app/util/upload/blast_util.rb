@@ -12,6 +12,7 @@ class BlastUtil
   end
   
   def self.rollback_blast_database(dataset)
+    return if dataset.nil?
     stdout, stderr, status = 
       Open3.capture3("ls db/blast_databases/#{Rails.env}/#{dataset.id}.*")
     if stderr.blank?

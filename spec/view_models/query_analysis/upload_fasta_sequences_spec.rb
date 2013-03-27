@@ -14,6 +14,7 @@ describe UploadFastaSequences do
     DatabaseCleaner.clean
   end
   
+  it 'should test the logger for that weird issue'
   
   ################# Validations ###################
   describe 'validations', :type => :validations do
