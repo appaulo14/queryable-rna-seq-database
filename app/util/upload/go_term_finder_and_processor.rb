@@ -17,11 +17,8 @@ class GoTermFinderAndProcessor
       line = go_terms_file.readline
       next if line.blank?
       line_regex = /\A(\S+)\s+(\S+)\s+(.+)\z/
-      (transcript_name, go_id, term) = line.strip.match(line_regex).captures
+      (transcript_name, go_id) = line.strip.match(line_regex).captures
       go_term = GoTerm.find_by_id(go_id)
-      if go_term.nil?
-        go_term = GoTerm.create!(:id => go_id, :term => term)
-      end
       transcript = Transcript.where(:dataset_id => @dataset.id, 
                                     :name_from_program => transcript_name)[0]
       TranscriptHasGoTerm.create!(:transcript => transcript, 

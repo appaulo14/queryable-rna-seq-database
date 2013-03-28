@@ -1,8 +1,10 @@
 <%= render 'shared/error_messages', :object => @qdet %>
-<script type='text/javascript' src='query_diff_exp_transcripts.js' ></script>
 <%= javascript_include_tag 'downloadify/swfobject.js' %>
 <%= javascript_include_tag 'downloadify/downloadify.min.js' %>
 <%= javascript_include_tag 'Stupid-Table-Plugin/stupidtable.min.js' %>
+<%= javascript_include_tag 'downloadify_wrapper.js' %>
+<%= javascript_include_tag 'table_sorting.js' %>
+<script type='text/javascript' src='query_diff_exp_transcripts.js' ></script>
 <%= form_for(@qdet, :url => 'query_diff_exp_transcripts') do |qdet| %>
   <h1>Please select your transcript differential expression search options</h1>
   <p>
@@ -71,7 +73,7 @@
           <tr>
               <th data-sort='string'>Transcript&nbsp;<%= neutral_sort_arrow %></th>
               <th data-sort='string'>Associated Gene&nbsp;<%= neutral_sort_arrow %></th>
-              <th data-sort='string'>GO Terms&nbsp;<%= neutral_sort_arrow %></th>
+              <th>GO Terms</th>
               <th data-sort='float'>Test Statistic&nbsp;<%= neutral_sort_arrow %></th>
               <th data-sort='float'>P-value&nbsp;<%= neutral_sort_arrow %></th>
               <th data-sort='float'>FDR&nbsp;<%= neutral_sort_arrow %></th>

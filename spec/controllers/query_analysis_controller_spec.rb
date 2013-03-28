@@ -175,31 +175,36 @@ describe QueryAnalysisController do
       end
     end
     
-    describe 'POST request' do
+    describe 'POST request', :type => :post_request do
       it "should succeed for 'upload_cuffdiff'" do
+        UploadCuffdiff.any_instance.stub(:save)
         post 'upload_cuffdiff', 
            :upload_cuffdiff => {} 
         response.should be_success
       end
       
       it "should succeed for 'upload_trinity_with_edger_transcripts'" do
+        UploadTrinityWithEdgeRTranscripts.any_instance.stub(:save)
         post 'upload_trinity_with_edger_transcripts', 
             :upload_trinity_with_edger_transcripts => {}
         response.should be_success
       end
       
       it "should succeed for 'upload_trinity_with_edger_transcripts_and_genes'" do
+        UploadTrinityWithEdgeRTranscriptsAndGenes.any_instance.stub(:save)
         post 'upload_trinity_with_edger_transcripts_and_genes',
             :upload_trinity_with_edger_transcripts_and_genes => {}
         response.should be_success
       end
       
       it "should succeed for 'query_diff_exp_transcripts'" do
+        QueryDiffExpTranscripts.any_instance.stub(:save)
         post 'query_diff_exp_transcripts', :query_diff_exp_transcripts => {}
         response.should be_success
       end
       
       it "should succeed for 'query_diff_exp_genes'" do
+        QueryDiffExpTranscripts.any_instance.stub(:save)
         post 'query_diff_exp_genes', :query_diff_exp_genes => {}
         response.should be_success
       end

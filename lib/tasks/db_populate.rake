@@ -114,7 +114,7 @@ def make_transcripts_and_blast_databases(env)
     ds.genes.each do |gene|
       rand(1..3).times do |n|
         #Create the transcript name
-        transcript_name = Faker::Lorem.word
+        transcript_name = "TCONS_000#{transcript_count}"
         #Create a random fasta description and sequence
         fasta_description = "#{transcript_name} gene=#{gene.name_from_program}"
         nucleotide_counts = {'a' => rand(40..100),
@@ -399,7 +399,7 @@ def make_go_terms
     go_id, go_term = line.split(/\t/)
     GoTerm.create!(:id => go_id, :term => go_term)
     count += 1
-    break if count > 1000
+    #break if count > 1000
   end
   end_time = Time.now.to_i
   puts "Wrote #{count} go terms"
