@@ -19,23 +19,30 @@ function create_tooltips(){
   var elements = [];
   var titles = [];
   var texts = [];
-  //Tooltip for Trinity fasta file
-  elements[0] = 'trinity_fasta_tooltip';
-  titles[0] = 'Trinity.fasta file';
-  texts[0] = 'In your Trinity output directory there should be a file ' +
-             'of fasta sequences called Trinity.fasta.';
-  //Tooltip for Differential expression files
-  elements[1] = 'differential_expression_tooltip';
-  titles[1] = 'Differential Expression File(s)';
-  texts[1] = 'run_edgeR.pl produces a file called ' + 
-    'all_diff_expression_results.txt, which contains all the ' +
-    'differential expression test results. ' +
-    'It can be found in your edgeR output directory.'
-  //Tooltip for FPKM files
-  elements[2] = 'fpkm_tooltip';
-  titles[2] = 'FPKM Tracking File(s)';
-  texts[2] = 'run_edgeR.pl produces an FPKM tracking file. ' +
-    'It is the file in your edgeR output folder that ends in ".FPKM".'  
+  <% I18n.with_locale('en.query_analysis.upload_trinity_with_edger.help_tips') do %>
+    //Tooltip for Trinity fasta file
+    elements[0] = 'trinity_fasta_tooltip';
+    titles[0] = 'Trinity.fasta file';
+    texts[0] = 'In your Trinity output directory there should be a file ' +
+              'of fasta sequences called Trinity.fasta.';
+    //Tooltip for Differential expression files
+    elements[1] = 'differential_expression_tooltip';
+    titles[1] = 'Differential Expression File(s)';
+    texts[1] = 'run_edgeR.pl produces a file called ' + 
+      'all_diff_expression_results.txt, which contains all the ' +
+      'differential expression test results. ' +
+      'It can be found in your edgeR output directory.'
+    //Help tip for transcript FPKM file
+    elements[2] = 'transcript_fpkm_help_tip';
+    titles[2] = 'Transcript FPKM Tracking File';
+    texts[2] = '<%= I18n.t "transcript_fpkm.text" %> ' + 
+              '<%= more_info_link(I18n.t "transcript_fpkm.more_info_link") %>';
+    //Help tip for the gene FPKM file
+    elements[3] = 'gene_fpkm_tooltip';
+    titles[3] = 'FPKM Tracking File(s)';
+    texts[3] = 'run_edgeR.pl produces an FPKM tracking file. ' +
+      'It is the file in your edgeR output folder that ends in ".FPKM".' 
+  <% end %>
     
   for (var i = 0; i < elements.length; i++){
     $('#' + elements[i])
@@ -49,8 +56,8 @@ function create_tooltips(){
                           }
                   },
                   position: {
-                          my: 'left center',
-                          at: 'right center' 
+                          my: 'bottom center',
+                          at: 'top center' 
                   },
                   show: {
                           event: 'click', 
@@ -58,7 +65,7 @@ function create_tooltips(){
                   },
                   hide: false,
                   style: {
-                          classes: 'qtip-shadow qtip-' + 'dark'
+                          classes: 'qtip-shadow qtip-' + 'light'
                   }
           });
   }

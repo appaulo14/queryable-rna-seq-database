@@ -1,0 +1,8 @@
+en:
+  query_analysis:
+    upload_trinity_with_edger:
+      help_tips:
+        transcript_fpkm:  
+          title:  Transcript FPKM File
+          text:   "There should be a file ending in .FPKM that contains the FPKMs for each sample of each transcript."
+          more_info_link: "https://github.com/fatPerlHacker/queryable-rna-seq-database/wiki/Step-2:-Uploading-Data#wiki-trinity_with_edger_fpkm"

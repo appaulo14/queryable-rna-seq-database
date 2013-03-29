@@ -24,6 +24,8 @@ describe UploadCuffdiff do
     #system("rm #{Rails.root}/db/blast_databases/test/*")
   end
   
+  it 'should properly log exceptions'
+  
   describe 'validations', :type => :validations do
     before (:each) do
       @it = FactoryGirl.build(:upload_cuffdiff_with_2_samples)

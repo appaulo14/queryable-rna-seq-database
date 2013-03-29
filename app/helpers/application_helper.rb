@@ -9,4 +9,8 @@ module ApplicationHelper
       return  image_tag('question_mark.png', :id=> id, 
                                               :alt => "Help tip for #{id}" ) 
     end
+    
+    def more_info_link(url)
+      return link_to('More Information',url, :target => '_blank')
+    end
 end
