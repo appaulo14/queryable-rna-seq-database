@@ -22,9 +22,8 @@ function create_tooltips(){
   //Tooltip for Trinity fasta file
   elements[0] = 'trinity_fasta_tooltip';
   titles[0] = 'Trinity.fasta file';
-  texts[0] = 'Trinity.pl produces a fasta file called Trinity.fasta ' +
-    'which contains the assembled transcripts. It is located in your ' +
-    'Trinity output directory.';
+  texts[0] = 'In your Trinity output directory there should be a file ' +
+             'of fasta sequences called Trinity.fasta.';
   //Tooltip for Differential expression files
   elements[1] = 'differential_expression_tooltip';
   titles[1] = 'Differential Expression File(s)';
