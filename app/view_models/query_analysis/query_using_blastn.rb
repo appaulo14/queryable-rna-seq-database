@@ -169,6 +169,7 @@ class QueryUsingBlastn < AbstractQueryUsingBlast
       match = selected_match_and_mismatch_scores[:match]
       mismatch = selected_match_and_mismatch_scores[:mismatch]
       blastn_execution_string += "-reward #{match} -penalty #{mismatch}"
+      return blast_execution_string
     end
     
     #### Validation methods ####

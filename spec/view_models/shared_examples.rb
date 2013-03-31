@@ -278,3 +278,22 @@ shared_examples_for 'any upload view model when an exception occurs' do
     ActionMailer::Base.deliveries.last.subject.should match('Fail')
   end
 end
+
+shared_examples_for 'an attribute with a default value' do
+  it 'should set the default when no value is provided' do
+    @it.set_attributes_and_defaults({"#{@attribute}" => nil})
+    @it.send(@attribute).should_not be_nil
+  end
+  
+  it 'should not change the value when a value is given' do
+    @it.set_attributes_and_defaults({"#{@attribute}" => 'not nil'})
+    @it.send(@attribute).should eq('not nil')
+  end
+end
+
+shared_examples_for 'an attribute without a default value' do
+  it 'should not change the attribute' do
+    @it.set_attributes_and_defaults({"#{@attribute}" => nil})
+    @it.send(@attribute).should be_nil
+  end
+end

@@ -173,7 +173,7 @@
               <% query_strand = (hsp.query_frame > 0) ? 'Plus' : 'Minus' %>
               <% hit_strand = (hsp.hit_frame > 0) ? 'Plus' : 'Minus' %>
               Strand = <%= query_strand %>/<%= hit_strand %><br/>
-            <% elsif @prorgam == :blastx or @progarm == :tblastx or @program == :tblastn %>
+            <% elsif @program == :blastx or @program == :tblastx or @program == :tblastn %>
               Frame = <%= '%+d' % hsp.query_frame %>/<%= '%+d' % hsp.hit_frame %><br/>
             <% end %>
           </p>
