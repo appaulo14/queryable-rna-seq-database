@@ -55,7 +55,7 @@ class AbstractQueryUsingBlast
     attributes.each do |name, value|
         send("#{name}=", value)
     end
-    @dataset_id = @available_datasets.first[1]
+    @dataset_id = @available_datasets.first[1] if @dataset_id.blank?
     @num_alignments = '100' if @num_alignments.blank?
     @e_value = 10.0 if @e_value.blank?
   end

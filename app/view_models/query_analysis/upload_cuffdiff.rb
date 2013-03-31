@@ -48,7 +48,7 @@ class UploadCuffdiff
     begin
       ActiveRecord::Base.transaction do   #Transactions work with sub-methods
         process_args_to_create_dataset()
-        raise Exception, "goat"
+        #raise Exception, "goat"
         if @has_diff_exp == '1'
           process_gene_differential_expression_file()
           process_transcript_differential_expression_file()
@@ -67,7 +67,7 @@ class UploadCuffdiff
     rescue Exception => ex
       begin
       BlastUtil.rollback_blast_database(@dataset)
-      raise Exception, "goat2"
+      #raise Exception, "goat2"
       QueryAnalysisMailer.notify_user_of_upload_failure(@current_user,
                                                         @dataset)
       #Log the exception manually because Rails doesn't want to in this case
