@@ -8,9 +8,8 @@ class QueryDiffExpTranscripts
   extend ActiveModel::Naming
   
   attr_accessor :dataset_id, :sample_comparison_id_pair,
-                :fdr_or_p_value, :cutoff, :filter_by_go_terms, :go_terms,
-                :filter_by_go_ids, :go_ids,
-                :filter_by_transcript_name, :transcript_name 
+                :fdr_or_p_value, :cutoff, :go_terms,
+                :go_ids, :transcript_name 
   attr_reader  :names_and_ids_for_available_datasets, 
                 :available_sample_comparisons, 
                 :show_results, :results, :sample_1_name, :sample_2_name
@@ -43,9 +42,6 @@ class QueryDiffExpTranscripts
     @dataset_id = available_datasets.first.id if @dataset_id.blank?
     @fdr_or_p_value = :p_value if fdr_or_p_value.blank?
     @cutoff = '0.05' if cutoff.blank?
-    @filter_by_go_terms = false if filter_by_go_terms.blank?
-    @filter_by_go_ids = false if filter_by_go_ids.blank?
-    @filter_by_transcript_name = false if filter_by_transcript_name.blank?
     #Set available samples for comparison
     @available_sample_comparisons = []
     s_t = Sample.arel_table
@@ -93,7 +89,7 @@ class QueryDiffExpTranscripts
       where_clause = where_clause.and(det_t[:fdr].lteq(@cutoff))
     end
     #Optional parts of the where clause
-    if @filter_by_transcript_name == '1'
+    if not @transcript_name.blank?
       tnqcg = TranscriptNameQueryConditionGenerator.new()
       tnqcg.name = @transcript_name
       where_clause = where_clause.and(tnqcg.generate_query_condition())
@@ -107,12 +103,12 @@ class QueryDiffExpTranscripts
     query_results.each do |query_result|
       #Fill in the result hash that the view will use to display the data
       transcript = Transcript.find_by_id(query_result.transcript_id)
-      if @filter_by_go_ids == '1'
+      if not @go_ids.blank?
         giqcg = GoIdsQueryConditionGenerator.new(@go_ids)
         query_condition = giqcg.generate_query_condition()
         next if (transcript.go_terms & GoTerm.where(query_condition)).empty?
       end
-      if @filter_by_go_terms == '1'
+      if not @go_terms.blank?
         gtqcg = GoTermsQueryConditionGenerator.new(@go_terms)
         query_condition = gtqcg.generate_query_condition()
         next if (transcript.go_terms & GoTerm.where(query_condition)).empty?

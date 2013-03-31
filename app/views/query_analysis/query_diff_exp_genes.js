@@ -66,7 +66,7 @@ function create_helptips(){
                   },
                   hide: false,
                   style: {
-                          classes: 'qtip-shadow qtip-' + 'dark'
+                          classes: 'qtip-shadow qtip-' + 'light'
                   }
           });
   }

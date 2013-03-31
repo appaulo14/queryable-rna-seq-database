@@ -8,9 +8,7 @@ class QueryDiffExpGenes
   extend ActiveModel::Naming
   
   attr_accessor :dataset_id, :sample_comparison_id_pair,
-                :fdr_or_p_value, :cutoff, :filter_by_go_terms, :go_terms,
-                :filter_by_go_ids, :go_ids,  
-                :filter_by_gene_name, :gene_name 
+                :fdr_or_p_value, :cutoff, :go_terms, :go_ids, :gene_name 
   attr_reader   :names_and_ids_for_available_datasets, 
                 :available_sample_comparisons, 
                 :show_results, :results, :sample_1_name, :sample_2_name
@@ -43,9 +41,6 @@ class QueryDiffExpGenes
     @dataset_id = available_datasets.first.id if @dataset_id.blank?
     @fdr_or_p_value = 'p_value' if fdr_or_p_value.blank?
     @cutoff = '0.05' if cutoff.blank?
-    @filter_by_go_terms = false if filter_by_go_terms.blank?
-    @filter_by_go_ids = false if filter_by_go_ids.blank?
-    @filter_by_gene_name = false if filter_by_gene_name.blank?
     #Set available samples for comparison
     @available_sample_comparisons = []
     s_t = Sample.arel_table
@@ -92,7 +87,7 @@ class QueryDiffExpGenes
       where_clause = where_clause.and(det_t[:fdr].lteq(@cutoff))
     end
     #Optional parts of the where clause
-    if @filter_by_gene_name == '1'
+    if not @gene_name.blank?
       gnqcg = GeneNameQueryConditionGenerator.new()
       gnqcg.name = @gene_name
       where_clause = where_clause.and(gnqcg.generate_query_condition())
@@ -107,7 +102,7 @@ class QueryDiffExpGenes
       #Do a few more minor queries to get the data in the needed format
       gene = Gene.find_by_id(query_result.gene_id)
       transcripts = gene.transcripts
-      if @filter_by_go_ids == '1'
+      if not @go_ids.blank?
         giqcg = GoIdsQueryConditionGenerator.new(@go_ids)
         query_condition = giqcg.generate_query_condition()
         match_found = false
@@ -118,7 +113,7 @@ class QueryDiffExpGenes
         end
         next if not match_found
       end
-      if @filter_by_go_terms == '1'
+      if not @go_terms.blank?
         gtqcg = GoTermsQueryConditionGenerator.new(@go_terms)
         query_condition = gtqcg.generate_query_condition()
         match_found = false

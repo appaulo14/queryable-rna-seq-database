@@ -19,6 +19,6 @@ class GeneNameQueryConditionGenerator
     end
     #Generate and return the query condition
     t_t = Gene.arel_table
-    return t_t[:name_from_program].eq(@name)
+    return t_t[:name_from_program].matches("%#{@name.strip}%")
   end
 end
