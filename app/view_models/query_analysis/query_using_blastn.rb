@@ -2,7 +2,6 @@ require 'tempfile'
 require 'query_analysis/abstract_query_using_blast.rb'
 
 class QueryUsingBlastn < AbstractQueryUsingBlast
-
   attr_accessor :word_size, :gap_costs, :match_and_mismatch_scores
     
   attr_reader :available_word_sizes, :available_match_and_mismatch_scores, 
@@ -78,7 +77,6 @@ class QueryUsingBlastn < AbstractQueryUsingBlast
         'Existence: 3, Extension: 5' => {:existence => 3, :extention => 5},
       },
       '1,-1' => {
-        'Linear' => {:existence => 0, :extention => 0},
         'Existence: 5, Extension: 2' => {:existence => 5, :extention => 2},
         'Existence: 3, Extension: 2' => {:existence => 3, :extention => 2},
         'Existence: 2, Extension: 2' => {:existence => 2, :extention => 2},
@@ -117,9 +115,6 @@ class QueryUsingBlastn < AbstractQueryUsingBlast
       @use_lowercase_masking = '0' if @use_lowercase_masking.blank?
       if @filter_low_complexity_regions.blank?
         @filter_low_complexity_regions = '1'
-      end
-      if @use_fasta_sequence_or_file.blank?
-        @use_fasta_sequence_or_file = :use_fasta_sequence
       end
       if @match_and_mismatch_scores.blank?
         @match_and_mismatch_scores = @available_match_and_mismatch_scores.first 
@@ -169,7 +164,7 @@ class QueryUsingBlastn < AbstractQueryUsingBlast
       match = selected_match_and_mismatch_scores[:match]
       mismatch = selected_match_and_mismatch_scores[:mismatch]
       blastn_execution_string += "-reward #{match} -penalty #{mismatch}"
-      return blast_execution_string
+      return blastn_execution_string
     end
     
     #### Validation methods ####
