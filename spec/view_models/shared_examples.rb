@@ -12,6 +12,18 @@ shared_examples_for 'a required attribute' do
   end
 end
 
+shared_examples_for 'an optional attribute' do
+  it 'should be valid for nil' do
+    @it.send("#{@attribute}=", nil)
+    @it.should be_valid
+  end
+  
+  it 'should be valid for an empty string' do
+    @it.send("#{@attribute}=", '')
+    @it.should be_valid
+  end
+end
+
 shared_examples_for 'an uploaded file' do
   it 'should be valid when the type is "ActionDispatch::Http::UploadedFile"' do
     #The factory should make this attribute an uploaded file by default
@@ -351,5 +363,37 @@ shared_examples_for 'a number' do
   end
 end
 
-shared_examples_for 'a string containing nucleotide fasta_sequences' do
+shared_examples_for 'a string containing nucleotide fasta sequences' do
+  it 'should be valid for a nucelotide fasta sequence with a definition line' do
+    @it.send("#{@attribute}=", ">Hello\nATKMBVCNSWDGUYRH\-AA")
+    @it.should be_valid
+  end
+  it 'should be valid for a nucelotide fasta sequence without a definition line' do
+    @it.send("#{@attribute}=", "ATKMBVCNSWDGUYRH\-AA")
+    @it.should be_valid
+  end
+  it 'should be valid for multiple nucelotide fasta sequences with definition lines' do
+    @it.send("#{@attribute}=", ">H\nATKMBVCNSWD\n>H\nGUYRH\-AA")
+    @it.should be_valid
+  end
+  it 'should be valid for multiple nucelotide fasta sequences without a definition lines' do
+    @it.send("#{@attribute}=", ">H\nATKMBVCNSWD\n\nGUYRH\-AA")
+    @it.should be_valid
+  end
+  
+  it 'should not be valid for a protein fasta sequence' do
+    @it.send("#{@attribute}=", ">Hello\nQPR\*\-")
+    @it.should_not be_valid
+  end
+  it 'should not be valid for a nucleotide fasta sequence with illegal characters' do 
+    @it.send("#{@attribute}=", ">Hello\nATKMBVCNSWD>GU\.YRH\-AA")
+    @it.should_not be_valid
+  end
+  
+  it 'should not be valid for string numbers' do
+     ['-5','0','4.5','62'].each do |number|
+      @it.send("#{@attribute}=", number)
+      @it.should_not be_valid
+    end
+  end
 end

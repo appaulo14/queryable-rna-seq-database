@@ -1,6 +1,6 @@
 class SampleBelongsToUserValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
-    return if value.nil?
+    return if value.blank?
     current_user = record.instance_eval('@current_user')
     sample = Sample.find_by_id(value)
     return if sample.nil?

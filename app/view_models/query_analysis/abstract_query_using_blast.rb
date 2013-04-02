@@ -17,7 +17,7 @@ class AbstractQueryUsingBlast
                          :dataset_belongs_to_user => true
   validates :text_area_fastas, :presence => true,
                                :nucleotide_fasta_sequences => true, 
-                   :if => "@query_input_method == 'text_area'"
+                          :if => "@query_input_method == 'text_area'"
   validates :fasta_file, :uploaded_file => true
   validates :fasta_file, :presence => true, 
                    :if => "@query_input_method == 'file'"

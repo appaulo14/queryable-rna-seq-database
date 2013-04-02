@@ -168,6 +168,13 @@ class QueryUsingBlastn < AbstractQueryUsingBlast
     
     #### Validation methods ####
     def gap_costs_valid_for_selected_match_and_mismatch_scores
-      #TODO: Implement
+      return if @gap_costs.blank? or @match_and_mismatch_scores.blank?
+      if not AVAILABLE_MATCH_AND_MISMATCH_SCORES.keys.include?(@match_and_mismatch_scores)
+        return
+      end
+      if AVAILABLE_GAP_COSTS[@match_and_mismatch_scores][@gap_costs].nil?
+        errors[:gap_costs] << 'must be one of the available gap costs ' +
+          'for the given match/mismatch scores'
+      end
     end
 end

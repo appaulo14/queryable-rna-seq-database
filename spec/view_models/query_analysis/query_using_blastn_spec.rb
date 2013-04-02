@@ -10,7 +10,7 @@ describe QueryUsingBlastn do
     File.stub(:delete){}
     FactoryGirl.build(:upload_fasta_sequences).save
     @it = QueryUsingBlastn.new(User.first)
-    @it.set_attributes_and_defaults({:fasta_sequence => "AAAA"})
+    @it.set_attributes_and_defaults({:text_area_fastas => "AAAA"})
   end
   
   ################# Validations ###################
@@ -22,11 +22,12 @@ describe QueryUsingBlastn do
     end
     
     describe 'text_area_fastas' do
-      before(:each) do @attribute = 'fasta_sequence' end
+      before(:each) do @attribute = 'text_area_fastas' end
       
       describe 'when query_input_method == "text_area"' do
         before(:each) do 
           @it.query_input_method = 'text_area'
+          @it.set_attributes_and_defaults({:text_area_fastas => "AAAA"})
         end
         
         it_should_behave_like 'a string containing nucleotide fasta sequences'
@@ -36,6 +37,7 @@ describe QueryUsingBlastn do
       describe 'when query_input_method == "file"' do
         before(:each) do 
           @it.query_input_method = 'file'
+          @it.fasta_file = generate_uploaded_file('AAAA')
         end
         
         it_should_behave_like 'an optional attribute'
@@ -48,6 +50,7 @@ describe QueryUsingBlastn do
       describe 'when query_input_method == "file"' do
         before (:each) do
           @it.query_input_method = 'file'
+          @it.fasta_file = generate_uploaded_file('AAAA')
         end
         
         it_should_behave_like 'an uploaded file'
@@ -57,6 +60,7 @@ describe QueryUsingBlastn do
       describe 'when query_input_method == "text_area"' do
         before (:each) do
           @it.query_input_method = 'text_area'
+          @it.set_attributes_and_defaults({:text_area_fastas => "AAAA"})
         end
         
         it_should_behave_like 'an optional attribute'
@@ -82,8 +86,8 @@ describe QueryUsingBlastn do
       it_should_behave_like 'a required attribute'
     end
     
-    describe 'e_value' do
-      before(:each) do @attribute = 'e_value' end
+    describe 'evalue' do
+      before(:each) do @attribute = 'evalue' end
     
       it_should_behave_like 'a number'
       it_should_behave_like 'a required attribute'
@@ -162,6 +166,30 @@ describe QueryUsingBlastn do
       it_should_behave_like 'a required attribute'
     end
     
+    it 'should be valid for the available match/mismatch scores and their gap costs' do
+      @it.available_match_and_mismatch_scores.each do |m_ms_score|
+        @it.set_attributes_and_defaults({:match_and_mismatch_scores => m_ms_score})
+        @it.available_gap_costs.each do |gap_costs|
+          @it.gap_costs = gap_costs
+          @it.should be_valid
+        end
+      end
+    end
+    
+    it 'should not be valid for gap costs that are ' do
+      @it.available_match_and_mismatch_scores.each do |m_ms_score|
+        @it.set_attributes_and_defaults({:match_and_mismatch_scores => m_ms_score})
+        available_gap_costs = @it.available_gap_costs
+        @it.available_match_and_mismatch_scores.each do |m_ms_score2|
+          @it.set_attributes_and_defaults({:match_and_mismatch_scores => m_ms_score})
+          (available_gap_costs - @it.available_gap_costs).each do |gap_costs|
+            @it.gap_costs = gap_costs
+            @it.should_not be_valid
+          end
+        end
+      end
+    end
+    
     describe 'match_and_mismatch_scores' do
       before(:each) do @attribute = 'match_and_mismatch_scores' end
     
@@ -216,20 +244,20 @@ describe QueryUsingBlastn do
       end
     end
     
-    describe 'e_value' do
+    describe 'evalue' do
       it 'should put the e value in the command string' do
-        evalue = @it.e_value.to_f + 5.0
-        @it.e_value = evalue
+        evalue = @it.evalue.to_f + 5.0
+        @it.evalue = evalue
         expected_regex = /-evalue #{evalue}/
         SystemUtil.should_receive('system!').with(expected_regex)
         @it.blast
       end
     end
     
-    describe 'use_fasta_sequence_or_file' do
-      it 'should create two tempfiles when using a fasta sequence' do
-        params = {:use_fasta_sequence_or_file => 'use_fasta_sequence',
-                  :fasta_sequence => 'AAAA'}
+    describe 'query_input_method' do
+      it 'should create two tempfiles when using a text area' do
+        params = {:query_input_method => 'text_area',
+                  :text_area_fastas => 'AAAA'}
         @it.set_attributes_and_defaults(params)
         Tempfile.should_receive(:new).twice.and_call_original
         @it.blast
@@ -237,7 +265,7 @@ describe QueryUsingBlastn do
       
       it 'should create one tempfile when using a fasta file' do
         uploaded_file = generate_uploaded_file("AAAA")
-        params = {:use_fasta_sequence_or_file => 'use_fasta_file',
+        params = {:query_input_method => 'file',
                   :fasta_file => uploaded_file}
         @it.set_attributes_and_defaults(params)
         Tempfile.should_receive(:new).once.and_call_original
@@ -353,14 +381,14 @@ describe QueryUsingBlastn do
       it_should_behave_like 'an attribute with a default value'
     end
     
-    describe 'fasta_sequence' do
-      before (:each) do @attribute = 'fasta_sequence' end
+    describe 'text_area_fastas' do
+      before (:each) do @attribute = 'text_area_fastas' end
       
       it 'should have the correct query length' do
-        fasta_sequence = @it.fasta_sequence.to_s + "AAAA"
-        expected_query_len = fasta_sequence.length
-        params = {:use_fasta_sequence_or_file => 'use_fasta_sequence',
-                  :fasta_sequence => fasta_sequence, 
+        fasta_sequence = @it.text_area_fastas.to_s + "AAAA"
+        expected_query_len = text_area_fastas.length
+        params = {:query_input_method => 'text_area',
+                  :text_area_fastas => fasta_sequence, 
                   :fasta_file => nil}
         @it.set_attributes_and_defaults(params)
         blast_report = @it.blast
@@ -374,12 +402,12 @@ describe QueryUsingBlastn do
       before (:each) do @attribute = 'fasta_file' end
       
       it 'should have the correct query length' do
-        fasta_sequence = @it.fasta_sequence.to_s + "AAAA"
+        fasta_sequence = @it.text_area_fastas.to_s + "AAAA"
         expected_query_len = fasta_sequence.length
         uploaded_file = generate_uploaded_file(fasta_sequence)
-        params = {:use_fasta_sequence_or_file => 'use_fasta_file',
+        params = {:query_input_method => 'file',
                   :fasta_file => uploaded_file, 
-                  :fasta_sequence => ""}
+                  :text_area_fastas => nil}
         @it.set_attributes_and_defaults(params)
         blast_report = @it.blast
         blast_report.query_len.should eq(expected_query_len)
@@ -394,12 +422,12 @@ describe QueryUsingBlastn do
       it_should_behave_like 'an attribute with a default value'
     end
     
-    describe 'e_value' do
-      before (:each) do @attribute = 'e_value' end
+    describe 'evalue' do
+      before (:each) do @attribute = 'evalue' end
       
       it 'should correctly appear in the blast report' do
-        expected_evalue = @it.e_value + 1
-        @it.e_value = expected_evalue
+        expected_evalue = @it.evalue + 1
+        @it.evalue = expected_evalue
         blast_report = @it.blast
         blast_report.expect.should eq(expected_evalue)
       end
