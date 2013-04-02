@@ -397,3 +397,25 @@ shared_examples_for 'a string containing nucleotide fasta sequences' do
     end
   end
 end
+
+shared_examples_for 'query using blast for white box testing' do
+  it 'should blast when valid' do
+    @it.should_receive('valid?').ordered.and_return(true)
+    @it.should_receive(:prepare_IO_files).ordered
+    @it.should_receive(:generate_execution_string).ordered
+    SystemUtil.should_receive('system!').ordered
+    @it.should_receive('generate_blast_report_from_xml_results').ordered
+    @it.should_receive('cleanup_files').ordered
+    @it.blast
+  end
+  
+  it 'should not blast when not valid' do
+    @it.should_receive('valid?').ordered.and_return(false)
+    @it.should_not_receive(:prepare_IO_files).ordered
+    @it.should_not_receive(:generate_execution_string).ordered
+    SystemUtil.should_not_receive('system!').ordered
+    @it.should_not_receive('generate_blast_report_from_xml_results').ordered
+    @it.should_not_receive('cleanup_files').ordered
+    @it.blast
+  end
+end

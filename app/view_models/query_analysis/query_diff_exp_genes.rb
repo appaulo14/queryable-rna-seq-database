@@ -128,7 +128,7 @@ class QueryDiffExpGenes
       result = {}
       result[:gene_name] = gene.name_from_program #det.gene
       result[:transcript_names] = transcripts.map{|t| t.name_from_program} #det.gene.transcript_names
-      result[:go_terms] = transcripts.map{|t| t.go_terms}.flatten
+      result[:go_terms] = transcripts.map{|t| t.go_terms}.flatten.uniq{|g| g.id}
       result[:test_statistic] = query_result.test_statistic
       result[:p_value] = query_result.p_value
       result[:fdr] = query_result.fdr

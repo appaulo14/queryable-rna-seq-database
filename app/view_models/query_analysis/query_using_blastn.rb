@@ -89,6 +89,7 @@ class QueryUsingBlastn < AbstractQueryUsingBlast
     }
     
   #Validation
+  validates :text_area_fastas, :nucleotide_fasta_sequences => true
   validates :word_size, :presence => true,
                         :inclusion => {:in => AVAILABLE_WORD_SIZES}
   validates :gap_costs, :presence => true

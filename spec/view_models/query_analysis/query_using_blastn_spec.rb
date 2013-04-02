@@ -199,25 +199,7 @@ describe QueryUsingBlastn do
   
   ################# White Box ###################
   describe 'flow control', :type => :white_box do
-    it 'should blast when valid' do
-      @it.should_receive('valid?').ordered.and_return(true)
-      @it.should_receive(:prepare_IO_files).ordered
-      @it.should_receive(:generate_execution_string).ordered
-      SystemUtil.should_receive('system!').ordered
-      @it.should_receive('generate_blast_report_from_xml_results').ordered
-      @it.should_receive('cleanup_files').ordered
-      @it.blast
-    end
-    
-    it 'should not blast when not valid' do
-      @it.should_receive('valid?').ordered.and_return(false)
-      @it.should_not_receive(:prepare_IO_files).ordered
-      @it.should_not_receive(:generate_execution_string).ordered
-      SystemUtil.should_not_receive('system!').ordered
-      @it.should_not_receive('generate_blast_report_from_xml_results').ordered
-      @it.should_not_receive('cleanup_files').ordered
-      @it.blast
-    end
+    it_should_behave_like 'query using blast for white box testing'
     
     describe 'dataset_id' do
       it 'should put the blast database location in the command string' do
@@ -226,12 +208,6 @@ describe QueryUsingBlastn do
         @it.blast
       end
     end
-    
-#    describe 'fasta_sequence' do
-#    end
-#    
-#    describe 'fasta_file' do
-#    end
     
     describe 'num_alignments' do
       it 'should put the correct num alignments in the command string' do
@@ -386,7 +362,7 @@ describe QueryUsingBlastn do
       
       it 'should have the correct query length' do
         fasta_sequence = @it.text_area_fastas.to_s + "AAAA"
-        expected_query_len = text_area_fastas.length
+        expected_query_len = fasta_sequence.length
         params = {:query_input_method => 'text_area',
                   :text_area_fastas => fasta_sequence, 
                   :fasta_file => nil}

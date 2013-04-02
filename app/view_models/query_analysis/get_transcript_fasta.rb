@@ -24,21 +24,35 @@ class GetTranscriptFasta
   def query
     #Get the transcript from the parameters
     raise(ActiveRecord::RecordInvalid,self) if not self.valid?
-    transcript = Transcript.where(:dataset_id => @dataset_id, 
-                                  :name_from_program => @transcript_name)[0]
-    #Create the fasta string
-    if transcript.nil?
-      return 'No fasta sequences found.'
-    else
+    dataset = Dataset.find_by_id(@dataset_id)
+#    transcript = Transcript.where(:dataset_id => @dataset_id, 
+#                                  :name_from_program => @transcript_name)[0]
+#    #Create the fasta string
+#    if transcript.nil?
+#      return 'No fasta sequences found.'
+#    else
       #Create the fasta string for the transcript
       #TODO figure out how to handle failure
-      stdin, stdout, stderr = 
-        Open3.popen3('bin/blast/bin/blastdbcmd', 
-                     '-entry',"#{transcript.name_from_program}", 
-                     '-db',"#{transcript.dataset.blast_db_location}", 
+#      stdin, stdout, stderr = 
+#        Open3.popen3('bin/blast/bin/blastdbcmd', 
+#                     '-entry',"#{transcript.name_from_program}", 
+#                     '-db',"#{transcript.dataset.blast_db_location}", 
+#                     '-dbtype','nucl')
+      stdout, stderr, status = 
+        Open3.capture3('bin/blast/bin/blastdbcmd', 
+                     '-entry',"#{@transcript_name}", 
+                     '-db',"#{dataset.blast_db_location}", 
                      '-dbtype','nucl')
-      return stdout.gets(nil)
-    end
+      if not stderr.blank?
+        if stderr.match(/Entry not found in BLAST database/)
+          return stderr
+        else
+          raise StandardError, stderr
+        end
+      end
+     
+        return stdout
+#    end
   end
   
   #Accoring http://railscasts.com/episodes/219-active-model?view=asciicast,

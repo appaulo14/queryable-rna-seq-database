@@ -7,7 +7,10 @@
 <%= render 'shared/error_messages', :object => @qdeg %>
 <%= form_for(@qdeg, :url => 'query_diff_exp_genes') do |qdeg| %>
   <h1>Please select your gene differential expression search options</h1>
-  <div><%= link_to('Learn More About The Features of This Page','#') %></div>
+  <div><%= link_to('Learn More About The Features of This Page',
+                   'https://github.com/fatPerlHacker/queryable-rna-seq-database/' +
+                   'wiki/About-the-Queryable-RNA-Seq-Database#query-your-data') %>
+  </div>
   <p>
     <%= qdeg.label :dataset_id, "Dataset to query" %>
     <%= qdeg.select :dataset_id, 
@@ -71,7 +74,11 @@
   <p id="downloadify">
       You must have Flash 10 installed to download this file.
   </p>
-  <div style="float:center"><%= link_to('Learn More About These Table Columns','#') %></div>
+  <div style="float:center">
+    <%= link_to('Learn More About These Table Columns',
+                'https://github.com/fatPerlHacker/queryable-rna-seq-database/' +
+                'wiki/Step-3:-Querying-Data#output-table-data-columns') %>
+  </div>
   <!--Table containing the query results-->
   <table border="1" id="query_results_table">
       <thead>

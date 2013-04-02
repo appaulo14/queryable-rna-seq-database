@@ -130,7 +130,9 @@
         <% iteration.hits.each do |hit| %>
           <tr>
             <td>
-              <%= link_to_ncbi_search_for hit.hit_id %> <%= hit.target_def %>
+              <!--<%= link_to_ncbi_search_for hit.hit_id %>-->
+              <%= link_to_fasta_sequence_for_transcript @dataset.id, hit.hit_id %>
+              <%= hit.target_def %>
             </td>
             <td style="text-align:center">
               <%= link_to hit.bit_score.round(2).to_s, "##{get_unique_hit_id(report,iteration,hit)}" %>
@@ -148,7 +150,9 @@
     <% iteration.hits.each do |hit| %>
       <div id="<%= get_unique_hit_id(report,iteration,hit) %>">
         <!-- Display some basic information about the hit -->
-        &gt;<%= link_to_ncbi_search_for hit.hit_id %> <%= hit.target_def %>
+        &gt;<!--<%= link_to_ncbi_search_for hit.hit_id %>-->
+        <%= link_to_fasta_sequence_for_transcript @dataset.id, hit.hit_id %>
+        <%= hit.target_def %>
         <div>Length=<%= hit.len %></div>
         <!-- Loop through the hsps -->
         <% hit.hsps.each do |hsp| %>
