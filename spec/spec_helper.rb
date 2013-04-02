@@ -6,6 +6,7 @@ require 'rspec/autorun'
 require 'capybara/rspec'
 require 'capybara/rails'
 require 'database_cleaner'
+require 'tempfile'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -93,6 +94,12 @@ RSpec.configure do |config|
   
   def sign_out()
     visit destroy_user_session_path
+  end
+  
+  def generate_uploaded_file(content)
+    tmpfile = Tempfile.new('tempfile')
+    tmpfile.write(content)
+    return ActionDispatch::Http::UploadedFile.new({:tempfile => tmpfile})
   end
   
   def to_cuffdiff_uploaded_file(number_of_samples,file_name)

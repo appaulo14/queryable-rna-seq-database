@@ -241,6 +241,7 @@ class QueryAnalysisController < ApplicationController
     end
     
     def query_using_blastn    #Changed after architecture design
+      @sequence_type = 'nucleic acid'
       if request.get?
           @query_using_blastn = QueryUsingBlastn.new(current_user)
           @query_using_blastn.set_attributes_and_defaults()
@@ -251,6 +252,7 @@ class QueryAnalysisController < ApplicationController
             @program = :blastn
             @blast_report = @query_using_blastn.blast
             #Send the result to the user
+            @dataset = Dataset.find_by_id(@query_using_blastn.dataset_id)
             render :file => 'query_analysis/blast_results'
         end
       end
@@ -268,6 +270,7 @@ class QueryAnalysisController < ApplicationController
     end
 
     def query_using_tblastn #changed after the architecture design
+      @sequence_type = 'amino acid'
       if request.get?
         @query_using_tblastn = QueryUsingTblastn.new(current_user)
         @query_using_tblastn.set_attributes_and_defaults()
@@ -278,6 +281,7 @@ class QueryAnalysisController < ApplicationController
           #Run the blast query and get the file path of the result
           @blast_report = @query_using_tblastn.blast()
           #Send the result to the user
+          @dataset = Dataset.find_by_id(@query_using_tblastn.dataset_id)
           render :file => 'query_analysis/blast_results'
         end
       end
@@ -293,6 +297,7 @@ class QueryAnalysisController < ApplicationController
     end
     
   def query_using_tblastx  #changed after the architecture design
+    @sequence_type = 'nucleic acid'
     if request.get?
       @query_using_tblastx = QueryUsingTblastx.new(current_user)
       @query_using_tblastx.set_attributes_and_defaults()
@@ -303,6 +308,7 @@ class QueryAnalysisController < ApplicationController
         #Run the blast query and get the file path of the result
         @blast_report = @query_using_tblastx.blast()
         #Send the result to the user
+        @dataset = Dataset.find_by_id(@query_using_tblastx.dataset_id)
         render :file => 'query_analysis/blast_results'
       end
     end

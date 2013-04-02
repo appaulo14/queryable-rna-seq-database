@@ -1,0 +1,16 @@
+<h2>Enter a Query Sequence</h2>
+<!--Enter or upload fasta sequence-->
+<p>
+  <div>
+    <%= bq.radio_button(:query_input_method, 'text_area') %>
+    <%= bq.label :text_area_fastas, 
+         "Enter #{@sequence_type} sequence(s) below in FASTA format" %>
+    <%= image_tag('question_mark.png', :id=>'fasta_sequence_qtip')%><br/>
+    <%= bq.text_area :text_area_fastas, {:cols=>80, :rows => 6} %><br/>
+  </div>
+  <div>
+    <%= bq.radio_button(:query_input_method, 'file') %>
+    <%= bq.label :fasta_file, "Or upload them from a file" %><br/>
+    <%= bq.file_field :fasta_file %><br/>
+  </div>
+</p>

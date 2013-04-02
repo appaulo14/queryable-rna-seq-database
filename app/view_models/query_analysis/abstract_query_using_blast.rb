@@ -4,8 +4,8 @@ class AbstractQueryUsingBlast
   include ActiveModel::Conversion
   extend ActiveModel::Naming
   
-  attr_accessor :dataset_id, :fasta_sequence, :fasta_file, :num_alignments, 
-                :e_value, :use_fasta_sequence_or_file, 
+  attr_accessor :dataset_id, :text_area_fastas, :fasta_file, :num_alignments, 
+                :evalue, :query_input_method, 
                 :use_soft_masking, :filter_low_complexity_regions,
                 :use_lowercase_masking
                 
@@ -15,22 +15,23 @@ class AbstractQueryUsingBlast
   
   validates :dataset_id, :presence => true,
                          :dataset_belongs_to_user => true
-  validates :fasta_sequence, :presence => true, 
-                   :if => "@use_fasta_sequence_or_file == 'use_fasta_sequence'"
+  validates :text_area_fastas, :presence => true,
+                               :nucleotide_fasta_sequences => true, 
+                   :if => "@query_input_method == 'text_area'"
   validates :fasta_file, :uploaded_file => true
   validates :fasta_file, :presence => true, 
-                   :if => "@use_fasta_sequence_or_file == 'use_fasta_file'"
+                   :if => "@query_input_method == 'file'"
   
   validates :num_alignments, :presence => true,
                              :inclusion => {:in => AVAILABLE_NUM_ALIGNMENTS}
-  validates :e_value, :presence => true,
+  validates :evalue, :presence => true,
                       :numericality => true
   
-  validates :use_fasta_sequence_or_file, :presence => true,
-                                          :inclusion => {:in =>[
-                                            'use_fasta_sequence',
-                                            'use_fasta_file']
-                                          }
+  validates :query_input_method, :presence => true,
+                                    :inclusion => {:in =>[
+                                      'text_area',
+                                      'file']
+                                    }
 
   validates :use_soft_masking, :presence => true,
                                 :view_model_boolean => true
@@ -57,10 +58,8 @@ class AbstractQueryUsingBlast
     end
     @dataset_id = @available_datasets.first[1] if @dataset_id.blank?
     @num_alignments = '100' if @num_alignments.blank?
-    @e_value = 10.0 if @e_value.blank?
-    if @use_fasta_sequence_or_file.blank?
-      @use_fasta_sequence_or_file = 'use_fasta_sequence'
-    end
+    @evalue = 10.0 if @evalue.blank?
+    @query_input_method = 'text_area' if @query_input_method.blank?
   end
   
   def blast()
@@ -94,13 +93,13 @@ class AbstractQueryUsingBlast
   end
   
   def prepare_IO_files()
-    if @use_fasta_sequence_or_file == 'use_fasta_sequence'
+    if @query_input_method == 'text_area'
       @query_input_file = Tempfile.new('query_using_blast')
-      @query_input_file.write(@fasta_sequence)
-      @query_input_file.close
+      @query_input_file.write(@text_area_fastas)
     else
       @query_input_file = @fasta_file.tempfile
     end
+    @query_input_file.close if not @query_input_file.closed?
     #Create a temporary file to store the blast output in xml format
     @xml_results_file = Tempfile.new('blast')
     @xml_results_file.close

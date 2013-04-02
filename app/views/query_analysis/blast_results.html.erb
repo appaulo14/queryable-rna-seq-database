@@ -5,8 +5,8 @@
 <%= link_to 'Reference:', 'http://www.ncbi.nlm.nih.gov/pubmed/9254694?dopt=Citation', :target => "_blank" %><br/>
 <div style="width:30%"><%= @blast_report.reference %></div>
 <!--Database Information-->
-<p>Database:<br/>
-  <%= @blast_report.db %>
+<p>Dataset:<br/>
+  <%= @dataset.name %>
 </p>
 <!-- Display the search parameters -->
 <table class="sub-section rounded-corners">

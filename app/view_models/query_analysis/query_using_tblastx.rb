@@ -57,9 +57,6 @@ class QueryUsingTblastx < AbstractQueryUsingBlast
       if @filter_low_complexity_regions.blank?
         @filter_low_complexity_regions = '1'
       end
-      if @use_fasta_sequence_or_file.blank?
-        @use_fasta_sequence_or_file = :use_fasta_sequence
-      end
       if @matrix.blank?
         @matrix = 'BLOSUM62'
       end
@@ -74,7 +71,7 @@ class QueryUsingTblastx < AbstractQueryUsingBlast
         "-query #{@query_input_file.path} " +
         "-db #{dataset.blast_db_location} " +
         "-out #{@xml_results_file.path} " +
-        "-evalue #{@e_value} -word_size #{@word_size} " +
+        "-evalue #{@evalue} -word_size #{@word_size} " +
         "-num_alignments #{@num_alignments} " +
         "-show_gis -outfmt '5' "
       if @use_soft_masking == '0'

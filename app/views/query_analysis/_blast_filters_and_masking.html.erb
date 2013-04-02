@@ -1,0 +1,14 @@
+<div class='sub-section rounded-corners' style='padding:5px'>
+  <p class='sub-section-heading-2'>Filters and Masking</p>
+  <p>
+      <%= bq.check_box :filter_low_complexity_regions %>
+      <%= bq.label :filter_low_complexity_regions, "Filter low complexity regions" %>
+      <%= image_tag('question_mark.png', :id=>'filter_low_complexity_regions_qtip')%><br/>
+      <%= bq.check_box :use_soft_masking %> 
+      <%= bq.label :use_soft_masking, "Mask for lookup table only" %>
+      <%= image_tag('question_mark.png', :id=>'use_soft_masking_qtip')%><br/>
+      <%= bq.check_box :use_lowercase_masking %> 
+      <%= bq.label :use_lowercase_masking, "Mask lowercase letters" %>
+      <%= image_tag('question_mark.png', :id=>'use_lowercase_masking_qtip')%><br/>
+  </p>
+</div>

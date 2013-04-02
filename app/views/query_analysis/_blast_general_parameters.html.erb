@@ -1,0 +1,22 @@
+<div class='sub-section rounded-corners' style='padding:5px'>
+  <p class='sub-section-heading-2'>General Parameters</p>
+  <div>
+      <%= bq.label :num_alignments, "Number of alignments to show" %>
+      <%= bq.select :num_alignments, 
+            options_for_select(bq.object.available_num_alignments,
+              bq.object.num_alignments) %>
+      <%= image_tag('question_mark.png', :id=>'num_alignments_qtip')%>
+  </div>
+  <p>
+      <%= bq.label :evalue, "Expect threshold (e-value)" %>
+      <%= bq.text_field :evalue, :size => 10 %>
+      <%= image_tag('question_mark.png', :id=>'evalue_qtip')%>
+  </p>
+  <div>
+      <%= bq.label :word_size, "Word size" %>
+      <%= select_tag(:word_size, 
+        options_for_select(bq.object.available_word_sizes,
+          bq.object.word_size)) %>
+      <%= image_tag('question_mark.png', :id=>'word_size_qtip')%>
+  </div>
+</div>

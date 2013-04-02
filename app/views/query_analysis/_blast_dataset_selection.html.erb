@@ -1,0 +1,7 @@
+<p>
+  <%= bq.label(:dataset_id, "Dataset:") %>
+  <%= bq.select(:dataset_id, 
+        options_for_select(bq.object.available_datasets,
+          bq.object.dataset_id)) %>
+  <%= image_tag('question_mark.png', :id=>'dataset_id_qtip')%>
+</p>

@@ -280,8 +280,13 @@ shared_examples_for 'any upload view model when an exception occurs' do
 end
 
 shared_examples_for 'an attribute with a default value' do
-  it 'should set the default when no value is provided' do
+  it 'should set the default when nil is provided' do
     @it.set_attributes_and_defaults({"#{@attribute}" => nil})
+    @it.send(@attribute).should_not be_nil
+  end
+  
+  it 'should set the default when any empty string is provided' do
+    @it.set_attributes_and_defaults({"#{@attribute}" => ""})
     @it.send(@attribute).should_not be_nil
   end
   
@@ -296,4 +301,55 @@ shared_examples_for 'an attribute without a default value' do
     @it.set_attributes_and_defaults({"#{@attribute}" => nil})
     @it.send(@attribute).should be_nil
   end
+end
+
+shared_examples_for 'a number' do  
+  it 'should not be valid when a non-numeric string' do
+    ['kittens', "", "true","false"].each do |string|
+      @it.send("#{@attribute}=", string)
+      @it.should_not be_valid
+    end
+  end
+  
+  it 'should be valid for numeric strings' do
+    ['-5','0',"4.5", '62'].each do |numeric_string|
+      @it.send("#{@attribute}=", numeric_string)
+      @it.should be_valid
+    end
+  end
+  
+  it 'should be valid for numbers' do
+     [-5,0,4.5,62].each do |number|
+      @it.send("#{@attribute}=", number)
+      @it.should be_valid
+    end
+  end
+  
+  it 'should not be valid for true' do
+    @it.send("#{@attribute}=", true)
+    @it.should_not be_valid
+  end
+  
+  it 'should not be valid for false' do
+    @it.send("#{@attribute}=", false)
+    @it.should_not be_valid
+  end
+  
+  it 'should not be valid for arrays' do
+    @it.send("#{@attribute}=", [])
+    @it.should_not be_valid
+  end
+  
+  it 'should not be valid for hashes' do
+    @it.send("#{@attribute}=", {})
+    @it.should_not be_valid
+  end
+  
+  it 'should not be valid for objects' do
+    @it.send("#{@attribute}=", Object.new)
+    @it.should_not be_valid
+  end
+end
+
+shared_examples_for 'a string containing nucleotide fasta_sequences' do
 end

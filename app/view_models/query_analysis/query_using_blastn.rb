@@ -89,7 +89,6 @@ class QueryUsingBlastn < AbstractQueryUsingBlast
     }
     
   #Validation
-  validates :fasta_sequence, :nucleotide_fasta_sequences => true
   validates :word_size, :presence => true,
                         :inclusion => {:in => AVAILABLE_WORD_SIZES}
   validates :gap_costs, :presence => true
@@ -138,7 +137,7 @@ class QueryUsingBlastn < AbstractQueryUsingBlast
              "-query #{@query_input_file.path} " +
              "-db #{dataset.blast_db_location} " +
              "-out #{@xml_results_file.path} " +
-             "-evalue #{@e_value} -word_size #{@word_size} " +
+             "-evalue #{@evalue} -word_size #{@word_size} " +
              "-num_alignments #{@num_alignments} " +
              "-show_gis -outfmt '5' "
       if @use_soft_masking == '0'
