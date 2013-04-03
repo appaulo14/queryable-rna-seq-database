@@ -6,7 +6,9 @@
 <%= javascript_include_tag 'table_sorting.js' %>
 <script type='text/javascript' src='query_diff_exp_transcripts.js' ></script>
 <%= form_for(@qdet, :url => 'query_diff_exp_transcripts') do |qdet| %>
-  <h1>Please select your transcript differential expression search options</h1>
+  <h1>Query Transcript Differential Expression Tests
+    <%= help_tip(:query_transcript_diff_exp_htip) %>
+  </h1>
   <p>
     <%= qdet.label :dataset_id, "Dataset to query" %>
     <%= qdet.select :dataset_id, 
@@ -19,6 +21,7 @@
   </p>
   <p>
     <div>
+        <%= help_tip(:cutoff_helptip) %>
         <%= qdet.label(:fdr_or_p_value, "Filter By:") %>
         <%= qdet.radio_button(:fdr_or_p_value, :p_value) %>
         <%= qdet.label(:filter_by_p_value, "P-value") %>
@@ -40,11 +43,13 @@
     <div>
         <%= qdet.label(:go_terms, "GO Terms, separated by semicolons") %>
         <%= qdet.text_field(:go_terms, :size => 70) %>
+        <%= help_tip(:go_terms_helptip) %>
         <%= link_to('Browse GO Terms','http://amigo.geneontology.org/cgi-bin/amigo/browse.cgi', :target => '_blank') %>
     </div>
     <div>
         <%= qdet.label(:go_ids, "GO IDs (a.k.a Accessions), separated by semicolons") %>
         <%= qdet.text_field(:go_ids) %>
+        <%= help_tip(:go_ids_helptip) %>
         <%= link_to('Browse GO Terms','http://amigo.geneontology.org/cgi-bin/amigo/browse.cgi', :target => '_blank') %>
     </div>
     <div>
@@ -67,6 +72,11 @@
   <p id="downloadify">
       You must have Flash 10 installed to download this file.
   </p>
+  <div style="float:center">
+    <%= link_to('Learn More About These Table Columns',
+                'https://github.com/fatPerlHacker/queryable-rna-seq-database/' +
+                'wiki/Step-3:-Querying-Data#output-table-data-columns') %>
+  </div>
   <!--Table containing the query results-->
   <table border="1" id="query_results_table">
       <thead>

@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+  create_helptips();
   set_up_reload_on_dataset_changed();
   set_table_sorting();
   set_up_downloadify_for_query_results_downloading();
@@ -15,5 +16,67 @@ function set_up_reload_on_dataset_changed(){
   function selected_dataset_changed(){
     window.location = 'query_diff_exp_transcripts?dataset_id=' + 
       dataset_select.val();
+  }
+}
+
+function create_helptips(){
+  //Declare variables
+  var elements = [];
+  var titles = [];
+  var texts = [];
+  //Tooltip for Filter P-Value or FDR Cutoff
+  elements[0] = 'cutoff_helptip';
+  titles[0] = 'P-Value or FDR Cutoff';
+  texts[0] = 'The p-value measures the statistical significance of a ' +
+    "differential expression test. The FDR is a more stringent version of the " +
+    "p-value.";
+  //Tooltip for go terms
+  elements[1] = 'go_terms_helptip';
+  titles[1] = 'Filter By Go Terms';
+  texts[1] = '<p>Enter more than one term separated by ' +
+    'a semicolon to find results than have any of the terms listed.</p> ' +
+    '<p>For example, "RNA;hair folicle" will find any transcripts with GO terms ' +
+    'containg the text "RNA" or "hair folicle".</p>'
+  //Tooltip for go ids
+  elements[2] = 'go_ids_helptip';
+  titles[2] = 'Filter By Go IDs';
+  texts[2] = '<p>Enter a GO term or more than one term separated by ' +
+    'a semicolon to find results than have all of the go ids listed.</p> ' +
+    '<p>For example, "GO:0000836;GO:0001063" will find any transcripts with ' +
+    'both GO:0000836 and GO:0001063".</p>';
+  elements[3] = 'transcript_gene_diff_exp_htip';
+  titles[3] = 'Query Transcript Differential Expression Tests';
+  texts[3] = 'View differential expression tests for your transcripts. ' +
+             'Select the dataset and the two samples you want to see ' +
+             'the differential expression tests for. You can also filter ' +
+             'the query in various to only see certain results.' +
+             '<%= more_info_link_to_wiki('Step-3:-Querying-Data#query-differentially-expressed-transcripts') %>';
+    
+    
+    
+  for (var i = 0; i < elements.length; i++){
+    $('#' + elements[i])
+          .removeData('qtip') 
+          .qtip({
+                  content: {
+                          text: texts[i], 
+                          title: {
+                                  text: titles[i],
+                                  button: true
+                          }
+                  },
+                  position: {
+                          my: 'left center',
+                          at: 'right center' 
+                  },
+                  show: {
+                          event: 'click', 
+                          ready: false
+                  },
+                  hide: false,
+                  style: {
+                          classes: 'qtip-shadow qtip-' + 'light'
+                  }
+          });
   }
 }

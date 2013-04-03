@@ -26,28 +26,35 @@ function create_tooltips(){
     texts[0] = 'In your Trinity output directory there should be a file ' +
               'of fasta sequences called Trinity.fasta.';
     //Tooltip for Differential expression files
-    elements[1] = 'differential_expression_tooltip';
-    titles[1] = 'Differential Expression File(s)';
-    texts[1] = 'run_edgeR.pl produces a file called ' + 
-      'all_diff_expression_results.txt, which contains all the ' +
-      'differential expression test results. ' +
-      'It can be found in your edgeR output directory.'
+    elements[1] = 'transcripts_sample_cmp_htip';
+    titles[1] = 'Transcript Sample Comparison Files';
+    texts[1] = 'Transcript sample comparison files contain all the differential'+
+               'expression tests between two transcript samples. Usually they ' +
+               'have "vs" in the name, such as "sample_1_vs_sample_2". ' +
+              '<%= more_info_link_to_wiki('Step-2:-Uploading-Data#wiki-trinity_with_edger_transcript_det_files') %>';
     //Help tip for transcript FPKM file
     elements[2] = 'transcript_fpkm_help_tip';
     titles[2] = 'Transcript FPKM File';
     texts[2] = '<%= I18n.t "transcript_fpkm.text" %> ' + 
               '<%= more_info_link(I18n.t "transcript_fpkm.more_info_link") %>';
     //Help tip for the gene FPKM file
-    elements[2] = 'gene_fpkm_help_tip';
-    titles[2] = 'Gene FPKM File';
-    texts[2] = '<%= I18n.t "gene_fpkm.text" %> ' + 
+    elements[3] = 'gene_fpkm_help_tip';
+    titles[3] = 'Gene FPKM File';
+    texts[3] = '<%= I18n.t "gene_fpkm.text" %> ' + 
               '<%= more_info_link(I18n.t "gene_fpkm.more_info_link") %>';
-    elements[3] = 'gene_sample_cmp_htip';
-    titles[3] = 'Gene Sample Comparison Files';
-    texts[3] = 'Gene sample comparison files contain all the differential'+
+    elements[4] = 'gene_sample_cmp_htip';
+    titles[4] = 'Gene Sample Comparison Files';
+    texts[4] = 'Gene sample comparison files contain all the differential'+
                'expression tests between two gene samples. Usually they ' +
                'have "vs" in the name, such as "sample_1_vs_sample_2". ' +
               '<%= more_info_link_to_wiki('Step-2:-Uploading-Data#wiki-trinity_with_edger_gene_det_files') %>';
+    elements[5] = 'upload_trinity_with_edger_htip';
+    titles[5] = 'Upload Trinity with EdgeR Data';
+    texts[5] = 'Upload differential expression tests and fasta sequences ' +
+               'produced by the Trinity De-Novo RNA-Seq Assembler when the ' +
+               'included EdgeR package is used for the differential ' +
+               'expression testing. ' +
+               '<%= more_info_link_to_wiki('Step-2:-Uploading-Data#option-2-trinity-with-edger') %>';
   <% end %>
     
   for (var i = 0; i < elements.length; i++){
@@ -124,7 +131,9 @@ function request_gene_sample_cmp(){
 }
 
 function add_gene_sample_cmp(sample_cmp_html){
-  $('#gene_sample_comparisons_div').append(sample_cmp_html);
+  //$('#gene_sample_comparisons_div').append(sample_cmp_html);
+  div = $('#gene_sample_comparisons_div');
+  div.html(div.html()+sample_cmp_html);
   has_gene_diff_exp_checked_changed();
 }
 

@@ -6,11 +6,10 @@
 <script type='text/javascript' src='query_diff_exp_genes.js' ></script>
 <%= render 'shared/error_messages', :object => @qdeg %>
 <%= form_for(@qdeg, :url => 'query_diff_exp_genes') do |qdeg| %>
-  <h1>Please select your gene differential expression search options</h1>
-  <div><%= link_to('Learn More About The Features of This Page',
-                   'https://github.com/fatPerlHacker/queryable-rna-seq-database/' +
-                   'wiki/About-the-Queryable-RNA-Seq-Database#query-your-data') %>
-  </div>
+  <h1>
+    Query Gene Differential Expression Tests
+    <%= help_tip(:query_gene_diff_exp_htip) %>
+  </h1>
   <p>
     <%= qdeg.label :dataset_id, "Dataset to query" %>
     <%= qdeg.select :dataset_id, 
