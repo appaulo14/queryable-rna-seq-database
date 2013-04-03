@@ -4,6 +4,9 @@
 # or operating system, you probably want to add a global ignore instead:
 #   git config --global core.excludesfile ~/.gitignore_global
 
+# Ignore b2g properties file
+/bin/blast2go/b2gPipe.properties
+
 # Ignore compiled assets
 /public/assets/*
 
