@@ -12,16 +12,16 @@ class RegistrationsController < Devise::RegistrationsController
   def create
     build_resource
     #Validate captcha
-    if not simple_captcha_valid?
-      #TODO: Move this flash alert to error messages array instead?
-      flash[:alert] = 'Captcha failed'
-      redirect_to '/'
-      return
-    end
+#    if not simple_captcha_valid?
+#      #TODO: Move this flash alert to error messages array instead?
+#      flash[:alert] = 'Captcha failed'
+#      return
+#    end
     #Mark the user as confirmed already so that a confirmation email 
     #   won't be automatically sent when the user is saved
     resource.skip_confirmation!
-    if resource.save
+    if resource.valid_with_captcha?
+      resource.save!
       #Mark the user as unconfirmed so that they can't log in
       #The admin will manually trigger the confirmation email later
       resource.confirmed_at = nil

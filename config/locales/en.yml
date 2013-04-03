@@ -8,3 +8,4 @@ en:
     label: "Confirm Your Humanity"
     message:
       reportissue: "did not match"
+      user:        "did not match"
