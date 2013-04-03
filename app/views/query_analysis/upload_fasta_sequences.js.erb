@@ -21,8 +21,10 @@ function create_qtips(){
   <% more_info_path = 
       'Step-2:-Uploading-Data#wiki-generic_fasta_sequence-fasta-file' 
   %>
-  texts[1] = 'Upload a nucleotide fasta sequences file. It should end in ' +
-             '.fasta, or .fa. ' +
+  texts[1] = '<p>Upload a nucleotide fasta sequences file. It should end in ' +
+             '.fasta, or .fa.</p>' +
+             '<p>This should not be a raw reads file but should instead be ' +
+             'something more processed like assembled transcripts or a genome.' +
              '<%= more_info_link_to_wiki(more_info_path) %>';
     
   for (var i = 0; i < elements.length; i++){
