@@ -1,0 +1,47 @@
+<%= image_tag('question_mark.png', :id=> "#{id}_help_tip", 
+                                   :alt => "Help tip for #{id}" ) %>
+<script type="text/javascript">
+$(document).ready(function(){
+  <% I18n.with_locale("en.help_tips.#{id}") do %>
+    //Build the help tip messages
+    <% text = I18n.t 'message' %>
+    <% if not (I18n.t 'more_info_link').empty? %>
+      <% text += more_info_link(I18n.t 'more_info_link') %>
+    <% end %>
+    //Create the help tip javascript
+    var position_args;
+    <% if position == :above %>
+      position_args = {
+        my: 'bottom center',
+        at: 'top center' 
+      };
+    <% else %>
+      position_args = {
+        my: 'left center',
+        at: 'right center' 
+      };
+    <% end %>
+     
+     $('<%= "##{id}_help_tip" %>')
+            .removeData('qtip') 
+            .qtip({
+                    content: {
+                            text: '<%= text %>',
+                            title: {
+                                    text: '<%= I18n.t 'title' %>',
+                                    button: true
+                            }
+                    },
+                    position: position_args,
+                    show: {
+                            event: 'click', 
+                            ready: false
+                    },
+                    hide: false,
+                    style: {
+                            classes: 'qtip-shadow qtip-' + 'light'
+                    }
+            });
+  <% end %>
+});
+</script>

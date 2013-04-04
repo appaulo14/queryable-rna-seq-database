@@ -8,6 +8,7 @@
 <p>Dataset:<br/>
   <%= @dataset.name %>
 </p>
+</script>
 <!-- Display the search parameters -->
 <table class="sub-section rounded-corners">
   <caption style="font-weight:bold">Search Parameters</caption>
@@ -24,7 +25,15 @@
     <!-- Display some information about the iteration -->
     <h1>Results for <%= iteration.query_id %></h1>
     <!--Display the graphical summary -->
-    <h4 style="text-align:center">Graphical Summary</h4>
+    <h4 style="text-align:center">
+      Graphical Summary
+      <%= help_tip(:graphical_summary_htip) %>
+      <script type="text/javascript">
+        $(document).ready(function() {
+          set_qtip('graphical_summary_htip',"Graphical Summary","text");
+        });
+      </script>
+    </h4>
     <div style="width:55%;margin:0 auto;background-color:white">
         <!-- Display the color-keyed alignment scores -->
         <table style="width:100%"><tr>
@@ -78,7 +87,7 @@
               <table style="width:48%;position:absolute;z-index:<%= z_index %>;left:25.7%">
                 <caption style="font-size:10pt;color:red;text-align:left">
                   <a href="<%= "##{get_unique_hit_id(report,iteration,hit)}" %>">
-                    Hit=<%= hit.hit_id %>
+                    Hit=<%= hit.hit_id %><%= hit.target_def %>
                   </a>
                 </caption>
                 <tr><td>

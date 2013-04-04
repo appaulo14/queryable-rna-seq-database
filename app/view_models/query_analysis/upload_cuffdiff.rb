@@ -58,8 +58,8 @@ class UploadCuffdiff
         if (@has_diff_exp == '1' or @has_transcript_isoforms == '1')
           find_and_process_go_terms()
         end
-        BlastUtil.create_blast_database(@transcripts_fasta_file.tempfile.path,
-                                        @dataset)
+        BlastUtil.makeblastdb_with_seqids(@transcripts_fasta_file.tempfile.path,
+                                           @dataset)
         QueryAnalysisMailer.notify_user_of_upload_success(@current_user,
                                                           @dataset)
       end

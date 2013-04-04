@@ -28,8 +28,8 @@ class UploadFastaSequences
     begin
       ActiveRecord::Base.transaction do   #Transactions work with sub-methods 
         process_args_to_create_dataset()
-        BlastUtil.create_blast_database(@transcripts_fasta_file.tempfile.path,
-                                          @dataset)
+        BlastUtil.makeblastdb_without_seqids(@transcripts_fasta_file.tempfile.path,
+                                              @dataset)
         QueryAnalysisMailer.notify_user_of_upload_success(@current_user,
                                                         @dataset)
       end

@@ -1,7 +1,4 @@
-<%= javascript_include_tag 'downloadify/swfobject.js' %>
-<%= javascript_include_tag 'downloadify/downloadify.min.js' %>
 <%= javascript_include_tag 'Stupid-Table-Plugin/stupidtable.min.js' %>
-<%= javascript_include_tag 'downloadify_wrapper.js' %>
 <%= javascript_include_tag 'table_sorting.js' %>
 <script type='text/javascript' src='query_diff_exp_genes.js' ></script>
 <%= render 'shared/error_messages', :object => @qdeg %>
@@ -44,7 +41,8 @@
     <div>
         <%= qdeg.label(:go_terms, "GO Terms, separated by semicolons") %>
         <%= qdeg.text_field(:go_terms, :size => 70) %>
-        <%= help_tip(:go_terms_helptip) %>
+        <!--<%= help_tip(:go_terms_helptip) %>-->
+        <%= help_tip2(:go_terms,:right) %>
         <%= link_to('Browse GO Terms','http://amigo.geneontology.org/cgi-bin/amigo/browse.cgi', :target => '_blank') %>
     </div>
     <div>
@@ -70,6 +68,9 @@
       <%= @qdeg.sample_1_name %></b> vs <b><%= @qdeg.sample_2_name %>
     </b></em>
   </p>
+  <%= javascript_include_tag 'downloadify/swfobject.js' %>
+  <%= javascript_include_tag 'downloadify/downloadify.min.js' %>
+  <%= javascript_include_tag 'downloadify_wrapper.js' %>
   <p id="downloadify">
       You must have Flash 10 installed to download this file.
   </p>
@@ -188,14 +189,14 @@
                     <% if result[:test_statistic].nil? %>
                       Not available
                     <% else %>
-                      <%= raw(("%8.5f" % result[:test_statistic]).gsub(" ","&nbsp;")) %>
+                      <pre><%= ("%8.5f" % result[:test_statistic]) %></pre>
                     <% end %>
                   </td>
-                  <td><%= raw(("%6.5f" % result[:p_value]).gsub(" ","&nbsp;")) %></td>
-                  <td><%= raw(("%6.5f" % result[:fdr]).gsub(" ","&nbsp;")) %></td>
-                  <td><%= raw(("%9.3f" % result[:sample_1_fpkm]).gsub(" ","&nbsp;")) %></td>
-                  <td><%= raw(("%9.3f" % result[:sample_2_fpkm]).gsub(" ","&nbsp;")) %></td>
-                  <td><%= raw(("%7.3f" % result[:log_fold_change]).gsub(" ","&nbsp;")) %></td>
+                  <td><pre><%= ("%6.5f" % result[:p_value]) %></pre></td>
+                  <td><pre><%= ("%6.5f" % result[:fdr]) %></pre></td>
+                  <td><pre><%= ("%9.3f" % result[:sample_1_fpkm]) %></pre></td>
+                  <td><pre><%= ("%9.3f" % result[:sample_2_fpkm]) %></pre></td>
+                  <td><pre><%= ("%7.3f" % result[:log_fold_change]) %></pre></td>
                   <td>
                     <% if result[:test_status].nil? %>
                       Not available

@@ -1,4 +1,5 @@
 en:
+  goat: ""
   query_analysis:
     upload_trinity_with_edger:
       help_tips:
