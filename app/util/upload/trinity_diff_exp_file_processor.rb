@@ -2,8 +2,10 @@ require 'upload/uploaded_trinity_diff_exp_file.rb'
 
 class TrinityDiffExpFileProcessor
   
-  def initialize(uploaded_file, dataset)
+  def initialize(uploaded_file, dataset,sample_1_name, sample_2_name)
     @uploaded_diff_exp_file = UploadedTrinityDiffExpFile.new(uploaded_file)
+    @sample_1_name = sample_1_name
+    @sample_2_name = sample_2_name
     @dataset = dataset
     @sample_type = nil #this should be defined the sublcass
   end
@@ -15,20 +17,19 @@ class TrinityDiffExpFileProcessor
   protected
   
   def create_sample_comparison()
-    (sample_1_name, sample_2_name) = @uploaded_diff_exp_file.sample_names
-    sample_1 = Sample.where(:name => sample_1_name,
+    sample_1 = Sample.where(:name => @sample_1_name,
                              :dataset_id => @dataset.id,
                              :sample_type => @sample_type)[0]
     if sample_1.nil?
-      sample_1 = Sample.create!(:name => sample_1_name,
+      sample_1 = Sample.create!(:name => @sample_1_name,
                                 :dataset => @dataset,
                                 :sample_type => @sample_type)
     end
-    sample_2 = Sample.where(:name => sample_2_name,
+    sample_2 = Sample.where(:name => @sample_2_name,
                              :dataset_id => @dataset.id,
                              :sample_type => @sample_type)[0]
     if sample_2.nil?
-      sample_2 = Sample.create!(:name => sample_2_name,
+      sample_2 = Sample.create!(:name => @sample_2_name,
                                  :dataset => @dataset,
                                  :sample_type => @sample_type)
     end

@@ -112,30 +112,94 @@
   <table border="1" id="query_results_table">
       <thead>
           <tr>
-              <th data-sort='string'>Transcript&nbsp;<%= neutral_sort_arrow %></th>
-              <th data-sort='string'>Associated Gene&nbsp;<%= neutral_sort_arrow %></th>
-              <th>GO Terms</th>
-              <th data-sort='string'>Class Code&nbsp;<%= neutral_sort_arrow %></th>
-              <th data-sort='float'>Transcript length&nbsp;<%= neutral_sort_arrow %></th>
-              <th data-sort='float'>Coverage&nbsp;<%= neutral_sort_arrow %></th>
-              <th data-sort='float'>FPKM&nbsp;<%= neutral_sort_arrow %></th>
-              <th data-sort='float'>FPKM Lower Bound&nbsp;<%= neutral_sort_arrow %></th>
-              <th data-sort='float'>FPKM Upper Bound&nbsp;<%= neutral_sort_arrow %></th>
-              <th data-sort='string'>Quantification Status&nbsp;<%= neutral_sort_arrow %></th>
+            <th data-sort='string'>
+              <table>
+                <tr>
+                  <td>Transcript</td>
+                  <td class="sort-arrow-td"><%= neutral_sort_arrow %></td>
+                </tr>
+              </table>
+            </th>
+            <th data-sort='string'>
+              <table>
+                <tr>
+                  <td>Associated Gene</td>
+                  <td class="sort-arrow-td"><%= neutral_sort_arrow %></td>
+                </tr>
+              </table>
+            </th>
+            <th>GO Terms</th>
+            <th data-sort='string'>
+              <table>
+                <tr>
+                  <td>Class Code</td>
+                  <td class="sort-arrow-td"><%= neutral_sort_arrow %></td>
+                </tr>
+              </table>
+            </th>
+            <th data-sort='float'>
+              <table>
+                <tr>
+                  <td>Transcript length</td>
+                  <td class="sort-arrow-td"><%= neutral_sort_arrow %></td>
+                </tr>
+              </table>
+            </th>
+            <th data-sort='float'>
+              <table>
+                <tr>
+                  <td>Coverage</td>
+                  <td class="sort-arrow-td"><%= neutral_sort_arrow %></td>
+                </tr>
+              </table>
+            </th>
+            <th data-sort='float'>
+              <table>
+                <tr>
+                  <td>FPKM</td>
+                  <td class="sort-arrow-td"><%= neutral_sort_arrow %></td>
+                </tr>
+              </table>
+            </th>
+            <th data-sort='float'>
+              <table>
+                <tr>
+                  <td>FPKM Lower Bound</td>
+                  <td class="sort-arrow-td"><%= neutral_sort_arrow %></td>
+                </tr>
+              </table>
+            </th>
+            <th data-sort='float'>
+              <table>
+                <tr>
+                  <td>FPKM Upper Bound</td>
+                  <td class="sort-arrow-td"><%= neutral_sort_arrow %></td>
+                </tr>
+              </table>
+            </th>
+            <th data-sort='string'>
+              <table>
+                <tr>
+                  <td>Quantification Status</td>
+                  <td><%= neutral_sort_arrow %></td>
+                </tr>
+              </table>
+            </th>
           </tr>
       </thead>
       <tbody>
           <% @qti.results.each do |result| %>
               <tr>
-                <td data-sort-value="<%= result[:transcript_name] %>">
-                  <%= link_to_fasta_sequence_for_transcript(@qti.dataset_id, result[:transcript_name]) %>
+                <td>
+                  <%= link_to_fasta_sequence_for_transcript(@qti.dataset_id, 
+                          result[:transcript_name]) %>
                 </td>
-                <td data-sort-value="<%= result[:gene_name] %>">
+                <td>
                   <%= link_to_fasta_sequences_for_gene(@qti.dataset_id, result[:gene_name]) %>
                 </td>
                   
                 <% if result[:go_terms].empty? == false %>
-                  <td data-sort-value="<%= result[:go_terms].to_s %>">
+                  <td>
                     <ul>
                       <!-- Sort by ascending GO ID for the go terms-->
                       <% result[:go_terms].sort{|a,b| a.id.gsub(/GO:/,'').to_i <=> b.id.gsub(/GO:/,'').to_i}.each do |go_term| %>
@@ -148,25 +212,25 @@
                     No GO ids found.
                   </td>
                 <% end %>
-                <td data-sort-value="<%= result[:class_code] %>">
+                <td>
                   <%= result[:class_code] %>
                 </td>
-                <td data-sort-value="<%= result[:transcript_length] %>">
-                  <%= result[:transcript_length] %>
+                <td>
+                  <%= raw(("%6d" % result[:transcript_length]).gsub(" ","&nbsp;")) %>
                 </td>
-                <td data-sort-value="<%= result[:coverage] %>">
-                  <%= result[:coverage].to_d.round(3) %>
+                <td>
+                  <%= raw(("%6d" % result[:coverage]).gsub(" ","&nbsp;")) %>
                 </td>
-                <td data-sort-value="<%= result[:fpkm] %>">
-                  <%= result[:fpkm].to_d.round(3) %>
+                <td>
+                  <%= raw(("%9.3f" % result[:fpkm]).gsub(" ","&nbsp;")) %>
                 </td>
-                <td data-sort-value="<%= result[:fpkm_lo] %>">
-                  <%= result[:fpkm_lo].to_d.round(3) %>
+                <td>
+                  <%= raw(("%9.3f" % result[:fpkm_lo]).gsub(" ","&nbsp;")) %>
                 </td>
-                <td data-sort-value="<%= result[:fpkm_hi] %>">
-                  <%= result[:fpkm_hi].to_d.round(3) %>
+                <td>
+                  <%= raw(("%9.3f" % result[:fpkm_hi]).gsub(" ","&nbsp;")) %>
                 </td>
-                <td data-sort-value="<%= result[:status] %>">
+                <td>
                   <%= result[:status] %>
                 </td>
               </tr>

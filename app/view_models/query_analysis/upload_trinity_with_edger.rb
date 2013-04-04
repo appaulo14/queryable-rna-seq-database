@@ -12,7 +12,11 @@ class UploadTrinityWithEdgeR
   
   attr_accessor :transcripts_fasta_file, 
                   :gene_diff_exp_files, #Array
+                  :gene_diff_exp_sample_1_names, #Array
+                  :gene_diff_exp_sample_2_names, #Array
                   :transcript_diff_exp_files, #Array 
+                  :transcript_diff_exp_sample_1_names, #Array
+                  :transcript_diff_exp_sample_2_names, #Array
                   :gene_fpkm_file, 
                   :transcript_fpkm_file,
                   :has_gene_diff_exp,

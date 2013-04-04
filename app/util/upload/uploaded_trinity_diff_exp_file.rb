@@ -1,12 +1,12 @@
 class UploadedTrinityDiffExpFile
   
-  attr_accessor :sample_names
+#  attr_accessor :sample_names
   
   def initialize(uploaded_file)
     @uploaded_file = uploaded_file
-    sample_names_regex = /\A(.+)_vs_(.+)[.]results[.]txt/
-    @sample_names = 
-      @uploaded_file.original_filename.match(sample_names_regex).captures
+#    sample_names_regex = /\A(.+)_vs_(.+)[.]results[.]txt/
+#    @sample_names = 
+#      @uploaded_file.original_filename.match(sample_names_regex).captures
     #Skip the header line
     @uploaded_file.tempfile.readline
   end

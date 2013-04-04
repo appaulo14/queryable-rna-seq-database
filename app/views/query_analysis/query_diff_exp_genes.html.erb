@@ -82,16 +82,79 @@
   <table border="1" id="query_results_table">
       <thead>
           <tr>
-              <th data-sort='string'>Gene&nbsp;<%= neutral_sort_arrow %></th>
-              <th data-sort='string'>Associated Transcripts&nbsp;<%= neutral_sort_arrow %></th>
+              <th data-sort='string'>
+                <table>
+                  <tr>
+                    <td>Gene</td>
+                    <td class="sort-arrow-td"><%= neutral_sort_arrow %></td>
+                  </tr>
+                </table>
+              </th>
+              <th data-sort='string'>
+                <table>
+                  <tr>
+                    <td>Associated Transcripts</td>
+                    <td class="sort-arrow-td"><%= neutral_sort_arrow %></td>
+                  </tr>
+                </table>
+              </th>
               <th>GO Terms</th>
-              <th data-sort='float'>Test Statistic&nbsp;<%= neutral_sort_arrow %></th>
-              <th data-sort='float'>P-value&nbsp;<%= neutral_sort_arrow %></th>
-              <th data-sort='float'>FDR&nbsp;<%= neutral_sort_arrow %></th>
-              <th data-sort='float'><%= @qdeg.sample_1_name %> FPKM&nbsp;<%= neutral_sort_arrow %></th>
-              <th data-sort='float'><%= @qdeg.sample_2_name %> FPKM&nbsp;<%= neutral_sort_arrow %></th>
-              <th data-sort='float'>Log Fold Change&nbsp;<%= neutral_sort_arrow %></th>
-              <th data-sort='float'>Test Status&nbsp;<%= neutral_sort_arrow %></th>
+              <th data-sort='float'>
+                <table>
+                  <tr>
+                    <td>Test Statistic</td>
+                    <td class="sort-arrow-td"><%= neutral_sort_arrow %></td>
+                  </tr>
+                </table>
+              </th>
+              <th data-sort='float'>
+                <table>
+                  <tr>
+                    <td>P-Value</td>
+                    <td class="sort-arrow-td"><%= neutral_sort_arrow %></td>
+                  </tr>
+                </table>
+              </th>
+              <th data-sort='float'>
+                <table>
+                  <tr>
+                    <td>FDR</td>
+                    <td class="sort-arrow-td"><%= neutral_sort_arrow %></td>
+                  </tr>
+                </table>
+              </th>
+              <th data-sort='float'>
+                <table>
+                  <tr>
+                    <td><%= @qdeg.sample_1_name %> FPKM</td>
+                    <td class="sort-arrow-td"><%= neutral_sort_arrow %></td>
+                  </tr>
+                </table>
+              </th>
+              <th data-sort='float'>
+                <table>
+                  <tr>
+                    <td><%= @qdeg.sample_2_name %> FPKM</td>
+                    <td class="sort-arrow-td"><%= neutral_sort_arrow %></td>
+                  </tr>
+                </table>
+              </th>
+              <th data-sort='float'>
+                <table>
+                  <tr>
+                    <td>Log Fold Change</td>
+                    <td class="sort-arrow-td"><%= neutral_sort_arrow %></td>
+                  </tr>
+                </table>
+              </th>
+              <th data-sort='string'>
+                <table>
+                  <tr>
+                    <td>Test Status</td>
+                    <td class="sort-arrow-td"><%= neutral_sort_arrow %></td>
+                  </tr>
+                </table>
+              </th>
           </tr>
       </thead>
       <tbody>
@@ -125,14 +188,14 @@
                     <% if result[:test_statistic].nil? %>
                       Not available
                     <% else %>
-                      <%= result[:test_statistic].to_f.round(5) %>
+                      <%= raw(("%8.5f" % result[:test_statistic]).gsub(" ","&nbsp;")) %>
                     <% end %>
                   </td>
-                  <td><%= result[:p_value].to_f.round(5) %></td>
-                  <td><%= result[:fdr].to_f.round(5) %></td>
-                  <td><%= result[:sample_1_fpkm].to_f.round(3) %></td>
-                  <td><%= result[:sample_2_fpkm].to_f.round(3) %></td>
-                  <td><%= result[:log_fold_change].to_f.round(3) %></td>
+                  <td><%= raw(("%6.5f" % result[:p_value]).gsub(" ","&nbsp;")) %></td>
+                  <td><%= raw(("%6.5f" % result[:fdr]).gsub(" ","&nbsp;")) %></td>
+                  <td><%= raw(("%9.3f" % result[:sample_1_fpkm]).gsub(" ","&nbsp;")) %></td>
+                  <td><%= raw(("%9.3f" % result[:sample_2_fpkm]).gsub(" ","&nbsp;")) %></td>
+                  <td><%= raw(("%7.3f" % result[:log_fold_change]).gsub(" ","&nbsp;")) %></td>
                   <td>
                     <% if result[:test_status].nil? %>
                       Not available

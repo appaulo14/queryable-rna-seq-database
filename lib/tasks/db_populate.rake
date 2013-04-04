@@ -7,6 +7,7 @@ namespace :db do
 #    Rake::Task['db:dev:populate'].invoke
 #    Rake::Task['db:test:prepare'].invoke
     #Rake::Task['db:test:populate'].invoke
+     make_go_terms
      make_admin_user #1
      #make_paul_cain_unconfirmed_user
      make_unconfirmed_users(10)
@@ -16,8 +17,7 @@ namespace :db do
      make_samples
      make_sample_comparisons_and_differential_expression_tests
      make_fpkm_samples #1000
-     make_transcript_fpkm_tracking_information #1000
-     make_go_terms #1000
+     make_transcript_fpkm_tracking_information #1000#1000
      make_transcript_has_go_terms #1000
   end
 end
@@ -68,7 +68,7 @@ end
 
 def make_datasets(env)
   print 'Populating datasets...'
-  (1..2).each do |n|
+  (1..20000).each do |n|
     name = "Dataset_#{n}"
     Dataset.create!(:user => @user, 
                     :name => name,
@@ -86,7 +86,7 @@ def make_genes
   print 'Populating genes...'
   Dataset.all.each do |ds|
     gene_count = 0
-    3.times do |n|
+    5000.times do |n|
       gene = Gene.create!(:name_from_program => Faker::Lorem.word,
                           :dataset => ds)
       gene_count += 1
@@ -114,7 +114,7 @@ def make_transcripts_and_blast_databases(env)
     ds.genes.each do |gene|
       rand(1..3).times do |n|
         #Create the transcript name
-        transcript_name = "TCONS_000#{transcript_count}"
+        transcript_name = "TCONS_#{transcript_count}"
         #Create a random fasta description and sequence
         fasta_description = "#{transcript_name} gene=#{gene.name_from_program}"
         nucleotide_counts = {'a' => rand(40..100),
