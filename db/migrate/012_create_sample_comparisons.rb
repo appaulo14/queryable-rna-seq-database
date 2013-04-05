@@ -6,7 +6,8 @@ class CreateSampleComparisons < ActiveRecord::Migration
 
       #t.timestamps
     end
-    
+    add_index :sample_comparisons, :sample_1_id
+    add_index :sample_comparisons, :sample_2_id
     #This is a workaround because rails can't do string or multiple 
     #   primary keys by default
 #     execute('ALTER TABLE sample_comparisons ' +

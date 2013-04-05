@@ -16,12 +16,15 @@ class CreateFpkmSamples < ActiveRecord::Migration
       end
       t.integer :sample_id, :null => false
       t.string :fpkm, :null => false
-      t.string :fpkm_hi
-      t.string :fpkm_lo
-      t.string  :status
+      t.string :fpkm_hi, :null => false
+      t.string :fpkm_lo, :null => false
+      t.string  :status, :null => false
 
       #t.timestamps
     end
+    #Add indexes
+    add_index :fpkm_samples, :transcript_id
+    add_index :fpkm_samples, :sample_id
     #Add primary key using execute statement because
     #   rails can't do BIGINT primary keys
     adapter_type = ActiveRecord::Base.connection.adapter_name.downcase

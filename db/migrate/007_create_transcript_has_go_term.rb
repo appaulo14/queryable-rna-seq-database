@@ -14,6 +14,9 @@ class CreateTranscriptHasGoTerm < ActiveRecord::Migration
 
       #t.timestamps
     end
+    #Add indexes
+    add_index :transcript_has_go_terms, :transcript_id
+    add_index :transcript_has_go_terms, :go_term_id
     #This is a workaround because rails can't do string or multiple 
     #   primary keys by default
     execute('ALTER TABLE transcript_has_go_terms ' +

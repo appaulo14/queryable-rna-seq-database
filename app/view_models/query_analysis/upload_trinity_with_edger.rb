@@ -22,24 +22,35 @@ class UploadTrinityWithEdgeR
                   :has_gene_diff_exp,
                   :dataset_name
   
-#  validates :transcripts_fasta_file, :presence => true,
-#                                     :uploaded_file => true
-#  
-#  validates :gene_diff_exp_files, :presence => true,
-#                                  :array => true,
-#                                  :array_of_uploaded_files => true
-#  #TODO:Validate name = XvsY???
-#  validates :transcript_diff_exp_files, :presence => true,
-#                                        :array => true,
-#                                        :array_of_uploaded_files => true
-#  validate :same_number_of_gene_and_transcript_diff_exp_files
-#  
-#  validates :gene_fpkm_file, :presence => true,
-#                             :uploaded_file => true
-#  validates :transcript_fpkm_file, :presence => true,
-#                                   :uploaded_file => true
-#  validates :dataset_name, :presence => true
-#                           :dataset_name_unique_for_user => true
+  validates :transcripts_fasta_file, :presence => true,
+                                     :uploaded_file => true
+  
+  validates :gene_diff_exp_files, :array => true,
+                                  :array_of_uploaded_files => true
+  validates :gene_diff_exp_files, :presence => true,
+                                  :if => "@has_gene_diff_exp == '1'"
+  validates :gene_diff_exp_sample_1_names, :array => true
+  validates :gene_diff_exp_sample_1_names, :presence => true,
+                                           :if => "@has_gene_diff_exp == '1'"
+  validates :gene_diff_exp_sample_2_names, :array => true
+  validates :gene_diff_exp_sample_2_names, :presence => true,
+                                           :if => "@has_gene_diff_exp == '1'"
+  validates :transcript_diff_exp_files, :presence => true,
+                                        :array => true,
+                                        :array_of_uploaded_files => true
+  validates :transcript_diff_exp_sample_1_names, :presence => true,
+                                                 :array => true
+  validates :transcript_diff_exp_sample_2_names, :presence => true,
+                                                 :array => true
+  validate :same_number_of_gene_and_transcript_diff_exp_files
+  
+  validates :gene_fpkm_file, :uploaded_file => true
+  validates :gene_fpkm_file, :presence => true,
+                             :if => "@has_gene_diff_exp == '1'"
+  validates :transcript_fpkm_file, :presence => true,
+                                   :uploaded_file => true
+  validates :dataset_name, :presence => true
+                           #:dataset_name_unique_for_user => true
   
   
   def initialize(current_user)
@@ -71,12 +82,17 @@ class UploadTrinityWithEdgeR
                                                         @dataset)
       end
     rescue Exception => ex
-      BlastUtil.rollback_blast_database(@dataset)
-      QueryAnalysisMailer.notify_user_of_upload_failure(@current_user,
+      begin
+        BlastUtil.rollback_blast_database(@dataset)
+        QueryAnalysisMailer.notify_user_of_upload_failure(@current_user,
                                                           @dataset)
       #Log the exception manually because Rails doesn't want to in this case
-      Rails.logger.error "#{ex.message}\n#{ex.backtrace.join("\n")}"
-      raise
+      rescue Exception => ex2
+        Rails.logger.error "#{ex2.message}\n#{ex2.backtrace.join("\n")}"
+        raise ex2, ex2.message
+      ensure
+        Rails.logger.error "#{ex.message}\n#{ex.backtrace.join("\n")}"
+      end
     ensure
       delete_uploaded_files()
     end
@@ -97,6 +113,8 @@ class UploadTrinityWithEdgeR
     @dataset.has_transcript_diff_exp = true
     if @has_gene_diff_exp == '1'
       @dataset.has_gene_diff_exp = true
+    else
+      @dataset.has_gene_diff_exp = false
     end
     @dataset.has_transcript_isoforms = false
     @dataset.blast_db_location = 
@@ -152,9 +170,11 @@ class UploadTrinityWithEdgeR
   end
   
   def delete_uploaded_files
-    File.delete(@transcripts_fasta_file.tempfile.path) 
-    @gene_diff_exp_files.each do |gene_diff_exp_file|
-      File.delete(gene_diff_exp_file.tempfile.path)
+    File.delete(@transcripts_fasta_file.tempfile.path)
+    if not @gene_diff_exp_files.nil?
+      @gene_diff_exp_files.each do |gene_diff_exp_file|
+        File.delete(gene_diff_exp_file.tempfile.path)
+      end
     end
     @transcript_diff_exp_files.each do |transcript_diff_exp_file|
       File.delete(transcript_diff_exp_file.tempfile.path)

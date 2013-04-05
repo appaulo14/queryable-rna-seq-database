@@ -1,13 +1,8 @@
 <%= render 'shared/error_messages', :object => @qdet %>
-<%= javascript_include_tag 'downloadify/swfobject.js' %>
-<%= javascript_include_tag 'downloadify/downloadify.min.js' %>
-<%= javascript_include_tag 'Stupid-Table-Plugin/stupidtable.min.js' %>
-<%= javascript_include_tag 'downloadify_wrapper.js' %>
-<%= javascript_include_tag 'table_sorting.js' %>
 <script type='text/javascript' src='query_diff_exp_transcripts.js' ></script>
 <%= form_for(@qdet, :url => 'query_diff_exp_transcripts') do |qdet| %>
   <h1>Query Transcript Differential Expression Tests
-    <%= help_tip(:query_transcript_diff_exp_htip) %>
+    <%= help_tip(:query_diff_exp_genes) %>
   </h1>
   <p>
     <%= qdet.label :dataset_id, "Dataset to query" %>
@@ -21,7 +16,7 @@
   </p>
   <p>
     <div>
-        <%= help_tip(:cutoff_helptip) %>
+        <%= help_tip(:cutoff) %>
         <%= qdet.label(:fdr_or_p_value, "Filter By:") %>
         <%= qdet.radio_button(:fdr_or_p_value, :p_value) %>
         <%= qdet.label(:filter_by_p_value, "P-value") %>
@@ -43,13 +38,13 @@
     <div>
         <%= qdet.label(:go_terms, "GO Terms, separated by semicolons") %>
         <%= qdet.text_field(:go_terms, :size => 70) %>
-        <%= help_tip(:go_terms_helptip) %>
+        <%= help_tip(:go_terms) %>
         <%= link_to('Browse GO Terms','http://amigo.geneontology.org/cgi-bin/amigo/browse.cgi', :target => '_blank') %>
     </div>
     <div>
         <%= qdet.label(:go_ids, "GO IDs (a.k.a Accessions), separated by semicolons") %>
         <%= qdet.text_field(:go_ids) %>
-        <%= help_tip(:go_ids_helptip) %>
+        <%= help_tip(:go_ids) %>
         <%= link_to('Browse GO Terms','http://amigo.geneontology.org/cgi-bin/amigo/browse.cgi', :target => '_blank') %>
     </div>
     <div>
@@ -69,6 +64,11 @@
       <%= @qdet.sample_2_name %>
     </b></em>
   </p>
+  <%= javascript_include_tag 'downloadify/swfobject.js' %>
+  <%= javascript_include_tag 'downloadify/downloadify.min.js' %>
+  <%= javascript_include_tag 'downloadify_wrapper.js' %>
+  <%= javascript_include_tag 'Stupid-Table-Plugin/stupidtable.min.js' %>
+  <%= javascript_include_tag 'table_sorting.js' %>
   <p id="downloadify">
       You must have Flash 10 installed to download this file.
   </p>

@@ -4,7 +4,7 @@
 <%= form_for( @upload,{:url => "upload_trinity_with_edger"} ) do |u| %>
 <h1>
   Upload Your Trinity With EdgeR Data
-  <%= help_tip(:upload_trinity_with_edger_htip) %>
+  <%= help_tip(:upload_trinity_with_edger) %>
 </h1>
 
 <div class="sub-section rounded-corners" id="dataset_name_section">
@@ -20,7 +20,7 @@
     Transcript Fasta File
   </div>
   <%= u.label( :transcripts_fasta_file, "Trinity.fasta file" ) %>
-  <%= image_tag('question_mark.png', :id=>'trinity_fasta_tooltip') %>
+  <%= help_tip(:trinity_fasta) %>
   <%= u.file_field :transcripts_fasta_file %>
 </div>
 <br/><br/>
@@ -29,13 +29,13 @@
     Transcripts
   </div>
   <%= u.label(:transcript_fpkm_file, 'Transcript FPKM File') %>
-  <%= help_tip(:transcript_fpkm_help_tip) %>
+  <%= help_tip(:transcript_fpkm) %>
   <%= u.file_field :transcript_fpkm_file %>
   <br/>
   <br/>
   <table class="rounded-corners">
     <caption style="font-weight:bold">
-      Sample Comparisons <%= help_tip(:transcripts_sample_cmp_htip) %>
+      Sample Comparisons <%= help_tip(:transcripts_sample_cmp) %>
     </caption>
     <thead>
       <tr><th>File</th><th>Sample 1 Name</th><th>Sample 2 Name</th></tr>
@@ -66,12 +66,12 @@
   </div>
   <div class="sub-section rounded-corners">
     <%= u.label(:gene_fpkm_file, 'Gene FPKM File') %>
-    <%= help_tip(:gene_fpkm_help_tip) %>
+    <%= help_tip(:gene_fpkm) %>
     <%= u.file_field :gene_fpkm_file %>
   </div>
   <table class="rounded-corners">
     <caption style="font-weight:bold">
-      Sample Comparisons <%= help_tip(:gene_sample_cmp_htip) %>
+      Sample Comparisons <%= help_tip(:gene_sample_cmp) %>
     </caption>
     <thead>
       <tr><th>File</th><th>Sample 1 Name</th><th>Sample 2 Name</th></tr>

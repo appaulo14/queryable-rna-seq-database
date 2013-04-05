@@ -2,7 +2,7 @@ en:
   help_tip:
       query_analysis:
         query_diff_exp_genes:
-          query_gene_diff_exp:
+          query_diff_exp_genes:
             title: Query Gene Differential Expression Tests
             message: View differential expression tests for your genes. 
                      Select the dataset and the two samples you want to see 
@@ -18,22 +18,111 @@ en:
           go_terms:
             title: Filter By Go Terms
             message: <p>Enter one or more GO terms separated by semicolons to find
-                     results that have any of the terms you entered.</p>
-                     <p>For example, "RNA;hair folicle" will find any genes 
-                     with GO terms containg the text "RNA" or "hair folicle".</p>
+                     only the results that have all of the terms you entered.</p>
+                     <p>For example, "RNA;hair folicle" will find only the genes 
+                     with GO terms containg both the text "RNA" and 
+                     "hair folicle".</p>
             more_info_link: ""
           go_ids:
             title: Filter By Go IDs
             message: <p>Enter one or more GO IDs separated by semicolons to find
-                     results that have any of the terms you entered.</p>
-                     <p>For example, "GO:0000836;GO:0001063" will find any 
+                     only the results that have all of the terms you entered.</p>
+                     <p>For example, "GO:0000836;GO:0001063" will find only the  
                      genes with both GO:0000836 and GO:0001063.</p>
             more_info_link: ""
         query_diff_exp_transcripts:
+          query_diff_exp_transcripts:
+            title: Query Transcript Differential Expression Tests
+            message: View differential expression tests for your transcripts. 
+                     Select the dataset and the two samples you want to see 
+                     the differential expression tests for. You can also filter 
+                     the query in various to only see certain results.
+            more_info_link: https://github.com/fatPerlHacker/queryable-rna-seq-database/wiki/Step-3:-Querying-Data#query-differentially-expressed-transcripts
+          cutoff:
+            title: P-Value or FDR Cutoff
+            message: The p-value measures the statistical significance of a 
+                     differential expression test. The FDR is a more stringent 
+                     version of the p-value.
+            more_info_link: ""
+          go_terms:
+            title: Filter By Go Terms
+            message: <p>Enter one or more GO terms separated by semicolons to find
+                     only the results that have all of the terms you entered.</p>
+                     <p>For example, "RNA;hair folicle" will find only the 
+                     transcripts with GO terms containg both the text "RNA" and 
+                     "hair folicle".</p>
+            more_info_link: ""
+          go_ids:
+            title: Filter By Go IDs
+            message: <p>Enter one or more GO IDs separated by semicolons to find
+                     only the results that have all of the terms you entered.</p>
+                     <p>For example, "GO:0000836;GO:0001063" will find only the  
+                     transcripts with both GO:0000836 and GO:0001063.</p>
+            more_info_link: ""
         query_transcript_isoforms:
         query_using_blastn:
+          graphical_summary:
+            title: Graphical Summary
+            message: \"This graphic is an overview of 
+                     database sequences aligned to the query sequence. 
+                     Alignments are color-coded by score, within one of 
+                     five score ranges.\" Multiple alignments on the same 
+                     database sequence overlap may overlap with the more 
+                     significant ones on top. Hovering your mouse cursor over 
+                     an alignment shows the alignment definition, bit score,
+                     and e-value as a tooltip. Clicking an alignment 
+                     goes to full details of the alignment. [1]
+            more_info_link: ""
         query_using_tblastn:
         query_using_tblastx:
         upload_cuffdiff:
         upload_fasta_sequences:
+          upload_fasta_sequences:
+            title: Upload Fasta Sequences
+            message: Upload a nucleotide fasta file here to create a blast 
+                     database of the sequences in the fasta file.
+            more_info_link: https://github.com/fatPerlHacker/queryable-rna-seq-database/wiki/Step-2:-Uploading-Data#wiki-generic_fasta_sequences
+          fasta_file:
+            title: Nucleotide Fasta File
+            message: <p>Upload a nucleotide fasta sequences file. 
+                     It should end in .fasta, or .fa.</p>
+                     <p>This should not be a raw reads file but should 
+                     instead be something more processed like assembled 
+                     transcripts or a genome.</p>
+            more_info_link: https://github.com/fatPerlHacker/queryable-rna-seq-database/wiki/Step-2:-Uploading-Data#wiki-generic_fasta_sequence-fasta-file
         upload_trinity_with_edger:
+          upload_trinity_with_edger:
+            title: Upload Trinity with EdgeR Data
+            message: Upload differential expression tests and fasta sequences
+                     produced by the Trinity De-Novo RNA-Seq Assembler when the
+                     included EdgeR package is used for the differential
+                     expression testing.
+            more_info_link: https://github.com/fatPerlHacker/queryable-rna-seq-database/wiki/Step-2:-Uploading-Data#option-2-trinity-with-edger
+          trinity_fasta:
+            title: Trinity.fasta file
+            message: In your Trinity output directory there should be a file
+                     of fasta sequences called Trinity.fasta.
+            more_info_link: ""
+          transcripts_sample_cmp:
+            title: Transcript Sample Comparison Files
+            message: Transcript sample comparison files contain all the 
+                     differential expression tests between two transcript 
+                     samples. Usually they have "vs" in the name, such as 
+                     "sample_1_vs_sample_2".
+            more_info_link: https://github.com/fatPerlHacker/queryable-rna-seq-database/wiki/Step-2:-Uploading-Data#wiki-trinity_with_edger_transcript_det_files
+          transcript_fpkm:
+            title: Transcript FPKM File
+            message: There should be a file ending in .FPKM that contains the 
+                     FPKMs for each sample of each transcript.
+            more_info_link: https://github.com/fatPerlHacker/queryable-rna-seq-database/wiki/Step-2:-Uploading-Data#wiki-trinity_with_edger_transcript_fpkm
+          gene_fpkm:
+            title: Gene FPKM File
+            message: There should be a file ending in .FPKM that contains the 
+                     FPKMs for each sample of each gene.
+            more_info_link: https://github.com/fatPerlHacker/queryable-rna-seq-database/wiki/Step-2:-Uploading-Data#wiki-trinity_with_edger_gene_fpkm
+          gene_sample_cmp:
+            title: Gene Sample Comparison Files
+            message: Gene sample comparison files contain all the differential
+                     expression tests between two gene samples. Usually they 
+                     have "vs" in the name, such as "sample_1_vs_sample_2".
+            more_info_link: https://github.com/fatPerlHacker/queryable-rna-seq-database/wiki/Step-2:-Uploading-Data#wiki-trinity_with_edger_gene_det_files

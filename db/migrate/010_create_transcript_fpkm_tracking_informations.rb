@@ -18,7 +18,8 @@ class CreateTranscriptFpkmTrackingInformations < ActiveRecord::Migration
 
       #t.timestamps
     end
-    
+    #Add indexes
+    add_index :transcript_fpkm_tracking_informations, :transcript_id
     #Add primary key using execute statement because
     #   rails can't do non-integer primary keys
     execute('ALTER TABLE transcript_fpkm_tracking_informations ' +

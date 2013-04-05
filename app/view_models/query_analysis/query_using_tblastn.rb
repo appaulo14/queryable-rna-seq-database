@@ -130,7 +130,7 @@ class QueryUsingTblastn < AbstractQueryUsingBlast
     }
                              
   #Validation
-  validates :fasta_sequence, :protein_fasta_sequences => true
+  validates :text_area_fastas, :protein_fasta_sequences => true
   validates :word_size, :presence => true,
                         :inclusion => {:in => AVAILABLE_WORD_SIZES}
   validates :gap_costs, :presence => true

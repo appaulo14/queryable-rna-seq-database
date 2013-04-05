@@ -65,16 +65,15 @@ class UploadCuffdiff
       end
     rescue Exception => ex
       begin
-      BlastUtil.rollback_blast_database(@dataset)
-      QueryAnalysisMailer.notify_user_of_upload_failure(@current_user,
-                                                        @dataset)
+        BlastUtil.rollback_blast_database(@dataset)
+        QueryAnalysisMailer.notify_user_of_upload_failure(@current_user,
+                                                          @dataset)
       #Log the exception manually because Rails doesn't want to in this case
       rescue Exception => ex2
         Rails.logger.error "#{ex2.message}\n#{ex2.backtrace.join("\n")}"
         raise ex2, ex2.message
       ensure
         Rails.logger.error "#{ex.message}\n#{ex.backtrace.join("\n")}"
-        #raise ex, ex.message
       end
     ensure
       delete_uploaded_files()

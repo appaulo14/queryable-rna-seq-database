@@ -1,9 +1,4 @@
 <%= render 'shared/error_messages', :object => @qti %>
-<%= javascript_include_tag 'downloadify/swfobject.js' %>
-<%= javascript_include_tag 'downloadify/downloadify.min.js' %>
-<%= javascript_include_tag 'Stupid-Table-Plugin/stupidtable.min.js' %>
-<%= javascript_include_tag 'downloadify_wrapper.js' %>
-<%= javascript_include_tag 'table_sorting.js' %>
 <script type='text/javascript' src='query_transcript_isoforms.js' ></script>
 <%= form_for(@qti, :url => '/query_analysis/query_transcript_isoforms') do |qti| %>
   <h1>Please select your novel isoforms and other transcript classification search options</h1>
@@ -105,6 +100,11 @@
 <!--Section for the query results-->
 <% if @qti.show_results? %>
   <p><%= @qti.results.length %> results found for <em><b><%= @qti.sample_name %></b></em></p>
+  <%= javascript_include_tag 'downloadify/swfobject.js' %>
+  <%= javascript_include_tag 'downloadify/downloadify.min.js' %>
+  <%= javascript_include_tag 'downloadify_wrapper.js' %>
+  <%= javascript_include_tag 'Stupid-Table-Plugin/stupidtable.min.js' %>
+  <%= javascript_include_tag 'table_sorting.js' %>
   <p id="downloadify">
       You must have Flash 10 installed to download this file.
   </p>

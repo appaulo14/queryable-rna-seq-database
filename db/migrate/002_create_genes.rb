@@ -15,6 +15,8 @@ class CreateGenes < ActiveRecord::Migration
       t.string :name_from_program, :null => false
       #t.timestamps
     end
+    #Add indexes
+    add_index :genes, :dataset_id
     #Add primary key using execute statement because
     #   rails can't do BIGINT primary keys
     adapter_type = ActiveRecord::Base.connection.adapter_name.downcase

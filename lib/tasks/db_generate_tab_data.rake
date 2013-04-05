@@ -1,25 +1,17 @@
-namespace :db do
-  desc "Fill database with sample data"
-  task :populate => :environment do
-    Rake::Task['db:drop'].invoke
-    Rake::Task['db:create'].invoke
-    Rake::Task['db:migrate'].invoke
-#    Rake::Task['db:dev:populate'].invoke
-#    Rake::Task['db:test:prepare'].invoke
-    #Rake::Task['db:test:populate'].invoke
-     make_admin_user #1
-     #make_paul_cain_unconfirmed_user
-     make_unconfirmed_users(10)
-     make_datasets('development')
-     make_genes #500
-     make_transcripts_and_blast_databases('dev')
-     make_samples
-     make_sample_comparisons_and_differential_expression_tests
-     make_fpkm_samples #1000
-     make_transcript_fpkm_tracking_information #1000#1000
-     make_go_terms
-     make_transcript_has_go_terms #1000
-  end
+desc "Fill database with sample data"
+task :generate_tab_data => :environment do
+#     make_go_terms
+#     make_admin_user #1
+   #make_paul_cain_unconfirmed_user
+#     make_unconfirmed_users(10)
+   write_datasets('development')
+#     make_genes #500
+#     make_transcripts_and_blast_databases('dev')
+#     make_samples
+#     make_sample_comparisons_and_differential_expression_tests
+#     make_fpkm_samples #1000
+#     make_transcript_fpkm_tracking_information #1000#1000
+#     make_transcript_has_go_terms #1000
 end
 
 def make_admin_user
@@ -66,11 +58,13 @@ def make_unconfirmed_users(number_of_users)
 end
 
 
-def make_datasets(env)
+def write_datasets(env)
   print 'Populating datasets...'
-  (1..2).each do |n|
+  f = File.new('datasets.tab','w')
+  @user = User.first
+  (1..20000).each do |n|
     name = "Dataset_#{n}"
-    Dataset.create!(:user => @user, 
+    ds = Dataset.new(:user => @user, 
                     :name => name,
                     #The Blast database will actually be created later
                     :blast_db_location => "db/blast_databases/#{env}/#{n}",
@@ -78,7 +72,14 @@ def make_datasets(env)
                     :has_transcript_isoforms => true,
                     :has_gene_diff_exp       => true,
                     :program_used            => 'cuffdiff')
+    fs_string = ""
+    ds.attribute_names.each do |attr_name|
+      fs_string+= "#{ds.attributes[attr_name]}\t"
+    end
+    fs_string.strip()
+    f.write("#{fs_string}\n")
   end
+  f.close
   puts 'Done'
 end
 
@@ -86,7 +87,7 @@ def make_genes
   print 'Populating genes...'
   Dataset.all.each do |ds|
     gene_count = 0
-    3.times do |n|
+    5000.times do |n|
       gene = Gene.create!(:name_from_program => Faker::Lorem.word,
                           :dataset => ds)
       gene_count += 1

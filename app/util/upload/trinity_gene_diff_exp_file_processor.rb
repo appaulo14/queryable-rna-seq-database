@@ -2,7 +2,7 @@ require 'upload/trinity_diff_exp_file_processor.rb'
 
 class TrinityGeneDiffExpFileProcessor < TrinityDiffExpFileProcessor
   
-  def initialize(uploaded_file, dataset)
+  def initialize(uploaded_file, dataset, sample_1_name, sample_2_name)
     super
     @sample_type = 'gene'
   end

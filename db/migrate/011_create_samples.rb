@@ -7,5 +7,7 @@ class CreateSamples < ActiveRecord::Migration
 
       #t.timestamps
     end
+    #Add indexes
+    add_index :samples, :dataset_id
    end
 end

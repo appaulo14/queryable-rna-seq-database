@@ -27,6 +27,10 @@ class CreateDifferentialExpressionTests < ActiveRecord::Migration
 
       #t.timestamps
     end
+    #Add indexes
+    add_index :differential_expression_tests, :gene_id
+    add_index :differential_expression_tests, :transcript_id
+    add_index :differential_expression_tests, :sample_comparison_id
     #Add primary key using execute statement because
     #   rails can't do non-integer primary keys
     adapter_type = ActiveRecord::Base.connection.adapter_name.downcase

@@ -20,6 +20,9 @@ class CreateTranscripts < ActiveRecord::Migration
 
       #t.timestamps
     end
+    #Add indexes
+    add_index :transcripts, :gene_id
+    add_index :transcripts, :dataset_id
     #Add primary key using execute statement because
     #   rails can't do non-integer primary keys
     adapter_type = ActiveRecord::Base.connection.adapter_name.downcase

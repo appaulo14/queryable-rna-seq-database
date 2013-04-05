@@ -12,5 +12,8 @@ class CreateDatasets < ActiveRecord::Migration
 
       t.timestamps
     end
+    
+    #Add indexes
+    add_index :datasets, :user_id
   end
 end

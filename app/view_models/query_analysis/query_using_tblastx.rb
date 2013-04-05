@@ -30,7 +30,7 @@ class QueryUsingTblastx < AbstractQueryUsingBlast
                              'BLOSUM62','BLOSUM45','BLOSUM90']
     
   #Validation
-  validates :fasta_sequence, :nucleotide_fasta_sequences => true
+  validates :text_area_fastas, :nucleotide_fasta_sequences => true
   validates :word_size, :presence => true,
                         :inclusion => {:in => AVAILABLE_WORD_SIZES}
   validates :genetic_code, :presence => true,

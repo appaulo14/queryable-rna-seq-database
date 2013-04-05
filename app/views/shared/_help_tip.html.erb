@@ -6,7 +6,7 @@ $(document).ready(function(){
     //Build the help tip messages
     <% text = I18n.t 'message' %>
     <% if not (I18n.t 'more_info_link').empty? %>
-      <% text += more_info_link(I18n.t 'more_info_link') %>
+      <% text += (" " + more_info_link(I18n.t 'more_info_link')) %>
     <% end %>
     //Create the help tip javascript
     var position_args;
