@@ -6,15 +6,19 @@ module ApplicationHelper
     end
     
     #TODO: Delete after replacing everywhere
-    def help_tip(id)
-      return  image_tag('question_mark.png', :id=> id, 
-                                              :alt => "Help tip for #{id}" ) 
-    end
+#    def help_tip(id)
+#      return  image_tag('question_mark.png', :id=> id, 
+#                                              :alt => "Help tip for #{id}" ) 
+#    end
     
-    def help_tip2(id, position)
+    def help_tip(id, position = :right)
+      @controller = request.filtered_parameters['controller']
+      @action     = request.filtered_parameters['action']
       return render :partial => 'shared/help_tip', 
                      :locals => {:id => id, :position => position}
     end
+    
+    
     
     def more_info_link(url)
       return link_to('More Info',url, :target => '_blank')

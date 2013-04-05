@@ -3,7 +3,8 @@
   <%= file_field_tag('upload_trinity_with_edge_r[gene_diff_exp_files][]') %>
 </div>-->
 <tr id="sample_cmp_<%= @sample_cmp_count %>">
-  <td style="text-align:center"><%= file_field_tag('upload_trinity_with_edge_r[gene_diff_exp_files][]') %></td>
-  <td><input type="text" /></td>
-  <td><input type="text" /></td>
+  <td style="text-align:center">
+  <%= file_field_tag('upload_trinity_with_edge_r[gene_diff_exp_files][]') %></td>
+  <td><%= text_field_tag('upload_trinity_with_edge_r[gene_diff_exp_sample_1_names][]') %></td>
+  <td><%= text_field_tag('upload_trinity_with_edge_r[gene_diff_exp_sample_2_names][]') %></td>
 </tr>

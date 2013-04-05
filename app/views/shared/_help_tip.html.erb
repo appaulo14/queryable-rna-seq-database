@@ -2,7 +2,7 @@
                                    :alt => "Help tip for #{id}" ) %>
 <script type="text/javascript">
 $(document).ready(function(){
-  <% I18n.with_locale("en.help_tips.#{id}") do %>
+  <% I18n.with_locale("en.help_tip.#{@controller}.#{@action}.#{id}") do %>
     //Build the help tip messages
     <% text = I18n.t 'message' %>
     <% if not (I18n.t 'more_info_link').empty? %>
@@ -26,7 +26,7 @@ $(document).ready(function(){
             .removeData('qtip') 
             .qtip({
                     content: {
-                            text: '<%= text %>',
+                            text: '<%= raw(text) %>',
                             title: {
                                     text: '<%= I18n.t 'title' %>',
                                     button: true

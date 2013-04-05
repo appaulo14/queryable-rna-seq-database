@@ -108,9 +108,14 @@ class UploadTrinityWithEdgeR
   end
   
   def process_gene_diff_exp_files
-    @gene_diff_exp_files.each do |gene_diff_exp_file|
+    @gene_diff_exp_files.count.times do |i|
+      gene_diff_exp_file = @gene_diff_exp_files[i]
+      sample_1_name = @gene_diff_exp_sample_1_names[i]
+      sample_2_name = @gene_diff_exp_sample_2_names[i]
       tgdefp = TrinityGeneDiffExpFileProcessor.new(gene_diff_exp_file,
-                                                      @dataset)
+                                                       @dataset,
+                                                       sample_1_name,
+                                                       sample_2_name)
       tgdefp.process_file()
     end
   end
@@ -122,16 +127,21 @@ class UploadTrinityWithEdgeR
   end
   
   def process_transcript_diff_exp_files
-    @transcript_diff_exp_files.each do |transcript_diff_exp_file|
+    @transcript_diff_exp_files.count.times do |i|
+      transcript_diff_exp_file = @transcript_diff_exp_files[i]
+      sample_1_name = @transcript_diff_exp_sample_1_names[i]
+      sample_2_name = @transcript_diff_exp_sample_2_names[i]
       tdefp = TrinityTranscriptDiffExpFileProcessor.new(transcript_diff_exp_file,
-                                                             @dataset)
+                                                             @dataset,
+                                                             sample_1_name,
+                                                             sample_2_name)
       tdefp.process_file()
     end
   end
   
   def process_transcript_fpkm_file
     ttffp = TrinityTranscriptFpkmFileProcessor.new(@transcript_fpkm_file,
-                                                   @dataset)
+                                                       @dataset)
     ttffp.process_file()
   end
   
@@ -149,7 +159,9 @@ class UploadTrinityWithEdgeR
     @transcript_diff_exp_files.each do |transcript_diff_exp_file|
       File.delete(transcript_diff_exp_file.tempfile.path)
     end
-    File.delete(@gene_fpkm_file.tempfile.path)
+    if not @gene_fpkm_file.nil?
+      File.delete(@gene_fpkm_file.tempfile.path)
+    end
     File.delete(@transcript_fpkm_file.tempfile.path)
   end
   

@@ -1,0 +1,39 @@
+en:
+  help_tip:
+      query_analysis:
+        query_diff_exp_genes:
+          query_gene_diff_exp:
+            title: Query Gene Differential Expression Tests
+            message: View differential expression tests for your genes. 
+                     Select the dataset and the two samples you want to see 
+                     the differential expression tests for. You can also filter 
+                     the query in various to only see certain results.
+            more_info_link: https://github.com/fatPerlHacker/queryable-rna-seq-database/wiki/Step-3:-Querying-Data#query-differentially-expressed-genes
+          cutoff:
+            title: P-Value or FDR Cutoff
+            message: The p-value measures the statistical significance of a 
+                     differential expression test. The FDR is a more stringent 
+                     version of the p-value.
+            more_info_link: ""
+          go_terms:
+            title: Filter By Go Terms
+            message: <p>Enter one or more GO terms separated by semicolons to find
+                     results that have any of the terms you entered.</p>
+                     <p>For example, "RNA;hair folicle" will find any genes 
+                     with GO terms containg the text "RNA" or "hair folicle".</p>
+            more_info_link: ""
+          go_ids:
+            title: Filter By Go IDs
+            message: <p>Enter one or more GO IDs separated by semicolons to find
+                     results that have any of the terms you entered.</p>
+                     <p>For example, "GO:0000836;GO:0001063" will find any 
+                     genes with both GO:0000836 and GO:0001063.</p>
+            more_info_link: ""
+        query_diff_exp_transcripts:
+        query_transcript_isoforms:
+        query_using_blastn:
+        query_using_tblastn:
+        query_using_tblastx:
+        upload_cuffdiff:
+        upload_fasta_sequences:
+        upload_trinity_with_edger:
