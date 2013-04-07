@@ -28,6 +28,11 @@
   color:red;
 }
 
+.notice{
+  font-weight:bold;
+  color:white;
+}
+
 body {
   background: rgb(155,86,211);
 }
