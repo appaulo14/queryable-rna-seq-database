@@ -18,6 +18,10 @@ class TrinityTranscriptDiffExpFileProcessor < TrinityDiffExpFileProcessor
         gene_name = diff_exp_line.item.match(/\A(.+)(_seq.+)\z/).captures[0]
         gene = Gene.where(:dataset_id => @dataset.id,
                            :name_from_program => gene_name)[0]
+        if gene.nil?
+        gene = Gene.create!(:dataset => @dataset,
+                            :name_from_program => gene_name)
+        end	
         transcript =  Transcript.create!(:dataset => @dataset,
                                           :name_from_program => diff_exp_line.item,
                                           :gene => gene)

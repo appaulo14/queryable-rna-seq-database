@@ -24,7 +24,7 @@ class GoIdsQueryConditionGenerator
     if where_clauses.count > 1
       combined_where_clause = where_clauses[0]
       (1..where_clauses.count-1).each do |i|
-        combined_where_clause = combined_where_clause.or(where_clauses[i])
+        combined_where_clause = combined_where_clause.and(where_clauses[i])
       end
       return combined_where_clause
     else
