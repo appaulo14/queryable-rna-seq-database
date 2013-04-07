@@ -16,6 +16,20 @@
     <div>Number of Transcripts = <%= @dataset.transcripts.count %></div>
     <div>Number of Genes = <%= @dataset.genes.count %></div>
     <div>Number of Samples = <%= @dataset.samples.count %></div>
+    <% if @sample_comparisons_count %>
+      <div>Number of Sample Comparisons = <%= @sample_comparisons_count %></div>
+    <% end %>
+    <% if @transcript_sample_comparisons_count %>
+      <div>
+        Number of Transcript Sample Comparisons = 
+          <%= @transcript_sample_comparisons_count %>
+      </div>
+    <% end %>
+    <% if @gene_sample_comparisons_count %>
+      <div>Number of Gene Sample Comparisons = 
+          <%= @gene_sample_comparisons_count %>
+      </div>
+    <% end %>
     <div>Number of differential expression tests = <%= @de_tests_count %></div>
     <div>Number of fpkm samples = <%= @fpkm_sample_count %></div>
     <div>Number of GO Terms = <%= @go_terms_count %></div>

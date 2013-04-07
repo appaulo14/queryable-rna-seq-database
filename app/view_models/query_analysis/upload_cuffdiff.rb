@@ -21,7 +21,8 @@ class UploadCuffdiff
   ##Validte for file presence only???
   
 #  validates :transcripts_fasta_file, :presence => true,
-#                                     :uploaded_file => true
+#                                     :uploaded_file => true,
+#                                     :has_fasta_file_extension => true
 #  
 #  validates :has_diff_exp, :presence => true,
 #                           :view_model_boolean => true

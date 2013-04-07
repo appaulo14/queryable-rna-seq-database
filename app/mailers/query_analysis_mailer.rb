@@ -13,6 +13,23 @@ class QueryAnalysisMailer < ActionMailer::Base
       :gene
     ).where('genes.dataset_id' => dataset.id).count
     @de_tests_count = transcripts_det_count + genes_det_count
+    #Calculate the sample comparisons
+    s_t = Sample.arel_table
+    where_clause = s_t[:dataset_id].eq(@dataset.id)
+    if @dataset.program_used == 'trinity_with_edger'
+      @transcript_sample_comparisons_count =  SampleComparison
+          .joins(:sample_1,:sample_2)
+          .where(where_clause.and(s_t[:sample_type].eq('transcript')))
+          .select('COUNT(*) as count')[0].count
+      @gene_sample_comparisons_count =  SampleComparison
+          .joins(:sample_1,:sample_2)
+          .where(where_clause.and(s_t[:sample_type].eq('gene')))
+          .select('COUNT(*) as count')[0].count
+    else
+      where_clause = s_t[:dataset_id].eq(@dataset.id)
+      @sample_comparisons_count = SampleComparison.joins(:sample_1,:sample_2).
+          where(where_clause).select('COUNT(*) as count')[0].count
+    end
     #Calculate the number of transcripts uploaded
     @fpkm_sample_count = FpkmSample.joins(
       :transcript

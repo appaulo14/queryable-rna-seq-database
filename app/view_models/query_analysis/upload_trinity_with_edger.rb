@@ -23,7 +23,8 @@ class UploadTrinityWithEdgeR
                   :dataset_name
   
   validates :transcripts_fasta_file, :presence => true,
-                                     :uploaded_file => true
+                                     :uploaded_file => true,
+                                     :name_is_trinity_fasta => true
   
   validates :gene_diff_exp_files, :array => true,
                                   :array_of_uploaded_files => true
@@ -42,15 +43,14 @@ class UploadTrinityWithEdgeR
                                                  :array => true
   validates :transcript_diff_exp_sample_2_names, :presence => true,
                                                  :array => true
-  validate :same_number_of_gene_and_transcript_diff_exp_files
   
   validates :gene_fpkm_file, :uploaded_file => true
   validates :gene_fpkm_file, :presence => true,
                              :if => "@has_gene_diff_exp == '1'"
   validates :transcript_fpkm_file, :presence => true,
                                    :uploaded_file => true
-  validates :dataset_name, :presence => true
-                           #:dataset_name_unique_for_user => true
+  validates :dataset_name, :presence => true,
+                           :dataset_name_unique_for_user => true
   
   
   def initialize(current_user)
@@ -183,19 +183,5 @@ class UploadTrinityWithEdgeR
       File.delete(@gene_fpkm_file.tempfile.path)
     end
     File.delete(@transcript_fpkm_file.tempfile.path)
-  end
-  
-  #### Validations #####
-  def same_number_of_gene_and_transcript_diff_exp_files
-    return if @gene_diff_exp_files.nil?
-    return if @transcript_diff_exp_files.nil?
-    return if not @gene_diff_exp_files.kind_of? Array
-    return if not @transcript_diff_exp_files.kind_of? Array
-    if @gene_diff_exp_files.count != @transcript_diff_exp_files.count
-      error_msg = 'transcript and gene differential expression files ' +
-                  'must be equal in number'
-      errors[:gene_diff_exp_files] << error_msg
-      errors[:transcript_diff_exp_files] << error_msg
-    end
   end
 end

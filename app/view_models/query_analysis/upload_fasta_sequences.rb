@@ -9,8 +9,10 @@ class UploadFastaSequences
                   :dataset_name
                   
   validates :transcripts_fasta_file, :presence => true,
-                                     :uploaded_file => true
-  validates :dataset_name, :presence => true
+                                     :uploaded_file => true,
+                                     :has_fasta_file_extension => true
+  validates :dataset_name, :presence => true,
+                           :dataset_name_unique_for_user => true
   
   def initialize(current_user)
     @current_user = current_user

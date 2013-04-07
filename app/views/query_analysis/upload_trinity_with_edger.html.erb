@@ -35,13 +35,14 @@
   <br/>
   <table class="rounded-corners" style="background-color:white">
     <caption style="font-weight:bold">
-      Sample Comparisons <%= help_tip(:transcripts_sample_cmp) %>
+      <%= u.label(:transcript_diff_exp_files, 'Sample Comparisons') %>
+      <%= help_tip(:transcripts_sample_cmp) %>
     </caption>
     <thead>
       <tr>
         <th style="text-align:left">File</th>
-        <th>Sample 1 Name</th>
-        <th>Sample 2 Name</th>
+        <th><%= u.label(:transcript_diff_exp_sample_1_names, 'Sample 1 Name') %></th>
+        <th><%= u.label(:transcript_diff_exp_sample_2_names, 'Sample 2 Name') %></th>
       </tr>
     </thead>
     <tbody id="transcript_sample_comparisons_div">
@@ -70,13 +71,14 @@
   </div>
   <table class="rounded-corners" style="background-color:white">
     <caption style="font-weight:bold">
-      Sample Comparisons <%= help_tip(:gene_sample_cmp) %>
+      <%= u.label(:gene_diff_exp_files, 'Sample Comparisons') %>
+      <%= help_tip(:gene_sample_cmp) %>
     </caption>
     <thead>
       <tr>
         <th style="text-align:left">File</th>
-        <th>Sample 1 Name</th>
-        <th>Sample 2 Name</th>
+        <th><%= u.label(:gene_diff_exp_sample_1_names, 'Sample 1 Name') %></th>
+        <th><%= u.label(:gene_diff_exp_sample_2_names, 'Sample 2 Name') %></th>
       </tr>
     </thead>
     <tbody id="gene_sample_comparisons_div">
