@@ -1,6 +1,3 @@
-gene_sample_cmp_count = 0;
-transcript_sample_cmp_count = 0;
-
 $(document).ready(function()
 {
   request_gene_sample_cmp();
@@ -107,37 +104,32 @@ function has_gene_diff_exp_checked_changed(){
 }
 
 function request_transcript_sample_cmp(){
-  transcript_sample_cmp_count += 1;
-  var request_str = 'add_sample_cmp_for_trinity_with_edger_transcripts' +
-                    '?sample_cmp_count=' + transcript_sample_cmp_count;
+  var request_str = 'add_sample_cmp_for_trinity_with_edger_transcripts';
   $.get(request_str,add_transcript_sample_cmp)
 }
 
 function add_transcript_sample_cmp(sample_cmp_html){
   div = $('#transcript_sample_comparisons_div');
-  div.html(div.html()+sample_cmp_html);
+  div.append(sample_cmp_html);
+  //div.html(div.html()+sample_cmp_html);
 }
 
 function remove_transcript_sample_cmp(){
-  transcript_sample_cmp_count -= 1;
   $('#transcript_sample_comparisons_div').children().last().remove();
 }
 
 function request_gene_sample_cmp(){
-  gene_sample_cmp_count += 1;
-  var request_str = 'add_sample_cmp_for_trinity_with_edger_genes' +
-                    '?sample_cmp_count=' + gene_sample_cmp_count;
+  var request_str = 'add_sample_cmp_for_trinity_with_edger_genes';
   $.get(request_str,add_gene_sample_cmp)
 }
 
 function add_gene_sample_cmp(sample_cmp_html){
-  //$('#gene_sample_comparisons_div').append(sample_cmp_html);
   div = $('#gene_sample_comparisons_div');
-  div.html(div.html()+sample_cmp_html);
+  div.append(sample_cmp_html);
+  //div.html(div.html()+sample_cmp_html);
   has_gene_diff_exp_checked_changed();
 }
 
 function remove_gene_sample_cmp(){
-  gene_sample_cmp_count -= 1;
   $('#gene_sample_comparisons_div').children().last().remove();
 }

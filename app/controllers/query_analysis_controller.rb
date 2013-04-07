@@ -90,15 +90,11 @@ class QueryAnalysisController < ApplicationController
     end
     
     def add_sample_cmp_for_trinity_with_edger_transcripts
-      @sample_cmp_count = params[:sample_cmp_count]
-      render :partial => 'trinity_with_edger_transcripts_sample_cmp', 
-             :locals  => {:object => @sample_cmp_count}
+      render :partial => 'trinity_with_edger_transcripts_sample_cmp'
     end
     
     def add_sample_cmp_for_trinity_with_edger_genes
-      @sample_cmp_count = params[:sample_cmp_count]
-      render :partial => 'trinity_with_edger_genes_sample_cmp', 
-             :locals  => {:object => @sample_cmp_count}
+      render :partial => 'trinity_with_edger_genes_sample_cmp'
     end
     
     def upload_trinity_with_edger_transcripts
