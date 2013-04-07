@@ -2,90 +2,23 @@ $(document).ready(function()
 {
   request_gene_sample_cmp();
   request_transcript_sample_cmp();
+  set_event_bindings();
+  has_gene_diff_exp = $('#upload_trinity_with_edge_r_has_gene_diff_exp');
+  has_gene_diff_exp.change(has_gene_diff_exp_checked_changed);
+}); 
+
+function set_event_bindings(){
   $('#btn_add_transcript_sample_cmp').click(request_transcript_sample_cmp);
   $('#btn_remove_transcript_sample_cmp').click(remove_transcript_sample_cmp);
   $('#btn_add_gene_sample_cmp').click(request_gene_sample_cmp);
   $('#btn_remove_gene_sample_cmp').click(remove_gene_sample_cmp);
-  has_gene_diff_exp = $('#upload_trinity_with_edge_r_has_gene_diff_exp');
-  has_gene_diff_exp.change(has_gene_diff_exp_checked_changed);
-  //create_tooltips();
-}); 
-
-function create_tooltips(){
-  //Declare variables
-  var elements = [];
-  var titles = [];
-  var texts = [];
-  <% I18n.with_locale('en.query_analysis.upload_trinity_with_edger.help_tips') do %>
-    //Tooltip for Trinity fasta file
-    elements[0] = 'trinity_fasta_tooltip';
-    titles[0] = 'Trinity.fasta file';
-    texts[0] = 'In your Trinity output directory there should be a file ' +
-              'of fasta sequences called Trinity.fasta.';
-    //Tooltip for Differential expression files
-    elements[1] = 'transcripts_sample_cmp_htip';
-    titles[1] = 'Transcript Sample Comparison Files';
-    texts[1] = 'Transcript sample comparison files contain all the differential'+
-               'expression tests between two transcript samples. Usually they ' +
-               'have "vs" in the name, such as "sample_1_vs_sample_2". ' +
-              '<%= more_info_link_to_wiki('Step-2:-Uploading-Data#wiki-trinity_with_edger_transcript_det_files') %>';
-    //Help tip for transcript FPKM file
-    elements[2] = 'transcript_fpkm_help_tip';
-    titles[2] = 'Transcript FPKM File';
-    texts[2] = '<%= I18n.t "transcript_fpkm.text" %> ' + 
-              '<%= more_info_link(I18n.t "transcript_fpkm.more_info_link") %>';
-    //Help tip for the gene FPKM file
-    elements[3] = 'gene_fpkm_help_tip';
-    titles[3] = 'Gene FPKM File';
-    texts[3] = '<%= I18n.t "gene_fpkm.text" %> ' + 
-              '<%= more_info_link(I18n.t "gene_fpkm.more_info_link") %>';
-    elements[4] = 'gene_sample_cmp_htip';
-    titles[4] = 'Gene Sample Comparison Files';
-    texts[4] = 'Gene sample comparison files contain all the differential'+
-               'expression tests between two gene samples. Usually they ' +
-               'have "vs" in the name, such as "sample_1_vs_sample_2". ' +
-              '<%= more_info_link_to_wiki('Step-2:-Uploading-Data#wiki-trinity_with_edger_gene_det_files') %>';
-    elements[5] = 'upload_trinity_with_edger_htip';
-    titles[5] = 'Upload Trinity with EdgeR Data';
-    texts[5] = 'Upload differential expression tests and fasta sequences ' +
-               'produced by the Trinity De-Novo RNA-Seq Assembler when the ' +
-               'included EdgeR package is used for the differential ' +
-               'expression testing. ' +
-               '<%= more_info_link_to_wiki('Step-2:-Uploading-Data#option-2-trinity-with-edger') %>';
-  <% end %>
-    
-  for (var i = 0; i < elements.length; i++){
-    $('#' + elements[i])
-          .removeData('qtip') 
-          .qtip({
-                  content: {
-                          text: texts[i], 
-                          title: {
-                                  text: titles[i],
-                                  button: true
-                          }
-                  },
-                  position: {
-                          my: 'bottom center',
-                          at: 'top center' 
-                  },
-                  show: {
-                          event: 'click', 
-                          ready: false
-                  },
-                  hide: false,
-                  style: {
-                          classes: 'qtip-shadow qtip-' + 'light'
-                  }
-          });
-  }
 }
 
 function has_gene_diff_exp_checked_changed(){
 //  children = $('#gene_section').children();
   
   if ($('#upload_trinity_with_edge_r_has_gene_diff_exp').is(':checked')){
-    file_inputs = $('#gene_section').find('input:file');
+    file_inputs = $('#gene_section').find('input');
     for(var i = 0; i < file_inputs.length; i++){
       $(file_inputs[i]).removeAttr("disabled");
     }
@@ -94,7 +27,7 @@ function has_gene_diff_exp_checked_changed(){
     
   }
   else{
-    file_inputs = $('#gene_section').find('input:file');
+    file_inputs = $('#gene_section').find('input');
     for(var i = 0; i < file_inputs.length; i++){
       $(file_inputs[i]).attr("disabled", "disabled");
     }
