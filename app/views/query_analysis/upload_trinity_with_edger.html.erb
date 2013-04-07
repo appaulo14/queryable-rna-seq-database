@@ -33,22 +33,21 @@
   <%= u.file_field :transcript_fpkm_file %>
   <br/>
   <br/>
-  <table class="rounded-corners">
+  <table class="rounded-corners" style="background-color:white">
     <caption style="font-weight:bold">
       Sample Comparisons <%= help_tip(:transcripts_sample_cmp) %>
     </caption>
     <thead>
-      <tr><th>File</th><th>Sample 1 Name</th><th>Sample 2 Name</th></tr>
+      <tr>
+        <th style="text-align:left">File</th>
+        <th>Sample 1 Name</th>
+        <th>Sample 2 Name</th>
+      </tr>
     </thead>
     <tbody id="transcript_sample_comparisons_div">
       
     </tbody>
   </table>
-<!--  <div id="transcript_sample_comparisons_div">-->
-<!--    <br/>-->
-<!--    <b>Sample Comparisons <%= help_tip(:transcript_sample_cmp_htip) %></b>-->
-<!--    <br/>-->
-<!--  </div>-->
   <br/>
   <%= button_tag("Add Another Sample Comparison",
                 {:type => :button, :id => 'btn_add_transcript_sample_cmp'}) %>
@@ -69,12 +68,16 @@
     <%= help_tip(:gene_fpkm) %>
     <%= u.file_field :gene_fpkm_file %>
   </div>
-  <table class="rounded-corners">
+  <table class="rounded-corners" style="background-color:white">
     <caption style="font-weight:bold">
       Sample Comparisons <%= help_tip(:gene_sample_cmp) %>
     </caption>
     <thead>
-      <tr><th>File</th><th>Sample 1 Name</th><th>Sample 2 Name</th></tr>
+      <tr>
+        <th style="text-align:left">File</th>
+        <th>Sample 1 Name</th>
+        <th>Sample 2 Name</th>
+      </tr>
     </thead>
     <tbody id="gene_sample_comparisons_div">
       
