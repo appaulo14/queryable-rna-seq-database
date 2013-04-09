@@ -32,17 +32,21 @@ class UploadTrinityWithEdgeR
                                   :if => "@has_gene_diff_exp == '1'"
   validates :gene_diff_exp_sample_1_names, :array => true
   validates :gene_diff_exp_sample_1_names, :presence => true,
+                                           :array_elements_are_not_empty => true,
                                            :if => "@has_gene_diff_exp == '1'"
   validates :gene_diff_exp_sample_2_names, :array => true
   validates :gene_diff_exp_sample_2_names, :presence => true,
+                                           :array_elements_are_not_empty => true,
                                            :if => "@has_gene_diff_exp == '1'"
   validates :transcript_diff_exp_files, :presence => true,
                                         :array => true,
                                         :array_of_uploaded_files => true
   validates :transcript_diff_exp_sample_1_names, :presence => true,
-                                                 :array => true
+                                                 :array => true,
+                                                 :array_elements_are_not_empty => true
   validates :transcript_diff_exp_sample_2_names, :presence => true,
-                                                 :array => true
+                                                 :array => true,
+                                                 :array_elements_are_not_empty => true
   
   validates :gene_fpkm_file, :uploaded_file => true
   validates :gene_fpkm_file, :presence => true,

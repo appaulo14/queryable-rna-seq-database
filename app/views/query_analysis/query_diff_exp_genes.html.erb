@@ -26,10 +26,6 @@
     </div>
     <div>
         <%= qdeg.label(:cutoff, "Select cutoff:") %>
-        <!--<%= #qdeg.select(:cutoff, options_for_select([['0.01', 0.01], ['0.005', 0.005],['0.001', 0.001],['0.0001', 0.0001],['0.00001', 0.00001],['Other', 'Other']],'Other'))
-        %>
-        <%= #qdeg.label(:other_cutoff_value, "Enter Value:") 
-        %>-->
         <%= qdeg.text_field(:cutoff, {:size=>10}) %>
     </div>
   </p>
@@ -99,14 +95,16 @@
                 </table>
               </th>
               <th>GO Terms</th>
-              <th data-sort='float'>
-                <table>
-                  <tr>
-                    <td>Test Statistic</td>
-                    <td class="sort-arrow-td"><%= neutral_sort_arrow %></td>
-                  </tr>
-                </table>
-              </th>
+              <% if @qdeg.program_used == 'cuffdiff' %>
+                <th data-sort='float'>
+                  <table>
+                    <tr>
+                      <td>Test Statistic</td>
+                      <td class="sort-arrow-td"><%= neutral_sort_arrow %></td>
+                    </tr>
+                  </table>
+                </th>
+              <% end %>
               <th data-sort='float'>
                 <table>
                   <tr>
@@ -147,14 +145,16 @@
                   </tr>
                 </table>
               </th>
-              <th data-sort='string'>
-                <table>
-                  <tr>
-                    <td>Test Status</td>
-                    <td class="sort-arrow-td"><%= neutral_sort_arrow %></td>
-                  </tr>
-                </table>
-              </th>
+              <% if @qdeg.program_used == 'cuffdiff' %>
+                <th data-sort='string'>
+                  <table>
+                    <tr>
+                      <td>Test Status</td>
+                      <td class="sort-arrow-td"><%= neutral_sort_arrow %></td>
+                    </tr>
+                  </table>
+                </th>
+              <% end %>
           </tr>
       </thead>
       <tbody>
@@ -184,25 +184,17 @@
                       No GO ids found.
                     <% end %>
                   </td>
-                  <td>
-                    <% if result[:test_statistic].nil? %>
-                      Not available
-                    <% else %>
-                      <pre><%= ("%8.5f" % result[:test_statistic]) %></pre>
-                    <% end %>
-                  </td>
+                  <% if @qdeg.program_used == 'cuffdiff' %>
+                    <td><pre><%= ("%8.5f" % result[:test_statistic]) %></pre></td>
+                  <% end %>
                   <td><pre><%= ("%6.5f" % result[:p_value]) %></pre></td>
                   <td><pre><%= ("%6.5f" % result[:fdr]) %></pre></td>
                   <td><pre><%= ("%9.3f" % result[:sample_1_fpkm]) %></pre></td>
                   <td><pre><%= ("%9.3f" % result[:sample_2_fpkm]) %></pre></td>
                   <td><pre><%= ("%7.3f" % result[:log_fold_change]) %></pre></td>
-                  <td>
-                    <% if result[:test_status].nil? %>
-                      Not available
-                    <% else %>
-                      <%= result[:test_status] %>
-                    <% end %>
-                  </td>
+                  <% if @qdeg.program_used == 'cuffdiff' %>
+                    <td><%= result[:test_status] %></td>
+                  <% end %>
               </tr>
           <% end %>
       </tbody>

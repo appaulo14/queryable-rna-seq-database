@@ -12,11 +12,11 @@ class QueryDiffExpTranscripts
                 :go_ids, :transcript_name 
   attr_reader  :names_and_ids_for_available_datasets, 
                 :available_sample_comparisons, 
-                :show_results, :results, :sample_1_name, :sample_2_name
+                :show_results, :results, :sample_1_name, :sample_2_name,
+                :program_used
   
   validates :dataset_id, :presence => true,
                          :dataset_belongs_to_user => true
-  
   
   def initialize(user)
     @current_user = user
@@ -65,6 +65,7 @@ class QueryDiffExpTranscripts
       @sample_comparison_id_pair = @available_sample_comparisons[0][1]
     end
     @show_results = false
+    @program_used = Dataset.find_by_id(@dataset_id).program_used
   end
   
   def query()

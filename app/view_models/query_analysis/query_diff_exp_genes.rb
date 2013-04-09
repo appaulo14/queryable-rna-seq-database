@@ -11,7 +11,8 @@ class QueryDiffExpGenes
                 :fdr_or_p_value, :cutoff, :go_terms, :go_ids, :gene_name 
   attr_reader   :names_and_ids_for_available_datasets, 
                 :available_sample_comparisons, 
-                :show_results, :results, :sample_1_name, :sample_2_name
+                :show_results, :results, :sample_1_name, :sample_2_name,
+                :program_used
   
   #TODO: Add validation 
   validate :user_has_permission_to_access_dataset
@@ -64,6 +65,7 @@ class QueryDiffExpGenes
       @sample_comparison_id_pair = @available_sample_comparisons[0][1]
     end
     @show_results = false
+    @program_used = Dataset.find_by_id(@dataset_id).program_used
   end
   
   def query()

@@ -105,10 +105,13 @@ en:
             more_info_link: ""
           transcripts_sample_cmp:
             title: Transcript Sample Comparison Files
-            message: Transcript sample comparison files contain all the 
-                     differential expression tests between two transcript 
-                     samples. Usually they have "vs" in the name, such as 
-                     "sample_1_vs_sample_2".
+            message: <p>Transcript differential expression sample comparison 
+                     files contain all the differential expression tests 
+                     between two transcript samples. Usually they have "vs" in 
+                     the name, such as "sample_1_vs_sample_2".</p>
+                     <p>For each file, enter 
+                     the names of the samples being compared in the corresponding
+                     text boxes below.</p>
             more_info_link: https://github.com/fatPerlHacker/queryable-rna-seq-database/wiki/Step-2:-Uploading-Data#wiki-trinity_with_edger_transcript_det_files
           transcript_fpkm:
             title: Transcript FPKM File
@@ -122,7 +125,11 @@ en:
             more_info_link: https://github.com/fatPerlHacker/queryable-rna-seq-database/wiki/Step-2:-Uploading-Data#wiki-trinity_with_edger_gene_fpkm
           gene_sample_cmp:
             title: Gene Sample Comparison Files
-            message: Gene sample comparison files contain all the differential
-                     expression tests between two gene samples. Usually they 
-                     have "vs" in the name, such as "sample_1_vs_sample_2".
+            message: <p>Gene differential expression sample comparison 
+                     files contain all the differential expression tests 
+                     between two transcript samples. Usually they have "vs" in 
+                     the name, such as "sample_1_vs_sample_2".</p>
+                     <p>For each file, enter 
+                     the names of the samples being compared in the corresponding
+                     text boxes below.</p>
             more_info_link: https://github.com/fatPerlHacker/queryable-rna-seq-database/wiki/Step-2:-Uploading-Data#wiki-trinity_with_edger_gene_det_files

@@ -1,6 +1,6 @@
 <script type='text/javascript' src='upload_fasta_sequences.js' ></script>
 <%= render 'shared/error_messages', :object => @upload %>
-<%= form_for @upload, {:url => "upload_fasta_sequences",:remote => true} do |u| %>
+<%= form_for @upload, {:url => "upload_fasta_sequences"} do |u| %>
   <h1>Upload Your Fasta Sequences <%= help_tip(:upload_fasta_sequences) %></h1>
   
   <div class="sub-section rounded-corners" id="dataset_name_section">

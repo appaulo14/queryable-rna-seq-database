@@ -14,10 +14,8 @@ my $fac = Bio::Tools::Run::StandAloneBlastPlus->new(
     -remote  => 1
 );
 
-
 my $query_sequence_file = $ARGV[0];
 my $blast_output_file   = $ARGV[1];
-my $b2g_output_file     = $ARGV[2];
 
 #Blast
 my $result = $fac->blastx(
