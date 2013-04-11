@@ -1,3 +1,11 @@
 // Place all the styles related to the Query_Analysis controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+#query_results_table {
+  font-family:monospace;
+}
+
+#query_results_table th,td {
+  padding:5px;
+}

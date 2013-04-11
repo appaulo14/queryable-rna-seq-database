@@ -7,92 +7,128 @@
   <%= help_tip(:upload_trinity_with_edger) %>
 </h1>
 
-<div class="sub-section rounded-corners" id="dataset_name_section">
-  <div class="sub-section-heading">Name Your Dataset</div>
-  <p style="text-align:center">
-    <%= u.label(:dataset_name, "Dataset Name") %>
-    <%= u.text_field :dataset_name %>
-  </p>
-</div>
+<table class="sub-section rounded-corners">
+  <tr>
+    <th class="sub-section-heading" style="padding-top:0px">
+      <%= u.label(:dataset_name, "Name Your Dataset") %>
+    </th>
+    <td>
+      <%= u.text_field :dataset_name %>
+    </td>
+  </tr>
+</table>
+<!--<br/><br/>-->
+<!--<div class="sub-section rounded-corners" id="transcript_fasta_section">-->
+<!--  <div class="sub-section-heading">-->
+<!--    Transcript Fasta File-->
+<!--  </div>-->
+<!--  <%= u.label( :transcripts_fasta_file, "Trinity.fasta file" ) %>-->
+<!--  <%= help_tip(:trinity_fasta) %>-->
+<!--  <%= u.file_field :transcripts_fasta_file %>-->
+<!--</div>-->
 <br/><br/>
-<div class="sub-section rounded-corners" id="transcript_fasta_section">
-  <div class="sub-section-heading">
-    Transcript Fasta File
-  </div>
-  <%= u.label( :transcripts_fasta_file, "Trinity.fasta file" ) %>
-  <%= help_tip(:trinity_fasta) %>
-  <%= u.file_field :transcripts_fasta_file %>
-</div>
-<br/><br/>
-<div class="sub-section rounded-corners" id="transcript_section">
-  <div class="sub-section-heading">
-    Transcripts
-  </div>
-  <%= u.label(:transcript_fpkm_file, 'Transcript FPKM File') %>
-  <%= help_tip(:transcript_fpkm) %>
-  <%= u.file_field :transcript_fpkm_file %>
-  <br/>
-  <br/>
-  <table class="rounded-corners" style="background-color:white">
-    <caption style="font-weight:bold">
-      <%= u.label(:transcript_diff_exp_files,
-        'Differential Expression Sample Comparisons') %>
-      <%= help_tip(:transcripts_sample_cmp) %>
-    </caption>
-    <thead>
-      <tr>
-        <th style="text-align:left">File</th>
-        <th><%= u.label(:transcript_diff_exp_sample_1_names, 'Sample 1 Name') %></th>
-        <th><%= u.label(:transcript_diff_exp_sample_2_names, 'Sample 2 Name') %></th>
-      </tr>
-    </thead>
-    <tbody id="transcript_sample_comparisons_div">
-      
-    </tbody>
-  </table>
-  <br/>
-  <%= button_tag("Add Another Sample Comparison",
-                {:type => :button, :id => 'btn_add_transcript_sample_cmp'}) %>
-  <%= button_tag("Remove a Sample Comparison",
-                {:type => :button, :id => 'btn_remove_transcript_sample_cmp'}) %>
-</div>
+<table class="sub-section rounded-corners" id="transcript_section">
+  <tr>
+    <th class="sub-section-heading" style="padding-top:0px;padding-right:40px">
+      Transcripts
+    </th>
+    <td>
+      <%= u.label( :transcripts_fasta_file, "Trinity.fasta file" ) %>
+    <%= help_tip(:trinity_fasta) %>
+    <%= u.file_field :transcripts_fasta_file %>
+    </td>
+  </tr>
+<!--  <tr><td></td><td></td></tr>-->
+<!--  <tr><td></td><td></td></tr>-->
+  <tr>
+    <td>&nbsp</td>
+    <td>
+    <%= u.label(:transcript_fpkm_file, 'Transcript FPKM File') %>
+    <%= help_tip(:transcript_fpkm) %>
+    <%= u.file_field :transcript_fpkm_file %>
+    </td>
+  </tr>
+<!--  <tr><td></td><td></td></tr>-->
+<!--  <tr><td></td><td></td></tr>-->
+  <tr>
+    <td>&nbsp</td>
+    <td>
+      <table class="rounded-corners" style="background-color:white">
+        <caption style="text-align:left;font-weight:bold">
+          <%= u.label(:transcript_diff_exp_files,
+            'Differential Expression Sample Comparison Files') %>
+          <%= help_tip(:transcripts_sample_cmp) %>
+        </caption>
+        <thead>
+          <tr>
+            <th style="font-weight:normal;text-align:left;">File</th>
+            <th style="font-weight:normal"><%= u.label(:transcript_diff_exp_sample_1_names, 'Sample 1 Name') %></th>
+            <th style="font-weight:normal"><%= u.label(:transcript_diff_exp_sample_2_names, 'Sample 2 Name') %></th>
+          </tr>
+        </thead>
+        <tbody id="transcript_sample_comparisons_div">
+          
+        </tbody>
+      </table>
+      <br/>
+      <div>
+      <%= button_tag("Add Another Sample Comparison File",
+                    {:type => :button, :id => 'btn_add_transcript_sample_cmp'}) %>
+      <%= button_tag("Remove a Sample Comparison File",
+                    {:type => :button, :id => 'btn_remove_transcript_sample_cmp'}) %>
+      </div>
+    </td>
+  </tr>
+</table>
 <br/>
 <br/>
 <%= u.label :has_gene_diff_exp, 
                 'Do you have gene (component) different expression tests?' %>
 <%= u.check_box :has_gene_diff_exp %>
-<div class="sub-section rounded-corners" id="gene_section">
-  <div class="sub-section-heading">
-    Genes
-  </div>
-  <div class="sub-section rounded-corners">
-    <%= u.label(:gene_fpkm_file, 'Gene FPKM File') %>
-    <%= help_tip(:gene_fpkm) %>
-    <%= u.file_field :gene_fpkm_file %>
-  </div>
-  <table class="rounded-corners" style="background-color:white">
-    <caption style="font-weight:bold">
-      <%= u.label(:gene_diff_exp_files, 
-          'Differential Expression Sample Comparisons') %>
-      <%= help_tip(:gene_sample_cmp) %>
-    </caption>
-    <thead>
-      <tr>
-        <th style="text-align:left">File</th>
-        <th><%= u.label(:gene_diff_exp_sample_1_names, 'Sample 1 Name') %></th>
-        <th><%= u.label(:gene_diff_exp_sample_2_names, 'Sample 2 Name') %></th>
-      </tr>
-    </thead>
-    <tbody id="gene_sample_comparisons_div">
-      
-    </tbody>
-  </table>
-  <br/>
-  <%= button_tag("Add Another Sample Comparison",
-                {:type => :button, :id => 'btn_add_gene_sample_cmp'}) %>
-  <%= button_tag("Remove a Sample Comparison",
-                {:type => :button, :id => 'btn_remove_gene_sample_cmp'}) %>
-</div>
+<table class="sub-section rounded-corners" id="gene_section">
+  <tr>
+    <th class="sub-section-heading" style="padding-top:0px;padding-right:40px">
+      Genes (Optional) 
+    </th>
+    <td>
+      <%= u.label(:gene_fpkm_file, 'Gene FPKM File') %>
+      <%= help_tip(:gene_fpkm) %>
+      <%= u.file_field :gene_fpkm_file %>
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>
+      <table class="rounded-corners" style="background-color:white">
+        <caption style="text-align:left;font-weight:bold">
+          <%= u.label(:gene_diff_exp_files, 
+              'Differential Expression Sample Comparison Files') %>
+          <%= help_tip(:gene_sample_cmp) %>
+        </caption>
+        <thead>
+          <tr>
+            <th style="font-weight:normal;text-align:left;">File</th>
+            <th style="font-weight:normal">
+              <%= u.label(:gene_diff_exp_sample_1_names, 'Sample 1 Name') %>
+            </th>
+            <th style="font-weight:normal">
+              <%= u.label(:gene_diff_exp_sample_2_names, 'Sample 2 Name') %>
+            </th>
+          </tr>
+        </thead>
+        <tbody id="gene_sample_comparisons_div">
+          
+        </tbody>
+      </table>
+      <br/>
+      <div>
+        <%= button_tag("Add Another Sample Comparison File",
+                      {:type => :button, :id => 'btn_add_gene_sample_cmp'}) %>
+        <%= button_tag("Remove a Sample Comparison File",
+                      {:type => :button, :id => 'btn_remove_gene_sample_cmp'}) %>
+      </div>
+    </td>
+</table>
 <p><%= submit_tag('Upload files', :disable_with => 'Uploading...') %></p>
 <% end %>
 

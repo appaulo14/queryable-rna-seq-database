@@ -39,7 +39,8 @@ body {
 
 #content {
 /*    background: rgb(190,146,226);*/
-    background-color:rgb(211,184,239);
+/*    background-color:rgb(211,184,239);*/
+  background-color:rgb(241,230,242);
     -moz-border-radius:    10px;
     -webkit-border-radius: 10px;
     border-radius:         10px;
@@ -53,10 +54,6 @@ body {
     vertical-align:10%;
     padding:5px;
     font-size: 50pt;
-}
-
-#query_results_table {
-  font-family:monospace;
 }
 
 header {
@@ -126,7 +123,7 @@ nav {
   vertical-align: bottom;
   display:inline-block;
   text-align:center;
-  font-size: 1.2em;
+  font-size: 20px;
 }
 
 nav ul {
@@ -199,7 +196,8 @@ nav a{
 
 .sub-section {
 /*     background-color:rgb(211,184,239)*/
-  background-color:rgb(241,230,242)
+/*  background-color:rgb(241,230,242)*/
+  background-color: white;
 }
 
 .sub-section-heading{

@@ -2,7 +2,7 @@
 <script type='text/javascript' src='query_diff_exp_transcripts.js' ></script>
 <%= form_for(@qdet, :url => 'query_diff_exp_transcripts') do |qdet| %>
   <h1>Query Transcript Differential Expression Tests
-    <%= help_tip(:query_diff_exp_genes) %>
+    <%= help_tip(:query_diff_exp_transcripts) %>
   </h1>
   <p>
     <%= qdet.label :dataset_id, "Dataset to query" %>
@@ -81,7 +81,7 @@
               <table>
                 <tr>
                   <td>Transcript</td>
-                  <td class="sort-arrow-td"><%= neutral_sort_arrow %></td>
+                  <td class="sort-arrow-td"></td>
                 </tr>
               </table>
             </th>
@@ -89,7 +89,7 @@
               <table>
                 <tr>
                   <td>Associated Gene</td>
-                  <td class="sort-arrow-td"><%= neutral_sort_arrow %></td>
+                  <td class="sort-arrow-td"></td>
                 </tr>
               </table>
             </th>
@@ -99,7 +99,7 @@
                 <table>
                   <tr>
                     <td>Test Statistic</td>
-                    <td class="sort-arrow-td"><%= neutral_sort_arrow %></td>
+                    <td class="sort-arrow-td"></td>
                   </tr>
                 </table>
               </th>
@@ -108,7 +108,7 @@
               <table>
                 <tr>
                   <td>P-Value</td>
-                  <td class="sort-arrow-td"><%= neutral_sort_arrow %></td>
+                  <td class="sort-arrow-td"></td>
                 </tr>
               </table>
             </th>
@@ -116,7 +116,7 @@
               <table>
                 <tr>
                   <td>FDR</td>
-                  <td class="sort-arrow-td"><%= neutral_sort_arrow %></td>
+                  <td class="sort-arrow-td"></td>
                 </tr>
               </table>
             </th>
@@ -124,7 +124,7 @@
               <table>
                 <tr>
                   <td><%= @qdet.sample_1_name %> FPKM</td>
-                  <td class="sort-arrow-td"><%= neutral_sort_arrow %></td>
+                  <td class="sort-arrow-td"></td>
                 </tr>
               </table>
             </th>
@@ -132,7 +132,7 @@
               <table>
                 <tr>
                   <td><%= @qdet.sample_2_name %> FPKM</td>
-                  <td class="sort-arrow-td"><%= neutral_sort_arrow %></td>
+                  <td class="sort-arrow-td"></td>
                 </tr>
               </table>
             </th>
@@ -140,7 +140,7 @@
               <table>
                 <tr>
                   <td>Log Fold Change</td>
-                  <td class="sort-arrow-td"><%= neutral_sort_arrow %></td>
+                  <td class="sort-arrow-td"></td>
                 </tr>
               </table>
             </th>
@@ -149,7 +149,7 @@
                 <table>
                   <tr>
                     <td>Test Status</td>
-                    <td class="sort-arrow-td"><%= neutral_sort_arrow %></td>
+                    <td class="sort-arrow-td"></td>
                   </tr>
                 </table>
               </th>

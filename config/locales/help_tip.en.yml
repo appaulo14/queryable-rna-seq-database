@@ -100,8 +100,10 @@ en:
             more_info_link: https://github.com/fatPerlHacker/queryable-rna-seq-database/wiki/Step-2:-Uploading-Data#option-2-trinity-with-edger
           trinity_fasta:
             title: Trinity.fasta file
-            message: In your Trinity output directory there should be a file
-                     of fasta sequences called Trinity.fasta.
+            message: <p>In your Trinity output directory there should be a file
+                     of fasta sequences called Trinity.fasta.</p>
+                     <p>Trinity.fasta contains the fasta sequences for your 
+                     assembled transcripts.</p>
             more_info_link: ""
           transcripts_sample_cmp:
             title: Transcript Sample Comparison Files

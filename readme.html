@@ -1,0 +1,640 @@
+  
+
+
+<!DOCTYPE html>
+<html>
+  <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# githubog: http://ogp.me/ns/fb/githubog#">
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Step 1: See If the Queryable RNA Seq Database Is Right For You · fatPerlHacker/queryable-rna-seq-database Wiki</title>
+    <link rel="search" type="application/opensearchdescription+xml" href="/opensearch.xml" title="GitHub" />
+    <link rel="fluid-icon" href="https://github.com/fluidicon.png" title="GitHub" />
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-114.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-144.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144.png" />
+    <link rel="logo" type="image/svg" href="http://github-media-downloads.s3.amazonaws.com/github-logo.svg" />
+    <link rel="xhr-socket" href="/_sockets">
+    <meta name="msapplication-TileImage" content="/windows-tile.png">
+    <meta name="msapplication-TileColor" content="#ffffff">
+
+    
+    
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+
+    <meta content="authenticity_token" name="csrf-param" />
+<meta content="TOt75hsDnYQn6nqh8GrKhz0UmWWbl/YIMvThUEUwqAs=" name="csrf-token" />
+
+    <link href="https://a248.e.akamai.net/assets.github.com/assets/github-ba9334f20ce3c230182573735217c391db5f0d28.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="https://a248.e.akamai.net/assets.github.com/assets/github2-f0f30526f0f97f3b8305a871ece055ff80f65878.css" media="all" rel="stylesheet" type="text/css" />
+    
+
+
+      <script src="https://a248.e.akamai.net/assets.github.com/assets/frameworks-010d500708696b4ecee44478b5229d626367e844.js" type="text/javascript"></script>
+      <script src="https://a248.e.akamai.net/assets.github.com/assets/github-3650b119e8cb8e869962cc12cf15570bac2a8847.js" type="text/javascript"></script>
+      
+      <meta http-equiv="x-pjax-version" content="93043389b7957fb779950962f0003882">
+
+        <script src="https://a248.e.akamai.net/assets.github.com/assets/wiki-3a54d8181aabeedaf82e23ce5ff084f85a323b9d.js" type="text/javascript"></script>
+    <meta property="og:title" content="queryable-rna-seq-database"/>
+    <meta property="og:type" content="githubog:gitrepository"/>
+    <meta property="og:url" content="https://github.com/fatPerlHacker/queryable-rna-seq-database"/>
+    <meta property="og:image" content="https://secure.gravatar.com/avatar/0a92b66b0f98167bf554efb42aef34b4?s=420&amp;d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png"/>
+    <meta property="og:site_name" content="GitHub"/>
+    <meta property="og:description" content="queryable-rna-seq-database - Formally known as the Queryable RNA-Seq Database, this system is designed to simplify the process of RNA-seq analysis by providing the ability upload the result data from RNA-Seq analysis into a database, store it, and query it in many different ways. "/>
+    <meta property="twitter:card" content="summary"/>
+    <meta property="twitter:site" content="@GitHub">
+    <meta property="twitter:title" content="fatPerlHacker/queryable-rna-seq-database"/>
+
+    <meta name="description" content="queryable-rna-seq-database - Formally known as the Queryable RNA-Seq Database, this system is designed to simplify the process of RNA-seq analysis by providing the ability upload the result data from RNA-Seq analysis into a database, store it, and query it in many different ways. " />
+
+  <link href="https://github.com/fatPerlHacker/queryable-rna-seq-database/commits/master.atom" rel="alternate" title="Recent Commits to queryable-rna-seq-database:master" type="application/atom+xml" />
+
+  </head>
+
+
+  <body class="logged_in  linux vis-public env-production  ">
+    <div id="wrapper">
+
+      
+
+      
+      
+      
+
+      <div class="header header-logged-in true">
+  <div class="container clearfix">
+
+    <a class="header-logo-blacktocat" href="https://github.com/">
+  <span class="mega-icon mega-icon-blacktocat"></span>
+</a>
+
+    <div class="divider-vertical"></div>
+
+      <a href="/notifications" class="notification-indicator tooltipped downwards" title="You have no unread notifications">
+    <span class="mail-status all-read"></span>
+  </a>
+  <div class="divider-vertical"></div>
+
+
+      <div class="command-bar js-command-bar  ">
+            <form accept-charset="UTF-8" action="/search" class="command-bar-form" id="top_search_form" method="get">
+  <a href="/search/advanced" class="advanced-search-icon tooltipped downwards command-bar-search" id="advanced_search" title="Advanced search"><span class="mini-icon mini-icon-advanced-search "></span></a>
+
+  <input type="text" data-hotkey="/ s" name="q" id="js-command-bar-field" placeholder="Search or type a command" tabindex="1" data-username="fatPerlHacker" autocapitalize="off">
+
+  <span class="mini-icon help tooltipped downwards" title="Show command bar help">
+    <span class="mini-icon mini-icon-help"></span>
+  </span>
+
+  <input type="hidden" name="ref" value="cmdform">
+
+    <input type="hidden" class="js-repository-name-with-owner" value="fatPerlHacker/queryable-rna-seq-database"/>
+    <input type="hidden" class="js-repository-branch" value="master"/>
+    <input type="hidden" class="js-repository-tree-sha" value="93d9a3a1bc582b71bb8abd8ae09b7372959b594b"/>
+
+  <div class="divider-vertical"></div>
+</form>
+        <ul class="top-nav">
+            <li class="explore"><a href="https://github.com/explore">Explore</a></li>
+            <li><a href="https://gist.github.com">Gist</a></li>
+            <li><a href="/blog">Blog</a></li>
+          <li><a href="http://help.github.com">Help</a></li>
+        </ul>
+      </div>
+
+    
+
+  
+    <ul id="user-links">
+      <li>
+        <a href="https://github.com/fatPerlHacker" class="name">
+          <img height="20" src="https://secure.gravatar.com/avatar/0a92b66b0f98167bf554efb42aef34b4?s=140&amp;d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png" width="20" /> fatPerlHacker
+        </a>
+      </li>
+      <li>
+        <a href="/new" id="new_repo" class="tooltipped downwards" title="Create a new repo">
+          <span class="mini-icon mini-icon-create"></span>
+        </a>
+      </li>
+      <li>
+        <a href="/settings/profile" id="account_settings"
+          class="tooltipped downwards"
+          title="Account settings ">
+          <span class="mini-icon mini-icon-account-settings"></span>
+        </a>
+      </li>
+      <li>
+        <a href="/logout" data-method="post" id="logout" class="tooltipped downwards" title="Sign out">
+          <span class="mini-icon mini-icon-logout"></span>
+        </a>
+      </li>
+    </ul>
+
+
+
+    
+  </div>
+</div>
+
+      
+
+      
+
+      
+
+
+            <div class="site hfeed" itemscope itemtype="http://schema.org/WebPage">
+      <div class="hentry">
+        
+        <div class="pagehead repohead instapaper_ignore readability-menu ">
+          <div class="container">
+            <div class="title-actions-bar">
+              
+
+
+<ul class="pagehead-actions">
+
+    <li class="nspr">
+      <a href="/fatPerlHacker/queryable-rna-seq-database/pull/new/master" class="button minibutton btn-pull-request" icon_class="mini-icon-pull-request"><span class="mini-icon mini-icon-pull-request"></span>Pull Request</a>
+    </li>
+
+    <li class="subscription">
+      <form accept-charset="UTF-8" action="/notifications/subscribe" data-autosubmit="true" data-remote="true" method="post"><div style="margin:0;padding:0;display:inline"><input name="authenticity_token" type="hidden" value="TOt75hsDnYQn6nqh8GrKhz0UmWWbl/YIMvThUEUwqAs=" /></div>  <input id="repository_id" name="repository_id" type="hidden" value="5759726" />
+
+    <div class="select-menu js-menu-container js-select-menu">
+      <span class="minibutton select-menu-button js-menu-target">
+        <span class="js-select-button">
+          <span class="mini-icon mini-icon-unwatch"></span>
+          Unwatch
+        </span>
+      </span>
+
+      <div class="select-menu-modal-holder js-menu-content">
+        <div class="select-menu-modal">
+          <div class="select-menu-header">
+            <span class="select-menu-title">Notification status</span>
+            <span class="mini-icon mini-icon-remove-close js-menu-close"></span>
+          </div> <!-- /.select-menu-header -->
+
+          <div class="select-menu-list js-navigation-container">
+
+            <div class="select-menu-item js-navigation-item js-navigation-target ">
+              <span class="select-menu-item-icon mini-icon mini-icon-confirm"></span>
+              <div class="select-menu-item-text">
+                <input id="do_included" name="do" type="radio" value="included" />
+                <h4>Not watching</h4>
+                <span class="description">You only receive notifications for discussions in which you participate or are @mentioned.</span>
+                <span class="js-select-button-text hidden-select-button-text">
+                  <span class="mini-icon mini-icon-watching"></span>
+                  Watch
+                </span>
+              </div>
+            </div> <!-- /.select-menu-item -->
+
+            <div class="select-menu-item js-navigation-item js-navigation-target selected">
+              <span class="select-menu-item-icon mini-icon mini-icon-confirm"></span>
+              <div class="select-menu-item-text">
+                <input checked="checked" id="do_subscribed" name="do" type="radio" value="subscribed" />
+                <h4>Watching</h4>
+                <span class="description">You receive notifications for all discussions in this repository.</span>
+                <span class="js-select-button-text hidden-select-button-text">
+                  <span class="mini-icon mini-icon-unwatch"></span>
+                  Unwatch
+                </span>
+              </div>
+            </div> <!-- /.select-menu-item -->
+
+            <div class="select-menu-item js-navigation-item js-navigation-target ">
+              <span class="select-menu-item-icon mini-icon mini-icon-confirm"></span>
+              <div class="select-menu-item-text">
+                <input id="do_ignore" name="do" type="radio" value="ignore" />
+                <h4>Ignoring</h4>
+                <span class="description">You do not receive any notifications for discussions in this repository.</span>
+                <span class="js-select-button-text hidden-select-button-text">
+                  <span class="mini-icon mini-icon-mute"></span>
+                  Stop ignoring
+                </span>
+              </div>
+            </div> <!-- /.select-menu-item -->
+
+          </div> <!-- /.select-menu-list -->
+
+        </div> <!-- /.select-menu-modal -->
+      </div> <!-- /.select-menu-modal-holder -->
+    </div> <!-- /.select-menu -->
+
+</form>
+    </li>
+
+    <li class="js-toggler-container js-social-container starring-container on">
+      <a href="/fatPerlHacker/queryable-rna-seq-database/unstar" class="minibutton js-toggler-target star-button starred upwards" title="Unstar this repo" data-remote="true" data-method="post" rel="nofollow">
+        <span class="mini-icon mini-icon-remove-star"></span>
+        <span class="text">Unstar</span>
+      </a>
+      <a href="/fatPerlHacker/queryable-rna-seq-database/star" class="minibutton js-toggler-target star-button unstarred upwards" title="Star this repo" data-remote="true" data-method="post" rel="nofollow">
+        <span class="mini-icon mini-icon-star"></span>
+        <span class="text">Star</span>
+      </a>
+      <a class="social-count js-social-count" href="/fatPerlHacker/queryable-rna-seq-database/stargazers">1</a>
+    </li>
+
+        <li>
+          <a href="/fatPerlHacker/queryable-rna-seq-database/fork_select" class="minibutton js-toggler-target fork-button lighter upwards" title="Fork this repo" rel="facebox nofollow">
+            <span class="mini-icon mini-icon-branch-create"></span>
+            <span class="text">Fork</span>
+          </a>
+          <a href="/fatPerlHacker/queryable-rna-seq-database/network" class="social-count">0</a>
+        </li>
+
+
+</ul>
+
+              <h1 itemscope itemtype="http://data-vocabulary.org/Breadcrumb" class="entry-title public">
+                <span class="repo-label"><span>public</span></span>
+                <span class="mega-icon mega-icon-public-repo"></span>
+                <span class="author vcard">
+                  <a href="/fatPerlHacker" class="url fn" itemprop="url" rel="author">
+                  <span itemprop="title">fatPerlHacker</span>
+                  </a></span> /
+                <strong><a href="/fatPerlHacker/queryable-rna-seq-database" class="js-current-repository">queryable-rna-seq-database</a></strong>
+              </h1>
+            </div>
+
+            
+  <ul class="tabs">
+    <li><a href="/fatPerlHacker/queryable-rna-seq-database" highlight="repo_source repo_downloads repo_commits repo_tags repo_branches">Code</a></li>
+    <li><a href="/fatPerlHacker/queryable-rna-seq-database/network" highlight="repo_network">Network</a></li>
+    <li><a href="/fatPerlHacker/queryable-rna-seq-database/pulls" highlight="repo_pulls">Pull Requests <span class='counter'>0</span></a></li>
+
+      <li><a href="/fatPerlHacker/queryable-rna-seq-database/issues" highlight="repo_issues">Issues <span class='counter'>0</span></a></li>
+
+      <li><a href="/fatPerlHacker/queryable-rna-seq-database/wiki" class="selected" highlight="repo_wiki">Wiki</a></li>
+
+
+    <li><a href="/fatPerlHacker/queryable-rna-seq-database/graphs" highlight="repo_graphs repo_contributors">Graphs</a></li>
+
+      <li>
+        <a href="/fatPerlHacker/queryable-rna-seq-database/settings">Settings</a>
+      </li>
+
+  </ul>
+  
+  
+  
+  <div class="tabnav">
+  <ul class="tabnav-tabs">
+    <li><a href="/fatPerlHacker/queryable-rna-seq-database/wiki" class="tabnav-tab">Home</a></li>
+    <li><a href="/fatPerlHacker/queryable-rna-seq-database/wiki/_pages" class="tabnav-tab">Pages</a></li>
+    <li><a href="/fatPerlHacker/queryable-rna-seq-database/wiki/_history" class="tabnav-tab">Wiki History</a></li>
+    <li><a href="/fatPerlHacker/queryable-rna-seq-database/wiki/_access" class="tabnav-tab">Git Access</a></li>
+  </ul>
+</div>
+
+
+
+            
+          </div>
+        </div><!-- /.repohead -->
+
+        <div id="js-repo-pjax-container" class="container context-loader-container" data-pjax-container>
+          
+
+
+<div id="wiki-wrapper" class="page">
+<div id="head">
+  <ul class="wiki-actions readability-extra">
+    <li class="gollum-minibutton" class="jaws">
+      <a href="/fatPerlHacker/queryable-rna-seq-database/wiki/_new" class="button minibutton bigger js-new-wiki-page">New Page</a>
+    </li>
+    <li class="gollum-minibutton"><a href="/fatPerlHacker/queryable-rna-seq-database/wiki/Step-1%3A-See-If-the-Queryable-RNA-Seq-Database-Is-Right-For-You/_edit"
+       class="minibutton bigger action-edit-page">
+       Edit Page
+     </a></li>
+    <li class="gollum-minibutton"><a href="/fatPerlHacker/queryable-rna-seq-database/wiki/Step-1:-See-If-the-Queryable-RNA-Seq-Database-Is-Right-For-You/_history"
+       class="minibutton bigger action-page-history">
+       Page History
+     </a></li>
+  </ul>
+  <h1 class="instapaper_title">Step 1: See If the Queryable RNA Seq Database Is Right For You</h1>
+</div>
+<div id="wiki-content">
+  <div class="wrap">
+  <div id="wiki-body" class="gollum-markdown-content instapaper_body">
+    <div class="markdown-body">
+      <h1>
+<a name="table-of-contents" class="anchor" href="#table-of-contents"><span class="mini-icon mini-icon-link"></span></a>Table of Contents</h1>
+
+<h1>
+<a name="table-of-contents-1" class="anchor" href="#table-of-contents-1"><span class="mini-icon mini-icon-link"></span></a>Table of Contents</h1>
+
+<ol>
+<li><a href="#wiki-purpose">Purpose</a></li>
+<li><a href="#wiki-overview">Overview</a></li>
+<li><a href="#wiki-goals">Goals</a></li>
+<li>
+<a href="#wiki-features">Features</a>
+
+<ol>
+<li><a href="#wiki-helpful-tips-integrated-with-the-user-manual">Helpful Tips Integrated With the User Manual</a></li>
+<li><a href="#wiki-go-terms-are-automatically-found-for-uploaded-data">Gene Ontology (GO) Terms Automatically Found For Uploaded Data</a></li>
+<li>
+<a href="#wiki-upload-from-multiple-differential-programs">Upload From Multiple Different Programs</a>
+
+<ol>
+<li><a href="#wiki-cuffdiff">Cuffdiff</a></li>
+<li><a href="#wiki-trinity-with-edger">Trinity with EdgeR</a></li>
+<li><a href="#wiki-generic-nucleotide-fasta-sequences">Generic Nucleotide Fasta Sequences</a></li>
+</ol>
+</li>
+<li>
+<a href="#wiki-query-your-data">Query Your Data</a>
+
+<ol>
+<li><a href="#wiki-query-features">Query Features</a></li>
+<li><a href="#wiki-query-your-transcript-differential-expression-tests">Query Your Transcript Differential Expression Tests</a></li>
+<li><a href="#wiki-query-your-gene-differential-expression-tests">Query Your Gene Differential Expression Tests</a></li>
+<li><a href="#wiki-query-your-transcript-isoforms-cuffdiff-only">Query Your Transcript Isoforms (Cuffdiff Only)</a></li>
+</ol>
+</li>
+<li><a href="#wiki-blast-a-blast-database-of-your-sequences">Blast a Blast Database of Your Sequences</a></li>
+</ol>
+</li>
+<li><a href="#wiki-step-2-requesting-an-account">Step 2: Requesting An Account</a></li>
+</ol><h1>
+<a name="purpose" class="anchor" href="#purpose"><span class="mini-icon mini-icon-link"></span></a>
+<a id="wiki-purpose"></a>Purpose</h1>
+
+<p>Formally known as the Queryable RNA-Seq Database, this system is designed to simplify the process of RNA-seq analysis by providing the ability upload the result data from RNA-Seq analysis into a database, store it, and query it in many different ways. </p>
+
+<h1>
+<a name="overview" class="anchor" href="#overview"><span class="mini-icon mini-icon-link"></span></a>
+<a id="wiki-overview"></a>Overview</h1>
+
+<p>The purpose of the system is to automate and simplify as much as possible the process of analyzing RNA-Seq results data by storing it in a database and providing many options for querying it.
+<img src="https://raw.github.com/fatPerlHacker/queryable-rna-seq-database/master/wiki_images/overview_of_the_system.png" alt="Overview of the sytem"></p>
+
+<h1>
+<a name="goals" class="anchor" href="#goals"><span class="mini-icon mini-icon-link"></span></a>
+<a id="wiki-goals"></a>Goals</h1>
+
+<ul>
+<li>
+<strong>Goal 1:</strong> Provide a system through which Biologists can analyze their RNA-Seq results data, specifically differential expression tests, novel transcript discoveries, and assembled transcripts. </li>
+<li>
+<strong>Goal 2:</strong> The system should allow the user to get meaningful results with minimal learning time. For this goal to be satisfied, two senior Biologists familiar with RNA-seq must approve the system.</li>
+</ul><h1>
+<a name="features" class="anchor" href="#features"><span class="mini-icon mini-icon-link"></span></a>
+<a id="wiki-features"></a>Features</h1>
+
+<h2>
+<a name="helpful-tips-integrated-with-the-user-manual" class="anchor" href="#helpful-tips-integrated-with-the-user-manual"><span class="mini-icon mini-icon-link"></span></a>
+<a id="wiki-helpful-tips-integrated-with-the-user-manual"></a>Helpful Tips Integrated With the User Manual</h2>
+
+<p>To reduce the learning curve, helpful tips and links to relevant sections of the user manual and other external websites with important information such as the Cufflinks manual are distributed throughout the Queryable RNA-Seq Database.
+<img src="https://raw.github.com/fatPerlHacker/queryable-rna-seq-database/master/wiki_images/helpful_information.png" alt="Page filled with helpful information"></p>
+
+<h2>
+<a name="go-terms-are-automatically-found-for-uploaded-data" class="anchor" href="#go-terms-are-automatically-found-for-uploaded-data"><span class="mini-icon mini-icon-link"></span></a>GO Terms Are Automatically Found For Uploaded Data</h2>
+
+<p>When you upload your data, the Queryable RNA-Seq Database automatically runs <a href="http://www.blast2go.com/b2ghome/about-blast2go">blast2go</a> to find all of the <a href="http://www.geneontology.org/GO.doc.shtml">Gene Ontology</a> (GO) terms for your transcripts. They can then be view on the query differentially expressed transcripts, querying differentially expressed genes, or query transcript isoforms page.</p>
+
+<h2>
+<a name="upload-from-multiple-differential-programs" class="anchor" href="#upload-from-multiple-differential-programs"><span class="mini-icon mini-icon-link"></span></a>
+<a id="wiki-go-terms-are-automatically-found-for-uploaded-data"></a>Upload from Multiple Differential Programs</h2>
+
+<h3>
+<a name="cuffdiff" class="anchor" href="#cuffdiff"><span class="mini-icon mini-icon-link"></span></a>
+<a id="wiki-cuffdiff"></a>Cuffdiff</h3>
+
+<p>If you have data produced by Cuffdiff, the differential expression tests, novel transcript classifications, and transcript fasta sequences can be uploaded for querying and blasting.
+<img src="https://raw.github.com/fatPerlHacker/queryable-rna-seq-database/master/wiki_images/upload_cuffdiff.png" alt="Upload Cuffdiff Page"></p>
+
+<h3>
+<a name="trinity-with-edger" class="anchor" href="#trinity-with-edger"><span class="mini-icon mini-icon-link"></span></a>
+<a id="wiki-trinity-with-edger"></a>Trinity with EdgeR</h3>
+
+<p>If you have differential expression tests from Trinity with EdgeR, you can upload your transcript fasta sequences, transcript differential expression tests, and even gene differential expression tests if available.
+<img src="https://raw.github.com/fatPerlHacker/queryable-rna-seq-database/master/wiki_images/upload_trinity_with_edger.png" alt="Upload Trinity With EdgeR"></p>
+
+<h3>
+<a name="generic-nucleotide-fasta-sequences" class="anchor" href="#generic-nucleotide-fasta-sequences"><span class="mini-icon mini-icon-link"></span></a>
+<a id="wiki-generic-nucleotide-fasta-sequences"></a>"Generic Nucleotide Fasta Sequences</h3>
+
+<p>If you just want a Nucleotide Blast database to use to compare sequences, you can upload a nucleotide <a href="/fatPerlHacker/queryable-rna-seq-database/wiki/Glossary#wiki-fasta-format">fasta</a> sequence file from any program and a Blast database will automatically be created for it. 
+<img src="https://raw.github.com/fatPerlHacker/queryable-rna-seq-database/master/wiki_images/upload_fasta_sequences.png" alt="Upload Fasta Sequences Page"></p>
+
+<h2>
+<a name="query-your-data" class="anchor" href="#query-your-data"><span class="mini-icon mini-icon-link"></span></a>
+<a id="wiki-query-your-data"></a>Query Your Data</h2>
+
+<h3>
+<a name="query-features" class="anchor" href="#query-features"><span class="mini-icon mini-icon-link"></span></a>
+<a id="wiki-query-features"></a>Query Features</h3>
+
+<h6>
+<a name="sort-the-results-table" class="anchor" href="#sort-the-results-table"><span class="mini-icon mini-icon-link"></span></a>
+<a id="wiki-sort-the-results-table"></a>Sort The Results Table</h6>
+
+<p>By clicking on the green arrows in the header of each table column, the table can be sorted in either ascending or descending order.</p>
+
+<table>
+<caption align="bottom">A Table Sorted in Ascending Order By Transcript</caption>
+<tr><td><img src="https://raw.github.com/fatPerlHacker/queryable-rna-seq-database/master/wiki_images/ascending_sort.png" alt="A Table Sorted in Ascending Order By Transcript"></td></tr>
+</table><table>
+<caption align="bottom">A Table Sorted in Descending Order By Transcript</caption>
+<tr><td><img src="https://raw.github.com/fatPerlHacker/queryable-rna-seq-database/master/wiki_images/descending_sort.png" alt="A Table Sorted in Descending Order By Transcript"></td></tr>
+</table><h6>
+<a name="download-your-results-as-a-text-file" class="anchor" href="#download-your-results-as-a-text-file"><span class="mini-icon mini-icon-link"></span></a>Download Your Results as A Text File</h6>
+
+<p>Click the "Save to Disk" button to save your results table to a text file. The sorting order will be preserved. Flash is required for this feature to work.<br><img src="https://raw.github.com/fatPerlHacker/queryable-rna-seq-database/master/wiki_images/save_to_disk.png" alt="Download your results as a text file"></p>
+
+<h6>
+<a name="view-the-fasta-sequence-for-a-transcript" class="anchor" href="#view-the-fasta-sequence-for-a-transcript"><span class="mini-icon mini-icon-link"></span></a>View The Fasta Sequence For A Transcript</h6>
+
+<p>To view the fasta sequence for a transcript, simply click on it. 
+<img src="https://raw.github.com/fatPerlHacker/queryable-rna-seq-database/master/wiki_images/view_transcript_fasta.png" alt="How to view the fasta sequence for a transcript"></p>
+
+<h6>
+<a name="view-transcript-fasta-sequence-associated-with-a-gene" class="anchor" href="#view-transcript-fasta-sequence-associated-with-a-gene"><span class="mini-icon mini-icon-link"></span></a>View Transcript Fasta Sequence Associated With a Gene</h6>
+
+<p>To view the transcript fasta sequences for the transcripts associated with a gene, click on that gene.
+<img src="https://raw.github.com/fatPerlHacker/queryable-rna-seq-database/master/wiki_images/view_gene_fastas.png" alt="How to view the fasta sequences for a gene"></p>
+
+<h6>
+<a name="view-gene-ontology-go-term-information" class="anchor" href="#view-gene-ontology-go-term-information"><span class="mini-icon mini-icon-link"></span></a>View Gene Ontology (GO) Term Information</h6>
+
+<p>Clicking on a GO Term will take you to the Gene Ontology web site's entry for that GO term. 
+<img src="https://raw.github.com/fatPerlHacker/queryable-rna-seq-database/master/wiki_images/view_go_terms.png" alt="How to go to the Gene Ontology web site for a GO Term"></p>
+
+<h3>
+<a name="query-your-transcript-differential-expression-tests" class="anchor" href="#query-your-transcript-differential-expression-tests"><span class="mini-icon mini-icon-link"></span></a>
+<a id="wiki-query-your-transcript-differential-expression-tests"></a>Query Your Transcript Differential Expression Tests</h3>
+
+<p>View differential expression tests for your transcripts. You can select the dataset and the two samples you want to see the differential expression tests for. You can also filter the query in various to only see certain results. The query can be filtered by Gene Ontology (GO) Terms, GO IDs, and transcript name. The results are displayed in a sortable and downloadable table. </p>
+
+<h3>
+<a name="query-your-gene-differential-expression-tests" class="anchor" href="#query-your-gene-differential-expression-tests"><span class="mini-icon mini-icon-link"></span></a>
+<a id="wiki-query-your-gene-differential-expression-tests"></a>Query Your Gene Differential Expression Tests</h3>
+
+<p>View differential expression tests for your genes. You can select the dataset and the two samples you want to see the differential expression tests for. You can also filter the query in various to only see certain results. The query can be filtered by Gene Ontology (GO) Terms, GO IDs, and transcript name. The results are displayed in a sortable and downloadable table. </p>
+
+<h3>
+<a name="query-your-transcript-isoforms-cuffdiff-only" class="anchor" href="#query-your-transcript-isoforms-cuffdiff-only"><span class="mini-icon mini-icon-link"></span></a>
+<a id="wiki-query-your-transcript-isoforms-cuffdiff-only"></a>Query Your Transcript Isoforms (Cuffdiff Only)</h3>
+
+<p>View if you dataset has any novel transcript isoforms or other interesting transcript classifications. This page also lets you view the FPKM information for the selected sample. You can also filter the query in various to only see certain results. The query can be filtered by Gene Ontology (GO) Terms, GO IDs, and transcript name. The results are displayed in a sortable and downloadable table. </p>
+
+<h2>
+<a name="blast-a-blast-database-of-your-sequences" class="anchor" href="#blast-a-blast-database-of-your-sequences"><span class="mini-icon mini-icon-link"></span></a>
+<a id="wiki-blast-a-blast-database-of-your-sequences"></a>Blast a Blast Database of Your Sequences</h2>
+
+<p>The Queryable RNA-Seq Database allows you to query your data using the Megablast program of Blastn, using TBlastn, or using TBlastx. These blast query pages have a large subset of the features and algorithm settings available on the <a href="http://blast.ncbi.nlm.nih.gov/Blast.cgi?PROGRAM=blastn&amp;BLAST_PROGRAMS=megaBlast&amp;PAGE_TYPE=BlastSearch&amp;SHOW_DEFAULTS=on&amp;BLAST_SPEC=&amp;LINK_LOC=blasttab">Blastn page</a>, <a href="http://blast.ncbi.nlm.nih.gov/Blast.cgi?PROGRAM=tblastn&amp;BLAST_PROGRAMS=tblastn&amp;PAGE_TYPE=BlastSearch&amp;SHOW_DEFAULTS=on&amp;BLAST_SPEC=&amp;LINK_LOC=blasttab&amp;LAST_PAGE=blastn">TBlastn page</a>, and <a href="http://blast.ncbi.nlm.nih.gov/Blast.cgi?PROGRAM=tblastx&amp;BLAST_PROGRAMS=tblastx&amp;PAGE_TYPE=BlastSearch&amp;SHOW_DEFAULTS=on&amp;LINK_LOC=blasthome">TBlastx page</a> respectively of the NCBI Blast website.</p>
+
+<h3>
+<a name="megablast-blastn-page" class="anchor" href="#megablast-blastn-page"><span class="mini-icon mini-icon-link"></span></a>(Megablast) Blastn Page</h3>
+
+<p><img src="https://raw.github.com/fatPerlHacker/queryable-rna-seq-database/master/wiki_images/blastn.png" alt="The blastn program"><img src="https://raw.github.com/fatPerlHacker/queryable-rna-seq-database/master/wiki_images/blastn_algorithm_settings.png" alt="Blastn's algoritmh settings"></p>
+
+<h3>
+<a name="tblastn-page" class="anchor" href="#tblastn-page"><span class="mini-icon mini-icon-link"></span></a>TBlastn Page</h3>
+
+<p><img src="https://raw.github.com/fatPerlHacker/queryable-rna-seq-database/master/wiki_images/tblastn.png" alt="The tblastn program"><img src="https://raw.github.com/fatPerlHacker/queryable-rna-seq-database/master/wiki_images/tblastn_algorithm_settings.png" alt="TBlastn's algorithm settings"></p>
+
+<h3>
+<a name="tblastx-page" class="anchor" href="#tblastx-page"><span class="mini-icon mini-icon-link"></span></a>TBlastx Page</h3>
+
+<p><img src="https://raw.github.com/fatPerlHacker/queryable-rna-seq-database/master/wiki_images/tblastx.png" alt="The tblastx program"><img src="https://raw.github.com/fatPerlHacker/queryable-rna-seq-database/master/wiki_images/tblastx_algorithm_settings.png" alt="TBlastx's algorithm settings"></p>
+
+<h3>
+<a name="results-page-for-all-three" class="anchor" href="#results-page-for-all-three"><span class="mini-icon mini-icon-link"></span></a>Results Page For All Three</h3>
+
+<p><img src="https://raw.github.com/fatPerlHacker/queryable-rna-seq-database/master/wiki_images/blast_results_1.png" alt="The first part of the blast results page"><img src="https://raw.github.com/fatPerlHacker/queryable-rna-seq-database/master/wiki_images/blast_results_2.png" alt="The second part of the blast results page"><img src="https://raw.github.com/fatPerlHacker/queryable-rna-seq-database/master/wiki_images/blast_results_3.png" alt="The third part of the blast results page"></p>
+
+<h1>
+<a name="step-2-requesting-an-account" class="anchor" href="#step-2-requesting-an-account"><span class="mini-icon mini-icon-link"></span></a>
+<a name="wiki-step-2-requesting-an-account"></a>Step 2: Requesting An Account</h1>
+
+<p>If you decide you are interested in trying the Queryable RNA-Seq Database, then proceed to <a href="https://github.com/fatPerlHacker/queryable-rna-seq-database/wiki/Step-2:-Request-An-Account">Step 2: Requesting An Account</a>.</p>
+    </div>
+  </div>
+  </div>
+
+</div>
+<div id="gollum-footer">
+  <p id="last-edit">
+    Last edited by fatPerlHacker, <time class="js-relative-date" datetime="2013-04-11T13:29:32-07:00" title="2013-04-11 13:29:32">April 11, 2013</time>
+  </p>
+</div>
+</div>
+
+
+        </div>
+      </div>
+      <div class="context-overlay"></div>
+    </div>
+
+      <div id="footer-push"></div><!-- hack for sticky footer -->
+    </div><!-- end of wrapper - hack for sticky footer -->
+
+      <!-- footer -->
+      <div id="footer">
+  <div class="container clearfix">
+
+      <dl class="footer_nav">
+        <dt>GitHub</dt>
+        <dd><a href="https://github.com/about">About us</a></dd>
+        <dd><a href="https://github.com/blog">Blog</a></dd>
+        <dd><a href="https://github.com/contact">Contact &amp; support</a></dd>
+        <dd><a href="http://enterprise.github.com/">GitHub Enterprise</a></dd>
+        <dd><a href="http://status.github.com/">Site status</a></dd>
+      </dl>
+
+      <dl class="footer_nav">
+        <dt>Applications</dt>
+        <dd><a href="http://mac.github.com/">GitHub for Mac</a></dd>
+        <dd><a href="http://windows.github.com/">GitHub for Windows</a></dd>
+        <dd><a href="http://eclipse.github.com/">GitHub for Eclipse</a></dd>
+        <dd><a href="http://mobile.github.com/">GitHub mobile apps</a></dd>
+      </dl>
+
+      <dl class="footer_nav">
+        <dt>Services</dt>
+        <dd><a href="http://get.gaug.es/">Gauges: Web analytics</a></dd>
+        <dd><a href="http://speakerdeck.com">Speaker Deck: Presentations</a></dd>
+        <dd><a href="https://gist.github.com">Gist: Code snippets</a></dd>
+        <dd><a href="http://jobs.github.com/">Job board</a></dd>
+      </dl>
+
+      <dl class="footer_nav">
+        <dt>Documentation</dt>
+        <dd><a href="http://help.github.com/">GitHub Help</a></dd>
+        <dd><a href="http://developer.github.com/">Developer API</a></dd>
+        <dd><a href="http://github.github.com/github-flavored-markdown/">GitHub Flavored Markdown</a></dd>
+        <dd><a href="http://pages.github.com/">GitHub Pages</a></dd>
+      </dl>
+
+      <dl class="footer_nav">
+        <dt>More</dt>
+        <dd><a href="http://training.github.com/">Training</a></dd>
+        <dd><a href="https://github.com/edu">Students &amp; teachers</a></dd>
+        <dd><a href="http://shop.github.com">The Shop</a></dd>
+        <dd><a href="/plans">Plans &amp; pricing</a></dd>
+        <dd><a href="http://octodex.github.com/">The Octodex</a></dd>
+      </dl>
+
+      <hr class="footer-divider">
+
+
+    <p class="right">&copy; 2013 <span title="0.21102s from fe18.rs.github.com">GitHub</span>, Inc. All rights reserved.</p>
+    <a class="left" href="https://github.com/">
+      <span class="mega-icon mega-icon-invertocat"></span>
+    </a>
+    <ul id="legal">
+        <li><a href="https://github.com/site/terms">Terms of Service</a></li>
+        <li><a href="https://github.com/site/privacy">Privacy</a></li>
+        <li><a href="https://github.com/security">Security</a></li>
+    </ul>
+
+  </div><!-- /.container -->
+
+</div><!-- /.#footer -->
+
+
+    <div class="fullscreen-overlay js-fullscreen-overlay" id="fullscreen_overlay">
+  <div class="fullscreen-container js-fullscreen-container">
+    <div class="textarea-wrap">
+      <textarea name="fullscreen-contents" id="fullscreen-contents" class="js-fullscreen-contents" placeholder="" data-suggester="fullscreen_suggester"></textarea>
+          <div class="suggester-container">
+              <div class="suggester fullscreen-suggester js-navigation-container" id="fullscreen_suggester"
+                 data-url="/fatPerlHacker/queryable-rna-seq-database/suggestions/commit">
+              </div>
+          </div>
+    </div>
+  </div>
+  <div class="fullscreen-sidebar">
+    <a href="#" class="exit-fullscreen js-exit-fullscreen tooltipped leftwards" title="Exit Zen Mode">
+      <span class="mega-icon mega-icon-normalscreen"></span>
+    </a>
+    <a href="#" class="theme-switcher js-theme-switcher tooltipped leftwards"
+      title="Switch themes">
+      <span class="mini-icon mini-icon-brightness"></span>
+    </a>
+  </div>
+</div>
+
+
+
+    <div id="ajax-error-message" class="flash flash-error">
+      <span class="mini-icon mini-icon-exclamation"></span>
+      Something went wrong with that request. Please try again.
+      <a href="#" class="mini-icon mini-icon-remove-close ajax-error-dismiss"></a>
+    </div>
+
+    
+    
+    <span id='server_response_time' data-time='0.21164' data-host='fe18'></span>
+    
+  </body>
+</html>
+

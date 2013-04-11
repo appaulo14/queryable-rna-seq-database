@@ -9,6 +9,11 @@ jQuery(document).ready(function($) {
 function set_table_sorting(){
   var query_results_table = $('#query_results_table').stupidtable();
   query_results_table.bind('aftertablesort', aftertablesort);
+  ths = query_results_table.find('th');
+  $(ths[0]).trigger('click');
+  $(ths[1]).trigger('click');
+  $(ths[0]).trigger('click');
+//  aftertablesort({}, {direction: 'asc', column: first_column});
 }
 
 /*
@@ -23,8 +28,8 @@ function aftertablesort(event, data) {
     if ($(ths[i]).attr('data-sort') == undefined){
       continue;
     }
-    //Remove the old sort arrow
-    //$(ths[i]).find(".sort_arrow").remove();
+    //Remove the old sort arrow in any case
+    $(ths[i]).find(".sort_arrow").remove();
     //If this is the sorted column, add an ascending or descending arrow
     if (i == data.column){
       //Add an ascending sort arrow if ascending
@@ -38,11 +43,6 @@ function aftertablesort(event, data) {
         html = '<%= image_tag('descending_sort_arrow.png',:class => 'sort_arrow') %>';
         $(ths[i]).find('.sort-arrow-td').html(html);
       }
-    }
-    //If not the sorted column, add a neutral sort arrow
-    else{
-      html = '<%= image_tag('neutral_sort_arrow.png',:class => 'sort_arrow') %>';
-        $(ths[i]).find('.sort-arrow-td').html(html);
     }
   }
 }
