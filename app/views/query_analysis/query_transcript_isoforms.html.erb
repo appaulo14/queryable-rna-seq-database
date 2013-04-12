@@ -215,11 +215,11 @@
                 <td>
                   <%= result[:class_code] %>
                 </td>
-                <td><pre><%= "%6d" % result[:transcript_length] %></pre></td>
-                <td><pre><%= "%6d" % result[:coverage] %></pre></td>
-                <td><pre><%= "%9.3f" % result[:fpkm] %></pre></td>
-                <td><pre><%= "%9.3f" % result[:fpkm_lo] %></pre></td>
-                <td><pre><%= "%9.3f" % result[:fpkm_hi] %></pre></td>
+                <td><pre><%= "%5d" % result[:transcript_length] %></pre></td>
+                <td><pre><%= result[:coverage] %></pre></td>
+                <td><pre><%= "% .3E" % result[:fpkm] %></pre></td>
+                <td><pre><%= "% .3E" % result[:fpkm_lo] %></pre></td>
+                <td><pre><%= "% .3E" % result[:fpkm_hi] %></pre></td>
                 <td>
                   <%= result[:status] %>
                 </td>

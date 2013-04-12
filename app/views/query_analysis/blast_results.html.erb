@@ -29,18 +29,22 @@
       Graphical Summary
       <%= help_tip(:graphical_summary) %>
     </h4>
-    <div style="width:55%;margin:0 auto;background-color:white">
+      <% width = 49 %>
+      <% left = 24.7 %>
+      <% dimensions="width:49%;left:24.7%" %>
         <!-- Display the color-keyed alignment scores -->
-        <table style="width:100%"><tr>
-          <td style="text-align:center"><b>Color key alignment scores</b></td>
+        <table style="text-align:center;width:49%;position:absolute;left:24.7%;height:30px;background-color:white"><tr>
+          <td><b>Color key alignment scores</b></td>
         </tr></table>
-        <table style="width:100%;font-weight:bold;color:white;text-align:center"><tr>
+        <div style="height:25px"></div>
+        <table style="width:49%;position:absolute;font-weight:bold;color:white;text-align:center;left:24.7%"><tr>
           <td style="width:20%;background-color:black;">&lt;40</td>
           <td style="width:20%;background-color:blue;">40-50</td>
           <td style="width:20%;background-color:lime;">50-80</td>
           <td style="width:20%;background-color:magenta;">80-200</td>
           <td style="width:20%;background-color:red;">&gt;=200</td>
         </tr></table>
+        <div style="height:25px"></div>
         <!-- Display the query length ruler -->
         <% _1_percent = iteration.query_len/100.0 %>
         <% _25_percent = (_1_percent * 25.0).round(2) %>
@@ -49,44 +53,49 @@
         <% _100_percent = (_1_percent * 100.0).round(2) %>
         <% spacer = 24 %>
         <% marks = [1, _25_percent, _50_percent, _75_percent,_100_percent] %>
-        <table style="width:96.6%;height:10px;background-color:red"><tr>
+        <table style="width:49%;height:10px;background-color:red;position:absolute;left:24.7%"><tr>
         <td style="text-align:center;font-weight:bold;">Query</td>
         </tr></table>
-        <table style="width:100%;margin:0 auto;border:0;padding:0">
+        <div style="height:25px"></div>
+        <table style="margin:0 auto;border:0;padding:0;position:absolute;left:24.7%;width:49%;background-color:white">
           <tr style="height:15px">
             <% marks.each do |mark| %>
               <td style="width:1%;text-align:center;">
                 <%= image_tag 'black.png', :style => 'width:4px;height:15px' %>
               </td>
-              <td></td>
               <% if mark != marks.last %>
                 <td style="width:<%= spacer %>%;"><td>
               <% end %> 
             <% end %>
           </tr>
+        </table>
+        <br/>
+        <table style="width:48.3%;height:25px;position:absolute;left:24.7%;background-color:white">
           <tr>
             <% marks.each do |mark| %>
-              <td style="width:1%;"><%= mark %></td>
-              <td></td>
-              <td style="<%= spacer %>%;"></td>
-              <td></td>
+              <td style="position:absolute;background-color:white"><%= mark %></td>
+              <% if mark != marks.last %>
+                <td style="width:<%= 22 %>%;background-color:white"></td>
+              <% end %>
             <% end %>
           </tr>
         </table>
+        <div style="height:25px"></div>
         <!-- Graphically display the alignment of the hits to the query -->
         <% iteration.hits.each do |hit| %>
-          <div style="background-color:white;height:35px;">
+          <div style="background-color:white;height:35px;position:absolute;width:49%;left:24.7%">
             <% z_index = 9999 %>
 <!--             <span style="font-size:10pt;color:red;font-weight:bold">Hit=<%= hit.hit_id %></span> -->
             <% hit.hsps.each do |hsp| %>
-              <table style="width:48%;position:absolute;z-index:<%= z_index %>;left:25.7%">
-                <caption style="font-size:10pt;color:red;text-align:left">
+              <table style="width:100%;position:absolute;z-index:<%= z_index %>;">
+                <caption style="font-size:10pt;color:red;text-align:left;font-family:monospace">
                   <a href="<%= "##{get_unique_hit_id(report,iteration,hit)}" %>">
                     Hit=<%= hit.hit_id %><%= hit.target_def %>
                   </a>
                 </caption>
                 <tr><td>
                   <% w1 = (hsp.query_from == 1 ) ? 0 : (hsp.query_from/_1_percent-1)  %>
+                  <% w1 = ( w1 < 0) ? 0 : w1 %>
                   <% w2 = (hsp.query_to/_1_percent) - w1 - 1 %>
                   <% tooltip = ">#{hit.hit_id} #{hit.target_def}\n" +
                               "HSP number=#{hsp.num}\n" +
@@ -104,8 +113,8 @@
               <% z_index-=1 %>
             <% end %>
           </div>
+          <div style="height:35px"></div>
         <% end %>
-      </div>
     <!-- Display some general information about the query -->
     <p>
       <b>

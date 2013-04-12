@@ -185,13 +185,13 @@
                     <% end %>
                   </td>
                   <% if @qdeg.program_used == 'cuffdiff' %>
-                    <td><pre><%= ("%8.5f" % result[:test_statistic]) %></pre></td>
+                    <td><pre><%= ("% .5E" % result[:test_statistic]) %></pre></td>
                   <% end %>
                   <td><pre><%= ("%6.5f" % result[:p_value]) %></pre></td>
                   <td><pre><%= ("%6.5f" % result[:fdr]) %></pre></td>
-                  <td><pre><%= ("%9.3f" % result[:sample_1_fpkm]) %></pre></td>
-                  <td><pre><%= ("%9.3f" % result[:sample_2_fpkm]) %></pre></td>
-                  <td><pre><%= ("%7.3f" % result[:log_fold_change]) %></pre></td>
+                  <td><pre><%= ("% .3E" % result[:sample_1_fpkm]) %></pre></td>
+                  <td><pre><%= ("% .3E" % result[:sample_2_fpkm]) %></pre></td>
+                  <td><pre><%= ("% .3E" % result[:log_fold_change]) %></pre></td>
                   <% if @qdeg.program_used == 'cuffdiff' %>
                     <td><%= result[:test_status] %></td>
                   <% end %>

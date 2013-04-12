@@ -3,19 +3,24 @@
 <%= form_for @upload, {:url => "upload_fasta_sequences"} do |u| %>
   <h1>Upload Your Fasta Sequences <%= help_tip(:upload_fasta_sequences) %></h1>
   
-  <div class="sub-section rounded-corners" id="dataset_name_section">
-    <div class="sub-section-heading">Name Your Dataset</div>
-    <p style="text-align:center">
-      <%= label(:dataset_name, "Dataset Name") %>
-      <%= u.text_field :dataset_name %>
-    </p>
-  </div>
-  <br/><br/>
-  <div class="sub-section rounded-corners" id="transcript_fasta_section">
-    <div class="sub-section-heading">Fasta File</div>
-    <%= label(:transcripts_fasta, "Fasta File") %>
-    <%= help_tip(:fasta_file) %>
-    <%= u.file_field :transcripts_fasta_file %><br/>
-  </div>
+  <table class="sub-section rounded-corners">
+    <tr>
+      <th class="sub-section-heading" style="padding-top:0px">
+        <%= u.label(:dataset_name, "Name Your Dataset") %>
+      </th>
+      <td>
+        <%= u.text_field :dataset_name %>
+      </td>
+    </tr>
+    <tr>
+      <th class="sub-section-heading" style="padding-top:0px">
+        <%= label(:transcripts_fasta, "Fasta File") %>
+        <%= help_tip(:fasta_file) %>
+      </th>
+      <td>
+        <%= u.file_field :transcripts_fasta_file %>
+      </td>
+    </tr>
+  </table>
   <p><%= submit_tag('Upload files', :disable_with => 'Uploading...') %></p>
 <% end %>

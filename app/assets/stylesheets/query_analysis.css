@@ -6,6 +6,7 @@
   font-family:monospace;
 }
 
-#query_results_table th,td {
+#query_results_table th, #query_results_table td {
   padding:5px;
+  text-align:center;
 }
