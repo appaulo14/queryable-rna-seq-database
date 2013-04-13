@@ -274,6 +274,7 @@ class QueryAnalysisController < ApplicationController
         @query_using_tblastn = QueryUsingTblastn.new(current_user)
         @query_using_tblastn.set_attributes_and_defaults(params[:query_using_tblastn])
         if @query_using_tblastn.valid?
+          @program = :tblastn
           #Run the blast query and get the file path of the result
           @blast_report = @query_using_tblastn.blast()
           #Send the result to the user
@@ -301,6 +302,7 @@ class QueryAnalysisController < ApplicationController
       @query_using_tblastx = QueryUsingTblastx.new(current_user)
       @query_using_tblastx.set_attributes_and_defaults(params[:query_using_tblastx])
       if @query_using_tblastx.valid?
+        @program = :tblastx
         #Run the blast query and get the file path of the result
         @blast_report = @query_using_tblastx.blast()
         #Send the result to the user

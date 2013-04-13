@@ -8,7 +8,7 @@ en:
                      Select the dataset and the two samples you want to see 
                      the differential expression tests for. You can also filter 
                      the query in various to only see certain results.
-            more_info_link: https://github.com/fatPerlHacker/queryable-rna-seq-database/wiki/Step-3:-Querying-Data#query-differentially-expressed-genes
+            more_info_link: https://sites.google.com/site/rnaseqanalysispipeline/user-manual/step-5-query-and-blast-your-data#TOC-Query-Differentially-Expressed-Genes
           cutoff:
             title: P-Value or FDR Cutoff
             message: The p-value measures the statistical significance of a 
@@ -37,7 +37,7 @@ en:
                      Select the dataset and the two samples you want to see 
                      the differential expression tests for. You can also filter 
                      the query in various to only see certain results.
-            more_info_link: https://github.com/fatPerlHacker/queryable-rna-seq-database/wiki/Step-3:-Querying-Data#query-differentially-expressed-transcripts
+            more_info_link: https://sites.google.com/site/rnaseqanalysispipeline/user-manual/step-5-query-and-blast-your-data#TOC-Query-Differentially-Expressed-Transcripts
           cutoff:
             title: P-Value or FDR Cutoff
             message: The p-value measures the statistical significance of a 
@@ -60,6 +60,21 @@ en:
                      transcripts with both GO:0000836 and GO:0001063.</p>
             more_info_link: ""
         query_transcript_isoforms:
+          go_terms:
+            title: Filter By Go Terms
+            message: <p>Enter one or more GO terms separated by semicolons to find
+                     only the results that have all of the terms you entered.</p>
+                     <p>For example, "RNA;hair folicle" will find only the 
+                     transcripts with GO terms containg both the text "RNA" and 
+                     "hair folicle".</p>
+            more_info_link: ""
+          go_ids:
+            title: Filter By Go IDs
+            message: <p>Enter one or more GO IDs separated by semicolons to find
+                     only the results that have all of the terms you entered.</p>
+                     <p>For example, "GO:0000836;GO:0001063" will find only the  
+                     transcripts with both GO:0000836 and GO:0001063.</p>
+            more_info_link: ""
         query_using_blastn:
           graphical_summary:
             title: Graphical Summary
@@ -74,14 +89,36 @@ en:
                      goes to full details of the alignment. [1]
             more_info_link: ""
         query_using_tblastn:
+          title: Graphical Summary
+          message: \"This graphic is an overview of 
+                   database sequences aligned to the query sequence. 
+                   Alignments are color-coded by score, within one of 
+                   five score ranges.\" Multiple alignments on the same 
+                   database sequence overlap may overlap with the more 
+                   significant ones on top. Hovering your mouse cursor over 
+                   an alignment shows the alignment definition, bit score,
+                   and e-value as a tooltip. Clicking an alignment 
+                   goes to full details of the alignment. [1]
+          more_info_link: ""
         query_using_tblastx:
+          title: Graphical Summary
+          message: \"This graphic is an overview of 
+                   database sequences aligned to the query sequence. 
+                   Alignments are color-coded by score, within one of 
+                   five score ranges.\" Multiple alignments on the same 
+                   database sequence overlap may overlap with the more 
+                   significant ones on top. Hovering your mouse cursor over 
+                   an alignment shows the alignment definition, bit score,
+                   and e-value as a tooltip. Clicking an alignment 
+                   goes to full details of the alignment. [1]
+          more_info_link: ""
         upload_cuffdiff:
         upload_fasta_sequences:
           upload_fasta_sequences:
             title: Upload Fasta Sequences
             message: Upload a nucleotide fasta file here to create a blast 
                      database of the sequences in the fasta file.
-            more_info_link: https://github.com/fatPerlHacker/queryable-rna-seq-database/wiki/Step-2:-Uploading-Data#wiki-generic_fasta_sequences
+            more_info_link: https://sites.google.com/site/rnaseqanalysispipeline/user-manual/step-4-upload-your-data#TOC-Option-3:-Generic-Nucleotide-Fasta-Sequences
           fasta_file:
             title: Nucleotide Fasta File
             message: <p>Upload a nucleotide fasta sequences file. 
@@ -89,7 +126,7 @@ en:
                      <p>This should not be a raw reads file but should 
                      instead be something more processed like assembled 
                      transcripts or a genome.</p>
-            more_info_link: https://github.com/fatPerlHacker/queryable-rna-seq-database/wiki/Step-2:-Uploading-Data#wiki-generic_fasta_sequence-fasta-file
+            more_info_link: https://sites.google.com/site/rnaseqanalysispipeline/user-manual/step-4-upload-your-data#TOC-File
         upload_trinity_with_edger:
           upload_trinity_with_edger:
             title: Upload Trinity with EdgeR Data
@@ -97,7 +134,7 @@ en:
                      produced by the Trinity De-Novo RNA-Seq Assembler when the
                      included EdgeR package is used for the differential
                      expression testing.
-            more_info_link: https://github.com/fatPerlHacker/queryable-rna-seq-database/wiki/Step-2:-Uploading-Data#option-2-trinity-with-edger
+            more_info_link: https://sites.google.com/site/rnaseqanalysispipeline/user-manual/step-4-upload-your-data#TOC-Option-2:-Trinity-with-EdgeR
           trinity_fasta:
             title: Trinity.fasta file
             message: <p>In your Trinity output directory there should be a file
@@ -114,17 +151,17 @@ en:
                      <p>For each file, enter 
                      the names of the samples being compared in the corresponding
                      text boxes below.</p>
-            more_info_link: https://github.com/fatPerlHacker/queryable-rna-seq-database/wiki/Step-2:-Uploading-Data#wiki-trinity_with_edger_transcript_det_files
+            more_info_link: https://sites.google.com/site/rnaseqanalysispipeline/user-manual/step-4-upload-your-data#TOC-Transcript-Differential-Expression-Files
           transcript_fpkm:
             title: Transcript FPKM File
             message: There should be a file ending in .FPKM that contains the 
                      FPKMs for each sample of each transcript.
-            more_info_link: https://github.com/fatPerlHacker/queryable-rna-seq-database/wiki/Step-2:-Uploading-Data#wiki-trinity_with_edger_transcript_fpkm
+            more_info_link: https://sites.google.com/site/rnaseqanalysispipeline/user-manual/step-4-upload-your-data#TOC-Transcript-FPKM-File
           gene_fpkm:
             title: Gene FPKM File
             message: There should be a file ending in .FPKM that contains the 
                      FPKMs for each sample of each gene.
-            more_info_link: https://github.com/fatPerlHacker/queryable-rna-seq-database/wiki/Step-2:-Uploading-Data#wiki-trinity_with_edger_gene_fpkm
+            more_info_link: https://sites.google.com/site/rnaseqanalysispipeline/user-manual/step-4-upload-your-data#TOC-Gene-FPKM-File-
           gene_sample_cmp:
             title: Gene Sample Comparison Files
             message: <p>Gene differential expression sample comparison 
@@ -134,4 +171,4 @@ en:
                      <p>For each file, enter 
                      the names of the samples being compared in the corresponding
                      text boxes below.</p>
-            more_info_link: https://github.com/fatPerlHacker/queryable-rna-seq-database/wiki/Step-2:-Uploading-Data#wiki-trinity_with_edger_gene_det_files
+            more_info_link: https://sites.google.com/site/rnaseqanalysispipeline/user-manual/step-4-upload-your-data#TOC-Gene-Differential-Expression-Files-

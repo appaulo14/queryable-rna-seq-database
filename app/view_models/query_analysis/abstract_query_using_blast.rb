@@ -67,7 +67,7 @@ class AbstractQueryUsingBlast
     prepare_IO_files()
     #Build the execution string
     blast_execution_string = generate_execution_string()
-    #Execute blastn
+    #Execute blast
     SystemUtil.system!(blast_execution_string)
     #Run the blast query and get the file path of the result
     blast_report = generate_blast_report_from_xml_results()

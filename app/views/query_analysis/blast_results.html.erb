@@ -190,20 +190,62 @@
               <% query_strand = (hsp.query_frame > 0) ? 'Plus' : 'Minus' %>
               <% hit_strand = (hsp.hit_frame > 0) ? 'Plus' : 'Minus' %>
               Strand = <%= query_strand %>/<%= hit_strand %><br/>
-            <% elsif @program == :blastx or @program == :tblastx or @program == :tblastn %>
+            <% elsif @program == :tblastx or @program == :tblastn %>
               Frame = <%= '%+d' % hsp.query_frame %>/<%= '%+d' % hsp.hit_frame %><br/>
             <% end %>
           </p>
           <!-- Display the alignment for the hsp -->
           <table style="font-family:monospace">
-            <% (0..(hsp.midline.length/60.0).ceil-1).each do |n| %>
-              <% seq_range = (n*60)..(n*60)+59 %>
-              <% query_to = hsp.query_from+(60*n)+hsp.qseq[seq_range].length-1 %>
-              <% hit_to = hsp.hit_from+(60*n)+hsp.hseq[seq_range].length-1 %>
-              <tr><td style="white-space:nowrap">Query: <%= hsp.query_from+(60*n) %></td><td><%= hsp.qseq[seq_range] %> <%= query_to %></td></tr>
-              <tr><td>&nbsp;</td><td style="white-space:pre"><%= hsp.midline[seq_range] %></pre></td></tr>
-              <tr><td style="white-space:nowrap">Sbjct: <%= hsp.hit_from+(60*n) %></td><td><%= hsp.hseq[seq_range] %> <%= hit_to %></td></tr>
-              <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+            <% if @program == :blastn %>
+              <% (0..(hsp.midline.length/60.0).ceil-1).each do |n| %>
+                <% seq_range = (n*60)..(n*60)+59 %>
+                <% query_to = hsp.query_from+(60*n)+hsp.qseq[seq_range].length-1 %>
+                <% hit_to = hsp.hit_from+(60*n)+hsp.hseq[seq_range].length-1 %>
+                <tr><td style="white-space:nowrap">Query: <%= hsp.query_from+(60*n) %></td><td><%= hsp.qseq[seq_range] %> <%= query_to %></td></tr>
+                <tr><td>&nbsp;</td><td style="white-space:pre"><%= hsp.midline[seq_range] %></pre></td></tr>
+                <tr><td style="white-space:nowrap">Sbjct: <%= hsp.hit_from+(60*n) %></td><td><%= hsp.hseq[seq_range] %> <%= hit_to %></td></tr>
+                <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+              <% end %>
+            <% elsif @program == :tblastx or @program == :tblastn %>
+              <% max_row_count = (hsp.midline.length/60.0).ceil-1 %>
+              <% (0..max_row_count).each do |n| %>
+                <% seq_range = (n*60)..(n*60)+59 %>
+                <!-- Reverse the display for negative query frames -->
+                <tr>
+                <% if hsp.query_frame < 0 %>
+                  <% query_to = hsp.query_to-(180*n) %>
+                  <% query_from = (hsp.query_to-(180*(n+1))+1) %>
+                  <% qseq_len = hsp.qseq[seq_range].length %>
+                  <% if qseq_len < 60 %>
+                    <% query_from = query_from + (180 - (qseq_len*3)) %>
+                  <% end %>
+                  <td style="white-space:nowrap">Query: <%= query_to %></td>
+                  <td><%= hsp.qseq[seq_range] %> <%= query_from %></td>
+                <% else %>
+                  <% query_to = hsp.query_from+(180*n)+(hsp.qseq[seq_range].length*3-1) %>
+                  <td style="white-space:nowrap">Query: <%= hsp.query_from+(180*n) %></td>
+                  <td><%= hsp.qseq[seq_range] %> <%= query_to %></td>
+                <% end %>
+                </tr>
+                <tr><td>&nbsp;</td><td style="white-space:pre"><%= hsp.midline[seq_range] %></pre></td></tr>
+                <tr>
+                  <% if hsp.hit_frame < 0 %>
+                    <% hit_to = hsp.hit_to-(180*n) %>
+                    <% hit_from = hsp.hit_to-(180*(n+1))+1 %>
+                    <% hseq_len = hsp.hseq[seq_range].length %>
+                    <% if hseq_len < 60 %>
+                      <% hit_from = hit_from + (180 - (hseq_len*3)) %>
+                    <% end %>
+                    <td style="white-space:nowrap">Sbjct: <%= hit_to %></td>
+                    <td><%= hsp.hseq[seq_range] %> <%= hit_from %></td>
+                  <% else %>
+                    <% hit_to = hsp.hit_from+(180*n)+(hsp.hseq[seq_range].length*3-1) %>
+                    <td style="white-space:nowrap">Sbjct: <%= hsp.hit_from+(180*n) %></td>
+                    <td><%= hsp.hseq[seq_range] %> <%= hit_to %></td>
+                  <% end %>
+                </tr>
+                <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+              <% end %>
             <% end %>
           </table>
         <% end %>

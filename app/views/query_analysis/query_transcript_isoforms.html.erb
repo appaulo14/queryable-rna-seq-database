@@ -76,11 +76,13 @@
     <div>
         <%= qti.label(:go_terms, "GO Terms, separated by semicolons") %>
         <%= qti.text_field(:go_terms, :size => 70) %>
+        <%= help_tip(:go_terms) %>
         <%= link_to('Browse GO Terms','http://amigo.geneontology.org/cgi-bin/amigo/browse.cgi', :target => '_blank') %>
     </div>
     <div>
         <%= qti.label(:go_ids, "GO IDs (a.k.a Accessions), separated by semicolons") %>
         <%= qti.text_field(:go_ids) %>
+        <%= help_tip(:go_ids) %>
         <%= link_to('Browse GO Terms','http://amigo.geneontology.org/cgi-bin/amigo/browse.cgi', :target => '_blank') %>
     </div>
     <div>
@@ -108,6 +110,12 @@
   <p id="downloadify">
       You must have Flash 10 installed to download this file.
   </p>
+  <div style="float:center">
+    <%= link_to('Learn More About These Table Columns',
+                'https://sites.google.com/site/rnaseqanalysispipeline/' +
+                'user-manual/step-5-query-and-blast-your-data' +
+                '#TOC-Output-Table-Data-Columns2') %>
+  </div>
   <!--Table containing the query results-->
   <table border="1" id="query_results_table">
       <thead>
