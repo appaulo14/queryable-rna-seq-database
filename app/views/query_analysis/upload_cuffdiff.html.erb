@@ -1,40 +1,70 @@
 <%= render 'shared/error_messages', :object => @upload_cuffdiff %>
 <script type='text/javascript' src='upload_cuffdiff.js' ></script>
-<%= form_for @upload_cuffdiff, {:url => "upload_cuffdiff",:remote => true} do |uf| %>
-  <h1>Upload Your Cuffdiff Data</h1>
+<%= form_for @upload_cuffdiff, {:url => "upload_cuffdiff",:remote => true} do |u| %>
+  <h1>
+    Upload Your Cuffdiff Data
+    <%= help_tip(:upload_cuffdiff) %>
+  </h1>
   
-  <div class="sub-section rounded-corners" id="dataset_name_section">
-    <div class="sub-section-heading">Name Your Dataset</div>
-    <p style="text-align:center">
-      <%= label(:dataset_name, "Dataset Name") %>
-      <%= uf.text_field :dataset_name %>
-    </p>
-  </div>
+  <table class="sub-section rounded-corners">
+    <tr>
+      <th class="sub-section-heading" style="padding-top:0px">
+        <%= u.label(:dataset_name, "Name Your Dataset") %>
+      </th>
+      <td>
+        <%= u.text_field :dataset_name %>
+      </td>
+    </tr>
+  </table>
   <br/><br/>
-  <div class="sub-section rounded-corners" id="transcript_fasta_section">
-    <div class="sub-section-heading">Transcript Fasta File</div>
-    <%= label(:transcripts_fasta, "Transcripts fasta") %>
-    <%= uf.file_field :transcripts_fasta_file %><br/>
-  </div>
+  <table class="sub-section rounded-corners">
+    <tr>
+      <th class="sub-section-heading" style="padding-top:0px">
+        <%= u.label(:transcripts_fasta_file, "Transcripts fasta") %>
+        <%= help_tip(:transcripts_fasta_file) %>
+      </th>
+      <td>
+        <%= u.file_field :transcripts_fasta_file %>
+      </td>
+    </tr>
+  </table>
   <br/><br/>
-  <%= uf.label :has_diff_exp, 'Do you have differential expression tests?' %>
-  <%= uf.check_box :has_diff_exp %>
-  <div class="sub-section rounded-corners" id="differential_expression_section">
-    <div class="sub-section-heading">Differential Expression Test Files</div>
-    <%= uf.label(:gene_diff_exp_file, "gene_exp.diff") %>
-    <%= uf.file_field :gene_diff_exp_file, :class=>'rounded-corners' %><br/>
-    <%= uf.label(:transcript_diff_exp_file, "isoform_exp.diff") %>
-    <%= uf.file_field :transcript_diff_exp_file, :class=>'rounded-corners' %><br/>
-  </div>
+  <%= u.label :has_diff_exp, 'Do you have differential expression tests?' %>
+  <%= u.check_box :has_diff_exp %>
+  <table class="sub-section rounded-corners">
+    <tr>
+      <th class="sub-section-heading" style="padding-top:0px;padding-right:40px">
+        Differential Expression Test Files
+      </th>
+      <td>
+        <%= u.label(:gene_diff_exp_file, "gene_exp.diff") %>
+        <%= help_tip(:gene_diff_exp_file) %>
+        <%= u.file_field :gene_diff_exp_file, :class=>'rounded-corners' %>
+      </td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>
+        <%= u.label(:transcript_diff_exp_file, "isoform_exp.diff") %>
+        <%= help_tip(:transcript_diff_exp_file) %>
+        <%= u.file_field :transcript_diff_exp_file, :class=>'rounded-corners' %>
+      </td>
+    </tr>
+  </table>
   <br/><br/>
-  <%= uf.label :has_transcript_isoforms, 
+  <%= u.label :has_transcript_isoforms, 
                 'Do you have transcript isoform classifications?' %>
-  <%= uf.check_box :has_transcript_isoforms %>
-  <div class="sub-section rounded-corners" id="transcript_isoforms_section">
-    <div class="sub-section-heading">Transcript Isoform Classification File</div>
-    <%= uf.label(:transcript_isoforms_file, "isoforms.fpkm_tracking") %>
-    <%= uf.file_field :transcript_isoforms_file, :class=>'rounded-corners' %>
-    <br/>
-  </div>
+  <%= u.check_box :has_transcript_isoforms %>
+  <table class="sub-section rounded-corners">
+    <tr>
+      <th class="sub-section-heading" style="padding-top:0px">
+        <%= u.label(:transcript_isoforms_file, "isoforms.fpkm_tracking") %>
+        <%= help_tip(:transcript_isoforms_file) %>
+      </th>
+      <td>
+        <%= u.file_field :transcript_isoforms_file, :class=>'rounded-corners' %>
+      </td>
+    </tr>
+  </table>
   <p><%= submit_tag('Upload files', :disable_with => 'Uploading...') %></p>
 <% end %>

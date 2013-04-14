@@ -113,6 +113,37 @@ en:
                    goes to full details of the alignment. [1]
           more_info_link: ""
         upload_cuffdiff:
+          upload_cuffdiff:
+            title: Upload Cuffdiff
+            message: Upload the transcript fastas sequences and 
+                     optionally the differential expression tests and 
+                     transcript isoform classifications produced by Cuffdiff 
+                     and the other parts of the Cufflinks pipeline.
+            more_info_link: https://sites.google.com/site/rnaseqanalysispipeline/user-manual/step-4-upload-your-data#TOC-Option-1:-Cuffdiff
+          transcripts_fasta_file:
+            title: Transcripts Fasta File
+            message: To get the assembled transcript fasta sequences, you need 
+                     to run an extra program called gffread to extra the 
+                     sequences from your cuffcompare combined gtf file.
+            more_info_link: https://sites.google.com/site/rnaseqanalysispipeline/user-manual/step-4-upload-your-data#TOC-Transcripts-Fasta-File
+          gene_diff_exp_file:
+            title: Gene Differential Expression File
+            message: In your Cuffdiff output directory there should be a file 
+                     called gene_exp.diff. It contains the differential 
+                     expression tests for your genes. 
+            more_info_link: https://sites.google.com/site/rnaseqanalysispipeline/user-manual/step-4-upload-your-data#TOC-Gene-Differential-Expression-File-Optional-
+          transcript_diff_exp_file:
+            title: Transcript Differential Expression File
+            message: In your Cuffdiff output directory there should be a file 
+                     called isoform_exp.diff. It contains the differential 
+                     expression tests for your transcripts.
+            more_info_link: https://sites.google.com/site/rnaseqanalysispipeline/user-manual/step-4-upload-your-data#TOC-Transcript-Differential-Expression-File-Optional-
+          transcript_isoforms_file:
+            title: Transcript Isoforms File
+            message: In your Cuffdiff output directory there should be a file 
+                     called isoforms.fpkm_tracking. It contains the transcript 
+                     isoform classfications and fpkm information.
+            more_info_link: https://sites.google.com/site/rnaseqanalysispipeline/user-manual/step-4-upload-your-data#TOC-Transcript-Isoform-Classifications-File-Optional-
         upload_fasta_sequences:
           upload_fasta_sequences:
             title: Upload Fasta Sequences
@@ -141,7 +172,7 @@ en:
                      of fasta sequences called Trinity.fasta.</p>
                      <p>Trinity.fasta contains the fasta sequences for your 
                      assembled transcripts.</p>
-            more_info_link: ""
+            more_info_link: https://sites.google.com/site/rnaseqanalysispipeline/user-manual/step-4-upload-your-data#TOC-Trinity.fasta-File
           transcripts_sample_cmp:
             title: Transcript Sample Comparison Files
             message: <p>Transcript differential expression sample comparison 
