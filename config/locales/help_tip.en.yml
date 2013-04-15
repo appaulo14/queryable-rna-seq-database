@@ -123,7 +123,7 @@ en:
           transcripts_fasta_file:
             title: Transcripts Fasta File
             message: To get the assembled transcript fasta sequences, you need 
-                     to run an extra program called gffread to extra the 
+                     to run an extra program called gffread to extract the 
                      sequences from your cuffcompare combined gtf file.
             more_info_link: https://sites.google.com/site/rnaseqanalysispipeline/user-manual/appendix-1-getting-the-transcripts-fasta-file-for-cuffdiff
           gene_diff_exp_file:

@@ -7,8 +7,7 @@
       <% if user_signed_in? %>
         <li><%= link_to 'Home', root_path %></li>
         <!--<li><%= link_to 'Process reads', '/processing_analysis' %></li>-->
-        <li><%= link_to 'Upload processed dataset',
-                        '/query_analysis/upload_main_menu' %>
+        <li><a href="#">Upload processed dataset &#9662;</a>
           <ul class='drop-down-menu'>
             <li><%= link_to 'Cuffdiff', '/query_analysis/upload_cuffdiff' %></li>
             <li><%= link_to 'Nucleotide Fasta Sequences (From Any Program)', 
@@ -17,8 +16,7 @@
                             '/query_analysis/upload_trinity_with_edger' %></li>
           </ul>
         </li>
-        <li><%= link_to 'Differential Expression', 
-                        '/query_analysis/diff_exp_main_menu' %>
+        <li><a href="#">Differential Expression &#9662;</a>
           <ul class='drop-down-menu'>
             <li>
               <%= link_to 'Transcript Differential Expression', 
@@ -34,8 +32,7 @@
           <%= link_to 'Transcript Isoforms', 
                       '/query_analysis/query_transcript_isoforms' %>
         </li>
-        <li><%= link_to 'BLAST', 
-                        '/query_analysis/blast_main_menu' %>
+        <li><a href="#">Blast &#9662;</a>
           <ul  class='drop-down-menu'>
             <li><%= link_to 'BLASTN', '/query_analysis/query_using_blastn' %></li>
             <li><%= link_to 'TBLASTN', '/query_analysis/query_using_tblastn' %></li>
@@ -43,8 +40,7 @@
           </ul>
         </li>
         <% if current_user.admin? %>
-          <li><%= link_to 'Admin', 
-                          '/admin' %>
+          <li><a href="#">Admin &#9662;</a>
             <ul  class='drop-down-menu'>
               <li><%= link_to 'View Unconfirmed Users', '/admin/view_unconfirmed_users' %></li>
               <li><%= link_to 'View Confirmed Users', '/admin/view_confirmed_users' %></li>
