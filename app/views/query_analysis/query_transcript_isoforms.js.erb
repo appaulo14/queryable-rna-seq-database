@@ -1,17 +1,15 @@
 jQuery(document).ready(function($) {
-  set_up_reload_on_dataset_changed();
+  $('#query_transcript_isoforms_dataset_id').change(dataset_id_pair_changed);
 });
 
-/*
- *    Reload when a new dataset is selected 
- *    from the select element so the the samples for the
- *    newly selected dataset can be loaded.
- */
-function set_up_reload_on_dataset_changed(){
-  dataset_select = $('#query_transcript_isoforms_dataset_id');
-  dataset_select.change(selected_dataset_changed);
-  function selected_dataset_changed(){
-    window.location = 'query_transcript_isoforms?dataset_id=' + 
-      dataset_select.val();
-  }
+function dataset_id_pair_changed(){
+  dataset_id = $('#query_transcript_isoforms_dataset_id').val();
+  request_string = 'get_transcript_isoforms_samples_for_dataset' +
+                   '?dataset_id=' + dataset_id
+  $.get(request_string, replace_sample_cmps);
 }
+
+function replace_sample_cmps(html){
+  $('#sample_comparisons_container').html(html);
+}
+

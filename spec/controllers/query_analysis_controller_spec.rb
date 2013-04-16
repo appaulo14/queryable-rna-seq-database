@@ -11,28 +11,13 @@ describe QueryAnalysisController do
   end
   
   describe 'GET requests for user not signed in' do  
-    it "should redirect from 'upload_main_menu'" do
-      get 'upload_main_menu'
-      response.should redirect_to(new_user_session_path)
-    end
-    
-    it "should redirect from 'welcome'" do
-      get 'welcome'
-      response.should redirect_to(new_user_session_path)
-    end
-    
     it "should redirect from 'upload_cuffdiff'" do
       get 'upload_cuffdiff'
       response.should redirect_to(new_user_session_path)
     end
     
-    it "should redirect from 'upload_trinity_with_edger_transcripts'" do
-      get 'upload_trinity_with_edger_transcripts'
-      response.should redirect_to(new_user_session_path)
-    end
-    
-    it "should redirect from 'upload_trinity_with_edger_transcripts_and_genes'" do
-      get 'upload_trinity_with_edger_transcripts_and_genes'
+    it "should redirect from 'upload_trinity_with_edger'" do
+      get 'upload_trinity_with_edger'
       response.should redirect_to(new_user_session_path)
     end
     
@@ -61,8 +46,8 @@ describe QueryAnalysisController do
       response.should redirect_to(new_user_session_path)
     end
     
-    it "should redirect from 'blastn'" do
-      get 'blastn'
+    it "should redirect from 'query_using_blastn'" do
+      get 'query_using_blastn'
       response.should redirect_to(new_user_session_path)
     end
     
@@ -71,8 +56,8 @@ describe QueryAnalysisController do
       response.should redirect_to(new_user_session_path)
     end
     
-    it "should redirect from 'tblastn'" do
-      get 'tblastn'
+    it "should redirect from 'query_using_tblastn'" do
+      get 'query_using_tblastn'
       response.should redirect_to(new_user_session_path)
     end
     
@@ -81,52 +66,34 @@ describe QueryAnalysisController do
       response.should redirect_to(new_user_session_path)
     end
     
-    it "should redirect from 'tblastx'" do
-      get 'tblastx'
+    it "should redirect from 'query_using_tblastx'" do
+      get 'query_using_tblastx'
       response.should redirect_to(new_user_session_path)
     end
   end
   
-  describe 'when user signed in' do 
+  #### When Signed In ####
+  describe 'when user signed in', :type => :when_signed_in do 
     before (:each) do
       @user = FactoryGirl.create(:user)
       sign_in @user
     end
       
-    describe 'GET request' do
-      it "should succeed for '/'" do
-        get '/'
-        response.status.should be_success
-      end
-      
-      it "should succeed for 'upload_main_menu'" do
-        get 'upload_main_menu'
-        response.should be_success
-      end
-      
-      it "should succeed for 'welcome'" do
-        get 'welcome'
-        response.should be_success
-      end
-      
+    describe 'GET request' do  
       it "should succeed for 'upload_cuffdiff'" do
         get 'upload_cuffdiff'
         response.should be_success
       end
       
-      it "should succeed for 'upload_trinity_with_edger_transcripts'" do
-        get 'upload_trinity_with_edger_transcripts'
-        response.should be_success
-      end
-      
-      it "should succeed for 'upload_trinity_with_edger_transcripts_and_genes'" do
-        get 'upload_trinity_with_edger_transcripts_and_genes'
+      it "should succeed for 'upload_trinity_with_edger'" do
+        get 'upload_trinity_with_edger'
         response.should be_success
       end
       
       it "should succeed for 'query_diff_exp_transcripts'" do
         get 'query_diff_exp_transcripts'
         response.should be_success
+        response.should render_template :no_datasets
       end
       
       it "should succeed for 'get_transcript_fasta'" do
@@ -149,8 +116,8 @@ describe QueryAnalysisController do
         response.should be_success
       end
       
-      it "should succeed for 'blastn'" do
-        get 'blastn'
+      it "should succeed for 'query_using_blastn'" do
+        get 'query_using_blastn'
         response.should be_success
       end
       
@@ -159,8 +126,8 @@ describe QueryAnalysisController do
         response.should be_success
       end
       
-      it "should succeed for 'tblastn'" do
-        get 'tblastn'
+      it "should succeed for 'query_using_tblastn'" do
+        get 'query_using_tblastn'
         response.should be_success
       end
       
@@ -169,8 +136,8 @@ describe QueryAnalysisController do
         response.should be_success
       end
       
-      it "should succeed for 'tblastx'" do
-        get 'tblastx'
+      it "should succeed for 'query_using_tblastx'" do
+        get 'query_using_tblastx'
         response.should be_success
       end
     end
@@ -178,27 +145,21 @@ describe QueryAnalysisController do
     describe 'POST request', :type => :post_request do
       it "should succeed for 'upload_cuffdiff'" do
         UploadCuffdiff.any_instance.stub(:save)
-        post 'upload_cuffdiff', 
-           :upload_cuffdiff => {} 
+        post 'upload_cuffdiff', :upload_cuffdiff => {} 
         response.should be_success
       end
       
-      it "should succeed for 'upload_trinity_with_edger_transcripts'" do
-        UploadTrinityWithEdgeRTranscripts.any_instance.stub(:save)
-        post 'upload_trinity_with_edger_transcripts', 
-            :upload_trinity_with_edger_transcripts => {}
-        response.should be_success
-      end
-      
-      it "should succeed for 'upload_trinity_with_edger_transcripts_and_genes'" do
-        UploadTrinityWithEdgeRTranscriptsAndGenes.any_instance.stub(:save)
-        post 'upload_trinity_with_edger_transcripts_and_genes',
-            :upload_trinity_with_edger_transcripts_and_genes => {}
+      it "should succeed for 'upload_trinity_with_edger'" do
+        UploadTrinityWithEdgeR.any_instance.stub(:set_attributes_and_defaults)
+#        UploadTrinityWithEdgeR.any_instance.stub(:valid?).with(true)
+#        UploadTrinityWithEdgeR.any_instance.stub(:save)
+        post 'upload_trinity_with_edger', :upload_trinity_with_edger => {}
         response.should be_success
       end
       
       it "should succeed for 'query_diff_exp_transcripts'" do
         QueryDiffExpTranscripts.any_instance.stub(:save)
+        QueryDiffExpTranscripts.any_instance.should_receive(:goat)
         post 'query_diff_exp_transcripts', :query_diff_exp_transcripts => {}
         response.should be_success
       end
@@ -216,18 +177,18 @@ describe QueryAnalysisController do
         response.should be_success
       end
       
-      it "should succeed for 'blastn'" do
-        post 'blastn', :query_using_blastn => {}
+      it "should succeed for 'query_using_blastn'" do
+        post 'query_using_blastn', :query_using_blastn => {}
         response.should be_success
       end
       
-      it "should succeed for 'tblastn'" do
-        post 'tblastn', :query_using_blastn => {}
+      it "should succeed for 'query_using_tblastn'" do
+        post 'query_using_blastn', :query_using_blastn => {}
         response.should be_success
       end
       
-      it "should succeed for 'tblastx'" do
-        post 'tblastx', :query_using_tblastx => {}
+      it "should succeed for 'query_using_tblastx'" do
+        post 'query_using_tblastx', :query_using_tblastx => {}
         response.should be_success
       end
     end

@@ -19,7 +19,9 @@ class QueryAnalysisController < ApplicationController
       :only => [
         :query_diff_exp_transcripts, :query_diff_exp_genes, 
         :query_transcript_isoforms, 
-        :query_using_blastn, :query_using_tblastn, :query_using_tblastx
+        :query_using_blastn, :query_using_tblastn, :query_using_tblastx,
+        :get_blastn_gap_costs_for_match_and_mismatch_scores,
+        :get_tblastn_gap_costs_for_matrix
       ]
     before_filter :confirm_transcript_isoform_datasets_available,
       :only => [:query_transcript_isoforms]
@@ -27,13 +29,7 @@ class QueryAnalysisController < ApplicationController
       :only => [:query_diff_exp_transcripts]
     before_filter :confirm_gene_diff_exp_datasets_available, 
       :only => [:query_diff_exp_genes]
-    
-   
-    def upload_main_menu
-    end
-
-    def welcome
-    end
+      
     
     def upload_cuffdiff
       if request.get?
@@ -96,63 +92,27 @@ class QueryAnalysisController < ApplicationController
       render :partial => 'trinity_with_edger_genes_sample_cmp'
     end
     
-    def upload_trinity_with_edger_transcripts
-      if (request.get?)
-        @upload_files = UploadTrinityWithEdgeRTranscripts.new(current_user)
-        @upload_files.set_attributes_and_defaults()
-      elsif (request.post?)
-        @upload_files = UploadTrinityWithEdgeRTranscripts.new(current_user)
-        @upload_files.set_attributes_and_defaults(params[:upload_trinity_with_edger_transcripts])
-        @upload_files.save!
-      end
-    end
-    
-    def upload_trinity_with_edger_transcripts_and_genes
-      if (request.get?)
-        @upload_files = UploadTrinityWithEdgeRTranscriptsAndGenes.new(current_user)
-        @upload_files.set_attributes_and_defaults()
-      elsif (request.post?)
-        @upload_files = UploadTrinityWithEdgeRTranscriptsAndGenes.new(current_user)
-        upload_params = params[:upload_trinity_with_edge_r_transcripts_and_genes]
-        @upload_files.set_attributes_and_defaults(upload_params)
-        if @upload_files.valid?
-          queue_name = :upload_trinity_with_edger_transcripts_and_genes_queue
-          SuckerPunch::Queue[queue_name].async.perform(@upload_files)
-          #Reset the upload form
-          @upload_files = UploadTrinityWithEdgeRTranscriptsAndGenes.new(current_user)
-          @upload_files.set_attributes_and_defaults()
-          flash[:notice] = I18n.t :added_to_upload_queue
-        end
-      end
-    end
-    
-    def add_sample_cmp_for_trinity_with_edger_transcripts_and_genes
-      @sample_cmp_count = params[:sample_cmp_count]
-      render :partial => 'trinity_with_edger_transcript_and_gene_sample_cmp', 
-             :locals  => {:object => @sample_cmp_count}
-    end
-    
     def query_diff_exp_transcripts
       #Create the view model, giving the current user
       @qdet = QueryDiffExpTranscripts.new(current_user)
       #Which type of request was received?
       if request.get?
-        #If the dataset_id parameter makes the view model invalid, 
-        #    don't use the dataset_id parameter
-        @qdet.set_attributes_and_defaults(:dataset_id => params[:dataset_id])
-        if not @qdet.valid?
-          @qdet.set_attributes_and_defaults(:dataset_id => nil)
-        end
+        @qdet.set_attributes_and_defaults()
       elsif request.post?
         #Fill in the inputs from the view
         @qdet.set_attributes_and_defaults(params[:query_diff_exp_transcripts])
         # If valid, query and return results; otherwise return failure
-        if @qdet.valid?
-          @qdet.query()
-          flash[:success] = "Success"
-        else
-          flash[:success] = "Failure"
-        end
+        @qdet.query() if @qdet.valid?
+      end
+    end
+    
+    def get_transcript_diff_exp_samples_for_dataset
+      @qdet = QueryDiffExpTranscripts.new(current_user)
+      dataset_id = params[:dataset_id]
+      @qdet.set_attributes_and_defaults(:dataset_id => dataset_id)
+      if @qdet.valid?
+        render :partial => 'diff_exp_samples_for_dataset', 
+               :locals => {:object => @qdet}
       end
     end
     
@@ -198,19 +158,22 @@ class QueryAnalysisController < ApplicationController
       @qdeg = QueryDiffExpGenes.new(current_user)
       #Which type of request was received?
       if request.get?
-        #If the dataset_id parameter makes the view model invalid, 
-        #    ignore the dataset_id parameter
-        @qdeg.set_attributes_and_defaults(:dataset_id => params[:dataset_id])
-        if not @qdeg.valid?
-          @qdeg.set_attributes_and_defaults(:dataset_id => nil)
-        end
+        @qdeg.set_attributes_and_defaults()
       elsif request.post?
         #Fill in the inputs from the view
         @qdeg.set_attributes_and_defaults(params[:query_diff_exp_genes])
         # If valid, query and return results; otherwise return failure
-        if @qdeg.valid?
-          @qdeg.query()
-        end
+        @qdeg.query() if @qdeg.valid?
+      end
+    end
+    
+    def get_gene_diff_exp_samples_for_dataset
+      @qdeg = QueryDiffExpGenes.new(current_user)
+      dataset_id = params[:dataset_id]
+      @qdeg.set_attributes_and_defaults(:dataset_id => dataset_id)
+      if @qdeg.valid?
+        render :partial => 'diff_exp_samples_for_dataset', 
+               :locals => {:object => @qdeg}
       end
     end
 
@@ -219,19 +182,22 @@ class QueryAnalysisController < ApplicationController
       @qti = QueryTranscriptIsoforms.new(current_user)
       #Which type of request was received?
       if request.get?
-        #If the dataset_id parameter makes the view model invalid, 
-        #    don't use the dataset_id parameter
         @qti.set_attributes_and_defaults(:dataset_id => params[:dataset_id])
-        if not @qti.valid?
-          @qti.set_attributes_and_defaults(:dataset_id => nil)
-        end
       elsif request.post?
         #Fill in the inputs from the view
         @qti.set_attributes_and_defaults(params[:query_transcript_isoforms])
         # If valid, query and return results; otherwise return failure
-        if @qti.valid?
-          @qti.query()
-        end
+        @qti.query() if @qti.valid?
+      end
+    end
+    
+    def get_transcript_isoforms_samples_for_dataset
+      @qti = QueryTranscriptIsoforms.new(current_user)
+      dataset_id = params[:dataset_id]
+      @qti.set_attributes_and_defaults(:dataset_id => dataset_id)
+      if @qti.valid?
+        render :partial => 'transcript_isoforms_samples_for_dataset', 
+               :locals => {:object => @qti}
       end
     end
     

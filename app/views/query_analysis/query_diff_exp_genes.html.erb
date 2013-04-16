@@ -10,10 +10,9 @@
     <%= qdeg.select :dataset_id, 
             options_for_select(@qdeg.names_and_ids_for_available_datasets,
                 @qdeg.dataset_id) %><br/>
-    <%= qdeg.label :sample_comparison_id_pair, "Samples to compare" %>
-    <%= qdeg.select :sample_comparison_id_pair, 
-      options_for_select(@qdeg.available_sample_comparisons,
-        @qdeg.sample_comparison_id_pair)  %> 
+    <span id="sample_comparisons_container">
+      <%= render 'diff_exp_samples_for_dataset', :object => @qdeg %>
+    </span>
   </p>
   <p>
     <div>

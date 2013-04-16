@@ -15,15 +15,10 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
   
   get  'admin/delete_unconfirmed_user'
   post 'admin/delete_unconfirmed_user'
-  
-  get 'admin/welcome'
-  
-  match 'admin', :to => 'admin#welcome'
 
   devise_for :users, :controllers => {
       :registrations => 'registrations', :confirmations => 'confirmations'
   } 
-      #:controllers => { :sessions => "devise/sessions" }
 
   ###########################################################################
   ##########          Configure routes for home controller     ###############
@@ -40,11 +35,6 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
   ###########################################################################
   ##########     Configure routes for query analysis controller   ###########
   ###########################################################################
-  match 'query_analysis', :to => 'query_analysis#welcome'
-  get  'query_analysis/welcome'
-
-  get  'query_analysis/upload_main_menu'
-
   get  'query_analysis/upload_cuffdiff'
   post 'query_analysis/upload_cuffdiff'
   
@@ -57,27 +47,21 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
   get 'query_analysis/add_sample_cmp_for_trinity_with_edger_transcripts'
   
   get 'query_analysis/add_sample_cmp_for_trinity_with_edger_genes'
-
-  get 'query_analysis/upload_trinity_with_edger_transcripts_and_genes'
-  post 'query_analysis/upload_trinity_with_edger_transcripts_and_genes'
-  
-  get 'query_analysis/add_sample_cmp_for_trinity_with_edger_transcripts_and_genes'
-  
-  get 'query_analysis/upload_trinity_with_edger_transcripts'
-  post 'query_analysis/upload_trinity_with_edger_transcripts'
-
-  get 'query_analysis/diff_exp_main_menu'
   
   get 'query_analysis/query_diff_exp_transcripts'
   post 'query_analysis/query_diff_exp_transcripts'
+  
+  get 'query_analysis/get_transcript_diff_exp_samples_for_dataset'
 
   get  'query_analysis/query_diff_exp_genes'
   post 'query_analysis/query_diff_exp_genes'
+  
+  get 'query_analysis/get_gene_diff_exp_samples_for_dataset'
 
   get  'query_analysis/query_transcript_isoforms'
   post 'query_analysis/query_transcript_isoforms'
   
-  get 'query_analysis/blast_main_menu'
+  get 'query_analysis/get_transcript_isoforms_samples_for_dataset'
 
   get  'query_analysis/query_using_blastn'
   post 'query_analysis/query_using_blastn'

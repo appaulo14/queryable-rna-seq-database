@@ -1,0 +1,5 @@
+<%= fields_for object do |qti| %>
+  <%= qti.label :sample_id, "Select Sample" %>
+  <%= qti.select :sample_id, options_for_select(object.available_samples,
+              object.sample_id)  %> 
+<% end %>

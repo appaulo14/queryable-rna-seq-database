@@ -5,18 +5,14 @@
   <p>
     <%= qti.label :dataset_id, "Dataset to query" %>
     <%= qti.select :dataset_id, options_for_select(@qti.names_and_ids_for_available_datasets, @qti.dataset_id) %><br/>
-    <%= #qti.label :samples_to_compare, "Samples to compare" 
-    %>
-    <%= #qti.select :samples_to_compare, options_for_select(@qti.available_samples_for_comparison) 
-    %>
-    <%= label :sample_id, "Select Sample" %>
-    <%= qti.select :sample_id, options_for_select(@qti.available_samples,@qti.sample_id)  %> 
+    <span id="sample_comparisons_container">
+      <%= render 'transcript_isoforms_samples_for_dataset', :object => @qti %>
+    </span>
   </p>
   <h2>Query filtering options</h2>
   <p>
     <div>
-        
-        <table>
+      <table>
         <tr>
           <td>Class Codes</td>
           <td class='rounded-corners sub-section' style='padding-right:10px'>
