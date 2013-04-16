@@ -199,11 +199,39 @@
             <% if @program == :blastn %>
               <% (0..(hsp.midline.length/60.0).ceil-1).each do |n| %>
                 <% seq_range = (n*60)..(n*60)+59 %>
-                <% query_to = hsp.query_from+(60*n)+hsp.qseq[seq_range].length-1 %>
-                <% hit_to = hsp.hit_from+(60*n)+hsp.hseq[seq_range].length-1 %>
-                <tr><td style="white-space:nowrap">Query: <%= hsp.query_from+(60*n) %></td><td><%= hsp.qseq[seq_range] %> <%= query_to %></td></tr>
+                <tr>
+                  <% if hsp.query_frame > 0 %>
+                    <% query_to = hsp.query_from+(60*n)+hsp.qseq[seq_range].length-1 %>
+                    <td style="white-space:nowrap">Query: <%= hsp.query_from+(60*n) %></td>
+                    <td><%= hsp.qseq[seq_range] %> <%= query_to %></td>
+                  <% else %>
+                    <% query_to = hsp.query_from-(60*n) %>
+                    <% query_from = hsp.query_from-(60*(n+1))+1 %>
+                    <% qseq_len = hsp.qseq[seq_range].length %>
+                    <% if qseq_len < 60 %>
+                      <% query_from = query_from + (60 - qseq_len) %>
+                    <% end %>
+                    <td style="white-space:nowrap">Query: <%= query_to %></td>
+                    <td><%= hsp.qseq[seq_range] %> <%= query_from %></td>
+                  <% end %>
+                </tr>
                 <tr><td>&nbsp;</td><td style="white-space:pre"><%= hsp.midline[seq_range] %></pre></td></tr>
-                <tr><td style="white-space:nowrap">Sbjct: <%= hsp.hit_from+(60*n) %></td><td><%= hsp.hseq[seq_range] %> <%= hit_to %></td></tr>
+                <tr>
+                  <% if hsp.hit_frame > 0 %>
+                    <% hit_to = hsp.hit_from+(60*n)+hsp.hseq[seq_range].length-1 %>
+                    <td style="white-space:nowrap">Sbjct: <%= hsp.hit_from+(60*n) %></td>
+                    <td><%= hsp.hseq[seq_range] %> <%= hit_to %></td>
+                  <% else %>
+                    <% hit_to = hsp.hit_from-(60*n) %>
+                    <% hit_from = hsp.hit_from-(60*(n+1))+1 %>
+                    <% hseq_len = hsp.hseq[seq_range].length %>
+                    <% if hseq_len < 60 %>
+                      <% hit_from = hit_from + (60 - hseq_len) %>
+                    <% end %>
+                    <td style="white-space:nowrap">Sbjct: <%= hit_to %></td>
+                    <td><%= hsp.hseq[seq_range] %> <%= hit_from %></td>
+                  <% end %>
+                </tr>
                 <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
               <% end %>
             <% elsif @program == :tblastx or @program == :tblastn %>
