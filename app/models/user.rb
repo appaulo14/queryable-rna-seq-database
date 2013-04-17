@@ -39,7 +39,8 @@ class User < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, 
-                  :remember_me, :name, :description
+                  :remember_me, :name, :description,
+                  :captcha, :captcha_key
   
   validates :name, :presence => true
   validates :description, :presence => true

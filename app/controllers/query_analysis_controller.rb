@@ -19,18 +19,30 @@ class QueryAnalysisController < ApplicationController
       :only => [
         :query_diff_exp_transcripts, 
         :get_transcript_diff_exp_samples_for_dataset, 
-        :query_diff_exp_genes, :get_gene_diff_exp_samples_for_dataset,
+        :query_diff_exp_genes, 
+        :get_gene_diff_exp_samples_for_dataset,
         :query_transcript_isoforms, 
+        :get_transcript_isoforms_samples_for_dataset,
+        :get_transcript_fasta, :get_gene_fastas,
         :query_using_blastn, :query_using_tblastn, :query_using_tblastx,
         :get_blastn_gap_costs_for_match_and_mismatch_scores,
         :get_tblastn_gap_costs_for_matrix
       ]
     before_filter :confirm_transcript_isoform_datasets_available,
-      :only => [:query_transcript_isoforms]
+      :only => [
+        :query_transcript_isoforms,
+        :get_transcript_isoforms_samples_for_dataset
+      ]
     before_filter :confirm_transcript_diff_exp_datasets_available, 
-      :only => [:query_diff_exp_transcripts]
+      :only => [
+        :query_diff_exp_transcripts,
+        :get_transcript_diff_exp_samples_for_dataset
+      ]
     before_filter :confirm_gene_diff_exp_datasets_available, 
-      :only => [:query_diff_exp_genes]
+      :only => [
+        :query_diff_exp_genes,
+        :get_gene_diff_exp_samples_for_dataset
+      ]
       
     
     def upload_cuffdiff

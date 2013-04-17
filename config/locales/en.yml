@@ -5,7 +5,7 @@ en:
   hello: "Hello world"
   added_to_upload_queue: "Your upload job has been queued. You will receive an email when your data has been processed and is ready to query."
   simple_captcha:
-    label: "Confirm Your Humanity"
+    label: "Please Enter the Letters Above To Confirm You Are Human"
     message:
       reportissue: "did not match"
       user:        "did not match"
