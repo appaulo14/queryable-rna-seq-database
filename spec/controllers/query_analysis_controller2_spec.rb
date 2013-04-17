@@ -1,78 +1,126 @@
 require 'spec_helper'
+require 'controllers/shared_examples.rb'
 
 describe QueryAnalysisController do
-  describe 'query_diff_exp_transcripts' do
-    describe 'when not signed in' do
-      it "should redirect from 'query_diff_exp_transcripts'" do
-        get 'query_diff_exp_transcripts'
-        response.should redirect_to(new_user_session_path)
-      end 
+  describe 'upload_cuffdiff' do
+    before (:each) do
+      @action = 'upload_cuffdiff'
+      @template = :upload_cuffdiff
+      @view_model = UploadCuffdiff
+      @query_or_upload_method = :save
     end
     
-    describe 'when signed in' do
-      before (:each) do
-        @user = FactoryGirl.create(:user)
-        sign_in @user
-      end
-  
-      it 'should render the no datasets template when no datasets available' do
-        get 'query_diff_exp_transcripts'
-        response.should render_template :no_datasets  
-      end
-      it 'should render no transcript diff exp template when ' +
-         'no transcript diff exp datasets' do
-        FactoryGirl.create(:dataset,
-                            :user_id => @user.id,
-                            :has_transcript_diff_exp => false)
-        get 'query_diff_exp_transcripts'
-        response.should render_template :no_diff_exp_transcripts
-      end
-      
-      describe 'when transcript diff exp datasets are available' do
-        before (:each) do 
-          FactoryGirl.create(:dataset, :user_id => @user.id)
-        end
-        
-        describe 'GET' do
-          before (:each) do
-            QueryDiffExpTranscripts.any_instance.stub(:set_attributes_and_defaults)
-          end
-          
-          it 'should render normal page' do
-            get 'query_diff_exp_transcripts'
-            response.should render_template :query_diff_exp_transcripts
-          end
-        end
-        
-        describe 'POST', :type => :post do
-          before (:each) do
-            QueryDiffExpTranscripts.any_instance.stub(:set_attributes_and_defaults)
-            QueryDiffExpTranscripts.any_instance.stub(:query)
-          end
-        
-          it 'should render normal page' do
-            post 'query_diff_exp_transcripts'
-            response.should render_template :query_diff_exp_transcripts
-          end
-          
-          it 'should validate the format intput' do
-            QueryDiffExpTranscripts.any_instance.should_receive(:valid?)
-            post 'query_diff_exp_transcripts'
-          end
-          
-          it 'should call qdet.save when given valid object' do
-            QueryDiffExpTranscripts.any_instance.stub(:valid?).and_return(true)
-            QueryDiffExpTranscripts.any_instance.should_receive(:query)
-            post 'query_diff_exp_transcripts'
-          end
-          
-          it 'should not call qdet.save when not given valid form data' do
-            QueryDiffExpTranscripts.any_instance.stub(:valid?).and_return(false)
-            QueryDiffExpTranscripts.any_instance.should_not_receive(:query)
-            post 'query_diff_exp_transcripts'
-          end
-        end
-      end
-    end
+    it_should_behave_like 'an action that requires authentication'
+    it_should_behave_like 'an action that has form data'
   end
+  
+  describe 'upload_fasta_sequences' do
+    before (:each) do
+      @action = 'upload_fasta_sequences'
+      @template = :upload_fasta_sequences
+      @view_model = UploadFastaSequences
+      @query_or_upload_method = :save
+    end
+    
+    it_should_behave_like 'an action that requires authentication'
+    it_should_behave_like 'an action that has form data'
+  end
+  
+  describe 'upload_trinity_with_edger' do
+    before (:each) do
+      @action = 'upload_trinity_with_edger'
+      @template = :upload_trinity_with_edger
+      @view_model = UploadTrinityWithEdgeR
+      @query_or_upload_method = :save
+    end
+    
+    it_should_behave_like 'an action that requires authentication'
+    it_should_behave_like 'an action that has form data'
+  end
+  
+  describe 'add_sample_cmp_for_trinity_with_edger_transcripts' do
+    before (:each) do
+      @action = 'add_sample_cmp_for_trinity_with_edger_transcripts'
+    end
+    
+    it_should_behave_like 'an action that requires authentication'
+  end
+  
+  describe 'add_sample_cmp_for_trinity_with_edger_genes' do
+    before (:each) do
+      @action = 'add_sample_cmp_for_trinity_with_edger_genes'
+    end
+    
+    it_should_behave_like 'an action that requires authentication'
+  end
+  
+  describe 'query_diff_exp_transcripts' do
+    before (:each) do
+      @action = 'query_diff_exp_transcripts'
+      @template = :query_diff_exp_transcripts
+      @view_model = QueryDiffExpTranscripts
+      @query_or_upload_method = :query
+    end
+    
+    it 'should render no transcript diff exp template when ' +
+        'no transcript diff exp datasets' do
+      @user = FactoryGirl.create(:user)
+      sign_in @user
+      FactoryGirl.create(:dataset,
+                          :user_id => @user.id,
+                          :has_transcript_diff_exp => false)
+      get 'query_diff_exp_transcripts'
+      response.should render_template :no_diff_exp_transcripts
+    end    
+    
+    it_should_behave_like 'an action that requires authentication'
+    it_should_behave_like 'an action that has form data'
+    it_should_behave_like 'an action that requires a dataset'
+  end
+  
+  describe 'get_transcript_diff_exp_samples_for_dataset' do
+    before (:each) do
+      @action = 'get_transcript_diff_exp_samples_for_dataset'
+      @template = :diff_exp_samples_for_dataset
+      @view_model = QueryDiffExpTranscripts
+      @query_or_upload_method = :query
+    end
+    
+    it 'should render no transcript diff exp template when ' +
+        'no transcript diff exp datasets' do
+      @user = FactoryGirl.create(:user)
+      sign_in @user
+      FactoryGirl.create(:dataset,
+                          :user_id => @user.id,
+                          :has_transcript_diff_exp => false)
+      get 'query_diff_exp_transcripts'
+      response.should render_template :no_diff_exp_transcripts
+    end    
+    
+    it_should_behave_like 'an action that requires authentication'
+    it_should_behave_like 'an action that has form data'
+    it_should_behave_like 'an action that requires a dataset'
+  end
+  
+  describe 'get_transcript_fasta' do
+  end
+  
+  describe 'get_gene_fastas' do
+  end
+  
+  describe 'query_diff_exp_genes' do
+  end
+  
+#   describe 'query_using_blastn' do
+#     before (:each) do
+#       @action = 'query_using_blastn'
+#       @template = :query_using_blastn
+#       @view_model = QueryUsingBlastn
+#       @query_or_upload_method = :blast
+#     end
+#     
+#     it_should_behave_like 'an action that requires authentication'
+#     it_should_behave_like 'an action that has form data'
+#     it_should_behave_like 'an action that requires a dataset'
+#   end
 end

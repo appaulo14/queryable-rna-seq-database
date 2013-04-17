@@ -17,7 +17,9 @@ class QueryAnalysisController < ApplicationController
     
     before_filter :confirm_datasets_available, 
       :only => [
-        :query_diff_exp_transcripts, :query_diff_exp_genes, 
+        :query_diff_exp_transcripts, 
+        :get_transcript_diff_exp_samples_for_dataset, 
+        :query_diff_exp_genes, :get_gene_diff_exp_samples_for_dataset,
         :query_transcript_isoforms, 
         :query_using_blastn, :query_using_tblastn, :query_using_tblastx,
         :get_blastn_gap_costs_for_match_and_mismatch_scores,
@@ -109,10 +111,12 @@ class QueryAnalysisController < ApplicationController
     def get_transcript_diff_exp_samples_for_dataset
       @qdet = QueryDiffExpTranscripts.new(current_user)
       dataset_id = params[:dataset_id]
-      @qdet.set_attributes_and_defaults(:dataset_id => dataset_id)
+      @qdet.set_attributes_and_defaults({:dataset_id => dataset_id})
       if @qdet.valid?
         render :partial => 'diff_exp_samples_for_dataset', 
                :locals => {:object => @qdet}
+      else
+        render :no_datasets
       end
     end
     
@@ -170,7 +174,7 @@ class QueryAnalysisController < ApplicationController
     def get_gene_diff_exp_samples_for_dataset
       @qdeg = QueryDiffExpGenes.new(current_user)
       dataset_id = params[:dataset_id]
-      @qdeg.set_attributes_and_defaults(:dataset_id => dataset_id)
+      @qdeg.set_attributes_and_defaults({:dataset_id => dataset_id})
       if @qdeg.valid?
         render :partial => 'diff_exp_samples_for_dataset', 
                :locals => {:object => @qdeg}
