@@ -7,7 +7,7 @@ class QueryDiffExpTranscripts
   include ActiveModel::Conversion
   extend ActiveModel::Naming
   
-  attr_accessor :dataset_id, :sample_comparison_id_pair,
+  attr_accessor :dataset_id, :sample_comparison_id,
                 :fdr_or_p_value, :cutoff, :go_terms,
                 :go_ids, :transcript_name 
   attr_reader  :names_and_ids_for_available_datasets, 
@@ -54,15 +54,14 @@ class QueryDiffExpTranscripts
         where(where_clause).
         select('samples.name as sample_1_name, '+
                'sample_2s_sample_comparisons.name as sample_2_name, ' +
-               'samples.id as sample_1_id, ' +
-               'sample_2s_sample_comparisons.id as sample_2_id')
+               'sample_comparisons.id as sample_comparison_id')
     sample_comparisons_query.each do |scq|
       display_text = "#{scq.sample_1_name} vs #{scq.sample_2_name}"
-      value = "#{scq.sample_1_id},#{scq.sample_2_id}"
+      value = scq.sample_comparison_id
       @available_sample_comparisons << [display_text, value]
     end
-    if @sample_comparison_id_pair.blank?
-      @sample_comparison_id_pair = @available_sample_comparisons[0][1]
+    if @sample_comparison_id.blank?
+      @sample_comparison_id = @available_sample_comparisons[0][1]
     end
     @show_results = false
     @program_used = Dataset.find_by_id(@dataset_id).program_used
@@ -72,18 +71,12 @@ class QueryDiffExpTranscripts
     #Don't query if it is not valid
     return if not self.valid?
     #Retreive some variables to use later
-    sample_ids = @sample_comparison_id_pair.split(',')
-    sample_1 = Sample.find_by_id(sample_ids[0])
-    sample_2 = Sample.find_by_id(sample_ids[1])
-    sample_comparison = SampleComparison.where(
-      :sample_1_id => sample_ids[0],
-      :sample_2_id => sample_ids[1]
-    )[0]
+    sample_comparison = SampleComparison.find_by_id(@sample_comparison_id)
+    @sample_1_name = sample_comparison.sample_1.name
+    @sample_2_name = sample_comparison.sample_2.name
     #Require parts of the where clause
     det_t = DifferentialExpressionTest.arel_table
-    #where_clause = det_t[:gene_id].eq(nil)
     where_clause = det_t[:sample_comparison_id].eq(sample_comparison.id)
-    #where_clause = where_clause.and(sample_cmp_clause)
     if @fdr_or_p_value == 'p_value'
       where_clause = where_clause.and(det_t[:p_value].lteq(@cutoff))
     else
@@ -98,8 +91,6 @@ class QueryDiffExpTranscripts
     query_results = 
       DifferentialExpressionTest.joins(:transcript).where(where_clause)
     #Extract the query results to a form that can be put in the view
-    @sample_1_name = sample_1.name
-    @sample_2_name = sample_2.name
     @results = []
     query_results.each do |query_result|
       #Fill in the result hash that the view will use to display the data
@@ -116,18 +107,16 @@ class QueryDiffExpTranscripts
       end
       result = {}
       result[:transcript_name] = transcript.name_from_program
-      #det.transcript.name_from_program
       if transcript.gene
         result[:gene_name] =  transcript.gene.name_from_program 
       end
-       #det.transcript.gene.name_from_program
-      result[:go_terms] = transcript.go_terms #det.transcript.go_terms
+      result[:go_terms] = transcript.go_terms
       result[:test_statistic] = query_result.test_statistic
-      result[:p_value] = query_result.p_value #det.p_value
-      result[:fdr] = query_result.fdr #det.fdr
-      result[:sample_1_fpkm] =  query_result.sample_1_fpkm   #det.fpkm_sample_1.fpkm
-      result[:sample_2_fpkm] =  query_result.sample_2_fpkm   #det.fpkm_sample_2.fpkm
-      result[:log_fold_change] = query_result.log_fold_change     #det.logfc
+      result[:p_value] = query_result.p_value
+      result[:fdr] = query_result.fdr
+      result[:sample_1_fpkm] =  query_result.sample_1_fpkm
+      result[:sample_2_fpkm] =  query_result.sample_2_fpkm
+      result[:log_fold_change] = query_result.log_fold_change
       result[:test_status] = query_result.test_status
       @results << result
     end

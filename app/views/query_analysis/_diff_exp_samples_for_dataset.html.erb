@@ -1,6 +1,6 @@
 <%= fields_for object do |qde| %>
-<%= qde.label :sample_comparison_id_pair, "Samples to compare" %>
-<%= qde.select :sample_comparison_id_pair, 
+<%= qde.label :sample_comparison_id, "Samples to compare" %>
+<%= qde.select :sample_comparison_id, 
   options_for_select(qde.object.available_sample_comparisons,
-    qde.object.sample_comparison_id_pair)  %> 
+    qde.object.sample_comparison_id)  %> 
 <% end %>

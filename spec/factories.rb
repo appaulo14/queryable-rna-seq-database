@@ -137,7 +137,11 @@ FactoryGirl.define do
       after(:build)             {|object| object.set_attributes_and_defaults() }
       transcripts_fasta_file    {get_uploaded_trinity_fasta_file()}
       gene_diff_exp_files       {get_trinity_diff_exp_files('gene', 2)}
+      gene_diff_exp_sample_1_names {['ds_gene']}
+      gene_diff_exp_sample_2_names {['hs_gene']}
       transcript_diff_exp_files {get_trinity_diff_exp_files('trans', 2)}
+      transcript_diff_exp_sample_1_names {['ds_trans']}
+      transcript_diff_exp_sample_2_names {['hs_trans']}
       gene_fpkm_file            {get_trinity_gene_fpkm_file(2)}
       transcript_fpkm_file      {get_trinity_transcript_fpkm_file(2)}
       has_gene_diff_exp         '1'

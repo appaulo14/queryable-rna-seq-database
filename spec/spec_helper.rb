@@ -96,6 +96,16 @@ RSpec.configure do |config|
     visit destroy_user_session_path
   end
   
+  def populate_short_list_of_go_terms
+    go_term_file = File.open('spec/view_models/query_analysis/test_files/GO.terms_and_ids_short')
+    while (not go_term_file.eof?)
+      line = go_term_file.readline.chomp
+      next if line.match(/\AGO/).nil? #skip if line has no term 
+      go_id, go_term = line.match(/\A(GO:\d+)\s+(.+)\s+(.+)\z/).captures()
+      GoTerm.create!(:id => go_id, :term => go_term)
+    end
+  end
+  
   def generate_uploaded_file(content)
     tmpfile = Tempfile.new('tempfile')
     tmpfile.write(content)
@@ -115,7 +125,10 @@ RSpec.configure do |config|
                 "test_files/trinity_with_edger/trinity_out_dir/" +
                 "Trinity.fasta"
     file = File.new(file_path,'r')
-    return ActionDispatch::Http::UploadedFile.new({:tempfile => file})
+    uploaded_file = ActionDispatch::Http::UploadedFile.new({
+        :tempfile => file, :filename => 'Trinity.fasta'
+    })
+    return uploaded_file
   end
   
   def get_trinity_diff_exp_files(type, number_of_samples)

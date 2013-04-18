@@ -396,7 +396,7 @@ def make_go_terms
   while (not go_term_file.eof?)
     line = go_term_file.readline
     next if line.match(/\AGO/).nil? #skip if line has no term 
-    go_id, go_term = line.split(/\t/)
+    go_id, go_term = line.match(/\A(GO:\d+)\s+(.+)\s+(.+)\z/).captures()
     GoTerm.create!(:id => go_id, :term => go_term)
     count += 1
     #break if count > 1000
@@ -415,7 +415,7 @@ def make_transcript_has_go_terms
         random_go_term = GoTerm.all.sample
         redo if t.go_terms.include?(random_go_term)
         TranscriptHasGoTerm.create!(:transcript => t, 
-                                    :go_term => random_go_term)
+                                      :go_term => random_go_term)
       end
     end
   end
