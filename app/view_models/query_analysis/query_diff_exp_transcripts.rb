@@ -39,8 +39,12 @@ class QueryDiffExpTranscripts
       @names_and_ids_for_available_datasets << [ds.name, ds.id]
     end
     #Set default values for the relavent blank attributes
-    @dataset_id = available_datasets.first.id if @dataset_id.blank?
-    @fdr_or_p_value = :p_value if fdr_or_p_value.blank?
+    if @dataset_id.blank?
+      @dataset_id = available_datasets.first.id
+    elsif not @dataset_id.to_s.match(/\A\d+\z/)
+      @dataset_id = available_datasets.first.id
+    end
+    @fdr_or_p_value = 'p_value' if fdr_or_p_value.blank?
     @cutoff = '0.05' if cutoff.blank?
     #Set available samples for comparison
     @available_sample_comparisons = []

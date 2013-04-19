@@ -71,10 +71,12 @@ class UploadCuffdiff
                                                           @dataset)
       #Log the exception manually because Rails doesn't want to in this case
       rescue Exception => ex2
-        Rails.logger.error "#{ex2.message}\n#{ex2.backtrace.join("\n")}"
+        Rails.logger.error "For dataset #{@dataset.id} with name #{@dataset.name}:\n" +
+                          "#{ex2.message}\n#{ex2.backtrace.join("\n")}"
         raise ex2, ex2.message
       ensure
-        Rails.logger.error "#{ex.message}\n#{ex.backtrace.join("\n")}"
+        Rails.logger.error "For dataset #{@dataset.id} with name #{@dataset.name}:\n" +
+                          "#{ex.message}\n#{ex.backtrace.join("\n")}"
       end
     ensure
       delete_uploaded_files()

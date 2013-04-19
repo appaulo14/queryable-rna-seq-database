@@ -40,7 +40,8 @@ class UploadFastaSequences
       QueryAnalysisMailer.notify_user_of_upload_failure(@current_user,
                                                           @dataset)
       #Log the exception manually because Rails doesn't want to in this case
-      Rails.logger.error "#{ex.message}\n#{ex.backtrace.join("\n")}"
+      Rails.logger.error "For dataset #{@dataset.id} with name #{@dataset.name}:\n" +
+                          "#{ex.message}\n#{ex.backtrace.join("\n")}"
       raise
     ensure
       File.delete(@transcripts_fasta_file.tempfile.path)
