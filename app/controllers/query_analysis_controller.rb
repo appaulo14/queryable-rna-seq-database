@@ -119,10 +119,21 @@ class QueryAnalysisController < ApplicationController
         if @finder.valid?
           queue_name = :find_go_terms_for_dataset_queue
           SuckerPunch::Queue[queue_name].async.perform(@finder)
-          #Reset the form
-          @finder = FindGoTermsForDataset.new(current_user)
-          @finder.set_attributes_and_defaults()
-          flash[:notice] = I18n.t :added_to_go_terms_queue
+          #Make sure the dataset is set to in-progress before the page reloads
+          @dataset = Dataset.find_by_id(@finder.dataset_id)
+          @dataset.go_terms_status = 'in-progress'
+          @dataset.save!
+          #Make sure there are still datasets left to display
+          if current_user.datasets.where(:go_terms_status => 'not-started').empty?
+            @datasets_in_progress = 
+                current_user.datasets.where(:go_terms_status => 'in-progress')
+            render :no_datasets_without_go_terms
+          else
+            #Reset the form
+            @finder = FindGoTermsForDataset.new(current_user)
+            @finder.set_attributes_and_defaults()
+          end
+          flash[:notice] = I18n.t :added_to_go_terms_queue, :name => @dataset.name
         end
       end
     end
@@ -341,7 +352,9 @@ class QueryAnalysisController < ApplicationController
   end
   
   def confirm_datasets_without_go_terms_available
-    if current_user.datasets.where(:has_go_terms => false).empty?
+    if current_user.datasets.where(:go_terms_status => 'not-started').empty?
+      @datasets_in_progress = 
+          current_user.datasets.where(:go_terms_status => 'in-progress')
       render :no_datasets_without_go_terms
     end
   end

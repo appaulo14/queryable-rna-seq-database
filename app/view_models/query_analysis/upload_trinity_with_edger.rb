@@ -83,7 +83,7 @@ class UploadTrinityWithEdgeR
         BlastUtil.makeblastdb_with_seqids(@transcripts_fasta_file.tempfile.path,
                                            @dataset)
         QueryAnalysisMailer.notify_user_of_upload_success(@current_user,
-                                                        @dataset)                                        
+                                                            @dataset)                                        
       end
       #If any error occurs, the files won't be deleted and therefore can
       # be examined for problems
@@ -124,7 +124,7 @@ class UploadTrinityWithEdgeR
       @dataset.has_gene_diff_exp = false
     end
     @dataset.has_transcript_isoforms = false
-    @dataset.has_go_terms = false
+    @dataset.go_terms_status = 'not-started'
     @dataset.blast_db_location = 
       "#{Rails.root}/db/blast_databases/#{Rails.env}/"
     @dataset.save!

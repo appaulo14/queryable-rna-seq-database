@@ -3,11 +3,14 @@
   <h1>Find Gene Ontology (GO) Terms for your Dataset
     <%= help_tip(:find_go_terms_for_dataset) %>
   </h1>
+  <%= render 'datasets_in_progress_of_finding_go_terms', 
+             :datasets_in_progress => finder.object.datasets_in_progress %>
+  <br/><br/>
   <table class="sub-section rounded-corners"><tr><td>
     <%= finder.label :dataset_id, "Dataset to find GO terms for" %>
     <%= finder.select :dataset_id, 
       options_for_select(finder.object.names_and_ids_for_available_datasets, 
         finder.object.dataset_id) %>
   </tr></td></table>
-  <p><%= finder.submit("Find GO Terms", :disable_with => "Adding To Queue...") %></p>
+  <p><%= finder.submit("Find GO Terms (May Take Hours or Days)", :disable_with => "Adding To Queue...") %></p>
 <% end %>

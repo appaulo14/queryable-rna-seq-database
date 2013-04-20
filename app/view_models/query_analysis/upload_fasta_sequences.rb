@@ -63,6 +63,7 @@ class UploadFastaSequences
     @dataset.has_transcript_diff_exp = false
     @dataset.has_gene_diff_exp = false
     @dataset.has_transcript_isoforms = false
+    @dataset.go_terms_status = 'not-applicable'
     @dataset.blast_db_location = 
       "#{Rails.root}/db/blast_databases/#{Rails.env}/"
     @dataset.save!

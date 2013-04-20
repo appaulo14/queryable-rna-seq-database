@@ -17,16 +17,16 @@ class GoTermFinderAndProcessor
     while not go_terms_file.eof?
       line = go_terms_file.readline
       next if line.blank?
+      #Remove from the transcript name the "lcl|" part put there by blast
+      line.gsub!(/\Alcl\|/,'')
       line_regex = /\A(\S+)\s+(\S+)\s+(.+)\z/
       (transcript_name, go_id) = line.strip.match(line_regex).captures
       go_term = GoTerm.find_by_id(go_id)
       transcript = Transcript.where(:dataset_id => @dataset.id, 
-                                    :name_from_program => transcript_name)[0]
+                                     :name_from_program => transcript_name)[0]
       TranscriptHasGoTerm.create!(:transcript => transcript, 
                                      :go_term => go_term)
     end
-    @dataset.has_go_terms = true
-    @dataset.save!
     go_terms_file.close
     File.delete(go_terms_file.path)
   end
@@ -38,14 +38,15 @@ class GoTermFinderAndProcessor
     Rails.logger.info "Running blastx for dataset: #{@dataset.id}"
     @blast_xml_output_file = Tempfile.new('blastx')
     @blast_xml_output_file.close
-    SystemUtil.system!("#{Rails.root}/bin/blast2go/run_blastx_for_blast2go.pl " +
-                       "#{@transcripts_fasta_file.path} " +
-                       "#{@blast_xml_output_file.path}")
-#       Open3.capture3("#{Rails.root}/bin/blast/bin/blastx " +
-#                     "-remote -db nr " +
-#                     "-query #{@transcripts_fasta_file.tempfile.path} " +
-#                     "-out #{@blast_xml_output_file.path} " +
-#                     "-show_gis -outfmt '5' -evalue 1e-6")
+#    SystemUtil.system!("#{Rails.root}/bin/blast2go/run_blastx_for_blast2go.pl " +
+#                       "#{@transcripts_fasta_file.path} " +
+#                       "#{@blast_xml_output_file.path}")
+    SystemUtil.system!("#{Rails.root}/bin/blast/bin/blastx " +
+                        "#{BLAST_CONFIG['is_remote']} " +
+                        "-db #{BLAST_CONFIG['db']} " +
+                        "-query #{@transcripts_fasta_file.path} " +
+                        "-out #{@blast_xml_output_file.path} " +
+                        "-show_gis -outfmt '5' -evalue 1e-6")
     Rails.logger.info "Finished blastx for dataset: #{@dataset.id}"
   end
   

@@ -131,7 +131,7 @@ class UploadCuffdiff
     else
       @dataset.has_transcript_isoforms = false
     end
-    @dataset.has_go_terms = false
+    @dataset.go_terms_status = 'not-started'
     @dataset.blast_db_location = 
       "#{Rails.root}/db/blast_databases/#{Rails.env}/"
     @dataset.save!

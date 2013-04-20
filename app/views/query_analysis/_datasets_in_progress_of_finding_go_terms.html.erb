@@ -1,0 +1,8 @@
+<% if not datasets_in_progress.empty? %>
+  <b>Datasets In Progress of Finding GO Terms:</b>
+  <table border="1">
+    <% datasets_in_progress.each do |dataset_in_progress| %>
+      <tr><td><%= dataset_in_progress.name %></td></tr>
+    <% end %>
+  </table>
+<% end %>

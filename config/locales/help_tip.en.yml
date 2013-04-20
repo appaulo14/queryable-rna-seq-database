@@ -206,9 +206,10 @@ en:
         find_go_terms_for_dataset:
           find_go_terms_for_dataset:
             title: Find Gene Ontology (GO) Terms For Dataset
-            message: <p>Select a dataset below to automatically find all the 
-                     <a href="http://www.geneontology.org/GO.doc.shtml">
+            message: <p>Select a dataset below to automatically find and store 
+                     all the <a href="http://www.geneontology.org/GO.doc.shtml">
                      Gene Ontology</a> (GO) terms for the transcripts in your 
                      dataset. This can take hours or even days dependending on 
-                     the number of transcripts you have.</p>
+                     the number of transcripts you have but only needs to be 
+                     done once because the GO terms are saved to the database.</p>
             more_info_link: ""

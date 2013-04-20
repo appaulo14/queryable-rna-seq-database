@@ -3,6 +3,7 @@ require File.expand_path('../boot', __FILE__)
 #Load any YAML config files
 require 'yaml'
 MAILER_BOT_CONFIG = YAML.load(File.read('config/mailer_bot_config.yml'))
+BLAST_CONFIG = YAML.load(File.read('config/blast_config.yml'))
 
 # Pick the frameworks you want:
 require "active_record/railtie"

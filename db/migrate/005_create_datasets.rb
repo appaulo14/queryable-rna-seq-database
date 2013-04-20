@@ -6,7 +6,7 @@ class CreateDatasets < ActiveRecord::Migration
       t.boolean :has_transcript_diff_exp, :null => false
       t.boolean :has_transcript_isoforms, :null => false
       t.boolean :has_gene_diff_exp, :null => false
-      t.boolean :has_go_terms, :null => false
+      t.string :go_terms_status, :null => false
       t.string :blast_db_location, :null => false
       t.integer :user_id, :null => false
       t.datetime :when_last_queried

@@ -23,7 +23,7 @@ class Dataset < ActiveRecord::Base
                   :has_transcript_diff_exp,
                   :has_transcript_isoforms,
                   :has_gene_diff_exp,
-                  :has_go_terms,
+                  :go_terms_status,
                   :program_used
   
   #validates :id, :presence => true
@@ -44,7 +44,8 @@ class Dataset < ActiveRecord::Base
   validates :program_used, 
       :allow_nil => false,
       :inclusion => ['trinity_with_edger', 'cuffdiff', 'generic_fasta_file']
-  
+  validates :go_terms_status, :inclusion => [
+            'not-applicable','not-started','in-progress','found']
   belongs_to :user
   has_many :transcripts, :dependent => :destroy
   has_many :genes, :dependent => :destroy
