@@ -7,7 +7,7 @@ class QueryDiffExpGenes
   include ActiveModel::Conversion
   extend ActiveModel::Naming
   
-  attr_accessor :dataset_id, :sample_comparison_id_pair,
+  attr_accessor :dataset_id, :sample_comparison_id,
                 :fdr_or_p_value, :cutoff, :go_terms, :go_ids, :gene_name 
   attr_reader   :names_and_ids_for_available_datasets, 
                 :available_sample_comparisons, 
@@ -54,11 +54,10 @@ class QueryDiffExpGenes
         where(where_clause).
         select('samples.name as sample_1_name, '+
                'sample_2s_sample_comparisons.name as sample_2_name, ' +
-               'samples.id as sample_1_id, ' +
-               'sample_2s_sample_comparisons.id as sample_2_id')
+               'sample_comparisons.id as sample_comparison_id')
     sample_comparisons_query.each do |scq|
       display_text = "#{scq.sample_1_name} vs #{scq.sample_2_name}"
-      value = "#{scq.sample_1_id},#{scq.sample_2_id}"
+      value = scq.sample_comparison_id
       @available_sample_comparisons << [display_text, value]
     end
     if @sample_comparison_id_pair.blank?
@@ -75,14 +74,10 @@ class QueryDiffExpGenes
     ds = Dataset.find_by_id(@dataset_id)
     ds.when_last_queried = Time.now
     ds.save!
-    #Create and run the query
-    sample_ids = @sample_comparison_id_pair.split(',')
-    sample_1 = Sample.find_by_id(sample_ids[0])
-    sample_2 = Sample.find_by_id(sample_ids[1])
-    sample_comparison = SampleComparison.where(
-      :sample_1_id => sample_ids[0],
-      :sample_2_id => sample_ids[1]
-    )[0]
+    #Retreive some variables to use later
+    sample_comparison = SampleComparison.find_by_id(@sample_comparison_id)
+    @sample_1_name = sample_comparison.sample_1.name
+    @sample_2_name = sample_comparison.sample_2.name
     #Require parts of the where clause
     det_t = DifferentialExpressionTest.arel_table
     where_clause = det_t[:sample_comparison_id].eq(sample_comparison.id)
@@ -101,8 +96,6 @@ class QueryDiffExpGenes
     query_results = 
       DifferentialExpressionTest.joins(:gene).where(where_clause)
     #Extract the query results to form that can be put in the view
-    @sample_1_name = sample_1.name
-    @sample_2_name = sample_2.name
     @results = []
     query_results.each do |query_result|
       #Do a few more minor queries to get the data in the needed format
