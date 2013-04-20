@@ -20,18 +20,18 @@ class UploadCuffdiff
   #validate :validate_all_or_none_gene_files
   ##Validte for file presence only???
   
-#  validates :transcripts_fasta_file, :presence => true,
-#                                     :uploaded_file => true,
-#                                     :has_fasta_file_extension => true
-#  
-#  validates :has_diff_exp, :presence => true,
-#                           :view_model_boolean => true
-#  
-#  validates :has_transcript_isoforms, :presence => true,
-#                                      :view_model_boolean => true
-#  
-#  validates :dataset_name, :presence => true
-#                           :dataset_name_unique_for_user => true
+  validates :transcripts_fasta_file, :presence => true,
+                                     :uploaded_file => true,
+                                     :has_fasta_file_extension => true
+  
+  validates :has_diff_exp, :presence => true,
+                           :view_model_boolean => true
+  
+  validates :has_transcript_isoforms, :presence => true,
+                                      :view_model_boolean => true
+  
+  validates :dataset_name, :presence => true,
+                           :dataset_name_unique_for_user => true
   
   def initialize(current_user)
     @current_user = current_user
@@ -56,19 +56,22 @@ class UploadCuffdiff
         if @has_transcript_isoforms == '1'
           process_transcript_isoforms_file()
         end
-        if (@has_diff_exp == '1' or @has_transcript_isoforms == '1')
-          find_and_process_go_terms()
-        end
+#        if (@has_diff_exp == '1' or @has_transcript_isoforms == '1')
+#          find_and_process_go_terms()
+#        end
         BlastUtil.makeblastdb_with_seqids(@transcripts_fasta_file.tempfile.path,
                                            @dataset)
         QueryAnalysisMailer.notify_user_of_upload_success(@current_user,
-                                                          @dataset)
+                                                            @dataset)
       end
+      #If any error occurs, the files won't be deleted and therefore can
+      # be examined for problems
+      delete_uploaded_files()
     rescue Exception => ex
       begin
         BlastUtil.rollback_blast_database(@dataset)
         QueryAnalysisMailer.notify_user_of_upload_failure(@current_user,
-                                                          @dataset)
+                                                            @dataset)
       #Log the exception manually because Rails doesn't want to in this case
       rescue Exception => ex2
         Rails.logger.error "For dataset #{@dataset.id} with name #{@dataset.name}:\n" +
@@ -78,8 +81,6 @@ class UploadCuffdiff
         Rails.logger.error "For dataset #{@dataset.id} with name #{@dataset.name}:\n" +
                           "#{ex.message}\n#{ex.backtrace.join("\n")}"
       end
-    ensure
-      delete_uploaded_files()
     end
   end
   
@@ -130,6 +131,7 @@ class UploadCuffdiff
     else
       @dataset.has_transcript_isoforms = false
     end
+    @dataset.has_go_terms = false
     @dataset.blast_db_location = 
       "#{Rails.root}/db/blast_databases/#{Rails.env}/"
     @dataset.save!
@@ -302,7 +304,8 @@ class UploadCuffdiff
   end
   
   def find_and_process_go_terms()
-    gtfp = GoTermFinderAndProcessor.new(@transcripts_fasta_file, @dataset)
+    gtfp = GoTermFinderAndProcessor.new(@transcripts_fasta_file.tempfile, 
+                                           @dataset)
     gtfp.find_go_terms()
     gtfp.process_go_terms()
   end

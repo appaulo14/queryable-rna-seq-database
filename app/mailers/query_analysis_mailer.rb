@@ -40,7 +40,7 @@ class QueryAnalysisMailer < ActionMailer::Base
     ).where('transcripts.dataset_id' => dataset.id).count 
     mail(:to => @user.email,
          # Name <email>
-         :from => "Queryable RNA-Seq Database Mailer Bot <#{MAILER_BOT_CONFIG['email']}>",
+         :from => mailer_bot_from_field,
          #:reply_to => MAILER_BOT_CONFIG['email'],
          :subject => 'Your Data Upload Was Successful').deliver
     #@url  = "http://example.com/login"
@@ -54,15 +54,46 @@ class QueryAnalysisMailer < ActionMailer::Base
     @dataset = dataset
     mail(:to => @user.email,
          # Name <email>
-         :from => "Queryable RNA-Seq Database Mailer Bot <#{MAILER_BOT_CONFIG['email']}>",
+         :from => mailer_bot_from_field,
          #:reply_to => MAILER_BOT_CONFIG['email'],
          :subject => 'Your Data Upload Failed').deliver
   end
   
+  def notify_user_of_blast2go_success(user, dataset)
+    @base_url = get_base_url
+    @user = user
+    @dataset = dataset
+    @go_terms_count = TranscriptHasGoTerm.joins(
+      :transcript
+    ).where('transcripts.dataset_id' => dataset.id).count 
+    mail(:to => @user.email,
+         # Name <email>
+         :from => mailer_bot_from_field,
+         #:reply_to => MAILER_BOT_CONFIG['email'],
+         :subject => 'Finding Your Gene Ontology (GO) Terms Was Successful').deliver
+  end
+  
+  def notify_user_of_blast2go_failure(user, dataset)
+    @base_url = get_base_url
+    @user = user
+    @dataset = dataset
+    @report_issue_url = "#{@base_url}/home/report_issue"
+    mail(:to => @user.email,
+         # Name <email>
+         :from => mailer_bot_from_field,
+         #:reply_to => MAILER_BOT_CONFIG['email'],
+         :subject => 'Finding Your Gene Ontology (GO) Terms Failed').deliver
+  end
+  
   private
+  
   def get_base_url
     protocol = ActionMailer::Base.default_url_options[:protocol]
     host = ActionMailer::Base.default_url_options[:host]
     return "#{protocol}://#{host}"
+  end
+  
+  def mailer_bot_from_field
+    return "Queryable RNA-Seq Database Mailer Bot <#{MAILER_BOT_CONFIG['email']}>"
   end
 end 

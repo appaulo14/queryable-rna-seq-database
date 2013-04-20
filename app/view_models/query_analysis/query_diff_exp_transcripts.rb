@@ -74,6 +74,10 @@ class QueryDiffExpTranscripts
   def query()
     #Don't query if it is not valid
     return if not self.valid?
+    #Record that the dataset was queried at this time
+    ds = Dataset.find_by_id(@dataset_id)
+    ds.when_last_queried = Time.now
+    ds.save!
     #Retreive some variables to use later
     sample_comparison = SampleComparison.find_by_id(@sample_comparison_id)
     @sample_1_name = sample_comparison.sample_1.name

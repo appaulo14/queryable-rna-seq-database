@@ -94,6 +94,10 @@ class QueryTranscriptIsoforms
   def query()
     #Don't query if it is not valid
     return if not self.valid?
+    #Record that the dataset was queried at this time
+    ds = Dataset.find_by_id(@dataset_id)
+    ds.when_last_queried = Time.now
+    ds.save!
     #Create and run the query
     select_string = 'transcripts.id as transcript_id,' +
                     'genes.name_from_program as gene_name,' +

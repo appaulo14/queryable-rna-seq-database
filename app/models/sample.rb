@@ -2,9 +2,10 @@
 #
 # Table name: samples
 #
-#  id         :integer          not null, primary key
-#  name       :string(255)      not null
-#  dataset_id :integer          not null
+#  id          :integer          not null, primary key
+#  name        :string(255)      not null
+#  sample_type :string(255)      not null
+#  dataset_id  :integer          not null
 #
 
 class Sample < ActiveRecord::Base

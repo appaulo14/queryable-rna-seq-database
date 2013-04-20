@@ -4,6 +4,7 @@
 en:
   hello: "Hello world"
   added_to_upload_queue: "Your upload job has been queued. You will receive an email when your data has been processed and is ready to query."
+  added_to_go_terms_queue: "Your find go terms job has been queued. You will receive an email when your data has been processed and is ready to query."
   simple_captcha:
     label: "Please Enter the Letters Above To Confirm You Are Human"
     message:

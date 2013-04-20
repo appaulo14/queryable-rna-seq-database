@@ -48,6 +48,9 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
   
   get 'query_analysis/add_sample_cmp_for_trinity_with_edger_genes'
   
+  get  'query_analysis/find_go_terms_for_dataset'
+  post 'query_analysis/find_go_terms_for_dataset'
+  
   get 'query_analysis/query_diff_exp_transcripts'
   post 'query_analysis/query_diff_exp_transcripts'
   

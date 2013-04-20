@@ -2,8 +2,8 @@ require 'open3'
 require 'system_util'
 
 class GoTermFinderAndProcessor
-  def initialize(uploaded_file,dataset)
-    @uploaded_transcripts_file = uploaded_file
+  def initialize(transcripts_fasta_file,dataset)
+    @transcripts_fasta_file = transcripts_fasta_file
     @dataset = dataset
   end
   
@@ -25,6 +25,8 @@ class GoTermFinderAndProcessor
       TranscriptHasGoTerm.create!(:transcript => transcript, 
                                      :go_term => go_term)
     end
+    @dataset.has_go_terms = true
+    @dataset.save!
     go_terms_file.close
     File.delete(go_terms_file.path)
   end
@@ -37,11 +39,11 @@ class GoTermFinderAndProcessor
     @blast_xml_output_file = Tempfile.new('blastx')
     @blast_xml_output_file.close
     SystemUtil.system!("#{Rails.root}/bin/blast2go/run_blastx_for_blast2go.pl " +
-                       "#{@uploaded_transcripts_file.tempfile.path} " +
+                       "#{@transcripts_fasta_file.path} " +
                        "#{@blast_xml_output_file.path}")
 #       Open3.capture3("#{Rails.root}/bin/blast/bin/blastx " +
 #                     "-remote -db nr " +
-#                     "-query #{@uploaded_transcripts_file.tempfile.path} " +
+#                     "-query #{@transcripts_fasta_file.tempfile.path} " +
 #                     "-out #{@blast_xml_output_file.path} " +
 #                     "-show_gis -outfmt '5' -evalue 1e-6")
     Rails.logger.info "Finished blastx for dataset: #{@dataset.id}"

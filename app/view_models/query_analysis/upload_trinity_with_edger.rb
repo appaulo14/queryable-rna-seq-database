@@ -79,12 +79,15 @@ class UploadTrinityWithEdgeR
         end
         process_transcript_diff_exp_files()
         process_transcript_fpkm_file()
-        find_and_process_go_terms()
+#        find_and_process_go_terms()
         BlastUtil.makeblastdb_with_seqids(@transcripts_fasta_file.tempfile.path,
                                            @dataset)
         QueryAnalysisMailer.notify_user_of_upload_success(@current_user,
-                                                        @dataset)
+                                                        @dataset)                                        
       end
+      #If any error occurs, the files won't be deleted and therefore can
+      # be examined for problems
+      delete_uploaded_files()
     rescue Exception => ex
       begin
         BlastUtil.rollback_blast_database(@dataset)
@@ -99,8 +102,6 @@ class UploadTrinityWithEdgeR
         Rails.logger.error "For dataset #{@dataset.id} with name #{@dataset.name}:\n" +
                           "#{ex.message}\n#{ex.backtrace.join("\n")}"
       end
-    ensure
-      delete_uploaded_files()
     end
   end
   
@@ -123,6 +124,7 @@ class UploadTrinityWithEdgeR
       @dataset.has_gene_diff_exp = false
     end
     @dataset.has_transcript_isoforms = false
+    @dataset.has_go_terms = false
     @dataset.blast_db_location = 
       "#{Rails.root}/db/blast_databases/#{Rails.env}/"
     @dataset.save!
@@ -170,7 +172,8 @@ class UploadTrinityWithEdgeR
   end
   
   def find_and_process_go_terms()
-    gtfp = GoTermFinderAndProcessor.new(@transcripts_fasta_file, @dataset)
+    gtfp = GoTermFinderAndProcessor.new(@transcripts_fasta_file.tempfile,
+                                           @dataset)
     gtfp.find_go_terms()
     gtfp.process_go_terms()
   end

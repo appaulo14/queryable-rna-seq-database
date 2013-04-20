@@ -64,6 +64,10 @@ class AbstractQueryUsingBlast
   def blast()
     #Don't query if it is not valid
     return if not self.valid?
+    #Record that the dataset was queried at this time
+    ds = Dataset.find_by_id(@dataset_id)
+    ds.when_last_queried = Time.now
+    ds.save!
     prepare_IO_files()
     #Build the execution string
     blast_execution_string = generate_execution_string()

@@ -6,9 +6,9 @@
 #  transcript_id :integer          not null
 #  sample_id     :integer          not null
 #  fpkm          :string(255)      not null
-#  fpkm_hi       :string(255)
-#  fpkm_lo       :string(255)
-#  status        :string(255)
+#  fpkm_hi       :string(255)      not null
+#  fpkm_lo       :string(255)      not null
+#  status        :string(255)      not null
 #
 
 require 'spec_helper'

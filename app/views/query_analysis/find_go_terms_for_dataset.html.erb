@@ -1,0 +1,13 @@
+<%= render 'shared/error_messages', :object => @finder %>
+<%= form_for(@finder, :url => 'find_go_terms_for_dataset') do |finder| %>
+  <h1>Find Gene Ontology (GO) Terms for your Dataset
+    <%= help_tip(:find_go_terms_for_dataset) %>
+  </h1>
+  <table class="sub-section rounded-corners"><tr><td>
+    <%= finder.label :dataset_id, "Dataset to find GO terms for" %>
+    <%= finder.select :dataset_id, 
+      options_for_select(finder.object.names_and_ids_for_available_datasets, 
+        finder.object.dataset_id) %>
+  </tr></td></table>
+  <p><%= finder.submit("Find GO Terms", :disable_with => "Adding To Queue...") %></p>
+<% end %>

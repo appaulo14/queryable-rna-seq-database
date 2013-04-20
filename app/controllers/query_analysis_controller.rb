@@ -2,6 +2,7 @@ require 'bio'
 require 'query_analysis/upload_cuffdiff.rb'
 require 'query_analysis/upload_fasta_sequences.rb'
 require 'query_analysis/upload_trinity_with_edger.rb'
+require 'query_analysis/find_go_terms_for_dataset.rb'
 require 'query_analysis/query_diff_exp_transcripts.rb'
 require 'query_analysis/query_transcript_isoforms.rb'
 require 'query_analysis/query_diff_exp_genes.rb'
@@ -43,6 +44,8 @@ class QueryAnalysisController < ApplicationController
         :query_diff_exp_genes,
         :get_gene_diff_exp_samples_for_dataset
       ]
+    before_filter :confirm_datasets_without_go_terms_available,
+      :only => [:find_go_terms_for_dataset]
       
     
     def upload_cuffdiff
@@ -104,6 +107,24 @@ class QueryAnalysisController < ApplicationController
     
     def add_sample_cmp_for_trinity_with_edger_genes
       render :partial => 'trinity_with_edger_genes_sample_cmp'
+    end
+    
+    def find_go_terms_for_dataset
+      if request.get?
+        @finder = FindGoTermsForDataset.new(current_user)
+        @finder.set_attributes_and_defaults()
+      elsif request.post?
+        @finder = FindGoTermsForDataset.new(current_user)
+        @finder.set_attributes_and_defaults(params[:find_go_terms_for_dataset])
+        if @finder.valid?
+          queue_name = :find_go_terms_for_dataset_queue
+          SuckerPunch::Queue[queue_name].async.perform(@finder)
+          #Reset the form
+          @finder = FindGoTermsForDataset.new(current_user)
+          @finder.set_attributes_and_defaults()
+          flash[:notice] = I18n.t :added_to_go_terms_queue
+        end
+      end
     end
     
     def query_diff_exp_transcripts
@@ -316,6 +337,12 @@ class QueryAnalysisController < ApplicationController
   def confirm_gene_diff_exp_datasets_available
     if current_user.datasets.where(:has_gene_diff_exp => true).empty?
       render :no_diff_exp_genes
+    end
+  end
+  
+  def confirm_datasets_without_go_terms_available
+    if current_user.datasets.where(:has_go_terms => false).empty?
+      render :no_datasets_without_go_terms
     end
   end
 end

@@ -1,0 +1,20 @@
+<html>
+  <head>
+    <title>Finding Your Gene Ontology (GO) Terms Was Successful</title>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+    <style></style>
+  </head>
+  <body>
+    <p>Hello <%= @user.name %>,</p>
+    
+    <p>
+      Finding your Gene Ontology (GO) terms for dataset <%= @dataset.name %> was 
+      successful.
+    </p>
+    
+    <h3>Information</h3>
+    <div>Dataset Id = <%= @dataset.id %></div>
+    <div>Dataset Name = <%= @dataset.name %></div>
+    <div>Number of GO Terms = <%= @go_terms_count %></div>
+  </body>
+</html>

@@ -203,3 +203,12 @@ en:
                      the names of the samples being compared in the corresponding
                      text boxes below.</p>
             more_info_link: https://sites.google.com/site/rnaseqanalysispipeline/user-manual/step-4-upload-your-data#TOC-Gene-Differential-Expression-Files-
+        find_go_terms_for_dataset:
+          find_go_terms_for_dataset:
+            title: Find Gene Ontology (GO) Terms For Dataset
+            message: <p>Select a dataset below to automatically find all the 
+                     <a href="http://www.geneontology.org/GO.doc.shtml">
+                     Gene Ontology</a> (GO) terms for the transcripts in your 
+                     dataset. This can take hours or even days dependending on 
+                     the number of transcripts you have.</p>
+            more_info_link: ""

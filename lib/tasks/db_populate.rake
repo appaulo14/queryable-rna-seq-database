@@ -77,6 +77,7 @@ def make_datasets(env)
                     :has_transcript_diff_exp => true,
                     :has_transcript_isoforms => true,
                     :has_gene_diff_exp       => true,
+                    :has_go_terms            => true,
                     :program_used            => 'cuffdiff')
   end
   puts 'Done'
@@ -394,8 +395,8 @@ def make_go_terms
   count = 0
   start_time = Time.now.to_i
   while (not go_term_file.eof?)
-    line = go_term_file.readline
-    next if line.match(/\AGO/).nil? #skip if line has no term 
+    line = go_term_file.readline.chomp
+    next if line.match(/\AGO/).nil? #skip if line has no term
     go_id, go_term = line.match(/\A(GO:\d+)\s+(.+)\s+(.+)\z/).captures()
     GoTerm.create!(:id => go_id, :term => go_term)
     count += 1

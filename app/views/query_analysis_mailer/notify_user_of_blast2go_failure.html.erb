@@ -1,0 +1,21 @@
+<html>
+  <head>
+    <title>Finding Your Gene Ontology (GO) Terms Failed</title>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+    <style></style>
+  </head>
+  <body>
+    <p>Hello <%= @user.name %>,</p>
+    
+    <p>
+     An error occured while trying to find the Gene Ontology (GO) terms for 
+     your dataset named "<%= @dataset.name %>".
+     Please  try again. 
+     If problems persist, contact the administrator at 
+     <a href="<%= @report_issue_url %>"><%= @report_issue_url %></a>.
+    </p>
+    
+<!--    <h3>Error Information</h3>-->
+<!--    <p><%= @error_message %></p>-->
+  </body>
+</html>
