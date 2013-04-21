@@ -203,7 +203,7 @@
                 </td>
                   
                 <% if result[:go_terms].empty? == false %>
-                  <td>
+                  <td class="list_cell">
                     <ul>
                       <!-- Sort by ascending GO ID for the go terms-->
                       <% result[:go_terms].sort{|a,b| a.id.gsub(/GO:/,'').to_i <=> b.id.gsub(/GO:/,'').to_i}.each do |go_term| %>
