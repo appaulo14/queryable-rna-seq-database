@@ -115,7 +115,7 @@
   <!--Table containing the query results-->
   <table border="1" id="query_results_table">
       <thead>
-          <tr>
+          <tr class="header_row">
             <th data-sort='string'>
               <table>
                 <tr>
@@ -193,7 +193,7 @@
       </thead>
       <tbody>
           <% @qti.results.each do |result| %>
-              <tr>
+              <tr class="body_row">
                 <td>
                   <%= link_to_fasta_sequence_for_transcript(@qti.dataset_id, 
                           result[:transcript_name]) %>

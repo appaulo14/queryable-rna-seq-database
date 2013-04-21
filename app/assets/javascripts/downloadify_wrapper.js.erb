@@ -26,9 +26,8 @@ function get_downloable_file_text(){
   output_string = '';
   //Get the table rows
   var query_results_table = $('#query_results_table');
-  var rows = query_results_table.find('tr');
+  var header_row = query_results_table.find('.header_row');
   //Get the header cells and write them to the output string
-  header_row = $(rows[0]);
   header_cells = header_row.find('th');
   for (var i=0;i<header_cells.length;i++){
     header_cell = $(header_cells[i]);
@@ -41,7 +40,8 @@ function get_downloable_file_text(){
   output_string+="\n";
   //Write all the table cells to the output string.
   //Loop through the rows
-  for (var i=1;i<rows.length;i++){
+  rows = query_results_table.find('.body_row');
+  for (var i=0;i<rows.length;i++){
     row = $(rows[i]);
     table_cells = row.find('td');
     //Loop through the cells within a row

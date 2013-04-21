@@ -77,7 +77,7 @@
   <!--Table containing the query results-->
   <table border="1" id="query_results_table">
       <thead>
-          <tr>
+          <tr class="header_row">
               <th data-sort='string'>
                 <table>
                   <tr>
@@ -159,7 +159,7 @@
       </thead>
       <tbody>
           <% @qdeg.results.each do |result| %>
-              <tr>
+              <tr class="body_row">
                   <td>
                     <%= link_to_fasta_sequences_for_gene(@qdeg.dataset_id, 
                                 result[:gene_name]) %>
