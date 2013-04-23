@@ -9,13 +9,13 @@ namespace :generate_test_files do
     end
     Dir.mkdir("#{Rails.root}/tmp/generated_test_files/cuffdiff")
     Dir.chdir("#{Rails.root}/tmp/generated_test_files/cuffdiff") 
-    GenerateCuffdiffFiles.make_samples(3)
-    GenerateCuffdiffFiles.make_genes(10000)
+    GenerateCuffdiffFiles.make_samples(4)
+    GenerateCuffdiffFiles.make_genes(80000)
     GenerateCuffdiffFiles.make_transcripts()
     GenerateCuffdiffFiles.make_transcripts_fasta_file()
     GenerateCuffdiffFiles.make_isoform_fpkm_file()
-#    GenerateCuffdiffFiles.make_transcript_det_files()
-#    GenerateCuffdiffFiles.make_gene_det_files()
+    GenerateCuffdiffFiles.make_isoform_det_files()
+    GenerateCuffdiffFiles.make_gene_det_files()
   end
   
   #I put all the methods in a class to because namespace collision
@@ -104,42 +104,64 @@ namespace :generate_test_files do
       file.close()
     end
     
-    def self.make_transcript_det_files()
-      (0..@transcript_samples.count-1).each do |n1|
-        ((n1+1)..@transcript_samples.count-1).each do |n2|
-          file_name = "#{@transcript_samples[n1]}_vs_#{@transcript_samples[n2]}.results.txt"
-          file = File.new("#{file_name}",'w')
-          file.write("logConc	logFC	P.Value	adj.P.Val\n")
-          @transcripts.each do |transcript|
-            file.write(transcript)
-            file.write("\t#{rand(-10.0..10.0)}") #Write the logConc
-            file.write("\t#{rand(-10.0..10.0)}") #Write the logFC
+    def self.make_isoform_det_files()
+      file = File.new('isoform_exp.diff','w')
+      (0..@samples.count-1).each do |n1|
+        ((n1+1)..@samples.count-1).each do |n2|
+          #Write header
+          file.write("test_id\tgene_id\tgene\tlocus\tsample_1\tsample_2")
+          file.write("\tstatus\tvalue_1\tvalue_2\tlog2(fold_change)\ttest_stat")
+          file.write("\tp_value\tq_value\tsignificant\n")
+          @transcripts_with_gene.each do |transcript_with_gene|
+            transcript = transcript_with_gene.transcript
+            gene = transcript_with_gene.gene
+            file.write("#{transcript}")
+            file.write("\t#{gene}")
+            file.write("\tNM_004359\tchr19:486837-492886")
+            file.write("\t#{@samples[n1]}\t#{@samples[n2]}")
+            file.write("\t#{DifferentialExpressionTest::POSSIBLE_TEST_STATUSES.sample}")
+            #log2(fold_change)	test_stat	p_value	q_value	significant
+            file.write("\t#{rand(0.0..62000.0)}") #Write value 1
+            file.write("\t#{rand(0.0..62000.0)}") #Write value 2
+            file.write("\t#{rand(-10.0..10.0)}") #Write the log2(fold_change)
+            file.write("\t#{rand(0.0..1.0)}") #Write the test_stat
             file.write("\t#{rand(0.0..1.0)}") #Write the P.value
-            file.write("\t#{rand(0.0..1.0)}") #Write the adj.P.Val
+            file.write("\t#{rand(0.0..1.0)}") #Write the q_value
+            file.write("\t#{['yes','no'].sample}") #Write whether significant
             file.write("\n")
           end
-          file.close()
         end
       end
+      file.close()
     end
     
     def self.make_gene_det_files()
-      (0..@gene_samples.count-1).each do |n1|
-        ((n1+1)..@gene_samples.count-1).each do |n2|
-          file_name = "#{@gene_samples[n1]}_vs_#{@gene_samples[n2]}.results.txt"
-          file = File.new("#{file_name}",'w')
-          file.write("logConc	logFC	P.Value	adj.P.Val\n")
-          @genes.each do |transcript|
-            file.write(transcript)
-            file.write("\t#{rand(-10.0..10.0)}") #Write the logConc
-            file.write("\t#{rand(-10.0..10.0)}") #Write the logFC
+      file = File.new('gene_exp.diff','w')
+      (0..@samples.count-1).each do |n1|
+        ((n1+1)..@samples.count-1).each do |n2|
+          #Write header
+          file.write("test_id\tgene_id\tgene\tlocus\tsample_1\tsample_2")
+          file.write("\tstatus\tvalue_1\tvalue_2\tlog2(fold_change)\ttest_stat")
+          file.write("\tp_value\tq_value\tsignificant\n")
+          @genes.each do |gene|
+            file.write("#{gene}")
+            file.write("\t#{gene}")
+            file.write("\tNM_004359\tchr19:486837-492886")
+            file.write("\t#{@samples[n1]}\t#{@samples[n2]}")
+            file.write("\t#{DifferentialExpressionTest::POSSIBLE_TEST_STATUSES.sample}")
+            #log2(fold_change)	test_stat	p_value	q_value	significant
+            file.write("\t#{rand(0.0..62000.0)}") #Write value 1
+            file.write("\t#{rand(0.0..62000.0)}") #Write value 2
+            file.write("\t#{rand(-10.0..10.0)}") #Write the log2(fold_change)
+            file.write("\t#{rand(0.0..1.0)}") #Write the test_stat
             file.write("\t#{rand(0.0..1.0)}") #Write the P.value
-            file.write("\t#{rand(0.0..1.0)}") #Write the adj.P.Val
+            file.write("\t#{rand(0.0..1.0)}") #Write the q_value
+            file.write("\t#{['yes','no'].sample}") #Write whether significant
             file.write("\n")
           end
-          file.close()
         end
       end
+      file.close()
     end
   end
   

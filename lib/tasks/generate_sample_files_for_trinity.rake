@@ -9,13 +9,13 @@ namespace :generate_test_files do
     end
     Dir.mkdir("#{Rails.root}/tmp/generated_test_files/trinity")
     Dir.chdir("#{Rails.root}/tmp/generated_test_files/trinity") 
-    make_genes(10000)
+    make_genes(100000)
     make_transcripts()
-    make_transcript_samples(3)
+    make_transcript_samples(4)
     make_trinity_fasta_file()
     make_transcript_fpkm_file()
     make_transcript_det_files()
-    make_gene_samples(3)
+    make_gene_samples(4)
     make_gene_fpkm_file()
     make_gene_det_files()
   end
