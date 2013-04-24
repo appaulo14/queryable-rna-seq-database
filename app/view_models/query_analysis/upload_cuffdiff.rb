@@ -50,17 +50,31 @@ class UploadCuffdiff
       ActiveRecord::Base.transaction do   #Transactions work with sub-methods
         process_args_to_create_dataset()
         if @has_diff_exp == '1'
+          Rails.logger.info "Starting gene diff exp for dataset: #{@dataset.id}"
           process_gene_differential_expression_file()
+          Rails.logger.info "Finished gene diff exp for dataset: #{@dataset.id}"
+          Rails.logger.info "Started trans diff exp for dataset: #{@dataset.id}"
           process_transcript_differential_expression_file()
+          Rails.logger.info "Finished trans diff exp for dataset: #{@dataset.id}"
         end
         if @has_transcript_isoforms == '1'
+          Rails.logger.info "Started trans isoforms for dataset: #{@dataset.id}"
           process_transcript_isoforms_file()
+          Rails.logger.info "Finished trans isoforms for dataset: #{@dataset.id}"
         end
-#        if (@has_diff_exp == '1' or @has_transcript_isoforms == '1')
-#          find_and_process_go_terms()
-#        end
+        counts = Hash.new{ 0 }
+        ObjectSpace.each_object do |o|
+          counts[o.class] += 1
+        end
+        counts.each do |key, val|
+          if counts[key] > 100
+            puts "#{key}=#{counts[key]}"
+          end
+        end
+        Rails.logger.info "Started blast db creation for dataset: #{@dataset.id}"
         BlastUtil.makeblastdb_with_seqids(@transcripts_fasta_file.tempfile.path,
                                            @dataset)
+        Rails.logger.info "Finished blast db creation for dataset: #{@dataset.id}"
         QueryAnalysisMailer.notify_user_of_upload_success(@current_user,
                                                             @dataset)
       end
@@ -148,7 +162,7 @@ class UploadCuffdiff
       cells = line.split(/\s+/)
       #Create the gene if not already created
       gene = Gene.where(:dataset_id => @dataset.id,
-                         :name_from_program => cells[0])[0]
+                         :name_from_program => cells[0]).first
       if gene.nil?
         gene = Gene.create!(:dataset => @dataset, 
                             :name_from_program => cells[0])
@@ -156,7 +170,7 @@ class UploadCuffdiff
       #Create sample 1 if not already created
       sample_1_name = cells[4]
       sample_1 = Sample.where(:dataset_id => @dataset.id, 
-                              :name => sample_1_name)[0]
+                              :name => sample_1_name).first
       if sample_1.nil?
         sample_1 = Sample.create!(:name => sample_1_name, 
                                   :dataset => @dataset,
@@ -165,7 +179,7 @@ class UploadCuffdiff
       #Create sample 2 if not already created
       sample_2_name = cells[5]
       sample_2 = Sample.where(:dataset_id => @dataset.id, 
-                              :name => sample_2_name)[0]
+                              :name => sample_2_name).first
       if sample_2.nil?
         sample_2 = Sample.create!(:name => sample_2_name, 
                                   :dataset => @dataset,
@@ -174,7 +188,7 @@ class UploadCuffdiff
       #Create the sample comparison if not already created
       sample_comparison = 
           SampleComparison.where(:sample_1_id => sample_1.id, 
-                                :sample_2_id => sample_2.id)[0]
+                                :sample_2_id => sample_2.id).first
       if sample_comparison.nil?
         sample_comparison = 
             SampleComparison.create!(:sample_1 => sample_1, 
@@ -182,14 +196,14 @@ class UploadCuffdiff
       end
       #Create the differential expression test
       DifferentialExpressionTest.create!(:gene => gene,
-                                          :test_status => cells[6],
-                                          :sample_1_fpkm => cells[7],
-                                          :sample_2_fpkm => cells[8],
-                                          :log_fold_change => cells[9],
-                                          :test_statistic => cells[10],
-                                          :p_value => cells[11],
-                                          :fdr => cells[12],
-                                          :sample_comparison => sample_comparison)
+                                         :test_status => cells[6],
+                                         :sample_1_fpkm => cells[7],
+                                         :sample_2_fpkm => cells[8],
+                                         :log_fold_change => cells[9],
+                                         :test_statistic => cells[10],
+                                         :p_value => cells[11],
+                                         :fdr => cells[12],
+                                         :sample_comparison => sample_comparison)
     end
   end
   
@@ -202,19 +216,19 @@ class UploadCuffdiff
       next if cells.blank?
       # Retrieve the transcript's associated gene
       gene = Gene.where(:dataset_id => @dataset.id,
-                         :name_from_program => cells[1])[0]
+                         :name_from_program => cells[1]).first
       #Create the transcript if not already created
       transcript = Transcript.where(:dataset_id => @dataset.id,
-                                      :name_from_program => cells[0])[0]
+                                    :name_from_program => cells[0]).first
       if transcript.nil?
         transcript = Transcript.create!(:dataset => @dataset, 
-                                         :name_from_program => cells[0],
-                                         :gene => gene)
+                                        :name_from_program => cells[0],
+                                        :gene => gene)
       end
       #Create sample 1 if not already created
       sample_1_name = cells[4]
       sample_1 = Sample.where(:dataset_id => @dataset.id, 
-                              :name => sample_1_name)[0]
+                              :name => sample_1_name).first
       if sample_1.nil?
         sample_1 = Sample.create!(:name => sample_1_name, 
                                   :dataset => @dataset,
@@ -223,7 +237,7 @@ class UploadCuffdiff
       #Create sample 2 if not already created
       sample_2_name = cells[5]
       sample_2 = Sample.where(:dataset_id => @dataset.id, 
-                              :name => sample_2_name)[0]
+                              :name => sample_2_name).first
       if sample_2.nil?
         sample_2 = Sample.create!(:name => sample_2_name, 
                                   :dataset => @dataset,
@@ -232,7 +246,7 @@ class UploadCuffdiff
       #Create the sample comparison if not already created
       sample_comparison = 
           SampleComparison.where(:sample_1_id => sample_1.id, 
-                                  :sample_2_id => sample_2.id)[0]
+                                  :sample_2_id => sample_2.id).first
       if sample_comparison.nil?
         sample_comparison = 
             SampleComparison.create!(:sample_1 => sample_1, 
@@ -273,14 +287,14 @@ class UploadCuffdiff
       cells = line.split(/\s+/)
       #Create the transcript's associated gene if not already created
       gene = Gene.where(:dataset_id => @dataset.id,
-                         :name_from_program => cells[3])[0]
+                         :name_from_program => cells[3]).first
       if gene.nil?
         gene = Gene.create!(:dataset => @dataset,
                              :name_from_program => cells[3])
       end
       #Create the transcript if not already created
       transcript = Transcript.where(:dataset_id => @dataset.id,
-                                    :name_from_program => cells[0])[0]
+                                    :name_from_program => cells[0]).first
       if transcript.nil?
         transcript = Transcript.create!(:dataset => @dataset,
                              :gene => gene,

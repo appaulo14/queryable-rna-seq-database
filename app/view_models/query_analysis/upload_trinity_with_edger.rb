@@ -11,16 +11,16 @@ class UploadTrinityWithEdgeR
   extend ActiveModel::Naming
   
   attr_accessor :transcripts_fasta_file, 
-                  :gene_diff_exp_files, #Array
-                  :gene_diff_exp_sample_1_names, #Array
-                  :gene_diff_exp_sample_2_names, #Array
-                  :transcript_diff_exp_files, #Array 
-                  :transcript_diff_exp_sample_1_names, #Array
-                  :transcript_diff_exp_sample_2_names, #Array
-                  :gene_fpkm_file, 
-                  :transcript_fpkm_file,
-                  :has_gene_diff_exp,
-                  :dataset_name
+                :gene_diff_exp_files, #Array
+                :gene_diff_exp_sample_1_names, #Array
+                :gene_diff_exp_sample_2_names, #Array
+                :transcript_diff_exp_files, #Array 
+                :transcript_diff_exp_sample_1_names, #Array
+                :transcript_diff_exp_sample_2_names, #Array
+                :gene_fpkm_file, 
+                :transcript_fpkm_file,
+                :has_gene_diff_exp,
+                :dataset_name
   
   validates :transcripts_fasta_file, :presence => true,
                                      :uploaded_file => true,
@@ -74,14 +74,32 @@ class UploadTrinityWithEdgeR
       ActiveRecord::Base.transaction do   #Transactions work with sub-methods
         process_args_to_create_dataset()
         if @has_gene_diff_exp == '1'
+          Rails.logger.info "Starting gene diff exp for dataset: #{@dataset.id}"
           process_gene_diff_exp_files()
+          Rails.logger.info "Finished gene diff exp for dataset: #{@dataset.id}"
+          Rails.logger.info "Starting gene fpkm for dataset: #{@dataset.id}"
           process_gene_fpkm_file()
+          Rails.logger.info "Finished gene fpkm exp for dataset: #{@dataset.id}"
         end
+        Rails.logger.info "Started trans diff exp for dataset: #{@dataset.id}"
         process_transcript_diff_exp_files()
+        Rails.logger.info "Finished trans diff exp for dataset: #{@dataset.id}"
+        counts = Hash.new{ 0 }
+        ObjectSpace.each_object do |o|
+          counts[o.class] += 1
+        end
+        counts.each do |key, val|
+          if counts[key] > 100
+            puts "#{key}=#{counts[key]}"
+          end
+        end
+        Rails.logger.info "Starting trans fpkm for dataset: #{@dataset.id}"
         process_transcript_fpkm_file()
-#        find_and_process_go_terms()
+        Rails.logger.info "Finished trans fpkm exp for dataset: #{@dataset.id}"
+        Rails.logger.info "Started blast db creation for dataset: #{@dataset.id}"
         BlastUtil.makeblastdb_with_seqids(@transcripts_fasta_file.tempfile.path,
                                            @dataset)
+        Rails.logger.info "Finished blast db creation for dataset: #{@dataset.id}"
         QueryAnalysisMailer.notify_user_of_upload_success(@current_user,
                                                             @dataset)                                        
       end
@@ -143,6 +161,7 @@ class UploadTrinityWithEdgeR
                                                        sample_1_name,
                                                        sample_2_name)
       tgdefp.process_file()
+      debugger
     end
   end
   

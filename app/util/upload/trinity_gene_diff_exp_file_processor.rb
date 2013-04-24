@@ -12,7 +12,7 @@ class TrinityGeneDiffExpFileProcessor < TrinityDiffExpFileProcessor
     while not @uploaded_diff_exp_file.eof?
       diff_exp_line = @uploaded_diff_exp_file.get_next_line
       gene = Gene.where(:dataset_id => @dataset.id,
-                         :name_from_program => diff_exp_line.item)[0]
+                         :name_from_program => diff_exp_line.item).first
       if gene.nil?
         gene =  Gene.create!(:dataset => @dataset,
                              :name_from_program => diff_exp_line.item)

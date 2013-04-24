@@ -9,8 +9,8 @@ namespace :generate_test_files do
     end
     Dir.mkdir("#{Rails.root}/tmp/generated_test_files/cuffdiff")
     Dir.chdir("#{Rails.root}/tmp/generated_test_files/cuffdiff") 
-    GenerateCuffdiffFiles.make_samples(4)
-    GenerateCuffdiffFiles.make_genes(80000)
+    GenerateCuffdiffFiles.make_samples(3)
+    GenerateCuffdiffFiles.make_genes(4000)
     GenerateCuffdiffFiles.make_transcripts()
     GenerateCuffdiffFiles.make_transcripts_fasta_file()
     GenerateCuffdiffFiles.make_isoform_fpkm_file()
@@ -38,6 +38,7 @@ namespace :generate_test_files do
           transcript_with_gene.gene = gene
           transcript_with_gene.transcript = "TCONS_" + ("%08d" % transcripts_count)
           @transcripts_with_gene << transcript_with_gene
+          transcripts_count += 1
         end
       end
     end
