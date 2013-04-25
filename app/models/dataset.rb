@@ -23,6 +23,7 @@ class Dataset < ActiveRecord::Base
                   :has_transcript_diff_exp,
                   :has_transcript_isoforms,
                   :has_gene_diff_exp,
+                  :finished_uploading,
                   :go_terms_status,
                   :program_used
   

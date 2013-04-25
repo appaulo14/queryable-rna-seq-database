@@ -47,7 +47,7 @@ class UploadCuffdiff
   def save
     return if not self.valid?
     begin
-      ActiveRecord::Base.transaction do   #Transactions work with sub-methods
+      #ActiveRecord::Base.transaction do   #Transactions work with sub-methods
         process_args_to_create_dataset()
         if @has_diff_exp == '1'
           Rails.logger.info "Starting gene diff exp for dataset: #{@dataset.id}"
@@ -77,12 +77,13 @@ class UploadCuffdiff
         Rails.logger.info "Finished blast db creation for dataset: #{@dataset.id}"
         QueryAnalysisMailer.notify_user_of_upload_success(@current_user,
                                                             @dataset)
-      end
+      #end
       #If any error occurs, the files won't be deleted and therefore can
       # be examined for problems
       delete_uploaded_files()
     rescue Exception => ex
       begin
+        @dataset.destroy()
         BlastUtil.rollback_blast_database(@dataset)
         QueryAnalysisMailer.notify_user_of_upload_failure(@current_user,
                                                             @dataset)
@@ -97,7 +98,8 @@ class UploadCuffdiff
       end
     end
   end
-  
+  @dataset.finished_uploading = true
+  @dataset.save!
   #According http://railscasts.com/episodes/219-active-model?view=asciicast,
   #     this defines that this model does not persist in the database.
   def persisted?
@@ -132,7 +134,8 @@ class UploadCuffdiff
   def process_args_to_create_dataset()
     @dataset = Dataset.new(:user => @current_user,
                           :name => @dataset_name,
-                          :program_used => 'cuffdiff')
+                          :program_used => 'cuffdiff',
+                          :finished_uploading => false)
     if @has_diff_exp == '1'
       @dataset.has_transcript_diff_exp = true
       @dataset.has_gene_diff_exp = true

@@ -237,6 +237,7 @@ class QueryAnalysisController < ApplicationController
         # If valid, query and return results; otherwise return failure
         @qti.query() if @qti.valid?
       end
+      render :stream => true
     end
     
     def get_transcript_isoforms_samples_for_dataset

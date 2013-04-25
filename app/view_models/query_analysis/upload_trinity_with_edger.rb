@@ -71,7 +71,7 @@ class UploadTrinityWithEdgeR
   def save
     return if not self.valid?
     begin
-      ActiveRecord::Base.transaction do   #Transactions work with sub-methods
+      #ActiveRecord::Base.transaction do   #Transactions work with sub-methods
         process_args_to_create_dataset()
         if @has_gene_diff_exp == '1'
           Rails.logger.info "Starting gene diff exp for dataset: #{@dataset.id}"
@@ -81,9 +81,6 @@ class UploadTrinityWithEdgeR
           process_gene_fpkm_file()
           Rails.logger.info "Finished gene fpkm exp for dataset: #{@dataset.id}"
         end
-        Rails.logger.info "Started trans diff exp for dataset: #{@dataset.id}"
-        process_transcript_diff_exp_files()
-        Rails.logger.info "Finished trans diff exp for dataset: #{@dataset.id}"
         counts = Hash.new{ 0 }
         ObjectSpace.each_object do |o|
           counts[o.class] += 1
@@ -93,6 +90,9 @@ class UploadTrinityWithEdgeR
             puts "#{key}=#{counts[key]}"
           end
         end
+        Rails.logger.info "Started trans diff exp for dataset: #{@dataset.id}"
+        process_transcript_diff_exp_files()
+        Rails.logger.info "Finished trans diff exp for dataset: #{@dataset.id}"
         Rails.logger.info "Starting trans fpkm for dataset: #{@dataset.id}"
         process_transcript_fpkm_file()
         Rails.logger.info "Finished trans fpkm exp for dataset: #{@dataset.id}"
@@ -102,12 +102,15 @@ class UploadTrinityWithEdgeR
         Rails.logger.info "Finished blast db creation for dataset: #{@dataset.id}"
         QueryAnalysisMailer.notify_user_of_upload_success(@current_user,
                                                             @dataset)                                        
-      end
+      #end
+      @dataset.finished_uploading = true
+      @dataset.save!
       #If any error occurs, the files won't be deleted and therefore can
       # be examined for problems
       delete_uploaded_files()
     rescue Exception => ex
       begin
+        @dataset.destroy()
         BlastUtil.rollback_blast_database(@dataset)
         QueryAnalysisMailer.notify_user_of_upload_failure(@current_user,
                                                           @dataset)
@@ -133,8 +136,9 @@ class UploadTrinityWithEdgeR
   
   def process_args_to_create_dataset()
     @dataset = Dataset.new(:user => @current_user,
-                            :name => @dataset_name,
-                            :program_used => 'trinity_with_edger')
+                           :name => @dataset_name,
+                           :program_used => 'trinity_with_edger',
+                           :finished_uploading => false)
     @dataset.has_transcript_diff_exp = true
     if @has_gene_diff_exp == '1'
       @dataset.has_gene_diff_exp = true
@@ -161,7 +165,6 @@ class UploadTrinityWithEdgeR
                                                        sample_1_name,
                                                        sample_2_name)
       tgdefp.process_file()
-      debugger
     end
   end
   

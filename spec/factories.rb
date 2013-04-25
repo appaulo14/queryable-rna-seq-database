@@ -64,6 +64,7 @@ FactoryGirl.define do
       has_transcript_diff_exp   true
       has_transcript_isoforms   true
       has_gene_diff_exp         true
+      go_terms_status           'not-started'
       blast_db_location         'db/blast_databases/test/1_db'
       user
     end

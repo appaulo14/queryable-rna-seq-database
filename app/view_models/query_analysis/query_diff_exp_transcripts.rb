@@ -35,6 +35,7 @@ class QueryDiffExpTranscripts
     @names_and_ids_for_available_datasets = []
     available_datasets = Dataset.where(:user_id => @current_user.id, 
                                         :has_transcript_diff_exp => true)
+                                .order(:name)
     available_datasets.each do |ds|
       @names_and_ids_for_available_datasets << [ds.name, ds.id]
     end
@@ -64,6 +65,7 @@ class QueryDiffExpTranscripts
       value = scq.sample_comparison_id
       @available_sample_comparisons << [display_text, value]
     end
+    @available_sample_comparisons.sort!{|t1,t2|t1.display_text <=> t2.display_text}
     if @sample_comparison_id.blank?
       @sample_comparison_id = @available_sample_comparisons[0][1]
     end
