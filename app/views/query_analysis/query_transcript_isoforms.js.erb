@@ -7,14 +7,16 @@ jQuery(document).ready(function($) {
 //     $('body').css('cursor', 'auto');
 //   });
   $('#query_transcript_isoforms_dataset_id').change(dataset_id_pair_changed);
-  $('#goat').click(goat);
+  //$('#submit_button').click(goat);
   $( "#new_query_transcript_isoforms" ).on( "submit", function( event ) {
     event.preventDefault();
-    alert('Submitted');
+    $('#submit_button').val('Querying....');
+    $('#submit_button').attr("disabled", "disabled");
+    goat();
   });
 });
 ppiece = 0;
-function goat(event,piece){
+function goat(piece){
   if ( ! piece){
     piece = 0;
   }
@@ -22,12 +24,12 @@ function goat(event,piece){
   //alert('Piece =' + piece);
   params = $("#new_query_transcript_isoforms").serializeArray();
   params.push({ name: "query_transcript_isoforms[piece]", value: piece });
-  $('body').css('cursor', 'progress');
-  $.get('get_query_transcript_isoforms_piece',
+  //$('body').css('cursor', 'progress');
+  $.post('query_transcript_isoforms',
        params
   ).done(success)
-  .fail(post_failed)
-  .always(function() {$('body').css('cursor', 'auto');});
+  .fail(post_failed);
+  //.always(function() {$('body').css('cursor', 'auto');});
 //   $.get('get_query_transcript_isoforms_piece',
 //          $("#new_query_transcript_isoforms").serialize()
 //         ).done(success)
@@ -37,10 +39,14 @@ function goat(event,piece){
 
 function success(html){
   //alert('success');
-  tbody = $('#insert_here');
+  tbody = $('#insert_query_results_here');
   tbody.append(html);
   if (html.length > 0){
-    goat({},ppiece+1);
+    goat(ppiece+1);
+  }
+  else{
+    $('#submit_button').removeAttr("disabled");
+    $('#submit_button').val('Query');
   }
 }
 

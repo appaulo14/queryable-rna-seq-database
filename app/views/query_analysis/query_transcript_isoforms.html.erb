@@ -1,5 +1,10 @@
 <%= render 'shared/error_messages', :object => @qti %>
 <script type='text/javascript' src='query_transcript_isoforms.js' ></script>
+<%= javascript_include_tag 'downloadify/swfobject.js' %>
+<%= javascript_include_tag 'downloadify/downloadify.min.js' %>
+<%= javascript_include_tag 'downloadify_wrapper.js' %>
+<%= javascript_include_tag 'Stupid-Table-Plugin/stupidtable.min.js' %>
+<%= javascript_include_tag 'table_sorting.js' %>
 <%= form_for(@qti, :url => '/query_analysis/query_transcript_isoforms') do |qti| %>
   <h1>Please select your novel isoforms and other transcript classification search options</h1>
   <p>
@@ -93,21 +98,11 @@
         <%= qti.text_field(:transcript_name) %>
     </div>
   </p>
-  <%= button_tag('Goat', :id => 'goat', :type => :button) %>
-  <p><%= qti.submit('Query', :disable_with => 'Querying...', :id => :submit_query) %></p>
+  <p><%= qti.submit('Query', :id => :submit_button) %></p>
 <% end %>
-<table>
-  <tbody id="insert_here">
-  </tbody>
-</table>
 <!--Section for the query results-->
-<% if @qti.show_results? %>
-  <p><%= @qti.results.length %> results found for <em><b><%= @qti.sample_name %></b></em></p>
-  <%= javascript_include_tag 'downloadify/swfobject.js' %>
-  <%= javascript_include_tag 'downloadify/downloadify.min.js' %>
-  <%= javascript_include_tag 'downloadify_wrapper.js' %>
-  <%= javascript_include_tag 'Stupid-Table-Plugin/stupidtable.min.js' %>
-  <%= javascript_include_tag 'table_sorting.js' %>
+<div id="query_results" style="display:none">
+  <p><%=  %> results found for <em><b><%= @qti.sample_name %></b></em></p>
   <p id="downloadify">
       You must have Flash 10 installed to download this file.
   </p>
@@ -196,44 +191,8 @@
             </th>
           </tr>
       </thead>
-      <tbody>
-          <% @qti.results.each do |result| %>
-              <tr class="body_row">
-                <td>
-                  <%= link_to_fasta_sequence_for_transcript(@qti.dataset_id, 
-                          result[:transcript_name]) %>
-                </td>
-                <td>
-                  <%= link_to_fasta_sequences_for_gene(@qti.dataset_id, result[:gene_name]) %>
-                </td>
-                  
-                <% if result[:go_terms].empty? == false %>
-                  <td class="list_cell">
-                    <ul>
-                      <!-- Sort by ascending GO ID for the go terms-->
-                      <% result[:go_terms].sort{|a,b| a.id.gsub(/GO:/,'').to_i <=> b.id.gsub(/GO:/,'').to_i}.each do |go_term| %>
-                        <li><%= link_to_amigo_web_page_for_term("#{go_term.term} [#{go_term.id}]",go_term.id) %></li>
-                      <% end %>
-                    </ul>
-                  </td>
-                <% else %>
-                  <td>
-                    No GO ids found.
-                  </td>
-                <% end %>
-                <td>
-                  <%= result[:class_code] %>
-                </td>
-                <td><pre><%= "%5d" % result[:transcript_length] %></pre></td>
-                <td><pre><%= result[:coverage] %></pre></td>
-                <td><pre><%= "% .3E" % result[:fpkm] %></pre></td>
-                <td><pre><%= "% .3E" % result[:fpkm_lo] %></pre></td>
-                <td><pre><%= "% .3E" % result[:fpkm_hi] %></pre></td>
-                <td>
-                  <%= result[:status] %>
-                </td>
-              </tr>
-          <% end %>
+      <tbody id="insert_query_results_here">
+      
       </tbody>
   </table>
-<% end %>
+</div>

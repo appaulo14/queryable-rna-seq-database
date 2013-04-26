@@ -236,6 +236,8 @@ class QueryAnalysisController < ApplicationController
         @qti.set_attributes_and_defaults(params[:query_transcript_isoforms])
         # If valid, query and return results; otherwise return failure
         @qti.query() if @qti.valid?
+        render :partial => 'query_transcript_isoform_table_rows', 
+               :locals => {:object => @qti}
       end
     end
     
