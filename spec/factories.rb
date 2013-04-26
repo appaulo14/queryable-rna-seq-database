@@ -148,4 +148,38 @@ FactoryGirl.define do
       has_gene_diff_exp         '1'
       dataset_name              {Faker::Name.name}
     end
+    
+    factory :upload_trinity_with_edger_with_3_samples, 
+    class: UploadTrinityWithEdgeR do
+      initialize_with           {new(FactoryGirl.create(:user))}
+      after(:build)             {|object| object.set_attributes_and_defaults() }
+      transcripts_fasta_file    {get_uploaded_trinity_fasta_file()}
+      gene_diff_exp_files       {get_trinity_diff_exp_files('gene', 3)}
+      gene_diff_exp_sample_1_names {['ds_gene']}
+      gene_diff_exp_sample_2_names {['hs_gene']}
+      transcript_diff_exp_files {get_trinity_diff_exp_files('trans', 3)}
+      transcript_diff_exp_sample_1_names {['ds_trans']}
+      transcript_diff_exp_sample_2_names {['hs_trans']}
+      gene_fpkm_file            {get_trinity_gene_fpkm_file(3)}
+      transcript_fpkm_file      {get_trinity_transcript_fpkm_file(3)}
+      has_gene_diff_exp         '1'
+      dataset_name              {Faker::Name.name}
+    end
+    
+    factory :upload_trinity_with_edger_with_4_samples, 
+    class: UploadTrinityWithEdgeR do
+      initialize_with           {new(FactoryGirl.create(:user))}
+      after(:build)             {|object| object.set_attributes_and_defaults() }
+      transcripts_fasta_file    {get_uploaded_trinity_fasta_file()}
+      gene_diff_exp_files       {get_trinity_diff_exp_files('gene', 4)}
+      gene_diff_exp_sample_1_names {['ds_gene']}
+      gene_diff_exp_sample_2_names {['hs_gene']}
+      transcript_diff_exp_files {get_trinity_diff_exp_files('trans', 4)}
+      transcript_diff_exp_sample_1_names {['ds_trans']}
+      transcript_diff_exp_sample_2_names {['hs_trans']}
+      gene_fpkm_file            {get_trinity_gene_fpkm_file(4)}
+      transcript_fpkm_file      {get_trinity_transcript_fpkm_file(4)}
+      has_gene_diff_exp         '1'
+      dataset_name              {Faker::Name.name}
+    end
 end

@@ -34,6 +34,23 @@ class AddForeignKeys < ActiveRecord::Migration
             'FOREIGN KEY (sample_comparison_id) ' +
             'REFERENCES sample_comparisons (id) ' + 
             'ON UPDATE CASCADE ON DELETE CASCADE;')
+    #Sample foreign keys
+    execute('ALTER TABLE samples ' +
+            'ADD CONSTRAINT samples_datasets_fk ' + 
+            'FOREIGN KEY (dataset_id) ' +
+            'REFERENCES datasets (id) ' + 
+            'ON UPDATE CASCADE ON DELETE CASCADE;')
+    #Sample Comparison Foreign keys
+    execute('ALTER TABLE sample_comparisons ' +
+            'ADD CONSTRAINT sample_comrparisons_samples_1_fk ' + 
+            'FOREIGN KEY (sample_1_id) ' +
+            'REFERENCES samples (id) ' + 
+            'ON UPDATE CASCADE ON DELETE CASCADE;')
+    execute('ALTER TABLE sample_comparisons ' +
+            'ADD CONSTRAINT sample_comrparisons_samples_2_fk ' + 
+            'FOREIGN KEY (sample_2_id) ' +
+            'REFERENCES samples (id) ' + 
+            'ON UPDATE CASCADE ON DELETE CASCADE;')
     #FPKM Sample foreign keys
     execute('ALTER TABLE fpkm_samples ' +
             'ADD CONSTRAINT fpkm_samples_transcripts_fk ' + 

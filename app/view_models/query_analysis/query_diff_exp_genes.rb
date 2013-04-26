@@ -34,7 +34,8 @@ class QueryDiffExpGenes
     #Set available datasets
     @names_and_ids_for_available_datasets = []
     available_datasets = Dataset.where(:user_id => @current_user.id, 
-                                        :has_gene_diff_exp => true)
+                                       :has_gene_diff_exp => true,
+                                       :finished_uploading => true)
                                 .order(:name)
     available_datasets.each do |ds|
       @names_and_ids_for_available_datasets << [ds.name, ds.id]

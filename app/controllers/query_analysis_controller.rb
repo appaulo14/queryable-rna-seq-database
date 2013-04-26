@@ -237,7 +237,6 @@ class QueryAnalysisController < ApplicationController
         # If valid, query and return results; otherwise return failure
         @qti.query() if @qti.valid?
       end
-      render :stream => true
     end
     
     def get_transcript_isoforms_samples_for_dataset
@@ -329,33 +328,38 @@ class QueryAnalysisController < ApplicationController
   private 
   
   def confirm_datasets_available
-    if current_user.datasets.empty?
+    if current_user.datasets.where(:finished_uploading => true).empty?
       render :no_datasets
     end
   end
   
   def confirm_transcript_isoform_datasets_available
-    if current_user.datasets.where(:has_transcript_isoforms => true).empty?
+    if current_user.datasets.where(:has_transcript_isoforms => true, 
+                                   :finished_uploading => true).empty?
       render :no_transcript_isoforms
     end
   end
   
   def confirm_transcript_diff_exp_datasets_available
-    if current_user.datasets.where(:has_transcript_diff_exp => true).empty?
+    if current_user.datasets.where(:has_transcript_diff_exp => true, 
+                                   :finished_uploading => true).empty?
       render :no_diff_exp_transcripts
     end
   end
   
   def confirm_gene_diff_exp_datasets_available
-    if current_user.datasets.where(:has_gene_diff_exp => true).empty?
+    if current_user.datasets.where(:has_gene_diff_exp => true, 
+                                   :finished_uploading => true).empty?
       render :no_diff_exp_genes
     end
   end
   
   def confirm_datasets_without_go_terms_available
-    if current_user.datasets.where(:go_terms_status => 'not-started').empty?
+    if current_user.datasets.where(:go_terms_status => 'not-started', 
+                                   :finished_uploading => true).empty?
       @datasets_in_progress = 
-          current_user.datasets.where(:go_terms_status => 'in-progress')
+          current_user.datasets.where(:go_terms_status => 'in-progress', 
+                                      :finished_uploading => true)
       render :no_datasets_without_go_terms
     end
   end

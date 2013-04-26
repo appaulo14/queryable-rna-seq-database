@@ -77,6 +77,7 @@ def make_datasets(env)
                     :has_transcript_diff_exp => true,
                     :has_transcript_isoforms => true,
                     :has_gene_diff_exp       => true,
+                    :finished_uploading      => true,
                     :go_terms_status         => 'found',
                     :program_used            => 'cuffdiff')
   end

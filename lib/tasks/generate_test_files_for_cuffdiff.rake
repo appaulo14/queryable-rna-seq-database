@@ -107,12 +107,12 @@ namespace :generate_test_files do
     
     def self.make_isoform_det_files()
       file = File.new('isoform_exp.diff','w')
+      #Write header
+      file.write("test_id\tgene_id\tgene\tlocus\tsample_1\tsample_2")
+      file.write("\tstatus\tvalue_1\tvalue_2\tlog2(fold_change)\ttest_stat")
+      file.write("\tp_value\tq_value\tsignificant\n")
       (0..@samples.count-1).each do |n1|
         ((n1+1)..@samples.count-1).each do |n2|
-          #Write header
-          file.write("test_id\tgene_id\tgene\tlocus\tsample_1\tsample_2")
-          file.write("\tstatus\tvalue_1\tvalue_2\tlog2(fold_change)\ttest_stat")
-          file.write("\tp_value\tq_value\tsignificant\n")
           @transcripts_with_gene.each do |transcript_with_gene|
             transcript = transcript_with_gene.transcript
             gene = transcript_with_gene.gene
@@ -138,12 +138,12 @@ namespace :generate_test_files do
     
     def self.make_gene_det_files()
       file = File.new('gene_exp.diff','w')
+      #Write header
+      file.write("test_id\tgene_id\tgene\tlocus\tsample_1\tsample_2")
+      file.write("\tstatus\tvalue_1\tvalue_2\tlog2(fold_change)\ttest_stat")
+      file.write("\tp_value\tq_value\tsignificant\n")
       (0..@samples.count-1).each do |n1|
         ((n1+1)..@samples.count-1).each do |n2|
-          #Write header
-          file.write("test_id\tgene_id\tgene\tlocus\tsample_1\tsample_2")
-          file.write("\tstatus\tvalue_1\tvalue_2\tlog2(fold_change)\ttest_stat")
-          file.write("\tp_value\tq_value\tsignificant\n")
           @genes.each do |gene|
             file.write("#{gene}")
             file.write("\t#{gene}")

@@ -44,7 +44,8 @@ class AbstractQueryUsingBlast
     #Set the current user
     @current_user = current_user
     #Set available datasets
-    all_datasets_for_user = Dataset.find_all_by_user_id(@current_user)
+    all_datasets_for_user = Dataset.where(:user_id => @current_user.id,
+                                          :finished_uploading => true)
     @available_datasets = all_datasets_for_user.map{|ds| [ds.name, ds.id]}
     #Set the available options for the number of alignments
     @available_num_alignments = AVAILABLE_NUM_ALIGNMENTS

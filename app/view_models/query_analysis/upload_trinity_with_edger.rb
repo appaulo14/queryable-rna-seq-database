@@ -110,7 +110,7 @@ class UploadTrinityWithEdgeR
       delete_uploaded_files()
     rescue Exception => ex
       begin
-        @dataset.destroy()
+        @dataset.delete()
         BlastUtil.rollback_blast_database(@dataset)
         QueryAnalysisMailer.notify_user_of_upload_failure(@current_user,
                                                           @dataset)

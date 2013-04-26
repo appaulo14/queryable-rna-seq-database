@@ -20,18 +20,18 @@ class UploadCuffdiff
   #validate :validate_all_or_none_gene_files
   ##Validte for file presence only???
   
-  validates :transcripts_fasta_file, :presence => true,
-                                     :uploaded_file => true,
-                                     :has_fasta_file_extension => true
-  
-  validates :has_diff_exp, :presence => true,
-                           :view_model_boolean => true
-  
-  validates :has_transcript_isoforms, :presence => true,
-                                      :view_model_boolean => true
-  
-  validates :dataset_name, :presence => true,
-                           :dataset_name_unique_for_user => true
+#   validates :transcripts_fasta_file, :presence => true,
+#                                      :uploaded_file => true,
+#                                      :has_fasta_file_extension => true
+#   
+#   validates :has_diff_exp, :presence => true,
+#                            :view_model_boolean => true
+#   
+#   validates :has_transcript_isoforms, :presence => true,
+#                                       :view_model_boolean => true
+#   
+#   validates :dataset_name, :presence => true,
+#                            :dataset_name_unique_for_user => true
   
   def initialize(current_user)
     @current_user = current_user
@@ -62,15 +62,15 @@ class UploadCuffdiff
           process_transcript_isoforms_file()
           Rails.logger.info "Finished trans isoforms for dataset: #{@dataset.id}"
         end
-        counts = Hash.new{ 0 }
-        ObjectSpace.each_object do |o|
-          counts[o.class] += 1
-        end
-        counts.each do |key, val|
-          if counts[key] > 100
-            puts "#{key}=#{counts[key]}"
-          end
-        end
+#         counts = Hash.new{ 0 }
+#         ObjectSpace.each_object do |o|
+#           counts[o.class] += 1
+#         end
+#         counts.each do |key, val|
+#           if counts[key] > 100
+#             puts "#{key}=#{counts[key]}"
+#           end
+#         end
         Rails.logger.info "Started blast db creation for dataset: #{@dataset.id}"
         BlastUtil.makeblastdb_with_seqids(@transcripts_fasta_file.tempfile.path,
                                            @dataset)
@@ -78,12 +78,14 @@ class UploadCuffdiff
         QueryAnalysisMailer.notify_user_of_upload_success(@current_user,
                                                             @dataset)
       #end
+      @dataset.finished_uploading = true
+      @dataset.save!
       #If any error occurs, the files won't be deleted and therefore can
       # be examined for problems
       delete_uploaded_files()
     rescue Exception => ex
       begin
-        @dataset.destroy()
+        @dataset.delete()
         BlastUtil.rollback_blast_database(@dataset)
         QueryAnalysisMailer.notify_user_of_upload_failure(@current_user,
                                                             @dataset)
@@ -98,8 +100,6 @@ class UploadCuffdiff
       end
     end
   end
-  @dataset.finished_uploading = true
-  @dataset.save!
   #According http://railscasts.com/episodes/219-active-model?view=asciicast,
   #     this defines that this model does not persist in the database.
   def persisted?
@@ -135,7 +135,8 @@ class UploadCuffdiff
     @dataset = Dataset.new(:user => @current_user,
                           :name => @dataset_name,
                           :program_used => 'cuffdiff',
-                          :finished_uploading => false)
+                          :finished_uploading => false,
+                          :go_terms_status => 'not-started')
     if @has_diff_exp == '1'
       @dataset.has_transcript_diff_exp = true
       @dataset.has_gene_diff_exp = true
@@ -148,7 +149,6 @@ class UploadCuffdiff
     else
       @dataset.has_transcript_isoforms = false
     end
-    @dataset.go_terms_status = 'not-started'
     @dataset.blast_db_location = 
       "#{Rails.root}/db/blast_databases/#{Rails.env}/"
     @dataset.save!
