@@ -28,16 +28,6 @@ describe UploadTrinityWithEdgeR do
       @it.should be_valid
     end
     
-    it 'should not be valid if the transcript_diff_exp_files and ' +
-       'gene_diff_exp_files are different lengths' do
-      uploaded_files = []
-      uploaded_files << to_cuffdiff_uploaded_file(2,'transcripts.fasta')
-      uploaded_files << to_cuffdiff_uploaded_file(2,'transcripts.fasta')
-      @it.gene_diff_exp_files = uploaded_files
-      @it.transcript_diff_exp_files = uploaded_files[0..0]
-      @it.should_not be_valid
-    end
-    
     describe 'transcripts_fasta_file' do
       before(:each) do @attribute = 'transcripts_fasta_file' end
       
@@ -101,18 +91,18 @@ describe UploadTrinityWithEdgeR do
             @it.save
           end.should change(Transcript,:count).by(6)
         end
-        it 'should add 4 genes to the database' do
+        it 'should add 6 genes to the database' do
           lambda do
             @it.save
-          end.should change(Gene,:count).by(4)
+          end.should change(Gene,:count).by(6)
         end
-        it 'should have 4 transripts with associated genes' do
+        it 'should have 6 transcripts with associated genes' do
           @it.save
           associated_genes_count = 0
           Transcript.all.each do |transcript|
             associated_genes_count += 1 if not transcript.gene.nil?
           end
-          associated_genes_count.should eq(4)
+          associated_genes_count.should eq(6)
         end
         it 'should add 0 fpkm samples to the database' do
           lambda do
@@ -189,10 +179,10 @@ describe UploadTrinityWithEdgeR do
             @it.save
           end.should change(Transcript,:count).by(6)
         end
-        it 'should add 0 genes to the database' do
+        it 'should add 6 genes to the database' do
           lambda do
             @it.save
-          end.should change(Gene,:count).by(0)
+          end.should change(Gene,:count).by(6)
         end
         it 'should add 0 fpkm samples to the database' do
           lambda do

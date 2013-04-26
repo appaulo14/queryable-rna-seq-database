@@ -1,6 +1,6 @@
 <%= render 'shared/error_messages', :object => @upload_cuffdiff %>
 <script type='text/javascript' src='upload_cuffdiff.js' ></script>
-<%= form_for @upload_cuffdiff, {:url => "upload_cuffdiff",:remote => true} do |u| %>
+<%= form_for @upload_cuffdiff, {:url => "upload_cuffdiff"} do |u| %>
   <h1>
     Upload Your Cuffdiff Data
     <%= help_tip(:upload_cuffdiff) %>

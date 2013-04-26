@@ -20,18 +20,31 @@ class UploadCuffdiff
   #validate :validate_all_or_none_gene_files
   ##Validte for file presence only???
   
-#   validates :transcripts_fasta_file, :presence => true,
-#                                      :uploaded_file => true,
-#                                      :has_fasta_file_extension => true
-#   
-#   validates :has_diff_exp, :presence => true,
-#                            :view_model_boolean => true
-#   
-#   validates :has_transcript_isoforms, :presence => true,
-#                                       :view_model_boolean => true
-#   
-#   validates :dataset_name, :presence => true,
-#                            :dataset_name_unique_for_user => true
+  validates :transcripts_fasta_file, :presence => true,
+                                     :uploaded_file => true,
+                                     :has_fasta_file_extension => true
+  
+  validates :has_diff_exp, :presence => true,
+                           :view_model_boolean => true
+  
+  validates :has_transcript_isoforms, :presence => true,
+                                      :view_model_boolean => true
+  
+  validates :dataset_name, :presence => true,
+                           :dataset_name_unique_for_user => true
+  
+  validates :transcript_diff_exp_file, :uploaded_file => true,
+                                       :name_is_isoform_exp_diff => true
+  validates :transcript_diff_exp_file, :presence => true,
+                                       :if => "@has_diff_exp == '1'"
+  validates :gene_diff_exp_file, :uploaded_file => true,
+                                 :name_is_gene_exp_diff => true
+  validates :gene_diff_exp_file, :presence => true,
+                                 :if => "@has_diff_exp == '1'"
+  validates :transcript_isoforms_file, :uploaded_file => true,
+                                       :name_is_isoform_fpkm_tracking => true
+  validates :transcript_isoforms_file, :presence => true,
+                                       :if => "@has_transcript_isoforms == '1'"
   
   def initialize(current_user)
     @current_user = current_user
@@ -49,6 +62,7 @@ class UploadCuffdiff
     begin
       #ActiveRecord::Base.transaction do   #Transactions work with sub-methods
         process_args_to_create_dataset()
+        Rails.logger.info "Created dataset #{@dataset.id} for #{@dataset_name}"
         if @has_diff_exp == '1'
           Rails.logger.info "Starting gene diff exp for dataset: #{@dataset.id}"
           process_gene_differential_expression_file()

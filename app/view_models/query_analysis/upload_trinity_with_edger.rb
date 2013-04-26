@@ -73,6 +73,7 @@ class UploadTrinityWithEdgeR
     begin
       #ActiveRecord::Base.transaction do   #Transactions work with sub-methods
         process_args_to_create_dataset()
+        Rails.logger.info "Created dataset #{@dataset.id} for #{@dataset_name}"
         if @has_gene_diff_exp == '1'
           Rails.logger.info "Starting gene diff exp for dataset: #{@dataset.id}"
           process_gene_diff_exp_files()
@@ -81,15 +82,15 @@ class UploadTrinityWithEdgeR
           process_gene_fpkm_file()
           Rails.logger.info "Finished gene fpkm exp for dataset: #{@dataset.id}"
         end
-        counts = Hash.new{ 0 }
-        ObjectSpace.each_object do |o|
-          counts[o.class] += 1
-        end
-        counts.each do |key, val|
-          if counts[key] > 100
-            puts "#{key}=#{counts[key]}"
-          end
-        end
+#         counts = Hash.new{ 0 }
+#         ObjectSpace.each_object do |o|
+#           counts[o.class] += 1
+#         end
+#         counts.each do |key, val|
+#           if counts[key] > 100
+#             puts "#{key}=#{counts[key]}"
+#           end
+#         end
         Rails.logger.info "Started trans diff exp for dataset: #{@dataset.id}"
         process_transcript_diff_exp_files()
         Rails.logger.info "Finished trans diff exp for dataset: #{@dataset.id}"

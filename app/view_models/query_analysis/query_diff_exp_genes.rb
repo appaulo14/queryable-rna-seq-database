@@ -62,7 +62,7 @@ class QueryDiffExpGenes
       value = scq.sample_comparison_id
       @available_sample_comparisons << [display_text, value]
     end
-    @available_sample_comparisons.sort!{|t1,t2|t1.display_text <=> t2.display_text}
+    @available_sample_comparisons.sort!{|t1,t2|t1[0] <=> t2[0]}
     if @sample_comparison_id_pair.blank?
       @sample_comparison_id_pair = @available_sample_comparisons[0][1]
     end
