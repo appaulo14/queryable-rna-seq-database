@@ -230,7 +230,7 @@ class QueryAnalysisController < ApplicationController
       @qti = QueryTranscriptIsoforms.new(current_user)
       #Which type of request was received?
       if request.get?
-        @qti.set_attributes_and_defaults(:dataset_id => params[:dataset_id])
+        @qti.set_attributes_and_defaults()
       elsif request.post?
         #Fill in the inputs from the view
         @qti.set_attributes_and_defaults(params[:query_transcript_isoforms])
@@ -247,6 +247,19 @@ class QueryAnalysisController < ApplicationController
         render :partial => 'transcript_isoforms_samples_for_dataset', 
                :locals => {:object => @qti}
       end
+    end
+    
+    def get_query_transcript_isoforms_piece
+      @qti = QueryTranscriptIsoforms.new(current_user)
+      #debugger
+      @qti.set_attributes_and_defaults(params[:query_transcript_isoforms])
+      @qti.query()
+      render :partial => 'query_transcript_isoform_table_rows', 
+             :locals => {:object => @qti}
+#       if @qti.valid?
+#         render :partial => 'transcript_isoforms_samples_for_dataset', 
+#                :locals => {:object => @qti}
+#       end
     end
     
     def query_using_blastn    #Changed after architecture design

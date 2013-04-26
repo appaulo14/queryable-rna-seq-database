@@ -13,10 +13,13 @@ class QueryTranscriptIsoforms
                 :class_code_u, :class_code_x, :class_code_s, :class_code_dot,
                 :go_terms,:go_ids,
                 :transcript_length_comparison_sign, :transcript_length_value,
-                :transcript_name 
+                :transcript_name,
+                :piece
   attr_reader  :names_and_ids_for_available_datasets, 
                 :available_samples, :available_transcript_length_comparison_signs,
                 :show_results, :results, :sample_name
+  
+  PIECE_SIZE = 100
   
   CLASS_CODES = {
     :class_code_equal => '=', 
@@ -54,6 +57,8 @@ class QueryTranscriptIsoforms
   validates :transcript_length_comparison_sign, 
      :inclusion => {:in => AVAILABLE_TRANSCRIPT_LENGTH_COMPARISON_SIGNS}
   validates :transcript_length_value, :numericality => true
+  validates :piece, :presence => true,
+                    :format => { :with => /\A\d+\z/ }
   
   def show_results?
     return @show_results
@@ -91,6 +96,7 @@ class QueryTranscriptIsoforms
     end
     @sample_id = @available_samples[0][1] if @sample_id.blank?
     @show_results = false
+    @piece = '0' if @piece.blank?
   end
   
   def query()
@@ -128,6 +134,7 @@ class QueryTranscriptIsoforms
        Dataset.joins(
           :transcripts => [:transcript_fpkm_tracking_information, :gene, :fpkm_samples]
         ).where(where_clause).select(select_string)
+         .limit(PIECE_SIZE).offset(PIECE_SIZE*@piece.to_i)
     #Extract the query results to form that can be put in the view
     @sample_name = Sample.find_by_id(@sample_id).name
     @results = []

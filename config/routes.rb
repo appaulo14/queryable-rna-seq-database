@@ -64,6 +64,8 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
   get  'query_analysis/query_transcript_isoforms'
   post 'query_analysis/query_transcript_isoforms'
   
+  get 'query_analysis/get_query_transcript_isoforms_piece'
+  
   get 'query_analysis/get_transcript_isoforms_samples_for_dataset'
 
   get  'query_analysis/query_using_blastn'

@@ -1,6 +1,52 @@
 jQuery(document).ready(function($) {
+//   $().ajaxStart(function(){
+//     $('body').css('cursor', 'wait');
+//   });
+// 
+//   $().ajaxStop(function(){
+//     $('body').css('cursor', 'auto');
+//   });
   $('#query_transcript_isoforms_dataset_id').change(dataset_id_pair_changed);
+  $('#goat').click(goat);
+  $( "#new_query_transcript_isoforms" ).on( "submit", function( event ) {
+    event.preventDefault();
+    alert('Submitted');
+  });
 });
+ppiece = 0;
+function goat(event,piece){
+  if ( ! piece){
+    piece = 0;
+  }
+  ppiece = piece;
+  //alert('Piece =' + piece);
+  params = $("#new_query_transcript_isoforms").serializeArray();
+  params.push({ name: "query_transcript_isoforms[piece]", value: piece });
+  $('body').css('cursor', 'progress');
+  $.get('get_query_transcript_isoforms_piece',
+       params
+  ).done(success)
+  .fail(post_failed)
+  .always(function() {$('body').css('cursor', 'auto');});
+//   $.get('get_query_transcript_isoforms_piece',
+//          $("#new_query_transcript_isoforms").serialize()
+//         ).done(success)
+//          .fail(post_failed)
+//          .always(function() { alert("finished"); });
+}
+
+function success(html){
+  //alert('success');
+  tbody = $('#insert_here');
+  tbody.append(html);
+  if (html.length > 0){
+    goat({},ppiece+1);
+  }
+}
+
+function post_failed(){
+  //alert('fail');
+}
 
 function dataset_id_pair_changed(){
   dataset_id = $('#query_transcript_isoforms_dataset_id').val();

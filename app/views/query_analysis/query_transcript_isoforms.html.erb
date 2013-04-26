@@ -93,8 +93,13 @@
         <%= qti.text_field(:transcript_name) %>
     </div>
   </p>
+  <%= button_tag('Goat', :id => 'goat', :type => :button) %>
   <p><%= qti.submit('Query', :disable_with => 'Querying...', :id => :submit_query) %></p>
 <% end %>
+<table>
+  <tbody id="insert_here">
+  </tbody>
+</table>
 <!--Section for the query results-->
 <% if @qti.show_results? %>
   <p><%= @qti.results.length %> results found for <em><b><%= @qti.sample_name %></b></em></p>
