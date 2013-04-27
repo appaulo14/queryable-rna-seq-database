@@ -1,3 +1,6 @@
+//Global variable
+query_results_data = {};
+
 jQuery(document).ready(function($) {
 //   $().ajaxStart(function(){
 //     $('body').css('cursor', 'wait');
@@ -10,25 +13,21 @@ jQuery(document).ready(function($) {
   //$('#submit_button').click(goat);
   $( "#new_query_transcript_isoforms" ).on( "submit", function( event ) {
     event.preventDefault();
+    $('#query_results_div').css('display','block');
+    $('#query_transcript_isoforms_piece').val(0);
     $('#submit_button').val('Querying....');
     $('#submit_button').attr("disabled", "disabled");
     goat();
   });
 });
-ppiece = 0;
-function goat(piece){
-  if ( ! piece){
-    piece = 0;
-  }
-  ppiece = piece;
+
+function goat(){
   //alert('Piece =' + piece);
-  params = $("#new_query_transcript_isoforms").serializeArray();
-  params.push({ name: "query_transcript_isoforms[piece]", value: piece });
   //$('body').css('cursor', 'progress');
-  $.post('query_transcript_isoforms',
-       params
+  $.post('query_transcript_isoforms', 
+      $("#new_query_transcript_isoforms").serialize()
   ).done(success)
-  .fail(post_failed);
+   .fail(post_failed);
   //.always(function() {$('body').css('cursor', 'auto');});
 //   $.get('get_query_transcript_isoforms_piece',
 //          $("#new_query_transcript_isoforms").serialize()
@@ -42,7 +41,9 @@ function success(html){
   tbody = $('#insert_query_results_here');
   tbody.append(html);
   if (html.length > 0){
-    goat(ppiece+1);
+    old_val = $('#query_transcript_isoforms_piece').val();
+    $('#query_transcript_isoforms_piece').val(parseInt(old_val)+1);
+    goat();
   }
   else{
     $('#submit_button').removeAttr("disabled");

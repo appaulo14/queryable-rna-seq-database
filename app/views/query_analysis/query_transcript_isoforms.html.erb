@@ -97,12 +97,16 @@
         <%= qti.label(:transcript_name, "Transcript name:") %>
         <%= qti.text_field(:transcript_name) %>
     </div>
+    <%= qti.hidden_field :piece, :value => "0" %>
   </p>
   <p><%= qti.submit('Query', :id => :submit_button) %></p>
 <% end %>
 <!--Section for the query results-->
-<div id="query_results" style="display:none">
-  <p><%=  %> results found for <em><b><%= @qti.sample_name %></b></em></p>
+<div id="query_results_div" style="display:none">
+  <p>
+    <span id="num_results_found"></span> results found for
+    <em><b><span id="results_for_sample_name"></span></b></em>
+ </p>
   <p id="downloadify">
       You must have Flash 10 installed to download this file.
   </p>

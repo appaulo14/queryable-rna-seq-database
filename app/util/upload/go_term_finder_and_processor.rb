@@ -22,6 +22,19 @@ class GoTermFinderAndProcessor
       line_regex = /\A(\S+)\s+(\S+)\s+(.+)\z/
       (transcript_name, go_id) = line.strip.match(line_regex).captures
       go_term = GoTerm.find_by_id(go_id)
+      if go_id !~ /\AGO:\d+\z/
+        raise StandardError, "Error parsing go id: #{go_id}" 
+      end
+      if go_term.nil?
+        conn_pool = ActiveRecord::ConnectionAdapters::ConnectionPool(
+          Rails.configuration.database_configuration["b2gdb"]
+        )
+        conn_pool.with_connection do |conn|
+          row = conn.connection.execute("select * from term where acc='#{go_id}' limit 1").to_a[0]
+          go_term = GoTerm.create!(:id => row[3], :term => row[1])
+        end
+        conn_pool.disconnect!
+      end
       transcript = Transcript.where(:dataset_id => @dataset.id, 
                                      :name_from_program => transcript_name)[0]
       TranscriptHasGoTerm.create!(:transcript => transcript, 

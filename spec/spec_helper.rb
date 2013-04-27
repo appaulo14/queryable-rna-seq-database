@@ -117,7 +117,9 @@ RSpec.configure do |config|
                     "test_files/cuffdiff/#{number_of_samples}_samples/"
     absolute_path += file_name
     file = File.new(absolute_path,'r')
-    return ActionDispatch::Http::UploadedFile.new({:tempfile => file})
+    uf = ActionDispatch::Http::UploadedFile.new({:tempfile => file, 
+                                                      :filename => file_name})
+    return uf
   end
   
   def get_uploaded_trinity_fasta_file
