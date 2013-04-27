@@ -1,6 +1,3 @@
-//Global variable
-query_results_data = {};
-
 jQuery(document).ready(function($) {
 //   $().ajaxStart(function(){
 //     $('body').css('cursor', 'wait');
@@ -9,19 +6,23 @@ jQuery(document).ready(function($) {
 //   $().ajaxStop(function(){
 //     $('body').css('cursor', 'auto');
 //   });
-  $('#query_transcript_isoforms_dataset_id').change(dataset_id_pair_changed);
-  //$('#submit_button').click(goat);
+  $('#query_transcript_isoforms_dataset_id').change(dataset_id_changed);
+  //$('#submit_button').click(get_next_piece);
   $( "#new_query_transcript_isoforms" ).on( "submit", function( event ) {
     event.preventDefault();
     $('#query_results_div').css('display','block');
     $('#query_transcript_isoforms_piece').val(0);
     $('#submit_button').val('Querying....');
     $('#submit_button').attr("disabled", "disabled");
-    goat();
+    sample_name = $("#query_transcript_isoforms_sample_id option:selected").text();
+    $('#results_for_sample_name').text(sample_name);
+    $('#num_results_found').text("0 records found so far");
+    $('#insert_query_results_here').html("");
+    get_next_piece();
   });
 });
 
-function goat(){
+function get_next_piece(){
   //alert('Piece =' + piece);
   //$('body').css('cursor', 'progress');
   $.post('query_transcript_isoforms', 
@@ -40,14 +41,17 @@ function success(html){
   //alert('success');
   tbody = $('#insert_query_results_here');
   tbody.append(html);
+  records_found = $('#insert_query_results_here tr').length;
   if (html.length > 0){
     old_val = $('#query_transcript_isoforms_piece').val();
     $('#query_transcript_isoforms_piece').val(parseInt(old_val)+1);
-    goat();
+    $('#num_results_found').text(records_found + " records found so far");
+    get_next_piece();
   }
   else{
     $('#submit_button').removeAttr("disabled");
     $('#submit_button').val('Query');
+    $('#num_results_found').text(records_found + " records found");
   }
 }
 
@@ -55,7 +59,7 @@ function post_failed(){
   //alert('fail');
 }
 
-function dataset_id_pair_changed(){
+function dataset_id_changed(){
   dataset_id = $('#query_transcript_isoforms_dataset_id').val();
   request_string = 'get_transcript_isoforms_samples_for_dataset' +
                    '?dataset_id=' + dataset_id
