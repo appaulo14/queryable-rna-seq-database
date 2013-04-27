@@ -103,11 +103,12 @@ class QueryTranscriptIsoforms
     #Don't query if it is not valid
     return if not self.valid?
     #Record that the dataset was queried at this time
-    ds = Dataset.find_by_id(@dataset_id)
-    ds.when_last_queried = Time.now
-    ds.save!
+    @dataset = Dataset.find_by_id(@dataset_id)
+    @dataset.when_last_queried = Time.now
+    @dataset.save!
     #Create and run the query
     select_string = 'transcripts.id as transcript_id,' +
+                    'transcripts.name_from_program as transcript_name, ' +
                     'genes.name_from_program as gene_name,' +
                     'transcript_fpkm_tracking_informations.class_code,' +
                     'transcript_fpkm_tracking_informations.length,' +
@@ -140,22 +141,18 @@ class QueryTranscriptIsoforms
     @results = []
     query_results.each do |query_result|
       #Do a few more minor queries to get the data in the needed format
-      transcript = Transcript.find_by_id(query_result.transcript_id)
-      if not @go_ids.blank?
-        giqcg = GoIdsQueryConditionGenerator.new(@go_ids)
-        query_condition = giqcg.generate_query_condition()
-        next if (transcript.go_terms & GoTerm.where(query_condition)).empty?
-      end
-      if not @go_terms.blank?
-        gtqcg = GoTermsQueryConditionGenerator.new(@go_terms)
-        query_condition = gtqcg.generate_query_condition()
-        next if (transcript.go_terms & GoTerm.where(query_condition)).empty?
+      if (@dataset.go_terms_status == 'done')
+        next if passes_go_filters(query_result.transcript_id) == false
       end
       #Fill in the result hash that the view will use to display the data
       result = {}
-      result[:transcript_name] = transcript.name_from_program
+      result[:transcript_name] = query_result.transcript_name
       result[:gene_name] = query_result.gene_name
-      result[:go_terms] = transcript.go_terms
+      if @transcript.nil?
+        result[:go_terms] = []
+      else
+        result[:go_terms] = @transcript.go_terms
+      end
       result[:class_code] = query_result.class_code
       result[:transcript_length] = query_result.length
       result[:coverage] = query_result.coverage
@@ -176,6 +173,24 @@ class QueryTranscriptIsoforms
   end
   
   private
+  def passes_go_filters(transcript_id)
+    return true if @go_ids.blank? and @go_terms.blank?
+    transcript = Transcript.find_by_id(transcript_id)
+    transcript_go_terms = transcript.go_terms
+    return false if transcript_go_terms.empty?
+    raise NotImplementedError, "Finish coding this"
+    if not @go_ids.blank?
+      giqcg = GoIdsQueryConditionGenerator.new(@go_ids)
+      query_condition = giqcg.generate_query_condition()
+      return false if (transcript.go_terms & GoTerm.where(query_condition)).empty?
+    end
+    if not @go_terms.blank?
+      gtqcg = GoTermsQueryConditionGenerator.new(@go_terms)
+      query_condition = gtqcg.generate_query_condition()
+      return false if (transcript.go_terms & GoTerm.where(query_condition)).empty?
+    end
+  end
+  
   def class_codes_where_clause
     tfti_t = TranscriptFpkmTrackingInformation.arel_table
     tfti_w = nil

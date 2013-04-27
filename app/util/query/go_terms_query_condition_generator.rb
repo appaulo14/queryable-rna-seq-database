@@ -18,7 +18,7 @@ class GoTermsQueryConditionGenerator
     gt_t = GoTerm.arel_table
     where_clauses = []
     go_terms.each do |go_term|
-      where_clauses << gt_t[:term].matches("%#{go_term.strip}%")
+      where_clauses << gt_t[:name].matches("%#{go_term.strip}%")
     end
     if where_clauses.count > 1
       combined_where_clause = where_clauses[0]

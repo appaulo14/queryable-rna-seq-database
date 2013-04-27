@@ -1,3 +1,5 @@
+query_info = {};
+
 jQuery(document).ready(function($) {
 //   $().ajaxStart(function(){
 //     $('body').css('cursor', 'wait');
@@ -10,21 +12,36 @@ jQuery(document).ready(function($) {
   //$('#submit_button').click(get_next_piece);
   $( "#new_query_transcript_isoforms" ).on( "submit", function( event ) {
     event.preventDefault();
-    $('#query_results_div').css('display','block');
-    $('#query_transcript_isoforms_piece').val(0);
-    $('#submit_button').val('Querying....');
-    $('#submit_button').attr("disabled", "disabled");
-    sample_name = $("#query_transcript_isoforms_sample_id option:selected").text();
-    $('#results_for_sample_name').text(sample_name);
-    $('#num_results_found').text("0 records found so far");
-    $('#insert_query_results_here').html("");
-    get_next_piece();
+    prepare_for_querying();
   });
 });
+
+function prepare_for_querying(){
+  query_info.want_new_query = true;
+  if (query_info.query_running == true){
+    setTimeout(prepare_for_querying,10);  
+    return;
+  }
+  query_info.want_new_query = false;
+  query_info.query_running = true;
+  $('#query_results_div').css('display','block');
+  $('#query_transcript_isoforms_piece').val(0);
+  $('#submit_button').val('Querying....');
+  $('#submit_button').attr("disabled", "disabled");
+  sample_name = $("#query_transcript_isoforms_sample_id option:selected").text();
+  $('#results_for_sample_name').text(sample_name);
+  $('#num_results_found').text("0 records found so far");
+  $('#insert_query_results_here').html("");
+  get_next_piece();
+}
 
 function get_next_piece(){
   //alert('Piece =' + piece);
   //$('body').css('cursor', 'progress');
+  if (query_info.want_new_query == true){
+    query_info.query_running = false;
+    return;
+  }
   $.post('query_transcript_isoforms', 
       $("#new_query_transcript_isoforms").serialize()
   ).done(success)
@@ -39,6 +56,10 @@ function get_next_piece(){
 
 function success(html){
   //alert('success');
+  if (query_info.want_new_query == true){
+    query_info.query_running == false;
+    return;
+  }
   tbody = $('#insert_query_results_here');
   tbody.append(html);
   records_found = $('#insert_query_results_here tr').length;
@@ -56,7 +77,8 @@ function success(html){
 }
 
 function post_failed(){
-  //alert('fail');
+  $('#submit_button').removeAttr("disabled");
+  $('#submit_button').val('Query');
 }
 
 function dataset_id_changed(){

@@ -19,7 +19,7 @@ class GoIdsQueryConditionGenerator
     gt_t = GoTerm.arel_table
     where_clauses = []
     go_ids.each do |go_id|
-      where_clauses << gt_t[:id].eq(go_id.strip)
+      where_clauses << gt_t[:acc].eq(go_id.strip)
     end
     if where_clauses.count > 1
       combined_where_clause = where_clauses[0]
