@@ -1,9 +1,14 @@
 # == Schema Information
 #
-# Table name: go_terms
+# Table name: term
 #
-#  id   :string(255)      not null, primary key
-#  term :string(255)      not null
+#  id          :integer          not null, primary key
+#  name        :string(255)      default(""), not null
+#  term_type   :string(55)       not null
+#  acc         :string(255)      not null
+#  is_obsolete :integer          default(0), not null
+#  is_root     :integer          default(0), not null
+#  is_relation :integer          default(0), not null
 #
 
 require 'spec_helper'

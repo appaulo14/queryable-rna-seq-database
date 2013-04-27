@@ -17,7 +17,7 @@ namespace :db do
      make_sample_comparisons_and_differential_expression_tests
      make_fpkm_samples #1000
      make_transcript_fpkm_tracking_information #1000#1000
-     make_go_terms
+#     make_go_terms
      make_transcript_has_go_terms #1000
   end
 end
@@ -260,35 +260,35 @@ def make_transcript_fpkm_tracking_information
   puts 'Done'
 end
 
-def make_go_terms
-  print 'Populating GO terms...'
-  #Read the go terms file, writing the go terms to the database
-  go_term_file = File.open('lib/tasks/GO.terms_and_ids')
-  count = 0
-  start_time = Time.now.to_i
-  while (not go_term_file.eof?)
-    line = go_term_file.readline.chomp
-    next if line.match(/\AGO/).nil? #skip if line has no term
-    go_id, go_term = line.match(/\A(GO:\d+)\s+(.+)\s+(.+)\z/).captures()
-    GoTerm.create!(:id => go_id, :term => go_term)
-    count += 1
-    #break if count > 1000
-  end
-  end_time = Time.now.to_i
-  puts "Wrote #{count} go terms"
-  puts "Writing took #{end_time - start_time} seconds"
-  puts 'Done'
-end
+#def make_go_terms
+#  print 'Populating GO terms...'
+#  #Read the go terms file, writing the go terms to the database
+#  go_term_file = File.open('lib/tasks/GO.terms_and_ids')
+#  count = 0
+#  start_time = Time.now.to_i
+#  while (not go_term_file.eof?)
+#    line = go_term_file.readline.chomp
+#    next if line.match(/\AGO/).nil? #skip if line has no term
+#    go_id, go_term = line.match(/\A(GO:\d+)\s+(.+)\s+(.+)\z/).captures()
+#    GoTerm.create!(:id => go_id, :term => go_term)
+#    count += 1
+#    #break if count > 1000
+#  end
+#  end_time = Time.now.to_i
+#  puts "Wrote #{count} go terms"
+#  puts "Writing took #{end_time - start_time} seconds"
+#  puts 'Done'
+#end
 
 def make_transcript_has_go_terms
   print 'Populating transcript_has_go_terms table...'
   Dataset.all.each do |ds|
     ds.transcripts.each do |t|
       rand(0..3).times do |n|
-        random_go_term = GoTerm.all.sample
-        redo if t.go_terms.include?(random_go_term)
+        random_go_term = GoTerm.find(:all, :limit => 1, :offset => rand(1..30000))[0]
+        #redo if t.go_terms.include?(random_go_term)
         TranscriptHasGoTerm.create!(:transcript => t, 
-                                      :go_term => random_go_term)
+                                      :go_term_id => random_go_term.id)
       end
     end
   end
