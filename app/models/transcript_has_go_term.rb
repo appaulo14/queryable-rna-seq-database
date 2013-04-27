@@ -7,7 +7,7 @@
 #
 
 class TranscriptHasGoTerm < ActiveRecord::Base
-  attr_accessible :transcript, :go_term_id
+  attr_accessible :transcript, :go_term
   self.primary_keys = :transcript_id, :go_term_id
       
   validates :transcript, :presence => true

@@ -36,18 +36,21 @@ class FindGoTermsForDataset
   
   def find_and_save()
     return if not self.valid?
-    @dataset = Dataset.find_by_id(@dataset_id)
-    @dataset.go_terms_status = 'in-progress'
-    @dataset.save!
     begin
-      ActiveRecord::Base.transaction do   #Transactions work with sub-methods 
-        find_and_process_go_terms()
-        QueryAnalysisMailer.notify_user_of_blast2go_success(@current_user,
-                                                              @dataset)
-        @dataset.go_terms_status = 'found'
-        @dataset.save!
-    end
+       @dataset = Dataset.find_by_id(@dataset_id)
+      @dataset.go_terms_status = 'in-progress'
+      @dataset.save!
+      find_and_process_go_terms()
+      QueryAnalysisMailer.notify_user_of_blast2go_success(@current_user,
+                                                            @dataset)
+      @dataset.go_terms_status = 'found'
+      @dataset.save!
     rescue Exception => ex
+      @dataset.transcripts.each do |transcript|
+        transcript.transcript_has_go_terms.each do |transcript_has_go_term|
+          transcript_has_go_term.destroy()
+        end
+      end
       @dataset.go_terms_status = 'not-started'
       @dataset.save!
       QueryAnalysisMailer.notify_user_of_blast2go_failure(@current_user,

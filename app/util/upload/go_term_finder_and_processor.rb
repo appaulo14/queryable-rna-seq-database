@@ -20,8 +20,8 @@ class GoTermFinderAndProcessor
       #Remove from the transcript name the "lcl|" part put there by blast
       line.gsub!(/\Alcl\|/,'')
       line_regex = /\A(\S+)\s+(\S+)\s+(.+)\z/
-      (transcript_name, go_id) = line.strip.match(line_regex).captures
-      go_term = GoTerm.find_by_id(go_id)
+      (transcript_name, go_accession) = line.strip.match(line_regex).captures
+      go_term = GoTerm.find_by_acc(go_accession)
       transcript = Transcript.where(:dataset_id => @dataset.id, 
                                      :name_from_program => transcript_name)[0]
       TranscriptHasGoTerm.create!(:transcript => transcript, 
