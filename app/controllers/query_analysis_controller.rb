@@ -166,6 +166,16 @@ class QueryAnalysisController < ApplicationController
       end
     end
     
+    def get_query_diff_exp_transcripts_header_row
+      @qdet = QueryDiffExpTranscripts.new(current_user)
+      dataset_id = params[:dataset_id]
+      @qdet.set_attributes_and_defaults({:dataset_id => dataset_id})
+      if @qdet.valid?
+        render :partial => 'query_diff_exp_transcripts_header_row', 
+               :locals => {:object => @qdet}
+      end
+    end
+    
     def get_transcript_fasta
       #Create/fill in the view model
       get_transcript_fasta = GetTranscriptFasta.new(current_user)
@@ -243,6 +253,16 @@ class QueryAnalysisController < ApplicationController
                :locals => {:object => @qdeg}
       end
     end
+    
+    def get_query_diff_exp_genes_header_row
+      @qdeg = QueryDiffExpGenes.new(current_user)
+      dataset_id = params[:dataset_id]
+      @qdeg.set_attributes_and_defaults({:dataset_id => dataset_id})
+      if @qdeg.valid?
+        render :partial => 'query_diff_exp_genes_header_row', 
+               :locals => {:object => @qdeg}
+      end
+    end
 
     def query_transcript_isoforms
       #Create the view model, giving the current user
@@ -255,7 +275,7 @@ class QueryAnalysisController < ApplicationController
         @qti.set_attributes_and_defaults(params[:query_transcript_isoforms])
         # If valid, query and return results; otherwise return failure
         @qti.query() if @qti.valid?
-        render :partial => 'query_transcript_isoform_table_rows', 
+        render :partial => 'query_transcript_isoforms_table_rows', 
                :locals => {:object => @qti}
       end
     end
@@ -266,6 +286,16 @@ class QueryAnalysisController < ApplicationController
       @qti.set_attributes_and_defaults(:dataset_id => dataset_id)
       if @qti.valid?
         render :partial => 'transcript_isoforms_samples_for_dataset', 
+               :locals => {:object => @qti}
+      end
+    end
+    
+    def get_query_transcript_isoforms_header_row
+      @qti = QueryTranscriptIsoforms.new(current_user)
+      dataset_id = params[:dataset_id]
+      @qti.set_attributes_and_defaults(:dataset_id => dataset_id)
+      if @qti.valid?
+        render :partial => 'query_transcript_isoforms_header_row', 
                :locals => {:object => @qti}
       end
     end

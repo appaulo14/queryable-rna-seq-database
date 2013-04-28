@@ -113,84 +113,8 @@
   </div>
   <!--Table containing the query results-->
   <table border="1" id="query_results_table">
-      <thead>
-          <tr class="header_row">
-            <th data-sort='string'>
-              <table>
-                <tr>
-                  <td>Transcript</td>
-                  <td class="sort-arrow-td"></td>
-                </tr>
-              </table>
-            </th>
-            <th data-sort='string'>
-              <table>
-                <tr>
-                  <td>Associated Gene</td>
-                  <td class="sort-arrow-td"></td>
-                </tr>
-              </table>
-            </th>
-            <% if @qti.go_terms_status == 'done' %>
-              <th>GO Terms</th>
-            <% end %>
-            <th data-sort='string'>
-              <table>
-                <tr>
-                  <td>Class Code</td>
-                  <td class="sort-arrow-td"></td>
-                </tr>
-              </table>
-            </th>
-            <th data-sort='float'>
-              <table>
-                <tr>
-                  <td>Transcript length</td>
-                  <td class="sort-arrow-td"></td>
-                </tr>
-              </table>
-            </th>
-            <th data-sort='float'>
-              <table>
-                <tr>
-                  <td>Coverage</td>
-                  <td class="sort-arrow-td"></td>
-                </tr>
-              </table>
-            </th>
-            <th data-sort='float'>
-              <table>
-                <tr>
-                  <td>FPKM</td>
-                  <td class="sort-arrow-td"></td>
-                </tr>
-              </table>
-            </th>
-            <th data-sort='float'>
-              <table>
-                <tr>
-                  <td>FPKM Lower Bound</td>
-                  <td class="sort-arrow-td"></td>
-                </tr>
-              </table>
-            </th>
-            <th data-sort='float'>
-              <table>
-                <tr>
-                  <td>FPKM Upper Bound</td>
-                  <td class="sort-arrow-td"></td>
-                </tr>
-              </table>
-            </th>
-            <th data-sort='string'>
-              <table>
-                <tr>
-                  <td>Quantification Status</td>
-                  <td></td>
-                </tr>
-              </table>
-            </th>
-          </tr>
+      <thead id="insert_header_row_here">
+          
       </thead>
       <tbody id="insert_query_results_here">
       

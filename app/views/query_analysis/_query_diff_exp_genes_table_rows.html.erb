@@ -12,14 +12,14 @@
           <% end %>
           </ul>
         </td>
-        <% if @qdeg.go_terms_status == 'done' %>
+        <% if @qdeg.go_terms_status == 'found' %>
         <% if result[:go_terms].empty? == false %>
           <td class="list_cell">
             <ul>
               <!-- Sort by ascending GO ID for the go terms-->
-              <% result[:go_terms].sort{|a,b| a.id.gsub(/GO:/,'').to_i <=> b.id.gsub(/GO:/,'').to_i}.each do |go_term| %>
-                <li><%= link_to_amigo_web_page_for_term("#{go_term.term} [#{go_term.id}]",go_term.id) %></li>
-              <% end %>
+            <% result[:go_terms].sort{|a,b| a.acc.gsub(/GO:/,'').to_i <=> b.acc.gsub(/GO:/,'').to_i}.each do |go_term| %>
+              <li><%= link_to_amigo_web_page_for_term("#{go_term.name} [#{go_term.acc}]",go_term.acc) %></li>
+            <% end %>
             </ul>
           </td>
         <% else %>

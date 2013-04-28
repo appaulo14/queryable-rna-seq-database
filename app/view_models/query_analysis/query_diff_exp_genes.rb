@@ -81,9 +81,9 @@ class QueryDiffExpGenes
     #Don't query if it is not valid
     return if not self.valid?
     #Record that the dataset was queried at this time
-    ds = Dataset.find_by_id(@dataset_id)
-    ds.when_last_queried = Time.now
-    ds.save!
+    @dataset = Dataset.find_by_id(@dataset_id)
+    @dataset.when_last_queried = Time.now
+    @dataset.save!
     #Retreive some variables to use later
     sample_comparison = SampleComparison.find_by_id(@sample_comparison_id)
     @sample_1_name = sample_comparison.sample_1.name
@@ -114,20 +114,26 @@ class QueryDiffExpGenes
       #Do a few more minor queries to get the data in the needed format
       gene = Gene.find_by_id(query_result.gene_id)
       transcripts = gene.transcripts
-      match_found = false
-      transcripts.each do |transcript|
-        go_filter_checker = GoFilterChecker.new(query_result.transcript_id)
-        if go_filter_checker.passes_go_filters() == true
-          match_found = true
-          break
+      if (@dataset.go_terms_status == 'found')
+        match_found = false
+        transcripts.each do |transcript|
+          go_filter_checker = GoFilterChecker.new(transcript.id)
+          if go_filter_checker.passes_go_filters() == true
+            match_found = true
+            break
+          end
         end
+        next if not match_found
       end
-      next if not match_found
       #Fill in the result hash that the view will use to display the data
       result = {}
       result[:gene_name] = gene.name_from_program #det.gene
       result[:transcript_names] = transcripts.map{|t| t.name_from_program} #det.gene.transcript_names
-      result[:go_terms] = transcripts.map{|t| t.go_terms}.flatten.uniq{|g| g.id}
+      if (@dataset.go_terms_status == 'found')
+        result[:go_terms] = transcripts.map{|t| t.go_terms}.flatten.uniq{|g| g.id}
+      else
+        result[:go_terms] = []
+      end
       result[:test_statistic] = query_result.test_statistic
       result[:p_value] = query_result.p_value
       result[:fdr] = query_result.fdr

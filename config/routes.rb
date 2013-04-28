@@ -55,16 +55,22 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
   post 'query_analysis/query_diff_exp_transcripts'
   
   get 'query_analysis/get_transcript_diff_exp_samples_for_dataset'
+  
+  get 'query_analysis/get_query_diff_exp_transcripts_header_row'
 
   get  'query_analysis/query_diff_exp_genes'
   post 'query_analysis/query_diff_exp_genes'
   
   get 'query_analysis/get_gene_diff_exp_samples_for_dataset'
+  
+  get 'query_analysis/get_query_diff_exp_genes_header_row'
 
   get  'query_analysis/query_transcript_isoforms'
   post 'query_analysis/query_transcript_isoforms'
   
   get 'query_analysis/get_transcript_isoforms_samples_for_dataset'
+  
+  get 'query_analysis/get_query_transcript_isoforms_header_row'
 
   get  'query_analysis/query_using_blastn'
   post 'query_analysis/query_using_blastn'

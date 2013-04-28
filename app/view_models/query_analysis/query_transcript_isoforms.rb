@@ -142,7 +142,7 @@ class QueryTranscriptIsoforms
     @results = []
     query_results.each do |query_result|
       #Do a few more minor queries to get the data in the needed format
-      if (@dataset.go_terms_status == 'done')
+      if (@dataset.go_terms_status == 'found')
         go_filter_checker = GoFilterChecker.new(query_result.transcript_id)
         next if go_filter_checker.passes_go_filters() == false
       end
@@ -150,7 +150,11 @@ class QueryTranscriptIsoforms
       result = {}
       result[:transcript_name] = query_result.transcript_name
       result[:gene_name] = query_result.gene_name
-      result[:go_terms] = go_filter_checker.transcript_go_terms
+      if (@dataset.go_terms_status == 'found')
+        result[:go_terms] = go_filter_checker.transcript_go_terms
+      else
+        result[:go_terms] = []
+      end
       result[:class_code] = query_result.class_code
       result[:transcript_length] = query_result.length
       result[:coverage] = query_result.coverage

@@ -84,9 +84,19 @@ class QueryDiffExpTranscripts
     #Don't query if it is not valid
     return if not self.valid?
     #Record that the dataset was queried at this time
-    ds = Dataset.find_by_id(@dataset_id)
-    ds.when_last_queried = Time.now
-    ds.save!
+    @dataset = Dataset.find_by_id(@dataset_id)
+    @dataset.when_last_queried = Time.now
+    @dataset.save!
+    select_string = 'transcripts.id as transcript_id,' +
+                    'transcripts.name_from_program as transcript_name, ' +
+                    'genes.name_from_program as gene_name,' +
+                    'differential_expression_tests.test_statistic,' +
+                    'differential_expression_tests.p_value,' +
+                    'differential_expression_tests.fdr,' +
+                    'differential_expression_tests.sample_1_fpkm,' +
+                    'differential_expression_tests.sample_2_fpkm,' +
+                    'differential_expression_tests.log_fold_change,' +
+                    'differential_expression_tests.test_status'
     #Retreive some variables to use later
     sample_comparison = SampleComparison.find_by_id(@sample_comparison_id)
     @sample_1_name = sample_comparison.sample_1.name
@@ -108,21 +118,25 @@ class QueryDiffExpTranscripts
     query_results = 
       DifferentialExpressionTest.joins(:transcript => [:gene])
                                 .where(where_clause)
-                                .select
+                                .select(select_string)
                                 .limit(PIECE_SIZE)
                                 .offset(PIECE_SIZE*@piece.to_i)
     #Extract the query results to a form that can be put in the view
     @results = []
     query_results.each do |query_result|
       #Fill in the result hash that the view will use to display the data
-      if (@dataset.go_terms_status == 'done')
+      if (@dataset.go_terms_status == 'found')
         go_filter_checker = GoFilterChecker.new(query_result.transcript_id)
         next if go_filter_checker.passes_go_filters() == false
       end
       result = {}
-      result[:transcript_name] = transcript.name_from_program
-        result[:gene_name] =  transcript.gene.name_from_program 
-      result[:go_terms] = go_filter_checker.transcript_go_terms
+      result[:transcript_name] = query_result.transcript_name
+      result[:gene_name] =  query_result.gene_name
+      if (@dataset.go_terms_status == 'found')
+        result[:go_terms] = go_filter_checker.transcript_go_terms
+      else
+        result[:go_terms] = []
+      end
       result[:test_statistic] = query_result.test_statistic
       result[:p_value] = query_result.p_value
       result[:fdr] = query_result.fdr
