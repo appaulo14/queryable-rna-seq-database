@@ -1,5 +1,14 @@
-<script type='text/javascript' src='query_diff_exp_genes.js' ></script>
 <%= render 'shared/error_messages', :object => @qdeg %>
+<script type='text/javascript' src='query_diff_exp_genes.js' ></script>
+<%= javascript_tag do %>
+  view_info = {action: "<%= params[:action] %>"};
+<% end %>
+<%= javascript_include_tag 'large_query_loader.js' %>
+<%= javascript_include_tag 'downloadify/swfobject.js' %>
+<%= javascript_include_tag 'downloadify/downloadify.min.js' %>
+<%= javascript_include_tag 'downloadify_wrapper.js' %>
+<%= javascript_include_tag 'Stupid-Table-Plugin/stupidtable.min.js' %>
+<%= javascript_include_tag 'table_sorting.js' %>
 <%= form_for(@qdeg, :url => 'query_diff_exp_genes') do |qdeg| %>
   <h1>
     Query Gene Differential Expression Tests
@@ -15,56 +24,27 @@
     </span>
   </p>
   <p>
-    <div>
-        <%= help_tip(:cutoff) %>
-        <%= qdeg.label(:fdr_or_p_value, "Filter By:") %>
-        <%= qdeg.radio_button(:fdr_or_p_value, :p_value) %>
-        <%= qdeg.label(:filter_by_p_value, "P-value") %>
-        <%= qdeg.radio_button(:fdr_or_p_value, :fdr) %>
-        <%= qdeg.label(:filter_by_fdr, "FDR") %>
-    </div>
-    <div>
-        <%= qdeg.label(:cutoff, "Select cutoff:") %>
-        <%= qdeg.text_field(:cutoff, {:size=>10}) %>
-    </div>
+    <%= render 'diff_exp_cutoff', :object => @qdeg %>
   </p>
   <br/>
   <h2>Query filtering options</h2>
   <p>
-    <div>
-        <%= qdeg.label(:go_terms, "GO Terms, separated by semicolons") %>
-        <%= qdeg.text_field(:go_terms, :size => 70) %>
-        <%= help_tip(:go_terms) %>
-        <%= link_to('Browse GO Terms','http://amigo.geneontology.org/cgi-bin/amigo/browse.cgi', :target => '_blank') %>
-    </div>
-    <div>
-        <%= qdeg.label(:go_ids, "GO IDs (a.k.a Accessions), separated by semicolons") %>
-        <%= qdeg.text_field(:go_ids) %>
-        <%= help_tip(:go_ids) %>
-        <%= link_to('Browse GO Terms',
-            'http://amigo.geneontology.org/cgi-bin/amigo/browse.cgi', 
-            :target => '_blank') %>
-    </div>
+    <%= render 'go_query_filters', :object => @qdeg %>
     <div>
         <%= qdeg.label(:gene_name, "Gene name:") %>
         <%= qdeg.text_field(:gene_name) %>
     </div>
+    <%= qdeg.hidden_field :piece, :value => "0" %>
   </p>
-  <p><%= submit_tag("Query", :disable_with => "Querying...") %></p>
+  <p><%= qdeg.submit('Query', :id => :submit_button) %></p>
 <% end %>
 <!--Section for the query results-->
-<% if @qdeg.show_results? %>
+<div id="query_results_div" style="display:none">
   <p>
-    <%= @qdeg.results.length %> results found for 
-    <em><b>
-      <%= @qdeg.sample_1_name %></b> vs <b><%= @qdeg.sample_2_name %>
-    </b></em>
+    <%= querying_indicator %>
+    <span id="num_results_found"></span> for
+    <em><b><span id="results_for"></span></b></em>
   </p>
-  <%= javascript_include_tag 'downloadify/swfobject.js' %>
-  <%= javascript_include_tag 'downloadify/downloadify.min.js' %>
-  <%= javascript_include_tag 'downloadify_wrapper.js' %>
-  <%= javascript_include_tag 'Stupid-Table-Plugin/stupidtable.min.js' %>
-  <%= javascript_include_tag 'table_sorting.js' %>
   <p id="downloadify">
       You must have Flash 10 installed to download this file.
   </p>
@@ -94,7 +74,9 @@
                   </tr>
                 </table>
               </th>
-              <th>GO Terms</th>
+              <% if @qdeg.go_terms_status == 'done' %>
+                <th>GO Terms</th>
+              <% end %>
               <% if @qdeg.program_used == 'cuffdiff' %>
                 <th data-sort='float'>
                   <table>
@@ -157,48 +139,8 @@
               <% end %>
           </tr>
       </thead>
-      <tbody>
-          <% @qdeg.results.each do |result| %>
-              <tr class="body_row">
-                  <td>
-                    <%= link_to_fasta_sequences_for_gene(@qdeg.dataset_id, 
-                                result[:gene_name]) %>
-                  </td>
-                  <td>
-                    <ul class="list_cell">
-                    <% result[:transcript_names].sort.each do |transcript_name| %>
-                      <li><%= link_to_fasta_sequence_for_transcript(@qdeg.dataset_id,
-                                transcript_name) %></li>
-                    <% end %>
-                    </ul>
-                  </td>
-                  <% if result[:go_terms].empty? == false %>
-                    <td class="list_cell">
-                      <ul>
-                        <!-- Sort by ascending GO ID for the go terms-->
-                        <% result[:go_terms].sort{|a,b| a.id.gsub(/GO:/,'').to_i <=> b.id.gsub(/GO:/,'').to_i}.each do |go_term| %>
-                          <li><%= link_to_amigo_web_page_for_term("#{go_term.term} [#{go_term.id}]",go_term.id) %></li>
-                        <% end %>
-                      </ul>
-                    </td>
-                  <% else %>
-                    <td>
-                      No GO ids found.
-                    </td>
-                  <% end %>
-                  <% if @qdeg.program_used == 'cuffdiff' %>
-                    <td><pre><%= ("% .5E" % result[:test_statistic]) %></pre></td>
-                  <% end %>
-                  <td><pre><%= ("%6.5f" % result[:p_value]) %></pre></td>
-                  <td><pre><%= ("%6.5f" % result[:fdr]) %></pre></td>
-                  <td><pre><%= ("% .3E" % result[:sample_1_fpkm]) %></pre></td>
-                  <td><pre><%= ("% .3E" % result[:sample_2_fpkm]) %></pre></td>
-                  <td><pre><%= ("% .3E" % result[:log_fold_change]) %></pre></td>
-                  <% if @qdeg.program_used == 'cuffdiff' %>
-                    <td><%= result[:test_status] %></td>
-                  <% end %>
-              </tr>
-          <% end %>
+      <tbody id="insert_query_results_here">
+          
       </tbody>
   </table>
-<% end %>
+</div>

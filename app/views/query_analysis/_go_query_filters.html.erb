@@ -1,0 +1,39 @@
+<%= fields_for object do |q| %>
+  <div id="go_terms_filter_div">
+    <%= q.label(:go_terms, "GO Terms, separated by semicolons") %>
+    <%= q.text_field(:go_terms, :size => 70) %>
+    <%= help_tip(:go_terms) %>
+    <%= link_to('Browse GO Terms','http://amigo.geneontology.org/cgi-bin/amigo/browse.cgi', :target => '_blank') %>
+  </div>
+  <div id="go_ids_filter_div">
+    <%= q.label(:go_ids, "GO IDs (a.k.a Accessions), separated by semicolons") %>
+    <%= q.text_field(:go_ids) %>
+    <%= help_tip(:go_ids) %>
+    <%= link_to('Browse GO Terms','http://amigo.geneontology.org/cgi-bin/amigo/browse.cgi', :target => '_blank') %>
+  </div>
+<% end %>
+<script type="text/javascript">
+  jQuery(document).ready(function($) {
+    $("[id$='dataset_id']").change(dataset_id_select_changed);
+    dataset_id_select_changed();
+  });
+  
+  function dataset_id_select_changed(){
+    dataset_id = $("[id$='dataset_id']").val();
+    request_string = 'get_if_dataset_has_go_terms' +
+                    '?dataset_id=' + dataset_id
+    $.get(request_string, get_if_dataset_has_go_terms_received);
+  }
+
+  function get_if_dataset_has_go_terms_received(result){
+    if (result == 'true'){
+      $('#go_terms_filter_div').css('display','block');
+      $('#go_ids_filter_div').css('display','block');
+    }
+    else{
+      $('#go_terms_filter_div').css('display','none');
+      $('#go_ids_filter_div').css('display','none');
+    }
+  }
+  
+</script>

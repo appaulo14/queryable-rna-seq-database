@@ -1,6 +1,7 @@
 require 'query/gene_name_query_condition_generator.rb'
 require 'query/go_ids_query_condition_generator.rb'
 require 'query/go_terms_query_condition_generator.rb'
+require 'query/go_filter_checker.rb'
 
 class QueryDiffExpGenes
   include ActiveModel::Validations
@@ -13,7 +14,7 @@ class QueryDiffExpGenes
   attr_reader   :names_and_ids_for_available_datasets, 
                 :available_sample_comparisons, 
                 :show_results, :results, :sample_1_name, :sample_2_name,
-                :program_used
+                :program_used, :go_terms_status
   
   PIECE_SIZE = 100
   
@@ -60,7 +61,6 @@ class QueryDiffExpGenes
         select('samples.name as sample_1_name, '+
                'sample_2s_sample_comparisons.name as sample_2_name, ' +
                'sample_comparisons.id as sample_comparison_id')
-        .limit(PIECE_SIZE).offset(PIECE_SIZE*@piece.to_i)
     sample_comparisons_query.each do |scq|
       display_text = "#{scq.sample_1_name} vs #{scq.sample_2_name}"
       value = scq.sample_comparison_id
@@ -71,7 +71,10 @@ class QueryDiffExpGenes
       @sample_comparison_id_pair = @available_sample_comparisons[0][1]
     end
     @show_results = false
-    @program_used = Dataset.find_by_id(@dataset_id).program_used
+    dataset = Dataset.find_by_id(@dataset_id)
+    @program_used = dataset.program_used
+    @go_terms_status = dataset.go_terms_status
+    @piece = '0' if @piece.blank?
   end
   
   def query()
@@ -101,35 +104,25 @@ class QueryDiffExpGenes
       where_clause = where_clause.and(gnqcg.generate_query_condition())
     end
     query_results = 
-      DifferentialExpressionTest.joins(:gene).where(where_clause)
+      DifferentialExpressionTest.joins(:gene)
+                                .where(where_clause)
+                                .limit(PIECE_SIZE)
+                                .offset(PIECE_SIZE*@piece.to_i)
     #Extract the query results to form that can be put in the view
     @results = []
     query_results.each do |query_result|
       #Do a few more minor queries to get the data in the needed format
       gene = Gene.find_by_id(query_result.gene_id)
       transcripts = gene.transcripts
-      if not @go_ids.blank?
-        giqcg = GoIdsQueryConditionGenerator.new(@go_ids)
-        query_condition = giqcg.generate_query_condition()
-        match_found = false
-        transcripts.each do |transcript|
-          if not (transcript.go_terms & GoTerm.where(query_condition)).empty?
-            match_found = true
-          end
+      match_found = false
+      transcripts.each do |transcript|
+        go_filter_checker = GoFilterChecker.new(query_result.transcript_id)
+        if go_filter_checker.passes_go_filters() == true
+          match_found = true
+          break
         end
-        next if not match_found
       end
-      if not @go_terms.blank?
-        gtqcg = GoTermsQueryConditionGenerator.new(@go_terms)
-        query_condition = gtqcg.generate_query_condition()
-        match_found = false
-        transcripts.each do |transcript|
-          if not (transcript.go_terms & GoTerm.where(query_condition)).empty?
-            match_found = true
-          end
-        end
-        next if not match_found
-      end
+      next if not match_found
       #Fill in the result hash that the view will use to display the data
       result = {}
       result[:gene_name] = gene.name_from_program #det.gene

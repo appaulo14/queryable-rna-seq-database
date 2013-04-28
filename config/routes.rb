@@ -76,6 +76,8 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
   
   get 'query_analysis/get_gene_fastas'
   
+  get 'query_analysis/get_if_dataset_has_go_terms'
+  
   get 'query_analysis/get_blastn_gap_costs_for_match_and_mismatch_scores'
   
   get 'query_analysis/get_tblastn_gap_costs_for_matrix'

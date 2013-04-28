@@ -1,6 +1,7 @@
 require 'query/transcript_name_query_condition_generator.rb'
 require 'query/go_ids_query_condition_generator.rb'
 require 'query/go_terms_query_condition_generator.rb'
+require 'query/go_filter_checker.rb'
 
 class QueryTranscriptIsoforms
   include ActiveModel::Validations
@@ -16,7 +17,7 @@ class QueryTranscriptIsoforms
                 :transcript_name, :piece
   attr_reader  :names_and_ids_for_available_datasets, 
                 :available_samples, :available_transcript_length_comparison_signs,
-                :show_results, :results, :sample_name
+                :show_results, :results, :sample_name, :go_terms_status
   
   PIECE_SIZE = 100
   
@@ -96,6 +97,7 @@ class QueryTranscriptIsoforms
     @sample_id = @available_samples[0][1] if @sample_id.blank?
     @show_results = false
     @piece = '0' if @piece.blank?
+    @go_terms_status = Dataset.find_by_id(@dataset_id).go_terms_status
   end
   
   def query()
@@ -141,17 +143,14 @@ class QueryTranscriptIsoforms
     query_results.each do |query_result|
       #Do a few more minor queries to get the data in the needed format
       if (@dataset.go_terms_status == 'done')
-        next if passes_go_filters(query_result.transcript_id) == false
+        go_filter_checker = GoFilterChecker.new(query_result.transcript_id)
+        next if go_filter_checker.passes_go_filters() == false
       end
       #Fill in the result hash that the view will use to display the data
       result = {}
       result[:transcript_name] = query_result.transcript_name
       result[:gene_name] = query_result.gene_name
-      if @transcript.nil?
-        result[:go_terms] = []
-      else
-        result[:go_terms] = @transcript.go_terms
-      end
+      result[:go_terms] = go_filter_checker.transcript_go_terms
       result[:class_code] = query_result.class_code
       result[:transcript_length] = query_result.length
       result[:coverage] = query_result.coverage
@@ -172,23 +171,6 @@ class QueryTranscriptIsoforms
   end
   
   private
-  def passes_go_filters(transcript_id)
-    return true if @go_ids.blank? and @go_terms.blank?
-    transcript = Transcript.find_by_id(transcript_id)
-    transcript_go_terms = transcript.go_terms
-    return false if transcript_go_terms.empty?
-    raise NotImplementedError, "Finish coding this"
-    if not @go_ids.blank?
-      giqcg = GoIdsQueryConditionGenerator.new(@go_ids)
-      query_condition = giqcg.generate_query_condition()
-      return false if (transcript.go_terms & GoTerm.where(query_condition)).empty?
-    end
-    if not @go_terms.blank?
-      gtqcg = GoTermsQueryConditionGenerator.new(@go_terms)
-      query_condition = gtqcg.generate_query_condition()
-      return false if (transcript.go_terms & GoTerm.where(query_condition)).empty?
-    end
-  end
   
   def class_codes_where_clause
     tfti_t = TranscriptFpkmTrackingInformation.arel_table

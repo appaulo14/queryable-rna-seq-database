@@ -1,4 +1,4 @@
-<% @qti.results.each do |result| %>
+<% @qdet.results.each do |result| %>
   <tr class="body_row">
     <td>
       <%= link_to_fasta_sequence_for_transcript(@qti.dataset_id, 
@@ -7,7 +7,8 @@
     <td>
       <%= link_to_fasta_sequences_for_gene(@qti.dataset_id, result[:gene_name]) %>
     </td>
-    <% if @qti.go_terms_status == 'done' %>
+      
+    <% if @qdet.go_terms_status == 'done' %>
       <% if result[:go_terms].empty? == false %>
         <td class="list_cell">
           <ul>
@@ -23,16 +24,16 @@
         </td>
       <% end %>
     <% end %>
-    <td>
-      <%= result[:class_code] %>
-    </td>
-    <td><pre><%= "%5d" % result[:transcript_length] %></pre></td>
-    <td><pre><%= result[:coverage] %></pre></td>
-    <td><pre><%= "% .3E" % result[:fpkm] %></pre></td>
-    <td><pre><%= "% .3E" % result[:fpkm_lo] %></pre></td>
-    <td><pre><%= "% .3E" % result[:fpkm_hi] %></pre></td>
-    <td>
-      <%= result[:status] %>
-    </td>
+    <% if @qdet.program_used == 'cuffdiff' %>
+      <td><pre><%= ("% .5E" % result[:test_statistic]) %></pre></td>
+    <% end %>
+    <td><pre><%= ("%6.5f" % result[:p_value]) %></pre></td>
+    <td><pre><%= ("%6.5f" % result[:fdr]) %></pre></td>
+    <td><pre><%= ("% .3E" % result[:sample_1_fpkm]) %></pre></td>
+    <td><pre><%= ("% .3E" % result[:sample_2_fpkm]) %></pre></td>
+    <td><pre><%= ("% .3E" % result[:log_fold_change]) %></pre></td>
+    <% if @qdet.program_used == 'cuffdiff' %>
+      <td><%= result[:test_status] %></td>
+    <% end %>
   </tr>
 <% end %>

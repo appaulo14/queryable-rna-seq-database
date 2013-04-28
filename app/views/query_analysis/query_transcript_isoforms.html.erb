@@ -1,9 +1,8 @@
 <%= render 'shared/error_messages', :object => @qti %>
-<%= javascript_tag do %>
-  view_info = {};
-  view_info.action = "<%= params[:action] %>";
-<% end %>
 <script type='text/javascript' src='query_transcript_isoforms.js' ></script>
+<%= javascript_tag do %>
+  view_info = {action: "<%= params[:action] %>"};
+<% end %>
 <%= javascript_include_tag 'large_query_loader.js' %>
 <%= javascript_include_tag 'downloadify/swfobject.js' %>
 <%= javascript_include_tag 'downloadify/downloadify.min.js' %>
@@ -79,18 +78,7 @@
         </tr>
         </table>
     </div>
-    <div>
-        <%= qti.label(:go_terms, "GO Terms, separated by semicolons") %>
-        <%= qti.text_field(:go_terms, :size => 70) %>
-        <%= help_tip(:go_terms) %>
-        <%= link_to('Browse GO Terms','http://amigo.geneontology.org/cgi-bin/amigo/browse.cgi', :target => '_blank') %>
-    </div>
-    <div>
-        <%= qti.label(:go_ids, "GO IDs (a.k.a Accessions), separated by semicolons") %>
-        <%= qti.text_field(:go_ids) %>
-        <%= help_tip(:go_ids) %>
-        <%= link_to('Browse GO Terms','http://amigo.geneontology.org/cgi-bin/amigo/browse.cgi', :target => '_blank') %>
-    </div>
+    <%= render 'go_query_filters', :object => @qti %>
     <div>
         <%= label(:transcript_length, "Transcript length") %>
         <%= qti.select(:transcript_length_comparison_sign, 
@@ -113,7 +101,7 @@
     <%= querying_indicator %>
     <span id="num_results_found"></span> for
     <em><b><span id="results_for"></span></b></em>
- </p>
+  </p>
   <p id="downloadify">
       You must have Flash 10 installed to download this file.
   </p>
@@ -143,7 +131,9 @@
                 </tr>
               </table>
             </th>
-            <th>GO Terms</th>
+            <% if @qti.go_terms_status == 'done' %>
+              <th>GO Terms</th>
+            <% end %>
             <th data-sort='string'>
               <table>
                 <tr>

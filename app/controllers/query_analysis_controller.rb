@@ -149,6 +149,8 @@ class QueryAnalysisController < ApplicationController
         @qdet.set_attributes_and_defaults(params[:query_diff_exp_transcripts])
         # If valid, query and return results; otherwise return failure
         @qdet.query() if @qdet.valid?
+        render :partial => 'query_diff_exp_transcripts_table_rows', 
+               :locals => {:object => @qdet}
       end
     end
     
@@ -200,6 +202,21 @@ class QueryAnalysisController < ApplicationController
                :content_type => 'text/plain'
       end
     end
+    
+    def get_if_dataset_has_go_terms
+      dataset = Dataset.find_by_id(params[:dataset_id])
+      if dataset.user != current_user
+        msg = "not authorized"
+      else
+        if dataset.go_terms_status == 'found'
+          msg = true
+        else
+          msg = false
+        end
+      end
+      render :text => msg, 
+             :content_type => 'text/plain'
+    end
 
     def query_diff_exp_genes
       #Create the view model, giving the current user
@@ -212,6 +229,8 @@ class QueryAnalysisController < ApplicationController
         @qdeg.set_attributes_and_defaults(params[:query_diff_exp_genes])
         # If valid, query and return results; otherwise return failure
         @qdeg.query() if @qdeg.valid?
+        render :partial => 'query_diff_exp_genes_table_rows', 
+               :locals => {:object => @qdeg}
       end
     end
     

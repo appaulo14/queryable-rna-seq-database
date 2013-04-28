@@ -1,0 +1,14 @@
+<%= fields_for object do |qde| %>
+  <div>
+    <%= help_tip(:cutoff) %>
+    <%= qde.label(:fdr_or_p_value, "Filter By:") %>
+    <%= qde.radio_button(:fdr_or_p_value, :p_value) %>
+    <%= qde.label(:filter_by_p_value, "P-value") %>
+    <%= qde.radio_button(:fdr_or_p_value, :fdr) %>
+    <%= qde.label(:filter_by_fdr, "FDR") %>
+  </div>
+  <div>
+    <%= qde.label(:cutoff, "Select cutoff:") %>
+    <%= qde.text_field(:cutoff, {:size=>10}) %>
+  </div>
+<% end %>
