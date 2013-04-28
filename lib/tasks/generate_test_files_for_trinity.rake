@@ -4,18 +4,37 @@ namespace :generate_test_files do
     if not Dir.exists?("#{Rails.root}/tmp/generated_test_files")
       Dir.mkdir("#{Rails.root}/tmp/generated_test_files/")
     end
-    if Dir.exists?("#{Rails.root}/tmp/generated_test_files/trinity")
-      system("rm -r #{Rails.root}/tmp/generated_test_files/trinity")
+    if not Dir.exists?("#{Rails.root}/tmp/generated_test_files/trinity")
+      Dir.mkdir("#{Rails.root}/tmp/generated_test_files/trinity")
     end
-    Dir.mkdir("#{Rails.root}/tmp/generated_test_files/trinity")
-    Dir.chdir("#{Rails.root}/tmp/generated_test_files/trinity") 
-    GenerateTrinityFiles.make_genes(4000) #100,000 for XXXL, around 40,000 for XL, around 4,000 for regular
+    #Regular size
+    if Dir.exists?("#{Rails.root}/tmp/generated_test_files/trinity/regular")
+      system("rm -r #{Rails.root}/tmp/generated_test_files/trinity/regular")
+    end
+    Dir.mkdir("#{Rails.root}/tmp/generated_test_files/trinity/regular")
+    Dir.chdir("#{Rails.root}/tmp/generated_test_files/trinity/regular") 
+    GenerateTrinityFiles.make_genes(1000) #100,000 for XXXL, around 40,000 for XL, around 4,000 for regular
     GenerateTrinityFiles.make_transcripts()
     GenerateTrinityFiles.make_transcript_samples(3)
     GenerateTrinityFiles.make_trinity_fasta_file()
     GenerateTrinityFiles.make_transcript_fpkm_file()
     GenerateTrinityFiles.make_transcript_det_files()
     GenerateTrinityFiles.make_gene_samples(3)
+    GenerateTrinityFiles.make_gene_fpkm_file()
+    GenerateTrinityFiles.make_gene_det_files()
+    #Large size
+    if Dir.exists?("#{Rails.root}/tmp/generated_test_files/trinity/large")
+      system("rm -r #{Rails.root}/tmp/generated_test_files/trinity/large")
+    end
+    Dir.mkdir("#{Rails.root}/tmp/generated_test_files/trinity/large")
+    Dir.chdir("#{Rails.root}/tmp/generated_test_files/trinity/large") 
+    GenerateTrinityFiles.make_genes(60000) #100,000 for XXXL, around 40,000 for XL, around 4,000 for regular
+    GenerateTrinityFiles.make_transcripts()
+    GenerateTrinityFiles.make_transcript_samples(4)
+    GenerateTrinityFiles.make_trinity_fasta_file()
+    GenerateTrinityFiles.make_transcript_fpkm_file()
+    GenerateTrinityFiles.make_transcript_det_files()
+    GenerateTrinityFiles.make_gene_samples(4)
     GenerateTrinityFiles.make_gene_fpkm_file()
     GenerateTrinityFiles.make_gene_det_files()
   end
