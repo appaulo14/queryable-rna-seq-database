@@ -288,7 +288,7 @@ def make_transcript_has_go_terms
         random_go_term = GoTerm.find(:all, :limit => 1, :offset => rand(1..30000))[0]
         #redo if t.go_terms.include?(random_go_term)
         TranscriptHasGoTerm.create!(:transcript => t, 
-                                      :go_term_id => random_go_term.id)
+                                      :go_term => random_go_term)
       end
     end
   end
