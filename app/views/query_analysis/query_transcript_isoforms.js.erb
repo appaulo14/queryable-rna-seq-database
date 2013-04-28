@@ -1,94 +1,15 @@
-query_info = {};
-
 jQuery(document).ready(function($) {
-//   $().ajaxStart(function(){
-//     $('body').css('cursor', 'wait');
-//   });
-// 
-//   $().ajaxStop(function(){
-//     $('body').css('cursor', 'auto');
-//   });
   $('#query_transcript_isoforms_dataset_id').change(dataset_id_changed);
-  //$('#submit_button').click(get_next_piece);
-  $( "#new_query_transcript_isoforms" ).on( "submit", function( event ) {
-    event.preventDefault();
-    prepare_for_querying();
-  });
 });
-
-function prepare_for_querying(){
-  query_info.want_new_query = true;
-  if (query_info.query_running == true){
-    setTimeout(prepare_for_querying,10);  
-    return;
-  }
-  query_info.want_new_query = false;
-  query_info.query_running = true;
-  $('#query_results_div').css('display','block');
-  $('#query_transcript_isoforms_piece').val(0);
-  $('#submit_button').val('Querying....');
-  $('#submit_button').attr("disabled", "disabled");
-  sample_name = $("#query_transcript_isoforms_sample_id option:selected").text();
-  $('#results_for_sample_name').text(sample_name);
-  $('#num_results_found').text("0 records found so far");
-  $('#insert_query_results_here').html("");
-  get_next_piece();
-}
-
-function get_next_piece(){
-  //alert('Piece =' + piece);
-  //$('body').css('cursor', 'progress');
-  if (query_info.want_new_query == true){
-    query_info.query_running = false;
-    return;
-  }
-  $.post('query_transcript_isoforms', 
-      $("#new_query_transcript_isoforms").serialize()
-  ).done(success)
-   .fail(post_failed);
-  //.always(function() {$('body').css('cursor', 'auto');});
-//   $.get('get_query_transcript_isoforms_piece',
-//          $("#new_query_transcript_isoforms").serialize()
-//         ).done(success)
-//          .fail(post_failed)
-//          .always(function() { alert("finished"); });
-}
-
-function success(html){
-  //alert('success');
-  if (query_info.want_new_query == true){
-    query_info.query_running == false;
-    return;
-  }
-  tbody = $('#insert_query_results_here');
-  tbody.append(html);
-  records_found = $('#insert_query_results_here tr').length;
-  if (html.length > 0){
-    old_val = $('#query_transcript_isoforms_piece').val();
-    $('#query_transcript_isoforms_piece').val(parseInt(old_val)+1);
-    $('#num_results_found').text(records_found + " records found so far");
-    get_next_piece();
-  }
-  else{
-    $('#submit_button').removeAttr("disabled");
-    $('#submit_button').val('Query');
-    $('#num_results_found').text(records_found + " records found");
-  }
-}
-
-function post_failed(){
-  $('#submit_button').removeAttr("disabled");
-  $('#submit_button').val('Query');
-}
 
 function dataset_id_changed(){
   dataset_id = $('#query_transcript_isoforms_dataset_id').val();
   request_string = 'get_transcript_isoforms_samples_for_dataset' +
                    '?dataset_id=' + dataset_id
-  $.get(request_string, replace_sample_cmps);
+  $.get(request_string, replace_samples);
 }
 
-function replace_sample_cmps(html){
-  $('#sample_comparisons_container').html(html);
+function replace_samples(html){
+  $('#samples_container').html(html);
 }
 

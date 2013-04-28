@@ -5,6 +5,11 @@ module ApplicationHelper
                 :alt => "RNA-Seq Analysis pipeline", :class => "logo")
     end
     
+    def querying_indicator
+      return image_tag("querying-indicator.gif", 
+                :alt => "querying indicator", :id => :querying_indicator)
+    end
+    
     #TODO: Delete after replacing everywhere
 #    def help_tip(id)
 #      return  image_tag('question_mark.png', :id=> id, 
@@ -17,8 +22,6 @@ module ApplicationHelper
       return render :partial => 'shared/help_tip', 
                      :locals => {:id => id, :position => position}
     end
-    
-    
     
     def more_info_link(url)
       return link_to('More Info',url, :target => '_blank')

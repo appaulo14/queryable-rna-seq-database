@@ -251,19 +251,6 @@ class QueryAnalysisController < ApplicationController
       end
     end
     
-    def get_query_transcript_isoforms_piece
-      @qti = QueryTranscriptIsoforms.new(current_user)
-      #debugger
-      @qti.set_attributes_and_defaults(params[:query_transcript_isoforms])
-      @qti.query()
-      render :partial => 'query_transcript_isoform_table_rows', 
-             :locals => {:object => @qti}
-#       if @qti.valid?
-#         render :partial => 'transcript_isoforms_samples_for_dataset', 
-#                :locals => {:object => @qti}
-#       end
-    end
-    
     def query_using_blastn    #Changed after architecture design
       @sequence_type = 'nucleic acid'
       if request.get?

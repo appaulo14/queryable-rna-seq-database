@@ -1,5 +1,10 @@
 <%= render 'shared/error_messages', :object => @qti %>
+<%= javascript_tag do %>
+  view_info = {};
+  view_info.action = "<%= params[:action] %>";
+<% end %>
 <script type='text/javascript' src='query_transcript_isoforms.js' ></script>
+<%= javascript_include_tag 'large_query_loader.js' %>
 <%= javascript_include_tag 'downloadify/swfobject.js' %>
 <%= javascript_include_tag 'downloadify/downloadify.min.js' %>
 <%= javascript_include_tag 'downloadify_wrapper.js' %>
@@ -10,7 +15,7 @@
   <p>
     <%= qti.label :dataset_id, "Dataset to query" %>
     <%= qti.select :dataset_id, options_for_select(@qti.names_and_ids_for_available_datasets, @qti.dataset_id) %><br/>
-    <span id="sample_comparisons_container">
+    <span id="samples_container">
       <%= render 'transcript_isoforms_samples_for_dataset', :object => @qti %>
     </span>
   </p>
@@ -101,11 +106,13 @@
   </p>
   <p><%= qti.submit('Query', :id => :submit_button) %></p>
 <% end %>
+<br/>
 <!--Section for the query results-->
 <div id="query_results_div" style="display:none">
   <p>
+    <%= querying_indicator %>
     <span id="num_results_found"></span> for
-    <em><b><span id="results_for_sample_name"></span></b></em>
+    <em><b><span id="results_for"></span></b></em>
  </p>
   <p id="downloadify">
       You must have Flash 10 installed to download this file.

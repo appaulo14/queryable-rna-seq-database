@@ -8,11 +8,14 @@ class QueryDiffExpGenes
   extend ActiveModel::Naming
   
   attr_accessor :dataset_id, :sample_comparison_id,
-                :fdr_or_p_value, :cutoff, :go_terms, :go_ids, :gene_name 
+                :fdr_or_p_value, :cutoff, :go_terms, :go_ids, :gene_name,
+                :piece
   attr_reader   :names_and_ids_for_available_datasets, 
                 :available_sample_comparisons, 
                 :show_results, :results, :sample_1_name, :sample_2_name,
                 :program_used
+  
+  PIECE_SIZE = 100
   
   #TODO: Add validation 
   validate :user_has_permission_to_access_dataset
@@ -57,6 +60,7 @@ class QueryDiffExpGenes
         select('samples.name as sample_1_name, '+
                'sample_2s_sample_comparisons.name as sample_2_name, ' +
                'sample_comparisons.id as sample_comparison_id')
+        .limit(PIECE_SIZE).offset(PIECE_SIZE*@piece.to_i)
     sample_comparisons_query.each do |scq|
       display_text = "#{scq.sample_1_name} vs #{scq.sample_2_name}"
       value = scq.sample_comparison_id

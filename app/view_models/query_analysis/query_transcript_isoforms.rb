@@ -13,8 +13,7 @@ class QueryTranscriptIsoforms
                 :class_code_u, :class_code_x, :class_code_s, :class_code_dot,
                 :go_terms,:go_ids,
                 :transcript_length_comparison_sign, :transcript_length_value,
-                :transcript_name,
-                :piece
+                :transcript_name, :piece
   attr_reader  :names_and_ids_for_available_datasets, 
                 :available_samples, :available_transcript_length_comparison_signs,
                 :show_results, :results, :sample_name
@@ -87,7 +86,7 @@ class QueryTranscriptIsoforms
     #Set default values for the relavent blank attributes
     @dataset_id = available_datasets.first.id if @dataset_id.blank?
     @transcript_length_value = '0' if transcript_length_value.blank?
-    @transcript_length_comparison_sign = '>' if @transcript_length_comparison_sign.blank?
+    @transcript_length_comparison_sign = '>=' if @transcript_length_comparison_sign.blank?
     #Set available samples for querying
     ds = Dataset.find_by_id(@dataset_id)
     @available_samples = []

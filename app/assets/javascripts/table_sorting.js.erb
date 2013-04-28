@@ -10,9 +10,6 @@ function set_table_sorting(){
   var query_results_table = $('#query_results_table').stupidtable();
   query_results_table.bind('aftertablesort', aftertablesort);
   ths = query_results_table.find('th');
-  $(ths[0]).trigger('click');
-  $(ths[1]).trigger('click');
-  $(ths[0]).trigger('click');
 //  aftertablesort({}, {direction: 'asc', column: first_column});
 }
 
