@@ -30,11 +30,12 @@
 
 .notice{
   font-weight:bold;
-  color:white;
+  color:black;
 }
 
 body {
-  background: rgb(155,86,211);
+/*   background: rgb(155,86,211); */
+  background: #f1e6f2;
 }
 
 #content {
@@ -49,7 +50,7 @@ body {
 }
 
 #header_title {
-    color:white;
+    color:black;
     display:inline;
     vertical-align:10%;
     padding:5px;
