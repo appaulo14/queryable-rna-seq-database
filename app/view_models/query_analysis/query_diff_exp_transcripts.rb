@@ -126,7 +126,9 @@ class QueryDiffExpTranscripts
     query_results.each do |query_result|
       #Fill in the result hash that the view will use to display the data
       if (@dataset.go_terms_status == 'found')
-        go_filter_checker = GoFilterChecker.new(query_result.transcript_id)
+        go_filter_checker = GoFilterChecker.new(query_result.transcript_id,
+                                                  @go_ids,
+                                                  @go_terms)
         next if go_filter_checker.passes_go_filters() == false
       end
       result = {}

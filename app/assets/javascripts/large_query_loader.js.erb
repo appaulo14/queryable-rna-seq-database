@@ -85,5 +85,6 @@ function success(html){
 function post_failed(){
   $('#querying_indicator').css('display','none');
   query_info.query_running = false;
+  $('#num_results_found').text('There was an error finding the records');
 }
  

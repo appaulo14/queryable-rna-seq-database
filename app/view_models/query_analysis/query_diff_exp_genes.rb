@@ -114,10 +114,10 @@ class QueryDiffExpGenes
       #Do a few more minor queries to get the data in the needed format
       gene = Gene.find_by_id(query_result.gene_id)
       transcripts = gene.transcripts
-      if (@dataset.go_terms_status == 'found')
+      if (@dataset.go_terms_status == 'found' and (not @go_ids.blank? or not @go_terms.blank?))
         match_found = false
         transcripts.each do |transcript|
-          go_filter_checker = GoFilterChecker.new(transcript.id)
+          go_filter_checker = GoFilterChecker.new(transcript.id,@go_ids,@go_terms)
           if go_filter_checker.passes_go_filters() == true
             match_found = true
             break

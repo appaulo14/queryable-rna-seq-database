@@ -19,7 +19,7 @@ class QueryTranscriptIsoforms
                 :available_samples, :available_transcript_length_comparison_signs,
                 :show_results, :results, :sample_name, :go_terms_status
   
-  PIECE_SIZE = 100
+  PIECE_SIZE = 300
   
   CLASS_CODES = {
     :class_code_equal => '=', 
@@ -143,7 +143,9 @@ class QueryTranscriptIsoforms
     query_results.each do |query_result|
       #Do a few more minor queries to get the data in the needed format
       if (@dataset.go_terms_status == 'found')
-        go_filter_checker = GoFilterChecker.new(query_result.transcript_id)
+        go_filter_checker = GoFilterChecker.new(query_result.transcript_id,
+                                                  @go_ids,
+                                                  @go_terms)
         next if go_filter_checker.passes_go_filters() == false
       end
       #Fill in the result hash that the view will use to display the data
