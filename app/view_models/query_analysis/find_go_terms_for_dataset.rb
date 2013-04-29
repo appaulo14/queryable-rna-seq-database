@@ -37,7 +37,7 @@ class FindGoTermsForDataset
   def find_and_save()
     return if not self.valid?
     begin
-       @dataset = Dataset.find_by_id(@dataset_id)
+      @dataset = Dataset.find_by_id(@dataset_id)
       @dataset.go_terms_status = 'in-progress'
       @dataset.save!
       find_and_process_go_terms()

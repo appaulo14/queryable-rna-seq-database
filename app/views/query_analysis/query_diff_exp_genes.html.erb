@@ -33,6 +33,7 @@
     <div>
         <%= qdeg.label(:gene_name, "Gene name:") %>
         <%= qdeg.text_field(:gene_name) %>
+        <%= help_tip(:gene_name) %>
     </div>
     <%= qdeg.hidden_field :piece, :value => "0" %>
   </p>

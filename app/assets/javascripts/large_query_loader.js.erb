@@ -29,7 +29,7 @@ function prepare_for_querying(){
     $('#results_for').text(sample_cmp_name);
   }
   $('#num_results_found').text("0 records found so far");
-  $('#insert_query_results_here').html("");
+  $('#insert_query_results_here').empty();
   query_info.params = $("#new_" + view_info.action).serializeArray();
   get_next_piece();
 }

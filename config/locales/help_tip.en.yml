@@ -30,6 +30,13 @@ en:
                      <p>For example, "GO:0000836;GO:0001063" will find only the  
                      genes with both GO:0000836 and GO:0001063.</p>
             more_info_link: ""
+          gene_name: 
+            title: Filter By Gene Name
+            message: <p>Enter part of a gene name or all of it to find only the 
+                     genes whose names match.</p>
+                     <p>For example, "comp123" would find all the genes that 
+                     have "comp123" in the name somewhere.</p>
+            more_info_link: ""
         query_diff_exp_transcripts:
           query_diff_exp_transcripts:
             title: Query Transcript Differential Expression Tests
@@ -59,6 +66,13 @@ en:
                      <p>For example, "GO:0000836;GO:0001063" will find only the  
                      transcripts with both GO:0000836 and GO:0001063.</p>
             more_info_link: ""
+          transcript_name: 
+            title: Filter By Transcript Name
+            message: <p>Enter part of a transcript name or all of it to find only the 
+                     transcripts whose names match.</p>
+                     <p>For example, "comp123" would find all the transcripts that 
+                     have "comp123" in the name somewhere.</p>
+            more_info_link: ""
         query_transcript_isoforms:
           go_terms:
             title: Filter By Go Terms
@@ -74,6 +88,13 @@ en:
                      only the results that have all of the terms you entered.</p>
                      <p>For example, "GO:0000836;GO:0001063" will find only the  
                      transcripts with both GO:0000836 and GO:0001063.</p>
+            more_info_link: ""
+          transcript_name: 
+            title: Filter By Transcript Name
+            message: <p>Enter part of a transcript name or all of it to find only the 
+                     transcripts whose names match.</p>
+                     <p>For example, "comp123" would find all the transcripts that 
+                     have "comp123" in the name somewhere.</p>
             more_info_link: ""
         query_using_blastn:
           graphical_summary:

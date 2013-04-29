@@ -89,6 +89,7 @@
     <div>
         <%= qti.label(:transcript_name, "Transcript name:") %>
         <%= qti.text_field(:transcript_name) %>
+        <%= help_tip(:transcript_name) %>
     </div>
     <%= qti.hidden_field :piece, :value => "0" %>
   </p>
