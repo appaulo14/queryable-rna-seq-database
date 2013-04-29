@@ -19,7 +19,7 @@ class QueryTranscriptIsoforms
                 :available_samples, :available_transcript_length_comparison_signs,
                 :show_results, :results, :sample_name, :go_terms_status
   
-  PIECE_SIZE = 250
+  PIECE_SIZE = 100
   
   CLASS_CODES = {
     :class_code_equal => '=', 

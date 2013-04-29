@@ -16,7 +16,7 @@ class QueryDiffExpGenes
                 :show_results, :results, :sample_1_name, :sample_2_name,
                 :program_used, :go_terms_status
   
-  PIECE_SIZE = 250
+  PIECE_SIZE = 100
   
   #TODO: Add validation 
   validate :user_has_permission_to_access_dataset

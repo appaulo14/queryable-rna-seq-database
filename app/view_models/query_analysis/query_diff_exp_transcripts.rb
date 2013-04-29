@@ -16,7 +16,7 @@ class QueryDiffExpTranscripts
                 :show_results, :results, :sample_1_name, :sample_2_name,
                 :program_used, :go_terms_status
   
-  PIECE_SIZE = 250
+  PIECE_SIZE = 100
   
   validates :dataset_id, :presence => true,
                          :dataset_belongs_to_user => true
