@@ -6,11 +6,11 @@ RnaSeqAnalysisPipeline::Application.initialize!
 
 
 
-#class Logger
+# class Logger
 #  def format_message(level, time, progname, msg)
 #    "#{time.to_s(:db)} #{level} -- #{msg}\n"
 #  end
-#end
+# end
 
 # class Logger
 #   def format_message(level, time, progname, msg)
@@ -41,18 +41,17 @@ RnaSeqAnalysisPipeline::Application.initialize!
 class Logger
  def format_message(level, time, progname, msg)
    if msg =~ /"piece"=>"0"/
-     msg = ""
      if not @count.nil?
        avg_total = @total/@count
        avg_view = @view/@count
        avg_ar = @ar/@count
-       msg = "Old Query: total=#{avg_total}, View=#{avg_view}, AR=#{avg_ar}\n"
+       msg += "\nOld Query: total=#{avg_total}, View=#{avg_view}, AR=#{avg_ar}\n"
      end
      @total = 0.0
      @count = 0.0
      @view = 0.0
      @ar = 0.0
-     return msg
+     return "#{time.to_s(:db)} #{level} -- #{msg}\n"
    end
    if @capture_next_msg == true
      @capture_next_msg = false
@@ -62,11 +61,9 @@ class Logger
      @view += view.to_f
      @ar += ar.to_f
      #return "#{time.to_s(:db)} #{level} -- #{msg}\n"
-     return ""
    elsif msg =~ /_table_rows.html.erb/
      @capture_next_msg = true
-     return ""
    end
-   return ""
+   return "#{time.to_s(:db)} #{level} -- #{msg}\n"
  end
 end
