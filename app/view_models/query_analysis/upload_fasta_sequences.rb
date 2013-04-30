@@ -32,6 +32,8 @@ class UploadFastaSequences
         process_args_to_create_dataset()
         BlastUtil.makeblastdb_without_seqids(@transcripts_fasta_file.tempfile.path,
                                               @dataset)
+        @dataset.finished_uploading = true
+        @dataset.save!
         QueryAnalysisMailer.notify_user_of_upload_success(@current_user,
                                                         @dataset)
       end
@@ -59,7 +61,8 @@ class UploadFastaSequences
   def process_args_to_create_dataset()
     @dataset = Dataset.new(:user => @current_user,
                             :name => @dataset_name,
-                            :program_used => 'generic_fasta_file')
+                            :program_used => 'generic_fasta_file',
+                            :finished_uploading => false)
     @dataset.has_transcript_diff_exp = false
     @dataset.has_gene_diff_exp = false
     @dataset.has_transcript_isoforms = false
