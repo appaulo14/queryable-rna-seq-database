@@ -58,7 +58,7 @@ class QueryAnalysisController < ApplicationController
         if (@upload_cuffdiff.valid?)
           SuckerPunch::Queue[:upload_cuffdiff_queue].async.perform(@upload_cuffdiff)
           flash[:notice] = I18n.t :added_to_upload_queue, 
-                                   :name => @upload.dataset_name
+                                  :name => @upload_cuffdiff.dataset_name
           #Reset the upload cuffdiff form
           @upload_cuffdiff = UploadCuffdiff.new(current_user)
           @upload_cuffdiff.set_attributes_and_defaults()
