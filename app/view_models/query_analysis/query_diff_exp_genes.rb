@@ -67,9 +67,12 @@ class QueryDiffExpGenes
       @available_sample_comparisons << [display_text, value]
     end
     @available_sample_comparisons.sort!{|t1,t2|t1[0] <=> t2[0]}
-    if @sample_comparison_id_pair.blank?
-      @sample_comparison_id_pair = @available_sample_comparisons[0][1]
+    if @sample_comparison_id.blank?
+      @sample_comparison_id = @available_sample_comparisons[0][1]
     end
+    sample_cmp = SampleComparison.find_by_id(@sample_comparison_id)
+    @sample_1_name = sample_cmp.sample_1.name
+    @sample_2_name = sample_cmp.sample_2.name
     @show_results = false
     dataset = Dataset.find_by_id(@dataset_id)
     @program_used = dataset.program_used

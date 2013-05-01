@@ -45,7 +45,7 @@
     <td>
     <%= u.label(:transcript_fpkm_file, 'Transcript FPKM File') %>
     <%= help_tip(:transcript_fpkm) %>
-    <%= u.file_field :transcript_fpkm_file %>
+    <%= u.file_field :transcript_fpkm_file, :style => 'width:600px' %>
     </td>
   </tr>
 <!--  <tr><td></td><td></td></tr>-->
@@ -99,7 +99,7 @@
     <td>
       <%= u.label(:gene_fpkm_file, 'Gene FPKM File') %>
       <%= help_tip(:gene_fpkm) %>
-      <%= u.file_field :gene_fpkm_file %>
+      <%= u.file_field :gene_fpkm_file, :style => 'width:600px' %>
     </td>
   </tr>
   <tr>
