@@ -89,11 +89,11 @@ class UploadCuffdiff
         BlastUtil.makeblastdb_with_seqids(@transcripts_fasta_file.tempfile.path,
                                            @dataset)
         Rails.logger.info "Finished blast db creation for dataset: #{@dataset.id}"
+        @dataset.finished_uploading = true
+        @dataset.save!
         QueryAnalysisMailer.notify_user_of_upload_success(@current_user,
                                                             @dataset)
       #end
-      @dataset.finished_uploading = true
-      @dataset.save!
       #If any error occurs, the files won't be deleted and therefore can
       # be examined for problems
       delete_uploaded_files()
