@@ -3,7 +3,7 @@
 
 en:
   hello: "Hello world"
-  added_to_upload_queue: "Your upload job has been queued. You will receive an email when your data has been processed and is ready to query."
+  added_to_upload_queue: Your upload job for "%{name}" has been queued. You will receive an email when your data has been processed and is ready to query.
   added_to_go_terms_queue: Your job for dataset "%{name}" has 
                            been queued. You will be emailed when the go terms 
                            have been found.

@@ -62,8 +62,14 @@
         <thead>
           <tr>
             <th style="font-weight:normal;text-align:left;">File</th>
-            <th style="font-weight:normal"><%= u.label(:transcript_diff_exp_sample_1_names, 'Sample 1 Name') %></th>
-            <th style="font-weight:normal"><%= u.label(:transcript_diff_exp_sample_2_names, 'Sample 2 Name') %></th>
+            <th style="font-weight:normal">
+              <%= u.label(:transcript_diff_exp_sample_1_names, 'Sample 1 Name') %>
+              <%= help_tip(:transcripts_sample_1_name) %>
+            </th>
+            <th style="font-weight:normal">
+              <%= u.label(:transcript_diff_exp_sample_2_names, 'Sample 2 Name') %>
+              <%= help_tip(:transcripts_sample_2_name) %>
+            </th>
           </tr>
         </thead>
         <tbody id="transcript_sample_comparisons_div">
@@ -110,9 +116,11 @@
             <th style="font-weight:normal;text-align:left;">File</th>
             <th style="font-weight:normal">
               <%= u.label(:gene_diff_exp_sample_1_names, 'Sample 1 Name') %>
+              <%= help_tip(:genes_sample_1_name) %>
             </th>
             <th style="font-weight:normal">
               <%= u.label(:gene_diff_exp_sample_2_names, 'Sample 2 Name') %>
+              <%= help_tip(:genes_sample_2_name) %>
             </th>
           </tr>
         </thead>

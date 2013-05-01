@@ -19,10 +19,10 @@ class TrinityFpkmFileProcessor
       sample_1_name = diff_exp_test.sample_comparison.sample_1.name
       sample_2_name = diff_exp_test.sample_comparison.sample_2.name
       fpkm_line.sample_fpkms.each do |sample_fpkm|
-        if sample_fpkm.sample_name == sample_1_name
+        if sample_fpkm.sample_name.match(/#{sample_1_name}/)
           diff_exp_test.sample_1_fpkm = sample_fpkm.fpkm
           diff_exp_test.save!
-        elsif sample_fpkm.sample_name == sample_2_name
+        elsif sample_fpkm.sample_name.match(/#{sample_2_name}/)
           diff_exp_test.sample_2_fpkm = sample_fpkm.fpkm
           diff_exp_test.save!
         end
@@ -31,8 +31,9 @@ class TrinityFpkmFileProcessor
     #Ensure that all the item's differential_expression_tests have fpkms now
     item.differential_expression_tests.each do |diff_exp_test|
       if diff_exp_test.sample_1_fpkm.nil? or diff_exp_test.sample_2_fpkm.nil?
+        debugger
         error_msg = "Dataset #{@dataset.id}, #{@dataset.name} "
-        error_msg += "#{item.class.to_s} #{item.name} "
+        error_msg += "#{item.class.to_s} #{item.name_from_program} "
         error_msg += "is missing require values "
         missing = []
         if diff_exp_test.sample_1_fpkm.nil?

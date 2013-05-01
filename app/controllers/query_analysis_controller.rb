@@ -57,10 +57,11 @@ class QueryAnalysisController < ApplicationController
         @upload_cuffdiff.set_attributes_and_defaults(params[:upload_cuffdiff])
         if (@upload_cuffdiff.valid?)
           SuckerPunch::Queue[:upload_cuffdiff_queue].async.perform(@upload_cuffdiff)
+          flash[:notice] = I18n.t :added_to_upload_queue, 
+                                   :name => @upload.dataset_name
           #Reset the upload cuffdiff form
           @upload_cuffdiff = UploadCuffdiff.new(current_user)
           @upload_cuffdiff.set_attributes_and_defaults()
-          flash[:notice] = I18n.t :added_to_upload_queue
         end
       end
     end
@@ -74,10 +75,11 @@ class QueryAnalysisController < ApplicationController
         @upload.set_attributes_and_defaults(params[:upload_fasta_sequences])
         if (@upload.valid?)
           SuckerPunch::Queue[:upload_fasta_sequences_queue].async.perform(@upload)
+          flash[:notice] = I18n.t :added_to_upload_queue, 
+                                   :name => @upload.dataset_name
           #Reset the upload cuffdiff form
           @upload = UploadFastaSequences.new(current_user)
           @upload.set_attributes_and_defaults()
-          flash[:notice] = I18n.t :added_to_upload_queue
         end
       end
     end
@@ -93,10 +95,11 @@ class QueryAnalysisController < ApplicationController
         if @upload.valid?
           queue_name = :upload_trinity_with_edger_queue
           SuckerPunch::Queue[queue_name].async.perform(@upload)
+          flash[:notice] = I18n.t :added_to_upload_queue, 
+                                   :name => @upload.dataset_name
           #Reset the upload form
           @upload = UploadTrinityWithEdgeR.new(current_user)
           @upload.set_attributes_and_defaults()
-          flash[:notice] = I18n.t :added_to_upload_queue
         end
       end
     end

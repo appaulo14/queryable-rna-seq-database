@@ -198,14 +198,25 @@ en:
             more_info_link: https://sites.google.com/site/rnaseqanalysispipeline/user-manual/step-4-upload-your-data#TOC-Trinity.fasta-File
           transcripts_sample_cmp:
             title: Transcript Sample Comparison Files
-            message: <p>Transcript differential expression sample comparison 
+            message: Transcript differential expression sample comparison 
                      files contain all the differential expression tests 
                      between two transcript samples. Usually they have "vs" in 
-                     the name, such as "sample_1_vs_sample_2".</p>
-                     <p>For each file, enter 
-                     the names of the samples being compared in the corresponding
-                     text boxes below.</p>
+                     the name, such as "sample_1_vs_sample_2".
             more_info_link: https://sites.google.com/site/rnaseqanalysispipeline/user-manual/step-4-upload-your-data#TOC-Transcript-Differential-Expression-Files
+          transcripts_sample_1_name:
+            title: Sample 1 Name
+            message: For each file, enter the name of the first sample being 
+                     compared in the corresponding text box below. Each 
+                     sample name should correspond to  
+                     one of the sample names at the top of your FPKM file.
+            more_info_link: ""
+          transcripts_sample_2_name:
+            title: Sample 2 Name
+            message: For each file, enter the name of the second sample being 
+                     compared in the corresponding text box below. Each 
+                     sample name should correspond to  
+                     one of the sample names at the top of your FPKM file.
+            more_info_link: ""
           transcript_fpkm:
             title: Transcript FPKM File
             message: There should be a file ending in .FPKM that contains the 
@@ -218,14 +229,25 @@ en:
             more_info_link: https://sites.google.com/site/rnaseqanalysispipeline/user-manual/step-4-upload-your-data#TOC-Gene-FPKM-File-
           gene_sample_cmp:
             title: Gene Sample Comparison Files
-            message: <p>Gene differential expression sample comparison 
+            message: Gene differential expression sample comparison 
                      files contain all the differential expression tests 
                      between two transcript samples. Usually they have "vs" in 
-                     the name, such as "sample_1_vs_sample_2".</p>
-                     <p>For each file, enter 
-                     the names of the samples being compared in the corresponding
-                     text boxes below.</p>
+                     the name, such as "sample_1_vs_sample_2".
             more_info_link: https://sites.google.com/site/rnaseqanalysispipeline/user-manual/step-4-upload-your-data#TOC-Gene-Differential-Expression-Files-
+          genes_sample_1_name:
+            title: Sample 1 Name
+            message: For each file, enter the name of the first sample being 
+                     compared in the corresponding text box below. Each 
+                     sample name should correspond to  
+                     one of the sample names at the top of your FPKM file.
+            more_info_link: ""
+          genes_sample_2_name:
+            title: Sample 2 Name
+            message: For each file, enter the name of the second sample being 
+                     compared in the corresponding text box below. Each 
+                     sample name should correspond to  
+                     one of the sample names at the top of your FPKM file.
+            more_info_link: ""
         find_go_terms_for_dataset:
           find_go_terms_for_dataset:
             title: Find Gene Ontology (GO) Terms For Dataset
