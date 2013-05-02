@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+
+<title>module QueryAnalysisHelper - Rails Application Documentation</title>
+
+<link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="./js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/darkfish.js"></script>
+
+
+<body id="top" class="module">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="./index.html">Home</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>app/helpers/query_analysis_helper.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-i-ascending_sort_arrow">#ascending_sort_arrow</a>
+    
+    <li><a href="#method-i-descending_sort_arrow">#descending_sort_arrow</a>
+    
+    <li><a href="#method-i-get_color_for_score">#get_color_for_score</a>
+    
+    <li><a href="#method-i-get_end_width_percent">#get_end_width_percent</a>
+    
+    <li><a href="#method-i-get_start_width_percent">#get_start_width_percent</a>
+    
+    <li><a href="#method-i-get_tooltip">#get_tooltip</a>
+    
+    <li><a href="#method-i-get_unique_hit_id">#get_unique_hit_id</a>
+    
+    <li><a href="#method-i-link_to_amigo_web_page_for_term">#link_to_amigo_web_page_for_term</a>
+    
+    <li><a href="#method-i-link_to_fasta_sequence_for_transcript">#link_to_fasta_sequence_for_transcript</a>
+    
+    <li><a href="#method-i-link_to_fasta_sequences_for_gene">#link_to_fasta_sequences_for_gene</a>
+    
+    <li><a href="#method-i-link_to_help_page_for_page">#link_to_help_page_for_page</a>
+    
+    <li><a href="#method-i-link_to_ncbi_search_for">#link_to_ncbi_search_for</a>
+    
+    <li><a href="#method-i-neutral_sort_arrow">#neutral_sort_arrow</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="./doc/README_FOR_APP.html">README_FOR_APP</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="./AbstractQueryUsingBlast.html">AbstractQueryUsingBlast</a>
+  
+    <li><a href="./AdminController.html">AdminController</a>
+  
+    <li><a href="./AdminHelper.html">AdminHelper</a>
+  
+    <li><a href="./ApplicationController.html">ApplicationController</a>
+  
+    <li><a href="./ApplicationHelper.html">ApplicationHelper</a>
+  
+    <li><a href="./ArrayElementsAreNotEmptyValidator.html">ArrayElementsAreNotEmptyValidator</a>
+  
+    <li><a href="./ArrayOfUploadedFilesValidator.html">ArrayOfUploadedFilesValidator</a>
+  
+    <li><a href="./ArrayValidator.html">ArrayValidator</a>
+  
+    <li><a href="./BlastUtil.html">BlastUtil</a>
+  
+    <li><a href="./ConfirmUser.html">ConfirmUser</a>
+  
+    <li><a href="./ConfirmationsController.html">ConfirmationsController</a>
+  
+    <li><a href="./Dataset.html">Dataset</a>
+  
+    <li><a href="./DatasetBelongsToUserValidator.html">DatasetBelongsToUserValidator</a>
+  
+    <li><a href="./DatasetNameUniqueForUserValidator.html">DatasetNameUniqueForUserValidator</a>
+  
+    <li><a href="./DeleteUnconfirmedUser.html">DeleteUnconfirmedUser</a>
+  
+    <li><a href="./DifferentialExpressionTest.html">DifferentialExpressionTest</a>
+  
+    <li><a href="./FindGoTermsForDataset.html">FindGoTermsForDataset</a>
+  
+    <li><a href="./FpkmSample.html">FpkmSample</a>
+  
+    <li><a href="./Gene.html">Gene</a>
+  
+    <li><a href="./GeneNameQueryConditionGenerator.html">GeneNameQueryConditionGenerator</a>
+  
+    <li><a href="./GetGeneFastas.html">GetGeneFastas</a>
+  
+    <li><a href="./GetTranscriptFasta.html">GetTranscriptFasta</a>
+  
+    <li><a href="./GoFilterChecker.html">GoFilterChecker</a>
+  
+    <li><a href="./GoIdsQueryConditionGenerator.html">GoIdsQueryConditionGenerator</a>
+  
+    <li><a href="./GoTerm.html">GoTerm</a>
+  
+    <li><a href="./GoTermFinderAndProcessor.html">GoTermFinderAndProcessor</a>
+  
+    <li><a href="./GoTermsQueryConditionGenerator.html">GoTermsQueryConditionGenerator</a>
+  
+    <li><a href="./HasFastaFileExtensionValidator.html">HasFastaFileExtensionValidator</a>
+  
+    <li><a href="./HomeController.html">HomeController</a>
+  
+    <li><a href="./HomeHelper.html">HomeHelper</a>
+  
+    <li><a href="./HomeMailer.html">HomeMailer</a>
+  
+    <li><a href="./NameIsGeneExpDiffValidator.html">NameIsGeneExpDiffValidator</a>
+  
+    <li><a href="./NameIsIsoformExpDiffValidator.html">NameIsIsoformExpDiffValidator</a>
+  
+    <li><a href="./NameIsIsoformFpkmTrackingValidator.html">NameIsIsoformFpkmTrackingValidator</a>
+  
+    <li><a href="./NameIsTrinityFastaValidator.html">NameIsTrinityFastaValidator</a>
+  
+    <li><a href="./NucleotideFastaSequencesValidator.html">NucleotideFastaSequencesValidator</a>
+  
+    <li><a href="./ProteinFastaSequencesValidator.html">ProteinFastaSequencesValidator</a>
+  
+    <li><a href="./QueryAnalysisController.html">QueryAnalysisController</a>
+  
+    <li><a href="./QueryAnalysisHelper.html">QueryAnalysisHelper</a>
+  
+    <li><a href="./QueryAnalysisMailer.html">QueryAnalysisMailer</a>
+  
+    <li><a href="./QueryDiffExpGenes.html">QueryDiffExpGenes</a>
+  
+    <li><a href="./QueryDiffExpTranscripts.html">QueryDiffExpTranscripts</a>
+  
+    <li><a href="./QueryTranscriptIsoforms.html">QueryTranscriptIsoforms</a>
+  
+    <li><a href="./QueryUsingBlastn.html">QueryUsingBlastn</a>
+  
+    <li><a href="./QueryUsingTblastn.html">QueryUsingTblastn</a>
+  
+    <li><a href="./QueryUsingTblastx.html">QueryUsingTblastx</a>
+  
+    <li><a href="./RegistrationMailer.html">RegistrationMailer</a>
+  
+    <li><a href="./RegistrationsController.html">RegistrationsController</a>
+  
+    <li><a href="./ReportIssue.html">ReportIssue</a>
+  
+    <li><a href="./Sample.html">Sample</a>
+  
+    <li><a href="./SampleBelongsToUserValidator.html">SampleBelongsToUserValidator</a>
+  
+    <li><a href="./SampleComparison.html">SampleComparison</a>
+  
+    <li><a href="./SampleFpkm.html">SampleFpkm</a>
+  
+    <li><a href="./SystemUtil.html">SystemUtil</a>
+  
+    <li><a href="./Transcript.html">Transcript</a>
+  
+    <li><a href="./TranscriptFpkmTrackingInformation.html">TranscriptFpkmTrackingInformation</a>
+  
+    <li><a href="./TranscriptHasGoTerm.html">TranscriptHasGoTerm</a>
+  
+    <li><a href="./TranscriptNameQueryConditionGenerator.html">TranscriptNameQueryConditionGenerator</a>
+  
+    <li><a href="./TrinityDiffExpFileProcessor.html">TrinityDiffExpFileProcessor</a>
+  
+    <li><a href="./TrinityDiffExpLine.html">TrinityDiffExpLine</a>
+  
+    <li><a href="./TrinityFpkmFileProcessor.html">TrinityFpkmFileProcessor</a>
+  
+    <li><a href="./TrinityFpkmLine.html">TrinityFpkmLine</a>
+  
+    <li><a href="./TrinityGeneDiffExpFileProcessor.html">TrinityGeneDiffExpFileProcessor</a>
+  
+    <li><a href="./TrinityGeneFpkmFileProcessor.html">TrinityGeneFpkmFileProcessor</a>
+  
+    <li><a href="./TrinityTranscriptDiffExpFileProcessor.html">TrinityTranscriptDiffExpFileProcessor</a>
+  
+    <li><a href="./TrinityTranscriptFpkmFileProcessor.html">TrinityTranscriptFpkmFileProcessor</a>
+  
+    <li><a href="./UnconfirmedUserValidator.html">UnconfirmedUserValidator</a>
+  
+    <li><a href="./UploadCuffdiff.html">UploadCuffdiff</a>
+  
+    <li><a href="./UploadFastaSequences.html">UploadFastaSequences</a>
+  
+    <li><a href="./UploadTrinityWithEdgeR.html">UploadTrinityWithEdgeR</a>
+  
+    <li><a href="./UploadedFileValidator.html">UploadedFileValidator</a>
+  
+    <li><a href="./UploadedTrinityDiffExpFile.html">UploadedTrinityDiffExpFile</a>
+  
+    <li><a href="./UploadedTrinityFpkmFile.html">UploadedTrinityFpkmFile</a>
+  
+    <li><a href="./User.html">User</a>
+  
+    <li><a href="./ViewModelBooleanValidator.html">ViewModelBooleanValidator</a>
+  
+    <li><a href="./WorkerForFindGoTermsForDataset.html">WorkerForFindGoTermsForDataset</a>
+  
+    <li><a href="./WorkerForUploadCuffdiff.html">WorkerForUploadCuffdiff</a>
+  
+    <li><a href="./WorkerForUploadFastaSequences.html">WorkerForUploadFastaSequences</a>
+  
+    <li><a href="./WorkerForUploadTrinityWithEdger.html">WorkerForUploadTrinityWithEdger</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="module">module QueryAnalysisHelper</h1>
+
+  <div id="description" class="description">
+    
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-ascending_sort_arrow" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">ascending_sort_arrow</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="ascending_sort_arrow-source">
+            <pre><span class="ruby-comment"># File app/helpers/query_analysis_helper.rb, line 2</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">ascending_sort_arrow</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">image_tag</span>(<span class="ruby-string">'ascending_sort_arrow.png'</span>, <span class="ruby-value">:class</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'sort_arrow'</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- ascending_sort_arrow-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- ascending_sort_arrow-method -->
+
+    
+      <div id="method-i-descending_sort_arrow" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">descending_sort_arrow</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="descending_sort_arrow-source">
+            <pre><span class="ruby-comment"># File app/helpers/query_analysis_helper.rb, line 6</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">descending_sort_arrow</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">image_tag</span>(<span class="ruby-string">'descending_sort_arrow.png'</span>, <span class="ruby-value">:class</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'sort_arrow'</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- descending_sort_arrow-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- descending_sort_arrow-method -->
+
+    
+      <div id="method-i-get_color_for_score" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_color_for_score</span><span
+            class="method-args">(score)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_color_for_score-source">
+            <pre><span class="ruby-comment"># File app/helpers/query_analysis_helper.rb, line 46</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_color_for_score</span>(<span class="ruby-identifier">score</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">score</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">40</span>
+    <span class="ruby-identifier">color</span> = <span class="ruby-string">'black'</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">score</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-value">40</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">score</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">50</span>
+    <span class="ruby-identifier">color</span> = <span class="ruby-string">'blue'</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">score</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-value">50</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">score</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">80</span>
+    <span class="ruby-identifier">color</span> = <span class="ruby-string">'lime'</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">score</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-value">80</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">score</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">200</span>
+    <span class="ruby-identifier">color</span> = <span class="ruby-string">'magenta'</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">score</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-value">200</span>
+    <span class="ruby-identifier">color</span> = <span class="ruby-string">'red'</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">color</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- get_color_for_score-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- get_color_for_score-method -->
+
+    
+      <div id="method-i-get_end_width_percent" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_end_width_percent</span><span
+            class="method-args">(hsp)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_end_width_percent-source">
+            <pre><span class="ruby-comment"># File app/helpers/query_analysis_helper.rb, line 65</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_end_width_percent</span>(<span class="ruby-identifier">hsp</span>)
+  <span class="ruby-keyword">return</span> (<span class="ruby-identifier">hit</span>.<span class="ruby-identifier">query_to</span><span class="ruby-operator">/</span><span class="ruby-identifier">_1_percent</span>) <span class="ruby-operator">-</span> <span class="ruby-identifier">get_start_width_percent</span>(<span class="ruby-identifier">hsp</span>) <span class="ruby-operator">-</span> <span class="ruby-value">1</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- get_end_width_percent-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- get_end_width_percent-method -->
+
+    
+      <div id="method-i-get_start_width_percent" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_start_width_percent</span><span
+            class="method-args">(hsp)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_start_width_percent-source">
+            <pre><span class="ruby-comment"># File app/helpers/query_analysis_helper.rb, line 61</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_start_width_percent</span>(<span class="ruby-identifier">hsp</span>)
+  <span class="ruby-keyword">return</span> (<span class="ruby-identifier">hsp</span>.<span class="ruby-identifier">query_from</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span> ) <span class="ruby-operator">?</span> <span class="ruby-value">0</span> <span class="ruby-operator">:</span> (<span class="ruby-identifier">hsp</span>.<span class="ruby-identifier">query_from</span><span class="ruby-operator">/</span><span class="ruby-identifier">_1_percent</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- get_start_width_percent-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- get_start_width_percent-method -->
+
+    
+      <div id="method-i-get_tooltip" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_tooltip</span><span
+            class="method-args">(hit, hsp)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Get tooltip for hsps in the graphical summary</p>
+          
+
+          
+          <div class="method-source-code" id="get_tooltip-source">
+            <pre><span class="ruby-comment"># File app/helpers/query_analysis_helper.rb, line 70</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_tooltip</span>(<span class="ruby-identifier">hit</span>, <span class="ruby-identifier">hsp</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-node">&quot;&gt;#{hit.hit_id} #{hit.target_def}\nBit score=#{hit.bit_score} E-value=#{hit.evalue}&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- get_tooltip-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- get_tooltip-method -->
+
+    
+      <div id="method-i-get_unique_hit_id" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_unique_hit_id</span><span
+            class="method-args">(report,iteration,hit)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_unique_hit_id-source">
+            <pre><span class="ruby-comment"># File app/helpers/query_analysis_helper.rb, line 74</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_unique_hit_id</span>(<span class="ruby-identifier">report</span>,<span class="ruby-identifier">iteration</span>,<span class="ruby-identifier">hit</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-node">&quot;Report-#{report.query_id},Iteration-#{iteration.num},Hit-#{hit.num}&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- get_unique_hit_id-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- get_unique_hit_id-method -->
+
+    
+      <div id="method-i-link_to_amigo_web_page_for_term" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">link_to_amigo_web_page_for_term</span><span
+            class="method-args">(body,go_id)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="link_to_amigo_web_page_for_term-source">
+            <pre><span class="ruby-comment"># File app/helpers/query_analysis_helper.rb, line 28</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">link_to_amigo_web_page_for_term</span>(<span class="ruby-identifier">body</span>,<span class="ruby-identifier">go_id</span>)
+  <span class="ruby-identifier">link_address</span> = <span class="ruby-string">&quot;http://amigo.geneontology.org/&quot;</span> <span class="ruby-operator">+</span>
+                 <span class="ruby-node">&quot;cgi-bin/amigo/term_details?term=#{go_id}&quot;</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">link_to</span>(<span class="ruby-identifier">body</span>, <span class="ruby-identifier">link_address</span>, <span class="ruby-value">:target</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'_blank'</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- link_to_amigo_web_page_for_term-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- link_to_amigo_web_page_for_term-method -->
+
+    
+      <div id="method-i-link_to_fasta_sequence_for_transcript" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">link_to_fasta_sequence_for_transcript</span><span
+            class="method-args">(dataset_id, transcript_name)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="link_to_fasta_sequence_for_transcript-source">
+            <pre><span class="ruby-comment"># File app/helpers/query_analysis_helper.rb, line 14</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">link_to_fasta_sequence_for_transcript</span>(<span class="ruby-identifier">dataset_id</span>, <span class="ruby-identifier">transcript_name</span>)
+  <span class="ruby-identifier">link_address</span> = <span class="ruby-string">&quot;get_transcript_fasta?&quot;</span> <span class="ruby-operator">+</span>
+                 <span class="ruby-node">&quot;dataset_id=#{dataset_id}&amp;&quot;</span> <span class="ruby-operator">+</span>
+                 <span class="ruby-node">&quot;transcript_name=#{URI.encode(transcript_name)}&quot;</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">link_to</span>(<span class="ruby-identifier">transcript_name</span>, <span class="ruby-identifier">link_address</span>, <span class="ruby-value">:target</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'_blank'</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- link_to_fasta_sequence_for_transcript-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- link_to_fasta_sequence_for_transcript-method -->
+
+    
+      <div id="method-i-link_to_fasta_sequences_for_gene" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">link_to_fasta_sequences_for_gene</span><span
+            class="method-args">(dataset_id, gene_name)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="link_to_fasta_sequences_for_gene-source">
+            <pre><span class="ruby-comment"># File app/helpers/query_analysis_helper.rb, line 21</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">link_to_fasta_sequences_for_gene</span>(<span class="ruby-identifier">dataset_id</span>, <span class="ruby-identifier">gene_name</span>)
+  <span class="ruby-identifier">link_address</span> = <span class="ruby-string">&quot;get_gene_fastas?&quot;</span> <span class="ruby-operator">+</span>
+                 <span class="ruby-node">&quot;dataset_id=#{dataset_id}&amp;&quot;</span> <span class="ruby-operator">+</span>
+                 <span class="ruby-node">&quot;gene_name=#{gene_name}&quot;</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">link_to</span>(<span class="ruby-identifier">gene_name</span>, <span class="ruby-identifier">link_address</span>, <span class="ruby-value">:target</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'_blank'</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- link_to_fasta_sequences_for_gene-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- link_to_fasta_sequences_for_gene-method -->
+
+    
+      <div id="method-i-link_to_help_page_for_page" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">link_to_help_page_for_page</span><span
+            class="method-args">(page_name)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="link_to_help_page_for_page-source">
+            <pre><span class="ruby-comment"># File app/helpers/query_analysis_helper.rb, line 34</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">link_to_help_page_for_page</span>(<span class="ruby-identifier">page_name</span>)
+  <span class="ruby-comment">#TODO: Decide where to really put this</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">link_to</span>(<span class="ruby-string">&quot;Help For This Page&quot;</span>,<span class="ruby-identifier">page_name</span>, <span class="ruby-value">:target</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'_blank'</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- link_to_help_page_for_page-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- link_to_help_page_for_page-method -->
+
+    
+      <div id="method-i-link_to_ncbi_search_for" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">link_to_ncbi_search_for</span><span
+            class="method-args">(search_term)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Blast Helpers</p>
+          
+
+          
+          <div class="method-source-code" id="link_to_ncbi_search_for-source">
+            <pre><span class="ruby-comment"># File app/helpers/query_analysis_helper.rb, line 40</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">link_to_ncbi_search_for</span>(<span class="ruby-identifier">search_term</span>)
+  <span class="ruby-identifier">link_address</span> = <span class="ruby-string">&quot;http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?&quot;</span> <span class="ruby-operator">+</span>
+                 <span class="ruby-node">&quot;db=nucleotide&amp;cmd=search&amp;term=#{search_term}&quot;</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">link_to</span> <span class="ruby-identifier">search_term</span>, <span class="ruby-identifier">link_address</span>         
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- link_to_ncbi_search_for-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- link_to_ncbi_search_for-method -->
+
+    
+      <div id="method-i-neutral_sort_arrow" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">neutral_sort_arrow</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="neutral_sort_arrow-source">
+            <pre><span class="ruby-comment"># File app/helpers/query_analysis_helper.rb, line 10</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">neutral_sort_arrow</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">image_tag</span>(<span class="ruby-string">'neutral_sort_arrow.png'</span>, <span class="ruby-value">:class</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'sort_arrow'</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- neutral_sort_arrow-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- neutral_sort_arrow-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.2.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

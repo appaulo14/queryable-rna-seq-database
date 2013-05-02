@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+
+<title>module ApplicationHelper - Rails Application Documentation</title>
+
+<link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="./js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/darkfish.js"></script>
+
+
+<body id="top" class="module">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="./index.html">Home</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>app/helpers/application_helper.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-i-help_tip">#help_tip</a>
+    
+    <li><a href="#method-i-logo">#logo</a>
+    
+    <li><a href="#method-i-more_info_link">#more_info_link</a>
+    
+    <li><a href="#method-i-more_info_link_to_wiki">#more_info_link_to_wiki</a>
+    
+    <li><a href="#method-i-querying_indicator">#querying_indicator</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="./doc/README_FOR_APP.html">README_FOR_APP</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="./AbstractQueryUsingBlast.html">AbstractQueryUsingBlast</a>
+  
+    <li><a href="./AdminController.html">AdminController</a>
+  
+    <li><a href="./AdminHelper.html">AdminHelper</a>
+  
+    <li><a href="./ApplicationController.html">ApplicationController</a>
+  
+    <li><a href="./ApplicationHelper.html">ApplicationHelper</a>
+  
+    <li><a href="./ArrayElementsAreNotEmptyValidator.html">ArrayElementsAreNotEmptyValidator</a>
+  
+    <li><a href="./ArrayOfUploadedFilesValidator.html">ArrayOfUploadedFilesValidator</a>
+  
+    <li><a href="./ArrayValidator.html">ArrayValidator</a>
+  
+    <li><a href="./BlastUtil.html">BlastUtil</a>
+  
+    <li><a href="./ConfirmUser.html">ConfirmUser</a>
+  
+    <li><a href="./ConfirmationsController.html">ConfirmationsController</a>
+  
+    <li><a href="./Dataset.html">Dataset</a>
+  
+    <li><a href="./DatasetBelongsToUserValidator.html">DatasetBelongsToUserValidator</a>
+  
+    <li><a href="./DatasetNameUniqueForUserValidator.html">DatasetNameUniqueForUserValidator</a>
+  
+    <li><a href="./DeleteUnconfirmedUser.html">DeleteUnconfirmedUser</a>
+  
+    <li><a href="./DifferentialExpressionTest.html">DifferentialExpressionTest</a>
+  
+    <li><a href="./FindGoTermsForDataset.html">FindGoTermsForDataset</a>
+  
+    <li><a href="./FpkmSample.html">FpkmSample</a>
+  
+    <li><a href="./Gene.html">Gene</a>
+  
+    <li><a href="./GeneNameQueryConditionGenerator.html">GeneNameQueryConditionGenerator</a>
+  
+    <li><a href="./GetGeneFastas.html">GetGeneFastas</a>
+  
+    <li><a href="./GetTranscriptFasta.html">GetTranscriptFasta</a>
+  
+    <li><a href="./GoFilterChecker.html">GoFilterChecker</a>
+  
+    <li><a href="./GoIdsQueryConditionGenerator.html">GoIdsQueryConditionGenerator</a>
+  
+    <li><a href="./GoTerm.html">GoTerm</a>
+  
+    <li><a href="./GoTermFinderAndProcessor.html">GoTermFinderAndProcessor</a>
+  
+    <li><a href="./GoTermsQueryConditionGenerator.html">GoTermsQueryConditionGenerator</a>
+  
+    <li><a href="./HasFastaFileExtensionValidator.html">HasFastaFileExtensionValidator</a>
+  
+    <li><a href="./HomeController.html">HomeController</a>
+  
+    <li><a href="./HomeHelper.html">HomeHelper</a>
+  
+    <li><a href="./HomeMailer.html">HomeMailer</a>
+  
+    <li><a href="./NameIsGeneExpDiffValidator.html">NameIsGeneExpDiffValidator</a>
+  
+    <li><a href="./NameIsIsoformExpDiffValidator.html">NameIsIsoformExpDiffValidator</a>
+  
+    <li><a href="./NameIsIsoformFpkmTrackingValidator.html">NameIsIsoformFpkmTrackingValidator</a>
+  
+    <li><a href="./NameIsTrinityFastaValidator.html">NameIsTrinityFastaValidator</a>
+  
+    <li><a href="./NucleotideFastaSequencesValidator.html">NucleotideFastaSequencesValidator</a>
+  
+    <li><a href="./ProteinFastaSequencesValidator.html">ProteinFastaSequencesValidator</a>
+  
+    <li><a href="./QueryAnalysisController.html">QueryAnalysisController</a>
+  
+    <li><a href="./QueryAnalysisHelper.html">QueryAnalysisHelper</a>
+  
+    <li><a href="./QueryAnalysisMailer.html">QueryAnalysisMailer</a>
+  
+    <li><a href="./QueryDiffExpGenes.html">QueryDiffExpGenes</a>
+  
+    <li><a href="./QueryDiffExpTranscripts.html">QueryDiffExpTranscripts</a>
+  
+    <li><a href="./QueryTranscriptIsoforms.html">QueryTranscriptIsoforms</a>
+  
+    <li><a href="./QueryUsingBlastn.html">QueryUsingBlastn</a>
+  
+    <li><a href="./QueryUsingTblastn.html">QueryUsingTblastn</a>
+  
+    <li><a href="./QueryUsingTblastx.html">QueryUsingTblastx</a>
+  
+    <li><a href="./RegistrationMailer.html">RegistrationMailer</a>
+  
+    <li><a href="./RegistrationsController.html">RegistrationsController</a>
+  
+    <li><a href="./ReportIssue.html">ReportIssue</a>
+  
+    <li><a href="./Sample.html">Sample</a>
+  
+    <li><a href="./SampleBelongsToUserValidator.html">SampleBelongsToUserValidator</a>
+  
+    <li><a href="./SampleComparison.html">SampleComparison</a>
+  
+    <li><a href="./SampleFpkm.html">SampleFpkm</a>
+  
+    <li><a href="./SystemUtil.html">SystemUtil</a>
+  
+    <li><a href="./Transcript.html">Transcript</a>
+  
+    <li><a href="./TranscriptFpkmTrackingInformation.html">TranscriptFpkmTrackingInformation</a>
+  
+    <li><a href="./TranscriptHasGoTerm.html">TranscriptHasGoTerm</a>
+  
+    <li><a href="./TranscriptNameQueryConditionGenerator.html">TranscriptNameQueryConditionGenerator</a>
+  
+    <li><a href="./TrinityDiffExpFileProcessor.html">TrinityDiffExpFileProcessor</a>
+  
+    <li><a href="./TrinityDiffExpLine.html">TrinityDiffExpLine</a>
+  
+    <li><a href="./TrinityFpkmFileProcessor.html">TrinityFpkmFileProcessor</a>
+  
+    <li><a href="./TrinityFpkmLine.html">TrinityFpkmLine</a>
+  
+    <li><a href="./TrinityGeneDiffExpFileProcessor.html">TrinityGeneDiffExpFileProcessor</a>
+  
+    <li><a href="./TrinityGeneFpkmFileProcessor.html">TrinityGeneFpkmFileProcessor</a>
+  
+    <li><a href="./TrinityTranscriptDiffExpFileProcessor.html">TrinityTranscriptDiffExpFileProcessor</a>
+  
+    <li><a href="./TrinityTranscriptFpkmFileProcessor.html">TrinityTranscriptFpkmFileProcessor</a>
+  
+    <li><a href="./UnconfirmedUserValidator.html">UnconfirmedUserValidator</a>
+  
+    <li><a href="./UploadCuffdiff.html">UploadCuffdiff</a>
+  
+    <li><a href="./UploadFastaSequences.html">UploadFastaSequences</a>
+  
+    <li><a href="./UploadTrinityWithEdgeR.html">UploadTrinityWithEdgeR</a>
+  
+    <li><a href="./UploadedFileValidator.html">UploadedFileValidator</a>
+  
+    <li><a href="./UploadedTrinityDiffExpFile.html">UploadedTrinityDiffExpFile</a>
+  
+    <li><a href="./UploadedTrinityFpkmFile.html">UploadedTrinityFpkmFile</a>
+  
+    <li><a href="./User.html">User</a>
+  
+    <li><a href="./ViewModelBooleanValidator.html">ViewModelBooleanValidator</a>
+  
+    <li><a href="./WorkerForFindGoTermsForDataset.html">WorkerForFindGoTermsForDataset</a>
+  
+    <li><a href="./WorkerForUploadCuffdiff.html">WorkerForUploadCuffdiff</a>
+  
+    <li><a href="./WorkerForUploadFastaSequences.html">WorkerForUploadFastaSequences</a>
+  
+    <li><a href="./WorkerForUploadTrinityWithEdger.html">WorkerForUploadTrinityWithEdger</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="module">module ApplicationHelper</h1>
+
+  <div id="description" class="description">
+    
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-help_tip" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">help_tip</span><span
+            class="method-args">(id, position = :right)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>TODO: Delete after replacing everywhere</p>
+
+<pre class="ruby"><span class="ruby-keyword">def</span> <span class="ruby-identifier">help_tip</span>(<span class="ruby-identifier">id</span>)
+  <span class="ruby-keyword">return</span>  <span class="ruby-identifier">image_tag</span>(<span class="ruby-string">'question_mark.png'</span>, :<span class="ruby-identifier">id=</span><span class="ruby-operator">&gt;</span> <span class="ruby-identifier">id</span>, 
+                                          :<span class="ruby-identifier">alt</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;Help tip for #{id}&quot;</span> ) 
+<span class="ruby-keyword">end</span>
+</pre>
+          
+
+          
+          <div class="method-source-code" id="help_tip-source">
+            <pre><span class="ruby-comment"># File app/helpers/application_helper.rb, line 19</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">help_tip</span>(<span class="ruby-identifier">id</span>, <span class="ruby-identifier">position</span> = <span class="ruby-value">:right</span>)
+  <span class="ruby-ivar">@controller</span> = <span class="ruby-identifier">request</span>.<span class="ruby-identifier">filtered_parameters</span>[<span class="ruby-string">'controller'</span>]
+  <span class="ruby-ivar">@action</span>     = <span class="ruby-identifier">request</span>.<span class="ruby-identifier">filtered_parameters</span>[<span class="ruby-string">'action'</span>]
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">render</span> <span class="ruby-operator">:</span><span class="ruby-identifier">partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'shared/help_tip'</span>, 
+                 <span class="ruby-value">:locals</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">id</span>, <span class="ruby-value">:position</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">position</span>}
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- help_tip-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- help_tip-method -->
+
+    
+      <div id="method-i-logo" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">logo</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="logo-source">
+            <pre><span class="ruby-comment"># File app/helpers/application_helper.rb, line 3</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">logo</span>
+    <span class="ruby-identifier">logo</span> = <span class="ruby-identifier">image_tag</span>(<span class="ruby-string">&quot;ksu/powercat-glowing-android.jpg&quot;</span>, 
+            <span class="ruby-value">:alt</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;RNA-Seq Analysis pipeline&quot;</span>, <span class="ruby-value">:class</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;logo&quot;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- logo-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- logo-method -->
+
+    
+      <div id="method-i-more_info_link" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">more_info_link</span><span
+            class="method-args">(url)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="more_info_link-source">
+            <pre><span class="ruby-comment"># File app/helpers/application_helper.rb, line 26</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">more_info_link</span>(<span class="ruby-identifier">url</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">link_to</span>(<span class="ruby-string">'More Info'</span>,<span class="ruby-identifier">url</span>, <span class="ruby-value">:target</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'_blank'</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- more_info_link-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- more_info_link-method -->
+
+    
+      <div id="method-i-more_info_link_to_wiki" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">more_info_link_to_wiki</span><span
+            class="method-args">(path)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="more_info_link_to_wiki-source">
+            <pre><span class="ruby-comment"># File app/helpers/application_helper.rb, line 30</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">more_info_link_to_wiki</span>(<span class="ruby-identifier">path</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">link_to</span>(<span class="ruby-string">'More Information'</span>, <span class="ruby-string">&quot;https://github.com/fatPerlHacker/&quot;</span> <span class="ruby-operator">+</span>
+                                <span class="ruby-node">&quot;queryable-rna-seq-database/wiki/#{path}&quot;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- more_info_link_to_wiki-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- more_info_link_to_wiki-method -->
+
+    
+      <div id="method-i-querying_indicator" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">querying_indicator</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="querying_indicator-source">
+            <pre><span class="ruby-comment"># File app/helpers/application_helper.rb, line 8</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">querying_indicator</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">image_tag</span>(<span class="ruby-string">&quot;querying-indicator.gif&quot;</span>, 
+            <span class="ruby-value">:alt</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;querying indicator&quot;</span>, <span class="ruby-value">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:querying_indicator</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- querying_indicator-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- querying_indicator-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.2.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

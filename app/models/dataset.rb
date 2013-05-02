@@ -1,3 +1,10 @@
+# == Description
+#
+# Represents a set of data from one run of 
+# Use Case 1: Upload Data to the Database. It links to all the genes and
+# transcripts uploaded during the given run of that use case. 
+#
+#
 # == Schema Information
 #
 # Table name: datasets
@@ -10,24 +17,6 @@
 #  has_gene_diff_exp       :boolean          not null
 #  finished_uploading      :boolean          not null
 #  go_terms_status         :string(255)      not null
-#  blast_db_location       :string(255)      not null
-#  user_id                 :integer          not null
-#  when_last_queried       :datetime
-#  created_at              :datetime         not null
-#  updated_at              :datetime         not null
-#
-
-# == Schema Information
-#
-# Table name: datasets
-#
-#  id                      :integer          not null, primary key
-#  name                    :string(255)      not null
-#  program_used            :string(255)      not null
-#  has_transcript_diff_exp :boolean          not null
-#  has_transcript_isoforms :boolean          not null
-#  has_gene_diff_exp       :boolean          not null
-#  has_go_terms            :boolean          not null
 #  blast_db_location       :string(255)      not null
 #  user_id                 :integer          not null
 #  when_last_queried       :datetime

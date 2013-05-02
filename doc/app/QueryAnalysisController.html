@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+
+<title>class QueryAnalysisController - Rails Application Documentation</title>
+
+<link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="./js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="./index.html">Home</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>app/controllers/query_analysis_controller.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link"><a href="ApplicationController.html">ApplicationController</a>
+  
+</nav>
+
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-i-add_sample_cmp_for_trinity_with_edger_genes">#add_sample_cmp_for_trinity_with_edger_genes</a>
+    
+    <li><a href="#method-i-add_sample_cmp_for_trinity_with_edger_transcripts">#add_sample_cmp_for_trinity_with_edger_transcripts</a>
+    
+    <li><a href="#method-i-find_go_terms_for_dataset">#find_go_terms_for_dataset</a>
+    
+    <li><a href="#method-i-get_blastn_gap_costs_for_match_and_mismatch_scores">#get_blastn_gap_costs_for_match_and_mismatch_scores</a>
+    
+    <li><a href="#method-i-get_gene_diff_exp_samples_for_dataset">#get_gene_diff_exp_samples_for_dataset</a>
+    
+    <li><a href="#method-i-get_gene_fastas">#get_gene_fastas</a>
+    
+    <li><a href="#method-i-get_if_dataset_has_go_terms">#get_if_dataset_has_go_terms</a>
+    
+    <li><a href="#method-i-get_query_diff_exp_genes_header_row">#get_query_diff_exp_genes_header_row</a>
+    
+    <li><a href="#method-i-get_query_diff_exp_transcripts_header_row">#get_query_diff_exp_transcripts_header_row</a>
+    
+    <li><a href="#method-i-get_query_transcript_isoforms_header_row">#get_query_transcript_isoforms_header_row</a>
+    
+    <li><a href="#method-i-get_tblastn_gap_costs_for_matrix">#get_tblastn_gap_costs_for_matrix</a>
+    
+    <li><a href="#method-i-get_transcript_diff_exp_samples_for_dataset">#get_transcript_diff_exp_samples_for_dataset</a>
+    
+    <li><a href="#method-i-get_transcript_fasta">#get_transcript_fasta</a>
+    
+    <li><a href="#method-i-get_transcript_isoforms_samples_for_dataset">#get_transcript_isoforms_samples_for_dataset</a>
+    
+    <li><a href="#method-i-query_diff_exp_genes">#query_diff_exp_genes</a>
+    
+    <li><a href="#method-i-query_diff_exp_transcripts">#query_diff_exp_transcripts</a>
+    
+    <li><a href="#method-i-query_transcript_isoforms">#query_transcript_isoforms</a>
+    
+    <li><a href="#method-i-query_using_blastn">#query_using_blastn</a>
+    
+    <li><a href="#method-i-query_using_tblastn">#query_using_tblastn</a>
+    
+    <li><a href="#method-i-query_using_tblastx">#query_using_tblastx</a>
+    
+    <li><a href="#method-i-upload_cuffdiff">#upload_cuffdiff</a>
+    
+    <li><a href="#method-i-upload_fasta_sequences">#upload_fasta_sequences</a>
+    
+    <li><a href="#method-i-upload_trinity_with_edger">#upload_trinity_with_edger</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="./doc/README_FOR_APP.html">README_FOR_APP</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="./AbstractQueryUsingBlast.html">AbstractQueryUsingBlast</a>
+  
+    <li><a href="./AdminController.html">AdminController</a>
+  
+    <li><a href="./AdminHelper.html">AdminHelper</a>
+  
+    <li><a href="./ApplicationController.html">ApplicationController</a>
+  
+    <li><a href="./ApplicationHelper.html">ApplicationHelper</a>
+  
+    <li><a href="./ArrayElementsAreNotEmptyValidator.html">ArrayElementsAreNotEmptyValidator</a>
+  
+    <li><a href="./ArrayOfUploadedFilesValidator.html">ArrayOfUploadedFilesValidator</a>
+  
+    <li><a href="./ArrayValidator.html">ArrayValidator</a>
+  
+    <li><a href="./BlastUtil.html">BlastUtil</a>
+  
+    <li><a href="./ConfirmUser.html">ConfirmUser</a>
+  
+    <li><a href="./ConfirmationsController.html">ConfirmationsController</a>
+  
+    <li><a href="./Dataset.html">Dataset</a>
+  
+    <li><a href="./DatasetBelongsToUserValidator.html">DatasetBelongsToUserValidator</a>
+  
+    <li><a href="./DatasetNameUniqueForUserValidator.html">DatasetNameUniqueForUserValidator</a>
+  
+    <li><a href="./DeleteUnconfirmedUser.html">DeleteUnconfirmedUser</a>
+  
+    <li><a href="./DifferentialExpressionTest.html">DifferentialExpressionTest</a>
+  
+    <li><a href="./FindGoTermsForDataset.html">FindGoTermsForDataset</a>
+  
+    <li><a href="./FpkmSample.html">FpkmSample</a>
+  
+    <li><a href="./Gene.html">Gene</a>
+  
+    <li><a href="./GeneNameQueryConditionGenerator.html">GeneNameQueryConditionGenerator</a>
+  
+    <li><a href="./GetGeneFastas.html">GetGeneFastas</a>
+  
+    <li><a href="./GetTranscriptFasta.html">GetTranscriptFasta</a>
+  
+    <li><a href="./GoFilterChecker.html">GoFilterChecker</a>
+  
+    <li><a href="./GoIdsQueryConditionGenerator.html">GoIdsQueryConditionGenerator</a>
+  
+    <li><a href="./GoTerm.html">GoTerm</a>
+  
+    <li><a href="./GoTermFinderAndProcessor.html">GoTermFinderAndProcessor</a>
+  
+    <li><a href="./GoTermsQueryConditionGenerator.html">GoTermsQueryConditionGenerator</a>
+  
+    <li><a href="./HasFastaFileExtensionValidator.html">HasFastaFileExtensionValidator</a>
+  
+    <li><a href="./HomeController.html">HomeController</a>
+  
+    <li><a href="./HomeHelper.html">HomeHelper</a>
+  
+    <li><a href="./HomeMailer.html">HomeMailer</a>
+  
+    <li><a href="./NameIsGeneExpDiffValidator.html">NameIsGeneExpDiffValidator</a>
+  
+    <li><a href="./NameIsIsoformExpDiffValidator.html">NameIsIsoformExpDiffValidator</a>
+  
+    <li><a href="./NameIsIsoformFpkmTrackingValidator.html">NameIsIsoformFpkmTrackingValidator</a>
+  
+    <li><a href="./NameIsTrinityFastaValidator.html">NameIsTrinityFastaValidator</a>
+  
+    <li><a href="./NucleotideFastaSequencesValidator.html">NucleotideFastaSequencesValidator</a>
+  
+    <li><a href="./ProteinFastaSequencesValidator.html">ProteinFastaSequencesValidator</a>
+  
+    <li><a href="./QueryAnalysisController.html">QueryAnalysisController</a>
+  
+    <li><a href="./QueryAnalysisHelper.html">QueryAnalysisHelper</a>
+  
+    <li><a href="./QueryAnalysisMailer.html">QueryAnalysisMailer</a>
+  
+    <li><a href="./QueryDiffExpGenes.html">QueryDiffExpGenes</a>
+  
+    <li><a href="./QueryDiffExpTranscripts.html">QueryDiffExpTranscripts</a>
+  
+    <li><a href="./QueryTranscriptIsoforms.html">QueryTranscriptIsoforms</a>
+  
+    <li><a href="./QueryUsingBlastn.html">QueryUsingBlastn</a>
+  
+    <li><a href="./QueryUsingTblastn.html">QueryUsingTblastn</a>
+  
+    <li><a href="./QueryUsingTblastx.html">QueryUsingTblastx</a>
+  
+    <li><a href="./RegistrationMailer.html">RegistrationMailer</a>
+  
+    <li><a href="./RegistrationsController.html">RegistrationsController</a>
+  
+    <li><a href="./ReportIssue.html">ReportIssue</a>
+  
+    <li><a href="./Sample.html">Sample</a>
+  
+    <li><a href="./SampleBelongsToUserValidator.html">SampleBelongsToUserValidator</a>
+  
+    <li><a href="./SampleComparison.html">SampleComparison</a>
+  
+    <li><a href="./SampleFpkm.html">SampleFpkm</a>
+  
+    <li><a href="./SystemUtil.html">SystemUtil</a>
+  
+    <li><a href="./Transcript.html">Transcript</a>
+  
+    <li><a href="./TranscriptFpkmTrackingInformation.html">TranscriptFpkmTrackingInformation</a>
+  
+    <li><a href="./TranscriptHasGoTerm.html">TranscriptHasGoTerm</a>
+  
+    <li><a href="./TranscriptNameQueryConditionGenerator.html">TranscriptNameQueryConditionGenerator</a>
+  
+    <li><a href="./TrinityDiffExpFileProcessor.html">TrinityDiffExpFileProcessor</a>
+  
+    <li><a href="./TrinityDiffExpLine.html">TrinityDiffExpLine</a>
+  
+    <li><a href="./TrinityFpkmFileProcessor.html">TrinityFpkmFileProcessor</a>
+  
+    <li><a href="./TrinityFpkmLine.html">TrinityFpkmLine</a>
+  
+    <li><a href="./TrinityGeneDiffExpFileProcessor.html">TrinityGeneDiffExpFileProcessor</a>
+  
+    <li><a href="./TrinityGeneFpkmFileProcessor.html">TrinityGeneFpkmFileProcessor</a>
+  
+    <li><a href="./TrinityTranscriptDiffExpFileProcessor.html">TrinityTranscriptDiffExpFileProcessor</a>
+  
+    <li><a href="./TrinityTranscriptFpkmFileProcessor.html">TrinityTranscriptFpkmFileProcessor</a>
+  
+    <li><a href="./UnconfirmedUserValidator.html">UnconfirmedUserValidator</a>
+  
+    <li><a href="./UploadCuffdiff.html">UploadCuffdiff</a>
+  
+    <li><a href="./UploadFastaSequences.html">UploadFastaSequences</a>
+  
+    <li><a href="./UploadTrinityWithEdgeR.html">UploadTrinityWithEdgeR</a>
+  
+    <li><a href="./UploadedFileValidator.html">UploadedFileValidator</a>
+  
+    <li><a href="./UploadedTrinityDiffExpFile.html">UploadedTrinityDiffExpFile</a>
+  
+    <li><a href="./UploadedTrinityFpkmFile.html">UploadedTrinityFpkmFile</a>
+  
+    <li><a href="./User.html">User</a>
+  
+    <li><a href="./ViewModelBooleanValidator.html">ViewModelBooleanValidator</a>
+  
+    <li><a href="./WorkerForFindGoTermsForDataset.html">WorkerForFindGoTermsForDataset</a>
+  
+    <li><a href="./WorkerForUploadCuffdiff.html">WorkerForUploadCuffdiff</a>
+  
+    <li><a href="./WorkerForUploadFastaSequences.html">WorkerForUploadFastaSequences</a>
+  
+    <li><a href="./WorkerForUploadTrinityWithEdger.html">WorkerForUploadTrinityWithEdger</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="class">class QueryAnalysisController</h1>
+
+  <div id="description" class="description">
+    
+<p>Handles all actions related to querying the Postgresql database, blast 
+databases, uploading data for querying, and finding <a
+href="Gene.html">Gene</a> Ontology (GO)  terms for uploaded data.</p>
+
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-add_sample_cmp_for_trinity_with_edger_genes" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">add_sample_cmp_for_trinity_with_edger_genes</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>For the upload Trinity with EdgeR page, ajax request to add html to the 
+form to upload an additional gene differential expression file.</p>
+          
+
+          
+          <div class="method-source-code" id="add_sample_cmp_for_trinity_with_edger_genes-source">
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 126</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">add_sample_cmp_for_trinity_with_edger_genes</span>
+  <span class="ruby-identifier">render</span> <span class="ruby-value">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'trinity_with_edger_genes_sample_cmp'</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- add_sample_cmp_for_trinity_with_edger_genes-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- add_sample_cmp_for_trinity_with_edger_genes-method -->
+
+    
+      <div id="method-i-add_sample_cmp_for_trinity_with_edger_transcripts" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">add_sample_cmp_for_trinity_with_edger_transcripts</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>For the upload Trinity with EdgeR page, ajax request to add html to the 
+form to upload an additional transcript differential expression file.</p>
+          
+
+          
+          <div class="method-source-code" id="add_sample_cmp_for_trinity_with_edger_transcripts-source">
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 120</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">add_sample_cmp_for_trinity_with_edger_transcripts</span>
+  <span class="ruby-identifier">render</span> <span class="ruby-value">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'trinity_with_edger_transcripts_sample_cmp'</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- add_sample_cmp_for_trinity_with_edger_transcripts-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- add_sample_cmp_for_trinity_with_edger_transcripts-method -->
+
+    
+      <div id="method-i-find_go_terms_for_dataset" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">find_go_terms_for_dataset</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Handles both GET and POST requests for the find go terms for dataset page.</p>
+          
+
+          
+          <div class="method-source-code" id="find_go_terms_for_dataset-source">
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 132</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">find_go_terms_for_dataset</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">get?</span>
+    <span class="ruby-ivar">@finder</span> = <span class="ruby-constant">FindGoTermsForDataset</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
+    <span class="ruby-ivar">@finder</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>()
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">post?</span>
+    <span class="ruby-ivar">@finder</span> = <span class="ruby-constant">FindGoTermsForDataset</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
+    <span class="ruby-ivar">@finder</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:find_go_terms_for_dataset</span>])
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@finder</span>.<span class="ruby-identifier">valid?</span>
+      <span class="ruby-identifier">queue_name</span> = <span class="ruby-value">:find_go_terms_for_dataset_queue</span>
+      <span class="ruby-constant">SuckerPunch</span><span class="ruby-operator">::</span><span class="ruby-constant">Queue</span>[<span class="ruby-identifier">queue_name</span>].<span class="ruby-identifier">async</span>.<span class="ruby-identifier">perform</span>(<span class="ruby-ivar">@finder</span>)
+      <span class="ruby-comment">#Make sure the dataset is set to in-progress before the page reloads</span>
+      <span class="ruby-ivar">@dataset</span> = <span class="ruby-constant">Dataset</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-ivar">@finder</span>.<span class="ruby-identifier">dataset_id</span>)
+      <span class="ruby-ivar">@dataset</span>.<span class="ruby-identifier">go_terms_status</span> = <span class="ruby-string">'in-progress'</span>
+      <span class="ruby-ivar">@dataset</span>.<span class="ruby-identifier">save!</span>
+      <span class="ruby-comment">#Make sure there are still datasets left to display</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">datasets</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:go_terms_status</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'not-started'</span>).<span class="ruby-identifier">empty?</span>
+        <span class="ruby-ivar">@datasets_in_progress</span> = 
+            <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">datasets</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:go_terms_status</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'in-progress'</span>)
+        <span class="ruby-identifier">render</span> <span class="ruby-value">:no_datasets_without_go_terms</span>
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-comment">#Reset the form</span>
+        <span class="ruby-ivar">@finder</span> = <span class="ruby-constant">FindGoTermsForDataset</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
+        <span class="ruby-ivar">@finder</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>()
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-identifier">flash</span>[<span class="ruby-value">:notice</span>] = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span> <span class="ruby-value">:added_to_go_terms_queue</span>, <span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@dataset</span>.<span class="ruby-identifier">name</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- find_go_terms_for_dataset-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- find_go_terms_for_dataset-method -->
+
+    
+      <div id="method-i-get_blastn_gap_costs_for_match_and_mismatch_scores" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_blastn_gap_costs_for_match_and_mismatch_scores</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>When a new set of match/mismatch scores is selected on the query using 
+blastn page, handles ajax requests to get the gap costs for the new 
+selected matrix.</p>
+          
+
+          
+          <div class="method-source-code" id="get_blastn_gap_costs_for_match_and_mismatch_scores-source">
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 380</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_blastn_gap_costs_for_match_and_mismatch_scores</span>
+  <span class="ruby-comment">#Calculate the new gap costs from the match and mismatch scores </span>
+  <span class="ruby-ivar">@query_using_blastn</span> = <span class="ruby-constant">QueryUsingBlastn</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
+  <span class="ruby-identifier">match_and_mismatch_scores</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:match_and_mismatch_scores</span>]
+  <span class="ruby-ivar">@query_using_blastn</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>(
+    <span class="ruby-value">:match_and_mismatch_scores</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">match_and_mismatch_scores</span>
+  )
+  <span class="ruby-comment">#Render the new gap costs</span>
+  <span class="ruby-identifier">render</span> <span class="ruby-value">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'gap_costs'</span>, <span class="ruby-value">:locals</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:object</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@query_using_blastn</span>}
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- get_blastn_gap_costs_for_match_and_mismatch_scores-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- get_blastn_gap_costs_for_match_and_mismatch_scores-method -->
+
+    
+      <div id="method-i-get_gene_diff_exp_samples_for_dataset" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_gene_diff_exp_samples_for_dataset</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>When a new dataset is selected on the query differentially expressed page, 
+handles ajax requests to get the sample comparisons for the newly  selected
+dataset.</p>
+          
+
+          
+          <div class="method-source-code" id="get_gene_diff_exp_samples_for_dataset-source">
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 291</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_gene_diff_exp_samples_for_dataset</span>
+  <span class="ruby-ivar">@qdeg</span> = <span class="ruby-constant">QueryDiffExpGenes</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
+  <span class="ruby-identifier">dataset_id</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:dataset_id</span>]
+  <span class="ruby-ivar">@qdeg</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>({<span class="ruby-value">:dataset_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">dataset_id</span>})
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@qdeg</span>.<span class="ruby-identifier">valid?</span>
+    <span class="ruby-identifier">render</span> <span class="ruby-value">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'diff_exp_samples_for_dataset'</span>, 
+           <span class="ruby-value">:locals</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:object</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@qdeg</span>}
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- get_gene_diff_exp_samples_for_dataset-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- get_gene_diff_exp_samples_for_dataset-method -->
+
+    
+      <div id="method-i-get_gene_fastas" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_gene_fastas</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Handles requests to display the fasta sequences for the transcripts 
+associated with a given gene.</p>
+          
+
+          
+          <div class="method-source-code" id="get_gene_fastas-source">
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 232</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_gene_fastas</span>
+  <span class="ruby-comment">#Create/fill in the view model</span>
+  <span class="ruby-identifier">get_gene_fastas</span> = <span class="ruby-constant">GetGeneFastas</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
+  <span class="ruby-identifier">get_gene_fastas</span>.<span class="ruby-identifier">set_attributes</span>(<span class="ruby-identifier">params</span>)
+  <span class="ruby-comment">#Output based on whether the view model is valid</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">get_gene_fastas</span>.<span class="ruby-identifier">valid?</span>
+    <span class="ruby-identifier">render</span> <span class="ruby-value">:text</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">get_gene_fastas</span>.<span class="ruby-identifier">query</span>, 
+           <span class="ruby-value">:content_type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'text/plain'</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">error_messages_string</span> = <span class="ruby-string">&quot;Error(s) found:\n&quot;</span>
+    <span class="ruby-identifier">get_gene_fastas</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">full_messages</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">error_msg</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">error_messages_string</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot;#{error_msg}\n&quot;</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">render</span> <span class="ruby-value">:text</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">error_messages_string</span>, 
+           <span class="ruby-value">:content_type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'text/plain'</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- get_gene_fastas-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- get_gene_fastas-method -->
+
+    
+      <div id="method-i-get_if_dataset_has_go_terms" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_if_dataset_has_go_terms</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Handles ajax requests asking whether a dataset has go terms. Returns a 
+boolean value or an error message.</p>
+          
+
+          
+          <div class="method-source-code" id="get_if_dataset_has_go_terms-source">
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 253</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_if_dataset_has_go_terms</span>
+  <span class="ruby-identifier">dataset</span> = <span class="ruby-constant">Dataset</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:dataset_id</span>])
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">dataset</span>.<span class="ruby-identifier">user</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">current_user</span>
+    <span class="ruby-identifier">msg</span> = <span class="ruby-string">&quot;not authorized&quot;</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">dataset</span>.<span class="ruby-identifier">go_terms_status</span> <span class="ruby-operator">==</span> <span class="ruby-string">'found'</span>
+      <span class="ruby-identifier">msg</span> = <span class="ruby-keyword">true</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">msg</span> = <span class="ruby-keyword">false</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">render</span> <span class="ruby-value">:text</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">msg</span>, 
+         <span class="ruby-value">:content_type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'text/plain'</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- get_if_dataset_has_go_terms-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- get_if_dataset_has_go_terms-method -->
+
+    
+      <div id="method-i-get_query_diff_exp_genes_header_row" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_query_diff_exp_genes_header_row</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>For the query differentially expressed genes page,  ajax request to add the
+table header row to the query results table.</p>
+          
+
+          
+          <div class="method-source-code" id="get_query_diff_exp_genes_header_row-source">
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 304</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_query_diff_exp_genes_header_row</span>
+  <span class="ruby-ivar">@qdeg</span> = <span class="ruby-constant">QueryDiffExpGenes</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
+  <span class="ruby-ivar">@qdeg</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:query_diff_exp_genes</span>])
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@qdeg</span>.<span class="ruby-identifier">valid?</span>
+    <span class="ruby-identifier">render</span> <span class="ruby-value">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'query_diff_exp_genes_header_row'</span>, 
+           <span class="ruby-value">:locals</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:object</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@qdeg</span>}
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- get_query_diff_exp_genes_header_row-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- get_query_diff_exp_genes_header_row-method -->
+
+    
+      <div id="method-i-get_query_diff_exp_transcripts_header_row" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_query_diff_exp_transcripts_header_row</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>For the query differentially expressed transcripts page,  ajax request to
+add the table header row to the query results table.</p>
+          
+
+          
+          <div class="method-source-code" id="get_query_diff_exp_transcripts_header_row-source">
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 199</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_query_diff_exp_transcripts_header_row</span>
+  <span class="ruby-ivar">@qdet</span> = <span class="ruby-constant">QueryDiffExpTranscripts</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
+  <span class="ruby-ivar">@qdet</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:query_diff_exp_transcripts</span>])
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@qdet</span>.<span class="ruby-identifier">valid?</span>
+    <span class="ruby-identifier">render</span> <span class="ruby-value">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'query_diff_exp_transcripts_header_row'</span>, 
+           <span class="ruby-value">:locals</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:object</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@qdet</span>}
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- get_query_diff_exp_transcripts_header_row-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- get_query_diff_exp_transcripts_header_row-method -->
+
+    
+      <div id="method-i-get_query_transcript_isoforms_header_row" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_query_transcript_isoforms_header_row</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>For the query transcript isoforms page,  ajax request to add the table
+header row to the query results table.</p>
+          
+
+          
+          <div class="method-source-code" id="get_query_transcript_isoforms_header_row-source">
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 347</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_query_transcript_isoforms_header_row</span>
+  <span class="ruby-ivar">@qti</span> = <span class="ruby-constant">QueryTranscriptIsoforms</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
+  <span class="ruby-ivar">@qti</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:query_transcript_isoforms</span>])
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@qti</span>.<span class="ruby-identifier">valid?</span>
+    <span class="ruby-identifier">render</span> <span class="ruby-value">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'query_transcript_isoforms_header_row'</span>, 
+           <span class="ruby-value">:locals</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:object</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@qti</span>}
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- get_query_transcript_isoforms_header_row-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- get_query_transcript_isoforms_header_row-method -->
+
+    
+      <div id="method-i-get_tblastn_gap_costs_for_matrix" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_tblastn_gap_costs_for_matrix</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>When a new matrix is selected on the query using Tblastn page,  handles
+ajax requests to get the gap costs for the new selected matrix.</p>
+          
+
+          
+          <div class="method-source-code" id="get_tblastn_gap_costs_for_matrix-source">
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 415</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_tblastn_gap_costs_for_matrix</span>
+  <span class="ruby-comment">#Calculate the new gap costs from the match and mismatch scores </span>
+  <span class="ruby-ivar">@query_using_blastn</span> = <span class="ruby-constant">QueryUsingTblastn</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
+  <span class="ruby-identifier">matrix</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:matrix</span>]
+  <span class="ruby-ivar">@query_using_blastn</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-value">:matrix</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">matrix</span>)
+  <span class="ruby-comment">#Render the new gap costs</span>
+  <span class="ruby-identifier">render</span> <span class="ruby-value">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'gap_costs'</span>, <span class="ruby-value">:locals</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:object</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@query_using_blastn</span>}
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- get_tblastn_gap_costs_for_matrix-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- get_tblastn_gap_costs_for_matrix-method -->
+
+    
+      <div id="method-i-get_transcript_diff_exp_samples_for_dataset" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_transcript_diff_exp_samples_for_dataset</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>When a new dataset is selected on the query differentially expressed 
+transcripts page, handles ajax requests to get the sample comparisons for
+the newly selected dataset.</p>
+          
+
+          
+          <div class="method-source-code" id="get_transcript_diff_exp_samples_for_dataset-source">
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 184</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_transcript_diff_exp_samples_for_dataset</span>
+  <span class="ruby-ivar">@qdet</span> = <span class="ruby-constant">QueryDiffExpTranscripts</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
+  <span class="ruby-identifier">dataset_id</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:dataset_id</span>]
+  <span class="ruby-ivar">@qdet</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>({<span class="ruby-value">:dataset_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">dataset_id</span>})
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@qdet</span>.<span class="ruby-identifier">valid?</span>
+    <span class="ruby-identifier">render</span> <span class="ruby-value">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'diff_exp_samples_for_dataset'</span>, 
+           <span class="ruby-value">:locals</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:object</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@qdet</span>}
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">render</span> <span class="ruby-value">:no_datasets</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- get_transcript_diff_exp_samples_for_dataset-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- get_transcript_diff_exp_samples_for_dataset-method -->
+
+    
+      <div id="method-i-get_transcript_fasta" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_transcript_fasta</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Handles requests to display the fasta sequence for a given transcript.</p>
+          
+
+          
+          <div class="method-source-code" id="get_transcript_fasta-source">
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 210</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_transcript_fasta</span>
+  <span class="ruby-comment">#Create/fill in the view model</span>
+  <span class="ruby-identifier">get_transcript_fasta</span> = <span class="ruby-constant">GetTranscriptFasta</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
+  <span class="ruby-identifier">get_transcript_fasta</span>.<span class="ruby-identifier">set_attributes</span>(<span class="ruby-identifier">params</span>)
+  <span class="ruby-comment">#Output based on whether the view model is valid</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">get_transcript_fasta</span>.<span class="ruby-identifier">valid?</span>
+    
+    <span class="ruby-identifier">render</span> <span class="ruby-value">:text</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">get_transcript_fasta</span>.<span class="ruby-identifier">query</span>, 
+           <span class="ruby-value">:content_type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'text/plain'</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">error_messages_string</span> = <span class="ruby-string">&quot;Error(s) found:\n&quot;</span>
+    <span class="ruby-identifier">get_transcript_fasta</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">full_messages</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">error_msg</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">error_messages_string</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot;#{error_msg}\n&quot;</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">render</span> <span class="ruby-value">:text</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">error_messages_string</span>, 
+           <span class="ruby-value">:content_type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'text/plain'</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- get_transcript_fasta-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- get_transcript_fasta-method -->
+
+    
+      <div id="method-i-get_transcript_isoforms_samples_for_dataset" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_transcript_isoforms_samples_for_dataset</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>When a new dataset is selected on the query transcript isoforms page, 
+handles ajax requests to get the samples for the newly selected dataset.</p>
+          
+
+          
+          <div class="method-source-code" id="get_transcript_isoforms_samples_for_dataset-source">
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 334</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_transcript_isoforms_samples_for_dataset</span>
+  <span class="ruby-ivar">@qti</span> = <span class="ruby-constant">QueryTranscriptIsoforms</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
+  <span class="ruby-identifier">dataset_id</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:dataset_id</span>]
+  <span class="ruby-ivar">@qti</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-value">:dataset_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">dataset_id</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@qti</span>.<span class="ruby-identifier">valid?</span>
+    <span class="ruby-identifier">render</span> <span class="ruby-value">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'transcript_isoforms_samples_for_dataset'</span>, 
+           <span class="ruby-value">:locals</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:object</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@qti</span>}
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- get_transcript_isoforms_samples_for_dataset-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- get_transcript_isoforms_samples_for_dataset-method -->
+
+    
+      <div id="method-i-query_diff_exp_genes" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">query_diff_exp_genes</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Handles both GET and POST requests for the query differentially expressed 
+genes page.</p>
+          
+
+          
+          <div class="method-source-code" id="query_diff_exp_genes-source">
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 271</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">query_diff_exp_genes</span>
+  <span class="ruby-comment">#Create the view model, giving the current user</span>
+  <span class="ruby-ivar">@qdeg</span> = <span class="ruby-constant">QueryDiffExpGenes</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
+  <span class="ruby-comment">#Which type of request was received?</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">get?</span>
+    <span class="ruby-ivar">@qdeg</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>()
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">post?</span>
+    <span class="ruby-comment">#Fill in the inputs from the view</span>
+    <span class="ruby-ivar">@qdeg</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:query_diff_exp_genes</span>])
+    <span class="ruby-comment"># If valid, query and return results; otherwise return failure</span>
+    <span class="ruby-ivar">@qdeg</span>.<span class="ruby-identifier">query</span>() <span class="ruby-keyword">if</span> <span class="ruby-ivar">@qdeg</span>.<span class="ruby-identifier">valid?</span>
+    <span class="ruby-identifier">render</span> <span class="ruby-value">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'query_diff_exp_genes_table_rows'</span>, 
+           <span class="ruby-value">:locals</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:object</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@qdeg</span>}
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- query_diff_exp_genes-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- query_diff_exp_genes-method -->
+
+    
+      <div id="method-i-query_diff_exp_transcripts" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">query_diff_exp_transcripts</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Handles both GET and POST requests for the query differentially expressed 
+transcripts page.</p>
+          
+
+          
+          <div class="method-source-code" id="query_diff_exp_transcripts-source">
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 164</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">query_diff_exp_transcripts</span>
+  <span class="ruby-comment">#Create the view model, giving the current user</span>
+  <span class="ruby-ivar">@qdet</span> = <span class="ruby-constant">QueryDiffExpTranscripts</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
+  <span class="ruby-comment">#Which type of request was received?</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">get?</span>
+    <span class="ruby-ivar">@qdet</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>()
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">post?</span>
+    <span class="ruby-comment">#Fill in the inputs from the view</span>
+    <span class="ruby-ivar">@qdet</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:query_diff_exp_transcripts</span>])
+    <span class="ruby-comment"># If valid, query and return results; otherwise return failure</span>
+    <span class="ruby-ivar">@qdet</span>.<span class="ruby-identifier">query</span>() <span class="ruby-keyword">if</span> <span class="ruby-ivar">@qdet</span>.<span class="ruby-identifier">valid?</span>
+    <span class="ruby-identifier">render</span> <span class="ruby-value">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'query_diff_exp_transcripts_table_rows'</span>, 
+           <span class="ruby-value">:locals</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:object</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@qdet</span>}
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- query_diff_exp_transcripts-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- query_diff_exp_transcripts-method -->
+
+    
+      <div id="method-i-query_transcript_isoforms" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">query_transcript_isoforms</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Handles both GET and POST requests for the query using blast page.</p>
+          
+
+          
+          <div class="method-source-code" id="query_transcript_isoforms-source">
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 315</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">query_transcript_isoforms</span>
+  <span class="ruby-comment">#Create the view model, giving the current user</span>
+  <span class="ruby-ivar">@qti</span> = <span class="ruby-constant">QueryTranscriptIsoforms</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
+  <span class="ruby-comment">#Which type of request was received?</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">get?</span>
+    <span class="ruby-ivar">@qti</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>()
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">post?</span>
+    <span class="ruby-comment">#Fill in the inputs from the view</span>
+    <span class="ruby-ivar">@qti</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:query_transcript_isoforms</span>])
+    <span class="ruby-comment"># If valid, query and return results; otherwise return failure</span>
+    <span class="ruby-ivar">@qti</span>.<span class="ruby-identifier">query</span>() <span class="ruby-keyword">if</span> <span class="ruby-ivar">@qti</span>.<span class="ruby-identifier">valid?</span>
+    <span class="ruby-identifier">render</span> <span class="ruby-value">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'query_transcript_isoforms_table_rows'</span>, 
+           <span class="ruby-value">:locals</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:object</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@qti</span>}
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- query_transcript_isoforms-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- query_transcript_isoforms-method -->
+
+    
+      <div id="method-i-query_using_blastn" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">query_using_blastn</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Handles both GET and POST requests for the query using blastn page.</p>
+          
+
+          
+          <div class="method-source-code" id="query_using_blastn-source">
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 358</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">query_using_blastn</span>    <span class="ruby-comment">#Changed after architecture design</span>
+  <span class="ruby-ivar">@sequence_type</span> = <span class="ruby-string">'nucleic acid'</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">get?</span>
+      <span class="ruby-ivar">@query_using_blastn</span> = <span class="ruby-constant">QueryUsingBlastn</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
+      <span class="ruby-ivar">@query_using_blastn</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>()
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">post?</span>
+    <span class="ruby-ivar">@query_using_blastn</span> = <span class="ruby-constant">QueryUsingBlastn</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
+    <span class="ruby-ivar">@query_using_blastn</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:query_using_blastn</span>])
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@query_using_blastn</span>.<span class="ruby-identifier">valid?</span>
+        <span class="ruby-ivar">@program</span> = <span class="ruby-value">:blastn</span>
+        <span class="ruby-ivar">@blast_report</span> = <span class="ruby-ivar">@query_using_blastn</span>.<span class="ruby-identifier">blast</span>
+        <span class="ruby-comment">#Send the result to the user</span>
+        <span class="ruby-ivar">@dataset</span> = <span class="ruby-constant">Dataset</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-ivar">@query_using_blastn</span>.<span class="ruby-identifier">dataset_id</span>)
+        <span class="ruby-identifier">render</span> <span class="ruby-value">:file</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'query_analysis/blast_results'</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- query_using_blastn-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- query_using_blastn-method -->
+
+    
+      <div id="method-i-query_using_tblastn" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">query_using_tblastn</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Handles both GET and POST requests for the query using tblastn page.</p>
+          
+
+          
+          <div class="method-source-code" id="query_using_tblastn-source">
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 393</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">query_using_tblastn</span>
+  <span class="ruby-ivar">@sequence_type</span> = <span class="ruby-string">'amino acid'</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">get?</span>
+    <span class="ruby-ivar">@query_using_tblastn</span> = <span class="ruby-constant">QueryUsingTblastn</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
+    <span class="ruby-ivar">@query_using_tblastn</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>()
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">post?</span>
+    <span class="ruby-ivar">@query_using_tblastn</span> = <span class="ruby-constant">QueryUsingTblastn</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
+    <span class="ruby-ivar">@query_using_tblastn</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:query_using_tblastn</span>])
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@query_using_tblastn</span>.<span class="ruby-identifier">valid?</span>
+      <span class="ruby-ivar">@program</span> = <span class="ruby-value">:tblastn</span>
+      <span class="ruby-comment">#Run the blast query and get the file path of the result</span>
+      <span class="ruby-ivar">@blast_report</span> = <span class="ruby-ivar">@query_using_tblastn</span>.<span class="ruby-identifier">blast</span>()
+      <span class="ruby-comment">#Send the result to the user</span>
+      <span class="ruby-ivar">@dataset</span> = <span class="ruby-constant">Dataset</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-ivar">@query_using_tblastn</span>.<span class="ruby-identifier">dataset_id</span>)
+      <span class="ruby-identifier">render</span> <span class="ruby-value">:file</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'query_analysis/blast_results'</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- query_using_tblastn-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- query_using_tblastn-method -->
+
+    
+      <div id="method-i-query_using_tblastx" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">query_using_tblastx</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Handles both GET and POST requests for the querying using Tblastx page.</p>
+          
+
+          
+          <div class="method-source-code" id="query_using_tblastx-source">
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 426</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">query_using_tblastx</span>  <span class="ruby-comment">#changed after the architecture design</span>
+  <span class="ruby-ivar">@sequence_type</span> = <span class="ruby-string">'nucleic acid'</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">get?</span>
+    <span class="ruby-ivar">@query_using_tblastx</span> = <span class="ruby-constant">QueryUsingTblastx</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
+    <span class="ruby-ivar">@query_using_tblastx</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>()
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">post?</span>
+    <span class="ruby-ivar">@query_using_tblastx</span> = <span class="ruby-constant">QueryUsingTblastx</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
+    <span class="ruby-ivar">@query_using_tblastx</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:query_using_tblastx</span>])
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@query_using_tblastx</span>.<span class="ruby-identifier">valid?</span>
+      <span class="ruby-ivar">@program</span> = <span class="ruby-value">:tblastx</span>
+      <span class="ruby-comment">#Run the blast query and get the file path of the result</span>
+      <span class="ruby-ivar">@blast_report</span> = <span class="ruby-ivar">@query_using_tblastx</span>.<span class="ruby-identifier">blast</span>()
+      <span class="ruby-comment">#Send the result to the user</span>
+      <span class="ruby-ivar">@dataset</span> = <span class="ruby-constant">Dataset</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-ivar">@query_using_tblastx</span>.<span class="ruby-identifier">dataset_id</span>)
+      <span class="ruby-identifier">render</span> <span class="ruby-value">:file</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'query_analysis/blast_results'</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- query_using_tblastx-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- query_using_tblastx-method -->
+
+    
+      <div id="method-i-upload_cuffdiff" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">upload_cuffdiff</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Handles both GET and POST requests for the upload Cuffdiff page</p>
+          
+
+          
+          <div class="method-source-code" id="upload_cuffdiff-source">
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 56</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">upload_cuffdiff</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">get?</span>
+    <span class="ruby-ivar">@upload_cuffdiff</span> = <span class="ruby-constant">UploadCuffdiff</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
+    <span class="ruby-ivar">@upload_cuffdiff</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>()
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">post?</span>
+    <span class="ruby-ivar">@upload_cuffdiff</span> = <span class="ruby-constant">UploadCuffdiff</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
+    <span class="ruby-ivar">@upload_cuffdiff</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:upload_cuffdiff</span>])
+    <span class="ruby-keyword">if</span> (<span class="ruby-ivar">@upload_cuffdiff</span>.<span class="ruby-identifier">valid?</span>)
+      <span class="ruby-constant">SuckerPunch</span><span class="ruby-operator">::</span><span class="ruby-constant">Queue</span>[<span class="ruby-value">:upload_cuffdiff_queue</span>].<span class="ruby-identifier">async</span>.<span class="ruby-identifier">perform</span>(<span class="ruby-ivar">@upload_cuffdiff</span>)
+      <span class="ruby-identifier">flash</span>[<span class="ruby-value">:notice</span>] = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span> <span class="ruby-value">:added_to_upload_queue</span>, 
+                              <span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@upload_cuffdiff</span>.<span class="ruby-identifier">dataset_name</span>
+      <span class="ruby-comment">#Reset the upload cuffdiff form</span>
+      <span class="ruby-ivar">@upload_cuffdiff</span> = <span class="ruby-constant">UploadCuffdiff</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
+      <span class="ruby-ivar">@upload_cuffdiff</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>()
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- upload_cuffdiff-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- upload_cuffdiff-method -->
+
+    
+      <div id="method-i-upload_fasta_sequences" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">upload_fasta_sequences</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Handles both GET and POST requests for the upload fasta sequences page.</p>
+          
+
+          
+          <div class="method-source-code" id="upload_fasta_sequences-source">
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 76</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">upload_fasta_sequences</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">get?</span>
+    <span class="ruby-ivar">@upload</span> = <span class="ruby-constant">UploadFastaSequences</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
+    <span class="ruby-ivar">@upload</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>()
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">post?</span>
+    <span class="ruby-ivar">@upload</span> = <span class="ruby-constant">UploadFastaSequences</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
+    <span class="ruby-ivar">@upload</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:upload_fasta_sequences</span>])
+    <span class="ruby-keyword">if</span> (<span class="ruby-ivar">@upload</span>.<span class="ruby-identifier">valid?</span>)
+      <span class="ruby-constant">SuckerPunch</span><span class="ruby-operator">::</span><span class="ruby-constant">Queue</span>[<span class="ruby-value">:upload_fasta_sequences_queue</span>].<span class="ruby-identifier">async</span>.<span class="ruby-identifier">perform</span>(<span class="ruby-ivar">@upload</span>)
+      <span class="ruby-identifier">flash</span>[<span class="ruby-value">:notice</span>] = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span> <span class="ruby-value">:added_to_upload_queue</span>, 
+                               <span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@upload</span>.<span class="ruby-identifier">dataset_name</span>
+      <span class="ruby-comment">#Reset the upload cuffdiff form</span>
+      <span class="ruby-ivar">@upload</span> = <span class="ruby-constant">UploadFastaSequences</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
+      <span class="ruby-ivar">@upload</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>()
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- upload_fasta_sequences-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- upload_fasta_sequences-method -->
+
+    
+      <div id="method-i-upload_trinity_with_edger" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">upload_trinity_with_edger</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Handles both GET and POST requests for the upload Trinity with EdgeR  page.</p>
+          
+
+          
+          <div class="method-source-code" id="upload_trinity_with_edger-source">
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 97</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">upload_trinity_with_edger</span>
+  <span class="ruby-keyword">if</span> (<span class="ruby-identifier">request</span>.<span class="ruby-identifier">get?</span>)
+    <span class="ruby-ivar">@upload</span> = <span class="ruby-constant">UploadTrinityWithEdgeR</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
+    <span class="ruby-ivar">@upload</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>()
+  <span class="ruby-keyword">elsif</span> (<span class="ruby-identifier">request</span>.<span class="ruby-identifier">post?</span>)
+    <span class="ruby-ivar">@upload</span> = <span class="ruby-constant">UploadTrinityWithEdgeR</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
+    <span class="ruby-identifier">upload_params</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:upload_trinity_with_edge_r</span>]
+    <span class="ruby-ivar">@upload</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-identifier">upload_params</span>)
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@upload</span>.<span class="ruby-identifier">valid?</span>
+      <span class="ruby-identifier">queue_name</span> = <span class="ruby-value">:upload_trinity_with_edger_queue</span>
+      <span class="ruby-constant">SuckerPunch</span><span class="ruby-operator">::</span><span class="ruby-constant">Queue</span>[<span class="ruby-identifier">queue_name</span>].<span class="ruby-identifier">async</span>.<span class="ruby-identifier">perform</span>(<span class="ruby-ivar">@upload</span>)
+      <span class="ruby-identifier">flash</span>[<span class="ruby-value">:notice</span>] = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span> <span class="ruby-value">:added_to_upload_queue</span>, 
+                               <span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@upload</span>.<span class="ruby-identifier">dataset_name</span>
+      <span class="ruby-comment">#Reset the upload form</span>
+      <span class="ruby-ivar">@upload</span> = <span class="ruby-constant">UploadTrinityWithEdgeR</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
+      <span class="ruby-ivar">@upload</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>()
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- upload_trinity_with_edger-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- upload_trinity_with_edger-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.2.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

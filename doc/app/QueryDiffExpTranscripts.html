@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+
+<title>class QueryDiffExpTranscripts - Rails Application Documentation</title>
+
+<link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="./js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="./index.html">Home</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>app/view_models/query_analysis/query_diff_exp_transcripts.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link">Object
+  
+</nav>
+
+    <!-- Included Modules -->
+<nav id="includes-section" class="section">
+  <h3 class="section-header">Included Modules</h3>
+
+  <ul class="link-list">
+  
+  
+    <li><span class="include">ActiveModel::Validations</span>
+  
+  
+  
+    <li><span class="include">ActiveModel::Conversion</span>
+  
+  
+  </ul>
+</nav>
+
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-c-new">::new</a>
+    
+    <li><a href="#method-i-persisted-3F">#persisted?</a>
+    
+    <li><a href="#method-i-query">#query</a>
+    
+    <li><a href="#method-i-set_attributes_and_defaults">#set_attributes_and_defaults</a>
+    
+    <li><a href="#method-i-show_results-3F">#show_results?</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="./doc/README_FOR_APP.html">README_FOR_APP</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="./AbstractQueryUsingBlast.html">AbstractQueryUsingBlast</a>
+  
+    <li><a href="./AdminController.html">AdminController</a>
+  
+    <li><a href="./AdminHelper.html">AdminHelper</a>
+  
+    <li><a href="./ApplicationController.html">ApplicationController</a>
+  
+    <li><a href="./ApplicationHelper.html">ApplicationHelper</a>
+  
+    <li><a href="./ArrayElementsAreNotEmptyValidator.html">ArrayElementsAreNotEmptyValidator</a>
+  
+    <li><a href="./ArrayOfUploadedFilesValidator.html">ArrayOfUploadedFilesValidator</a>
+  
+    <li><a href="./ArrayValidator.html">ArrayValidator</a>
+  
+    <li><a href="./BlastUtil.html">BlastUtil</a>
+  
+    <li><a href="./ConfirmUser.html">ConfirmUser</a>
+  
+    <li><a href="./ConfirmationsController.html">ConfirmationsController</a>
+  
+    <li><a href="./Dataset.html">Dataset</a>
+  
+    <li><a href="./DatasetBelongsToUserValidator.html">DatasetBelongsToUserValidator</a>
+  
+    <li><a href="./DatasetNameUniqueForUserValidator.html">DatasetNameUniqueForUserValidator</a>
+  
+    <li><a href="./DeleteUnconfirmedUser.html">DeleteUnconfirmedUser</a>
+  
+    <li><a href="./DifferentialExpressionTest.html">DifferentialExpressionTest</a>
+  
+    <li><a href="./FindGoTermsForDataset.html">FindGoTermsForDataset</a>
+  
+    <li><a href="./FpkmSample.html">FpkmSample</a>
+  
+    <li><a href="./Gene.html">Gene</a>
+  
+    <li><a href="./GeneNameQueryConditionGenerator.html">GeneNameQueryConditionGenerator</a>
+  
+    <li><a href="./GetGeneFastas.html">GetGeneFastas</a>
+  
+    <li><a href="./GetTranscriptFasta.html">GetTranscriptFasta</a>
+  
+    <li><a href="./GoFilterChecker.html">GoFilterChecker</a>
+  
+    <li><a href="./GoIdsQueryConditionGenerator.html">GoIdsQueryConditionGenerator</a>
+  
+    <li><a href="./GoTerm.html">GoTerm</a>
+  
+    <li><a href="./GoTermFinderAndProcessor.html">GoTermFinderAndProcessor</a>
+  
+    <li><a href="./GoTermsQueryConditionGenerator.html">GoTermsQueryConditionGenerator</a>
+  
+    <li><a href="./HasFastaFileExtensionValidator.html">HasFastaFileExtensionValidator</a>
+  
+    <li><a href="./HomeController.html">HomeController</a>
+  
+    <li><a href="./HomeHelper.html">HomeHelper</a>
+  
+    <li><a href="./HomeMailer.html">HomeMailer</a>
+  
+    <li><a href="./NameIsGeneExpDiffValidator.html">NameIsGeneExpDiffValidator</a>
+  
+    <li><a href="./NameIsIsoformExpDiffValidator.html">NameIsIsoformExpDiffValidator</a>
+  
+    <li><a href="./NameIsIsoformFpkmTrackingValidator.html">NameIsIsoformFpkmTrackingValidator</a>
+  
+    <li><a href="./NameIsTrinityFastaValidator.html">NameIsTrinityFastaValidator</a>
+  
+    <li><a href="./NucleotideFastaSequencesValidator.html">NucleotideFastaSequencesValidator</a>
+  
+    <li><a href="./ProteinFastaSequencesValidator.html">ProteinFastaSequencesValidator</a>
+  
+    <li><a href="./QueryAnalysisController.html">QueryAnalysisController</a>
+  
+    <li><a href="./QueryAnalysisHelper.html">QueryAnalysisHelper</a>
+  
+    <li><a href="./QueryAnalysisMailer.html">QueryAnalysisMailer</a>
+  
+    <li><a href="./QueryDiffExpGenes.html">QueryDiffExpGenes</a>
+  
+    <li><a href="./QueryDiffExpTranscripts.html">QueryDiffExpTranscripts</a>
+  
+    <li><a href="./QueryTranscriptIsoforms.html">QueryTranscriptIsoforms</a>
+  
+    <li><a href="./QueryUsingBlastn.html">QueryUsingBlastn</a>
+  
+    <li><a href="./QueryUsingTblastn.html">QueryUsingTblastn</a>
+  
+    <li><a href="./QueryUsingTblastx.html">QueryUsingTblastx</a>
+  
+    <li><a href="./RegistrationMailer.html">RegistrationMailer</a>
+  
+    <li><a href="./RegistrationsController.html">RegistrationsController</a>
+  
+    <li><a href="./ReportIssue.html">ReportIssue</a>
+  
+    <li><a href="./Sample.html">Sample</a>
+  
+    <li><a href="./SampleBelongsToUserValidator.html">SampleBelongsToUserValidator</a>
+  
+    <li><a href="./SampleComparison.html">SampleComparison</a>
+  
+    <li><a href="./SampleFpkm.html">SampleFpkm</a>
+  
+    <li><a href="./SystemUtil.html">SystemUtil</a>
+  
+    <li><a href="./Transcript.html">Transcript</a>
+  
+    <li><a href="./TranscriptFpkmTrackingInformation.html">TranscriptFpkmTrackingInformation</a>
+  
+    <li><a href="./TranscriptHasGoTerm.html">TranscriptHasGoTerm</a>
+  
+    <li><a href="./TranscriptNameQueryConditionGenerator.html">TranscriptNameQueryConditionGenerator</a>
+  
+    <li><a href="./TrinityDiffExpFileProcessor.html">TrinityDiffExpFileProcessor</a>
+  
+    <li><a href="./TrinityDiffExpLine.html">TrinityDiffExpLine</a>
+  
+    <li><a href="./TrinityFpkmFileProcessor.html">TrinityFpkmFileProcessor</a>
+  
+    <li><a href="./TrinityFpkmLine.html">TrinityFpkmLine</a>
+  
+    <li><a href="./TrinityGeneDiffExpFileProcessor.html">TrinityGeneDiffExpFileProcessor</a>
+  
+    <li><a href="./TrinityGeneFpkmFileProcessor.html">TrinityGeneFpkmFileProcessor</a>
+  
+    <li><a href="./TrinityTranscriptDiffExpFileProcessor.html">TrinityTranscriptDiffExpFileProcessor</a>
+  
+    <li><a href="./TrinityTranscriptFpkmFileProcessor.html">TrinityTranscriptFpkmFileProcessor</a>
+  
+    <li><a href="./UnconfirmedUserValidator.html">UnconfirmedUserValidator</a>
+  
+    <li><a href="./UploadCuffdiff.html">UploadCuffdiff</a>
+  
+    <li><a href="./UploadFastaSequences.html">UploadFastaSequences</a>
+  
+    <li><a href="./UploadTrinityWithEdgeR.html">UploadTrinityWithEdgeR</a>
+  
+    <li><a href="./UploadedFileValidator.html">UploadedFileValidator</a>
+  
+    <li><a href="./UploadedTrinityDiffExpFile.html">UploadedTrinityDiffExpFile</a>
+  
+    <li><a href="./UploadedTrinityFpkmFile.html">UploadedTrinityFpkmFile</a>
+  
+    <li><a href="./User.html">User</a>
+  
+    <li><a href="./ViewModelBooleanValidator.html">ViewModelBooleanValidator</a>
+  
+    <li><a href="./WorkerForFindGoTermsForDataset.html">WorkerForFindGoTermsForDataset</a>
+  
+    <li><a href="./WorkerForUploadCuffdiff.html">WorkerForUploadCuffdiff</a>
+  
+    <li><a href="./WorkerForUploadFastaSequences.html">WorkerForUploadFastaSequences</a>
+  
+    <li><a href="./WorkerForUploadTrinityWithEdger.html">WorkerForUploadTrinityWithEdger</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="class">class QueryDiffExpTranscripts</h1>
+
+  <div id="description" class="description">
+    
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+    <!-- Constants -->
+    <section id="constants-list" class="section">
+      <h3 class="section-header">Constants</h3>
+      <dl>
+      
+        <dt id="PIECE_SIZE">PIECE_SIZE
+        
+        <dd class="description">
+        
+      
+      </dl>
+    </section>
+    
+
+    
+    <!-- Attributes -->
+    <section id="attribute-method-details" class="method-section section">
+      <h3 class="section-header">Attributes</h3>
+
+      
+      <div id="attribute-i-available_sample_comparisons" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">available_sample_comparisons</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-cutoff" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">cutoff</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-dataset_id" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">dataset_id</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-fdr_or_p_value" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">fdr_or_p_value</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-go_ids" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">go_ids</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-go_terms" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">go_terms</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-go_terms_status" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">go_terms_status</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-names_and_ids_for_available_datasets" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">names_and_ids_for_available_datasets</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-piece" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">piece</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-program_used" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">program_used</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-results" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">results</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-sample_1_name" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">sample_1_name</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-sample_2_name" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">sample_2_name</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-sample_comparison_id" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">sample_comparison_id</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-show_results" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">show_results</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-transcript_name" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">transcript_name</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+    </section><!-- attribute-method-details -->
+    
+
+    <!-- Methods -->
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(user)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_diff_exp_transcripts.rb, line 24</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">user</span>)
+  <span class="ruby-ivar">@current_user</span> = <span class="ruby-identifier">user</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- new-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- new-method -->
+
+    
+    </section><!-- public-class-method-details -->
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-persisted-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">persisted?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Accoring <a
+href="http://railscasts.com/episodes/219-active-model?view=asciicast">railscasts.com/episodes/219-active-model?view=asciicast</a>,</p>
+
+<pre>this defines that this model does not persist in the database.</pre>
+          
+
+          
+          <div class="method-source-code" id="persisted-3F-source">
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_diff_exp_transcripts.rb, line 160</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">persisted?</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- persisted-3F-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- persisted-3F-method -->
+
+    
+      <div id="method-i-query" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">query</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="query-source">
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_diff_exp_transcripts.rb, line 86</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">query</span>()
+  <span class="ruby-comment">#Don't query if it is not valid</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">valid?</span>
+  <span class="ruby-comment">#Record that the dataset was queried at this time</span>
+  <span class="ruby-ivar">@dataset</span> = <span class="ruby-constant">Dataset</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-ivar">@dataset_id</span>)
+  <span class="ruby-ivar">@dataset</span>.<span class="ruby-identifier">when_last_queried</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
+  <span class="ruby-ivar">@dataset</span>.<span class="ruby-identifier">save!</span>
+  <span class="ruby-identifier">select_string</span> = <span class="ruby-string">'transcripts.id as transcript_id,'</span> <span class="ruby-operator">+</span>
+                  <span class="ruby-string">'transcripts.name_from_program as transcript_name, '</span> <span class="ruby-operator">+</span>
+                  <span class="ruby-string">'genes.name_from_program as gene_name,'</span> <span class="ruby-operator">+</span>
+                  <span class="ruby-string">'differential_expression_tests.test_statistic,'</span> <span class="ruby-operator">+</span>
+                  <span class="ruby-string">'differential_expression_tests.p_value,'</span> <span class="ruby-operator">+</span>
+                  <span class="ruby-string">'differential_expression_tests.fdr,'</span> <span class="ruby-operator">+</span>
+                  <span class="ruby-string">'differential_expression_tests.sample_1_fpkm,'</span> <span class="ruby-operator">+</span>
+                  <span class="ruby-string">'differential_expression_tests.sample_2_fpkm,'</span> <span class="ruby-operator">+</span>
+                  <span class="ruby-string">'differential_expression_tests.log_fold_change,'</span> <span class="ruby-operator">+</span>
+                  <span class="ruby-string">'differential_expression_tests.test_status'</span>
+  <span class="ruby-comment">#Retreive some variables to use later</span>
+  <span class="ruby-identifier">sample_comparison</span> = <span class="ruby-constant">SampleComparison</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-ivar">@sample_comparison_id</span>)
+  <span class="ruby-ivar">@sample_1_name</span> = <span class="ruby-identifier">sample_comparison</span>.<span class="ruby-identifier">sample_1</span>.<span class="ruby-identifier">name</span>
+  <span class="ruby-ivar">@sample_2_name</span> = <span class="ruby-identifier">sample_comparison</span>.<span class="ruby-identifier">sample_2</span>.<span class="ruby-identifier">name</span>
+  <span class="ruby-comment">#Require parts of the where clause</span>
+  <span class="ruby-identifier">det_t</span> = <span class="ruby-constant">DifferentialExpressionTest</span>.<span class="ruby-identifier">arel_table</span>
+  <span class="ruby-identifier">where_clause</span> = <span class="ruby-identifier">det_t</span>[<span class="ruby-value">:sample_comparison_id</span>].<span class="ruby-identifier">eq</span>(<span class="ruby-identifier">sample_comparison</span>.<span class="ruby-identifier">id</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@fdr_or_p_value</span> <span class="ruby-operator">==</span> <span class="ruby-string">'p_value'</span>
+    <span class="ruby-identifier">where_clause</span> = <span class="ruby-identifier">where_clause</span>.<span class="ruby-identifier">and</span>(<span class="ruby-identifier">det_t</span>[<span class="ruby-value">:p_value</span>].<span class="ruby-identifier">lteq</span>(<span class="ruby-ivar">@cutoff</span>))
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">where_clause</span> = <span class="ruby-identifier">where_clause</span>.<span class="ruby-identifier">and</span>(<span class="ruby-identifier">det_t</span>[<span class="ruby-value">:fdr</span>].<span class="ruby-identifier">lteq</span>(<span class="ruby-ivar">@cutoff</span>))
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-comment">#Optional parts of the where clause</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-ivar">@transcript_name</span>.<span class="ruby-identifier">blank?</span>
+    <span class="ruby-identifier">tnqcg</span> = <span class="ruby-constant">TranscriptNameQueryConditionGenerator</span>.<span class="ruby-identifier">new</span>()
+    <span class="ruby-identifier">tnqcg</span>.<span class="ruby-identifier">name</span> = <span class="ruby-ivar">@transcript_name</span>
+    <span class="ruby-identifier">where_clause</span> = <span class="ruby-identifier">where_clause</span>.<span class="ruby-identifier">and</span>(<span class="ruby-identifier">tnqcg</span>.<span class="ruby-identifier">generate_query_condition</span>())
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">query_results</span> = 
+    <span class="ruby-constant">DifferentialExpressionTest</span>.<span class="ruby-identifier">joins</span>(<span class="ruby-value">:transcript</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value">:gene</span>])
+                              .<span class="ruby-identifier">where</span>(<span class="ruby-identifier">where_clause</span>)
+                              .<span class="ruby-identifier">select</span>(<span class="ruby-identifier">select_string</span>)
+                              .<span class="ruby-identifier">limit</span>(<span class="ruby-constant">PIECE_SIZE</span>)
+                              .<span class="ruby-identifier">offset</span>(<span class="ruby-constant">PIECE_SIZE</span>*<span class="ruby-ivar">@piece</span>.<span class="ruby-identifier">to_i</span>)
+  <span class="ruby-comment">#Extract the query results to a form that can be put in the view</span>
+  <span class="ruby-ivar">@results</span> = []
+  <span class="ruby-identifier">query_results</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">query_result</span><span class="ruby-operator">|</span>
+    <span class="ruby-comment">#Fill in the result hash that the view will use to display the data</span>
+    <span class="ruby-keyword">if</span> (<span class="ruby-ivar">@dataset</span>.<span class="ruby-identifier">go_terms_status</span> <span class="ruby-operator">==</span> <span class="ruby-string">'found'</span>)
+      <span class="ruby-identifier">go_filter_checker</span> = <span class="ruby-constant">GoFilterChecker</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">query_result</span>.<span class="ruby-identifier">transcript_id</span>,
+                                                <span class="ruby-ivar">@go_ids</span>,
+                                                <span class="ruby-ivar">@go_terms</span>)
+      <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">go_filter_checker</span>.<span class="ruby-identifier">passes_go_filters</span>() <span class="ruby-operator">==</span> <span class="ruby-keyword">false</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">result</span> = {}
+    <span class="ruby-identifier">result</span>[<span class="ruby-value">:transcript_name</span>] = <span class="ruby-identifier">query_result</span>.<span class="ruby-identifier">transcript_name</span>
+    <span class="ruby-identifier">result</span>[<span class="ruby-value">:gene_name</span>] =  <span class="ruby-identifier">query_result</span>.<span class="ruby-identifier">gene_name</span>
+    <span class="ruby-keyword">if</span> (<span class="ruby-ivar">@dataset</span>.<span class="ruby-identifier">go_terms_status</span> <span class="ruby-operator">==</span> <span class="ruby-string">'found'</span>)
+      <span class="ruby-identifier">result</span>[<span class="ruby-value">:go_terms</span>] = <span class="ruby-identifier">go_filter_checker</span>.<span class="ruby-identifier">transcript_go_terms</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">result</span>[<span class="ruby-value">:go_terms</span>] = []
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">result</span>[<span class="ruby-value">:test_statistic</span>] = <span class="ruby-identifier">query_result</span>.<span class="ruby-identifier">test_statistic</span>
+    <span class="ruby-identifier">result</span>[<span class="ruby-value">:p_value</span>] = <span class="ruby-identifier">query_result</span>.<span class="ruby-identifier">p_value</span>
+    <span class="ruby-identifier">result</span>[<span class="ruby-value">:fdr</span>] = <span class="ruby-identifier">query_result</span>.<span class="ruby-identifier">fdr</span>
+    <span class="ruby-identifier">result</span>[<span class="ruby-value">:sample_1_fpkm</span>] =  <span class="ruby-identifier">query_result</span>.<span class="ruby-identifier">sample_1_fpkm</span>
+    <span class="ruby-identifier">result</span>[<span class="ruby-value">:sample_2_fpkm</span>] =  <span class="ruby-identifier">query_result</span>.<span class="ruby-identifier">sample_2_fpkm</span>
+    <span class="ruby-identifier">result</span>[<span class="ruby-value">:log_fold_change</span>] = <span class="ruby-identifier">query_result</span>.<span class="ruby-identifier">log_fold_change</span>
+    <span class="ruby-identifier">result</span>[<span class="ruby-value">:test_status</span>] = <span class="ruby-identifier">query_result</span>.<span class="ruby-identifier">test_status</span>
+    <span class="ruby-ivar">@results</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">result</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-comment">#Mark the search results as viewable</span>
+  <span class="ruby-ivar">@show_results</span> = <span class="ruby-keyword">true</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- query-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- query-method -->
+
+    
+      <div id="method-i-set_attributes_and_defaults" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">set_attributes_and_defaults</span><span
+            class="method-args">(attributes = {})</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="set_attributes_and_defaults-source">
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_diff_exp_transcripts.rb, line 32</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-identifier">attributes</span> = {})
+  <span class="ruby-comment">#Load in any values from the form</span>
+  <span class="ruby-identifier">attributes</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">name</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">send</span>(<span class="ruby-node">&quot;#{name}=&quot;</span>, <span class="ruby-identifier">value</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-comment">#Set available datasets</span>
+  <span class="ruby-ivar">@names_and_ids_for_available_datasets</span> = []
+  <span class="ruby-identifier">available_datasets</span> = <span class="ruby-constant">Dataset</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:user_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@current_user</span>.<span class="ruby-identifier">id</span>, 
+                                     <span class="ruby-value">:has_transcript_diff_exp</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>,
+                                     <span class="ruby-value">:finished_uploading</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>)
+                              .<span class="ruby-identifier">order</span>(<span class="ruby-value">:name</span>)
+  <span class="ruby-identifier">available_datasets</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">ds</span><span class="ruby-operator">|</span>
+    <span class="ruby-ivar">@names_and_ids_for_available_datasets</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">ds</span>.<span class="ruby-identifier">name</span>, <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">id</span>]
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-comment">#Set default values for the relavent blank attributes</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@dataset_id</span>.<span class="ruby-identifier">blank?</span>
+    <span class="ruby-ivar">@dataset_id</span> = <span class="ruby-identifier">available_datasets</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">id</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-keyword">not</span> <span class="ruby-ivar">@dataset_id</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">match</span>(<span class="ruby-regexp">/\A\d+\z/</span>)
+    <span class="ruby-ivar">@dataset_id</span> = <span class="ruby-identifier">available_datasets</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">id</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-ivar">@fdr_or_p_value</span> = <span class="ruby-string">'p_value'</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">fdr_or_p_value</span>.<span class="ruby-identifier">blank?</span>
+  <span class="ruby-ivar">@cutoff</span> = <span class="ruby-string">'0.05'</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">cutoff</span>.<span class="ruby-identifier">blank?</span>
+  <span class="ruby-comment">#Set available samples for comparison</span>
+  <span class="ruby-ivar">@available_sample_comparisons</span> = []
+  <span class="ruby-identifier">s_t</span> = <span class="ruby-constant">Sample</span>.<span class="ruby-identifier">arel_table</span>
+  <span class="ruby-identifier">where_clause</span> = <span class="ruby-identifier">s_t</span>[<span class="ruby-value">:dataset_id</span>].<span class="ruby-identifier">eq</span>(<span class="ruby-ivar">@dataset_id</span>)
+  <span class="ruby-identifier">sample_type_eq_both</span> = <span class="ruby-identifier">s_t</span>[<span class="ruby-value">:sample_type</span>].<span class="ruby-identifier">eq</span>(<span class="ruby-string">'both'</span>)
+  <span class="ruby-identifier">sample_type_eq_transcript</span> = <span class="ruby-identifier">s_t</span>[<span class="ruby-value">:sample_type</span>].<span class="ruby-identifier">eq</span>(<span class="ruby-string">'transcript'</span>)
+  <span class="ruby-identifier">sample_type_where_clause</span> = <span class="ruby-identifier">sample_type_eq_transcript</span>.<span class="ruby-identifier">or</span>(<span class="ruby-identifier">sample_type_eq_both</span>)
+  <span class="ruby-identifier">where_clause</span> = <span class="ruby-identifier">where_clause</span>.<span class="ruby-identifier">and</span>(<span class="ruby-identifier">sample_type_where_clause</span>)
+  <span class="ruby-identifier">sample_comparisons_query</span> = <span class="ruby-constant">SampleComparison</span>.<span class="ruby-identifier">joins</span>(<span class="ruby-value">:sample_1</span>,<span class="ruby-value">:sample_2</span>).
+      <span class="ruby-identifier">where</span>(<span class="ruby-identifier">where_clause</span>).
+      <span class="ruby-identifier">select</span>(<span class="ruby-string">'samples.name as sample_1_name, '</span><span class="ruby-operator">+</span>
+             <span class="ruby-string">'sample_2s_sample_comparisons.name as sample_2_name, '</span> <span class="ruby-operator">+</span>
+             <span class="ruby-string">'sample_comparisons.id as sample_comparison_id'</span>)
+  <span class="ruby-identifier">sample_comparisons_query</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">scq</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">display_text</span> = <span class="ruby-node">&quot;#{scq.sample_1_name} vs #{scq.sample_2_name}&quot;</span>
+    <span class="ruby-identifier">value</span> = <span class="ruby-identifier">scq</span>.<span class="ruby-identifier">sample_comparison_id</span>
+    <span class="ruby-ivar">@available_sample_comparisons</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">display_text</span>, <span class="ruby-identifier">value</span>]
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-ivar">@available_sample_comparisons</span>.<span class="ruby-identifier">sort!</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">t1</span>,<span class="ruby-identifier">t2</span><span class="ruby-operator">|</span><span class="ruby-identifier">t1</span>[<span class="ruby-value">0</span>] <span class="ruby-operator">&lt;=&gt;</span> <span class="ruby-identifier">t2</span>[<span class="ruby-value">0</span>]}
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@sample_comparison_id</span>.<span class="ruby-identifier">blank?</span>
+    <span class="ruby-ivar">@sample_comparison_id</span> = <span class="ruby-ivar">@available_sample_comparisons</span>[<span class="ruby-value">0</span>][<span class="ruby-value">1</span>]
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">sample_cmp</span> = <span class="ruby-constant">SampleComparison</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-ivar">@sample_comparison_id</span>)
+  <span class="ruby-ivar">@sample_1_name</span> = <span class="ruby-identifier">sample_cmp</span>.<span class="ruby-identifier">sample_1</span>.<span class="ruby-identifier">name</span>
+  <span class="ruby-ivar">@sample_2_name</span> = <span class="ruby-identifier">sample_cmp</span>.<span class="ruby-identifier">sample_2</span>.<span class="ruby-identifier">name</span>
+  <span class="ruby-ivar">@show_results</span> = <span class="ruby-keyword">false</span>
+  <span class="ruby-identifier">dataset</span> = <span class="ruby-constant">Dataset</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-ivar">@dataset_id</span>)
+  <span class="ruby-ivar">@program_used</span> = <span class="ruby-identifier">dataset</span>.<span class="ruby-identifier">program_used</span>
+  <span class="ruby-ivar">@go_terms_status</span> = <span class="ruby-identifier">dataset</span>.<span class="ruby-identifier">go_terms_status</span>
+  <span class="ruby-ivar">@piece</span> = <span class="ruby-string">'0'</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@piece</span>.<span class="ruby-identifier">blank?</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- set_attributes_and_defaults-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- set_attributes_and_defaults-method -->
+
+    
+      <div id="method-i-show_results-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">show_results?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="show_results-3F-source">
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_diff_exp_transcripts.rb, line 28</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">show_results?</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-ivar">@show_results</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- show_results-3F-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- show_results-3F-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.2.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+
