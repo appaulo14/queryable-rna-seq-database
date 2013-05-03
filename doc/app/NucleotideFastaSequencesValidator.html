@@ -264,6 +264,9 @@
 
   <div id="description" class="description">
     
+<p>Validator class to verify that the value being validated is a valid 
+nucleotide fasta sequence or group of fasta sequences.</p>
+
   </div><!-- description -->
 
   
@@ -295,12 +298,12 @@
 
         <div class="method-description">
           
-          
+          <p>The method that actually does the validation</p>
           
 
           
           <div class="method-source-code" id="validate_each-source">
-            <pre><span class="ruby-comment"># File app/validators/nucleotide_fasta_sequences_validator.rb, line 2</span>
+            <pre><span class="ruby-comment"># File app/validators/nucleotide_fasta_sequences_validator.rb, line 7</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">validate_each</span>(<span class="ruby-identifier">record</span>, <span class="ruby-identifier">attribute</span>, <span class="ruby-identifier">value</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">blank?</span>
   <span class="ruby-comment">#Parse fasta sequence to validate it</span>

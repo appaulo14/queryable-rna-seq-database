@@ -276,6 +276,10 @@
 
   <div id="description" class="description">
     
+<p>Worker class that runs jobs to upload a Cuffdiff dataset in a background 
+queue so that the user can continue to do other  things while their dataset
+is being uploaded.</p>
+
   </div><!-- description -->
 
   
@@ -307,12 +311,12 @@
 
         <div class="method-description">
           
-          
+          <p>The method for the worker to perform its work</p>
           
 
           
           <div class="method-source-code" id="perform-source">
-            <pre><span class="ruby-comment"># File app/workers/worker_for_upload_cuffdiff.rb, line 4</span>
+            <pre><span class="ruby-comment"># File app/workers/worker_for_upload_cuffdiff.rb, line 10</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">perform</span>(<span class="ruby-identifier">upload_cuffdiff</span>)
   <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">connection_pool</span>.<span class="ruby-identifier">with_connection</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">conn</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">upload_cuffdiff</span>.<span class="ruby-identifier">save</span>

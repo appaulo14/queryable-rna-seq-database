@@ -1,4 +1,9 @@
+###
+# Validator class to verify that the value being validated is a valid 
+# nucleotide fasta sequence or group of fasta sequences.
 class NucleotideFastaSequencesValidator < ActiveModel::EachValidator
+  ### 
+  # The method that actually does the validation
   def validate_each(record, attribute, value)
     return if value.blank?
     #Parse fasta sequence to validate it

@@ -299,12 +299,14 @@
 
         <div class="method-description">
           
-          
+          <p>Runs the specified command_string on the system, returning any output and 
+raising an exception if the command failed. Non-fatal errors are written to
+the logger.</p>
           
 
           
           <div class="method-source-code" id="backticks-21-source">
-            <pre><span class="ruby-comment"># File app/util/system_util.rb, line 6</span>
+            <pre><span class="ruby-comment"># File app/util/system_util.rb, line 9</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">backticks!</span>(<span class="ruby-identifier">command_string</span>)
   <span class="ruby-identifier">stdout</span>, <span class="ruby-identifier">stderr</span>, <span class="ruby-identifier">status</span> = <span class="ruby-constant">Open3</span>.<span class="ruby-identifier">capture3</span>(<span class="ruby-identifier">command_string</span>)
   <span class="ruby-comment"># Throw an exception if the command failed</span>
@@ -339,12 +341,14 @@
 
         <div class="method-description">
           
-          
+          <p>Runs the specified command_string on the system, returning true if the 
+command was successful or raising an exception if the command failed. 
+Non-fatal errors are written to the logger.</p>
           
 
           
           <div class="method-source-code" id="system-21-source">
-            <pre><span class="ruby-comment"># File app/util/system_util.rb, line 20</span>
+            <pre><span class="ruby-comment"># File app/util/system_util.rb, line 26</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">system!</span>(<span class="ruby-identifier">command_string</span>)
   <span class="ruby-identifier">stdout</span>, <span class="ruby-identifier">stderr</span>, <span class="ruby-identifier">status</span> = <span class="ruby-constant">Open3</span>.<span class="ruby-identifier">capture3</span>(<span class="ruby-identifier">command_string</span>)
   <span class="ruby-comment"># Throw an exception if the command failed</span>

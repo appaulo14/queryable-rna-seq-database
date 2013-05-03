@@ -268,6 +268,8 @@
 
   <div id="description" class="description">
     
+<p>Utility class for adding/removing blast databases.</p>
+
   </div><!-- description -->
 
   
@@ -299,12 +301,13 @@
 
         <div class="method-description">
           
-          
+          <p>Creates a blast database for the specified dataset using the  given fasta
+file. Seq ids are parsed when creating the database.</p>
           
 
           
           <div class="method-source-code" id="makeblastdb_with_seqids-source">
-            <pre><span class="ruby-comment"># File app/util/upload/blast_util.rb, line 6</span>
+            <pre><span class="ruby-comment"># File app/util/upload/blast_util.rb, line 10</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">makeblastdb_with_seqids</span>(<span class="ruby-identifier">fasta_file_path</span>, <span class="ruby-identifier">dataset</span>)
   <span class="ruby-constant">SystemUtil</span>.<span class="ruby-identifier">system!</span>(<span class="ruby-node">&quot;#{Rails.root}/bin/blast/bin/makeblastdb &quot;</span> <span class="ruby-operator">+</span>
                       <span class="ruby-node">&quot;-in #{fasta_file_path} &quot;</span> <span class="ruby-operator">+</span>
@@ -333,12 +336,13 @@
 
         <div class="method-description">
           
-          
+          <p>Creates a blast database for the specified dataset using the  given fasta
+file. Seq ids are not parsed when creating the database.</p>
           
 
           
           <div class="method-source-code" id="makeblastdb_without_seqids-source">
-            <pre><span class="ruby-comment"># File app/util/upload/blast_util.rb, line 14</span>
+            <pre><span class="ruby-comment"># File app/util/upload/blast_util.rb, line 21</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">makeblastdb_without_seqids</span>(<span class="ruby-identifier">fasta_file_path</span>, <span class="ruby-identifier">dataset</span>)
   <span class="ruby-constant">SystemUtil</span>.<span class="ruby-identifier">system!</span>(<span class="ruby-node">&quot;#{Rails.root}/bin/blast/bin/makeblastdb &quot;</span> <span class="ruby-operator">+</span>
                       <span class="ruby-node">&quot;-in #{fasta_file_path} &quot;</span> <span class="ruby-operator">+</span>
@@ -367,12 +371,12 @@
 
         <div class="method-description">
           
-          
+          <p>Deletes the blast database for the specified dataset.</p>
           
 
           
           <div class="method-source-code" id="rollback_blast_database-source">
-            <pre><span class="ruby-comment"># File app/util/upload/blast_util.rb, line 22</span>
+            <pre><span class="ruby-comment"># File app/util/upload/blast_util.rb, line 31</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">rollback_blast_database</span>(<span class="ruby-identifier">dataset</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">dataset</span>.<span class="ruby-identifier">nil?</span>
   <span class="ruby-identifier">stdout</span>, <span class="ruby-identifier">stderr</span>, <span class="ruby-identifier">status</span> = 

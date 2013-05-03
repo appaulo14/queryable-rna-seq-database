@@ -270,6 +270,9 @@
 
   <div id="description" class="description">
     
+<p>Mailer class for emails in the <a
+href="QueryAnalysisController.html">QueryAnalysisController</a></p>
+
   </div><!-- description -->
 
   
@@ -301,12 +304,13 @@
 
         <div class="method-description">
           
-          
+          <p>Sends an email to the specified user that the specified dataset failed to 
+have its go terms found.</p>
           
 
           
           <div class="method-source-code" id="notify_user_of_blast2go_failure-source">
-            <pre><span class="ruby-comment"># File app/mailers/query_analysis_mailer.rb, line 76</span>
+            <pre><span class="ruby-comment"># File app/mailers/query_analysis_mailer.rb, line 88</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">notify_user_of_blast2go_failure</span>(<span class="ruby-identifier">user</span>, <span class="ruby-identifier">dataset</span>)
   <span class="ruby-ivar">@base_url</span> = <span class="ruby-identifier">get_base_url</span>
   <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">user</span>
@@ -339,12 +343,13 @@
 
         <div class="method-description">
           
-          
+          <p>Sends an email to the specified user that the specified dataset had its  go
+terms found successfully.</p>
           
 
           
           <div class="method-source-code" id="notify_user_of_blast2go_success-source">
-            <pre><span class="ruby-comment"># File app/mailers/query_analysis_mailer.rb, line 62</span>
+            <pre><span class="ruby-comment"># File app/mailers/query_analysis_mailer.rb, line 71</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">notify_user_of_blast2go_success</span>(<span class="ruby-identifier">user</span>, <span class="ruby-identifier">dataset</span>)
   <span class="ruby-ivar">@base_url</span> = <span class="ruby-identifier">get_base_url</span>
   <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">user</span>
@@ -379,12 +384,13 @@
 
         <div class="method-description">
           
-          
+          <p>Sends an email to the specified user that the specified dataset did not 
+upload successfully.</p>
           
 
           
           <div class="method-source-code" id="notify_user_of_upload_failure-source">
-            <pre><span class="ruby-comment"># File app/mailers/query_analysis_mailer.rb, line 50</span>
+            <pre><span class="ruby-comment"># File app/mailers/query_analysis_mailer.rb, line 56</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">notify_user_of_upload_failure</span>(<span class="ruby-identifier">user</span>, <span class="ruby-identifier">dataset</span>)
   <span class="ruby-ivar">@base_url</span> = <span class="ruby-identifier">get_base_url</span>
   <span class="ruby-ivar">@report_issue_url</span> = <span class="ruby-node">&quot;#{@base_url}/home/report_issue&quot;</span>
@@ -417,12 +423,13 @@
 
         <div class="method-description">
           
-          
+          <p>Sends an email to the specified user that the specified dataset was 
+successfully uploaded.</p>
           
 
           
           <div class="method-source-code" id="notify_user_of_upload_success-source">
-            <pre><span class="ruby-comment"># File app/mailers/query_analysis_mailer.rb, line 4</span>
+            <pre><span class="ruby-comment"># File app/mailers/query_analysis_mailer.rb, line 7</span>
  <span class="ruby-keyword">def</span> <span class="ruby-identifier">notify_user_of_upload_success</span>(<span class="ruby-identifier">user</span>, <span class="ruby-identifier">dataset</span>)
   <span class="ruby-ivar">@base_url</span> = <span class="ruby-identifier">get_base_url</span>
   <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">user</span>

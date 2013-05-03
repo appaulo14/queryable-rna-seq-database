@@ -264,6 +264,9 @@
 
   <div id="description" class="description">
     
+<p>Validator class to verify that the value is either “1” or “0”, which is 
+how booleans are stored in view models.</p>
+
   </div><!-- description -->
 
   
@@ -295,12 +298,12 @@
 
         <div class="method-description">
           
-          
+          <p>The method that actually does the validation</p>
           
 
           
           <div class="method-source-code" id="validate_each-source">
-            <pre><span class="ruby-comment"># File app/validators/view_model_boolean_validator.rb, line 2</span>
+            <pre><span class="ruby-comment"># File app/validators/view_model_boolean_validator.rb, line 7</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">validate_each</span>(<span class="ruby-identifier">record</span>, <span class="ruby-identifier">attribute</span>, <span class="ruby-identifier">value</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">blank?</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">value</span> <span class="ruby-operator">!=</span> <span class="ruby-string">'1'</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">value</span> <span class="ruby-operator">!=</span> <span class="ruby-string">'0'</span>

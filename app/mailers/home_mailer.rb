@@ -1,6 +1,9 @@
+###
+# Mailer class for emails in the HomeController
 class HomeMailer < ActionMailer::Base
    
-   
+   ###
+   # Email all the administrator's with information reported in the issue.
    def send_report_on_issue(report_issue)
      @issue_report = report_issue
      admins = User.where(:admin => true)

@@ -1,6 +1,11 @@
+###
+# Utility class to create a where clause query condition to 
+# match one or more GO terms (names).
 class GoTermsQueryConditionGenerator
   include ActiveModel::Validations
   
+  # The string containing the go term or group of go terms to use when 
+  # creating the query condition
   attr_accessor :go_terms
   
   validates :go_terms, :presence => true
@@ -9,6 +14,8 @@ class GoTermsQueryConditionGenerator
     @go_terms = go_terms_string
   end
   
+  ###
+  # Generates and returns the actual where clause query condition.
   def generate_query_condition
     #Do some validation
     if not self.valid?

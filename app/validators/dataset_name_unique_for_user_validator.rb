@@ -1,4 +1,9 @@
+###
+# Validator class to verify that the dataset id being validated does not 
+# have the same name as any other datasets the user has. 
 class DatasetNameUniqueForUserValidator < ActiveModel::EachValidator
+  ### 
+  # The method that actually does the validation
   def validate_each(record, attribute, value)
     return if value.blank?
     current_user = record.instance_eval('@current_user')

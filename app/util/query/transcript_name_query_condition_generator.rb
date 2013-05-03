@@ -1,6 +1,10 @@
+###
+# Utility class to create a where clause query condition to 
+# match a specified gene name. 
 class TranscriptNameQueryConditionGenerator
   include ActiveModel::Validations
   
+  # The trancript name of to use when creating the query condition
   attr_accessor :name
   
   validates :name, :presence => true
@@ -12,6 +16,8 @@ class TranscriptNameQueryConditionGenerator
     end
   end
   
+  ###
+  # Generates and returns the actual where clause query condition.
   def generate_query_condition
     #Do some validation
     if not self.valid?

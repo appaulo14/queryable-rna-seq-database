@@ -268,6 +268,8 @@
 
   <div id="description" class="description">
     
+<p>Mailer class to emails related to user registration.</p>
+
   </div><!-- description -->
 
   
@@ -299,12 +301,13 @@
 
         <div class="method-description">
           
-          <p>default :from =&gt; “from@example.com”</p>
+          <p>Sends an email to all of the administrators stating that  the specified use
+has requested to register with the system.</p>
           
 
           
           <div class="method-source-code" id="notify_admin_of_registration_request_email-source">
-            <pre><span class="ruby-comment"># File app/mailers/registration_mailer.rb, line 4</span>
+            <pre><span class="ruby-comment"># File app/mailers/registration_mailer.rb, line 8</span>
  <span class="ruby-keyword">def</span> <span class="ruby-identifier">notify_admin_of_registration_request_email</span>(<span class="ruby-identifier">user</span>)
   <span class="ruby-ivar">@base_url</span> = <span class="ruby-identifier">get_base_url</span>
   <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">user</span>
@@ -317,8 +320,6 @@
          <span class="ruby-value">:reply_to</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">MAILER_BOT_CONFIG</span>[<span class="ruby-string">'email'</span>],
          <span class="ruby-value">:subject</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'New User Registration Request Received'</span>).<span class="ruby-identifier">deliver</span>
   <span class="ruby-keyword">end</span>
-  <span class="ruby-comment">#@url  = &quot;http://example.com/login&quot;</span>
-  <span class="ruby-comment">#mail(:to =&gt; user.email, :subject =&gt; &quot;Welcome to My Awesome Site&quot;)</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- notify_admin_of_registration_request_email-source -->
           
@@ -341,12 +342,13 @@
 
         <div class="method-description">
           
-          
+          <p>Sends an email to the specified user stating that their registration 
+request has been rejected.</p>
           
 
           
           <div class="method-source-code" id="notify_user_of_rejection-source">
-            <pre><span class="ruby-comment"># File app/mailers/registration_mailer.rb, line 33</span>
+            <pre><span class="ruby-comment"># File app/mailers/registration_mailer.rb, line 43</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">notify_user_of_rejection</span>(<span class="ruby-identifier">user</span>, <span class="ruby-identifier">optional_note_to_user</span>)
   <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">user</span>
   <span class="ruby-ivar">@optional_note_to_user</span> = <span class="ruby-identifier">optional_note_to_user</span>
@@ -380,12 +382,15 @@
 
         <div class="method-description">
           
-          
+          <p>Sends an email to the specified user information them that they have  just
+been confirmed by the administrator and  that a confirmation email will be
+sent to them soon. The confirmation email  itself is sent by the Devise
+gem.</p>
           
 
           
           <div class="method-source-code" id="notify_user_that_confirmation_email_will_be_sent-source">
-            <pre><span class="ruby-comment"># File app/mailers/registration_mailer.rb, line 20</span>
+            <pre><span class="ruby-comment"># File app/mailers/registration_mailer.rb, line 27</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">notify_user_that_confirmation_email_will_be_sent</span>(<span class="ruby-identifier">user</span>, <span class="ruby-identifier">optional_note_to_user</span>)
   <span class="ruby-ivar">@report_issue_url</span> = <span class="ruby-node">&quot;#{get_base_url}/home/report_issue&quot;</span>
   <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">user</span>

@@ -264,6 +264,8 @@
 
   <div id="description" class="description">
     
+<p>Validator class to verify that an upload file has the name “Trinity.fasta”.</p>
+
   </div><!-- description -->
 
   
@@ -295,12 +297,12 @@
 
         <div class="method-description">
           
-          
+          <p>The method that actually does the validation</p>
           
 
           
           <div class="method-source-code" id="validate_each-source">
-            <pre><span class="ruby-comment"># File app/validators/name_is_trinity_fasta_validator.rb, line 2</span>
+            <pre><span class="ruby-comment"># File app/validators/name_is_trinity_fasta_validator.rb, line 6</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">validate_each</span>(<span class="ruby-identifier">record</span>, <span class="ruby-identifier">attribute</span>, <span class="ruby-identifier">value</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">blank?</span>
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">kind_of?</span> <span class="ruby-constant">ActionDispatch</span><span class="ruby-operator">::</span><span class="ruby-constant">Http</span><span class="ruby-operator">::</span><span class="ruby-constant">UploadedFile</span>

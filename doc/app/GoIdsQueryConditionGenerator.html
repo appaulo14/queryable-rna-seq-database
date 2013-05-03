@@ -278,6 +278,9 @@
 
   <div id="description" class="description">
     
+<p>Utility class to create a where clause query condition to  match one or
+more GO ids (accessions).</p>
+
   </div><!-- description -->
 
   
@@ -304,7 +307,8 @@
 
         <div class="method-description">
         
-        
+        <p>The string containing the go id or group of go ids to use when  creating
+the query condition</p>
         
         </div>
       </div>
@@ -334,7 +338,7 @@
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File app/util/query/go_ids_query_condition_generator.rb, line 8</span>
+            <pre><span class="ruby-comment"># File app/util/query/go_ids_query_condition_generator.rb, line 13</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">go_ids_string</span>)
   <span class="ruby-ivar">@go_ids</span> = <span class="ruby-identifier">go_ids_string</span>
 <span class="ruby-keyword">end</span></pre>
@@ -365,12 +369,12 @@
 
         <div class="method-description">
           
-          
+          <p>Generates and returns the actual where clause query condition.</p>
           
 
           
           <div class="method-source-code" id="generate_query_condition-source">
-            <pre><span class="ruby-comment"># File app/util/query/go_ids_query_condition_generator.rb, line 12</span>
+            <pre><span class="ruby-comment"># File app/util/query/go_ids_query_condition_generator.rb, line 19</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">generate_query_condition</span>
   <span class="ruby-comment">#Do some validation</span>
   <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">valid?</span>

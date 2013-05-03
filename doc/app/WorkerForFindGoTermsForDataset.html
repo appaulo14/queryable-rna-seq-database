@@ -276,6 +276,11 @@
 
   <div id="description" class="description">
     
+<p>Worker class that runs jobs to find the <a href="Gene.html">Gene</a>
+Ontology (GO) terms for a  dataset in a background queue so that the user
+can continue to do other  things while the go terms for their dataset are
+being found.</p>
+
   </div><!-- description -->
 
   
@@ -307,12 +312,12 @@
 
         <div class="method-description">
           
-          
+          <p>The method for the worker to perform its work</p>
           
 
           
           <div class="method-source-code" id="perform-source">
-            <pre><span class="ruby-comment"># File app/workers/worker_for_find_go_terms_for_dataset.rb, line 4</span>
+            <pre><span class="ruby-comment"># File app/workers/worker_for_find_go_terms_for_dataset.rb, line 10</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">perform</span>(<span class="ruby-identifier">find_go_terms_for_dataset</span>)
   <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">connection_pool</span>.<span class="ruby-identifier">with_connection</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">conn</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">find_go_terms_for_dataset</span>.<span class="ruby-identifier">find_and_save</span>()

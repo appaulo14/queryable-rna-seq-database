@@ -266,6 +266,9 @@
 
   <div id="description" class="description">
     
+<p>Validator class to see whether the transcript passes the filter of 
+containing the specified go terms and go ids.</p>
+
   </div><!-- description -->
 
   
@@ -292,7 +295,8 @@
 
         <div class="method-description">
         
-        
+        <p>An array of all the <a href="GoTerm.html">GoTerm</a> records for the <a
+href="Transcript.html">Transcript</a></p>
         
         </div>
       </div>
@@ -322,7 +326,7 @@
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File app/util/query/go_filter_checker.rb, line 4</span>
+            <pre><span class="ruby-comment"># File app/util/query/go_filter_checker.rb, line 8</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">transcript_id</span>, <span class="ruby-identifier">go_ids</span>, <span class="ruby-identifier">go_terms</span>)
   <span class="ruby-ivar">@transcript_id</span> = <span class="ruby-identifier">transcript_id</span>
   <span class="ruby-ivar">@go_ids</span> = <span class="ruby-identifier">go_ids</span>
@@ -360,7 +364,7 @@
 
           
           <div class="method-source-code" id="passes_go_filters-source">
-            <pre><span class="ruby-comment"># File app/util/query/go_filter_checker.rb, line 10</span>
+            <pre><span class="ruby-comment"># File app/util/query/go_filter_checker.rb, line 14</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">passes_go_filters</span>()
   <span class="ruby-identifier">transcript</span> = <span class="ruby-constant">Transcript</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-ivar">@transcript_id</span>)
   <span class="ruby-ivar">@transcript_go_terms</span> = <span class="ruby-identifier">transcript</span>.<span class="ruby-identifier">go_terms</span>

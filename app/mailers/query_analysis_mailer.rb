@@ -1,6 +1,9 @@
-class QueryAnalysisMailer < ActionMailer::Base
-   
-   
+###
+# Mailer class for emails in the QueryAnalysisController
+class QueryAnalysisMailer < ActionMailer::Base 
+   ###
+   # Sends an email to the specified user that the specified dataset was 
+   # successfully uploaded.
    def notify_user_of_upload_success(user, dataset)
     @base_url = get_base_url
     @user = user
@@ -47,6 +50,9 @@ class QueryAnalysisMailer < ActionMailer::Base
     #mail(:to => user.email, :subject => "Welcome to My Awesome Site")
   end
   
+  ###
+  # Sends an email to the specified user that the specified dataset did not 
+  # upload successfully.
   def notify_user_of_upload_failure(user, dataset)
     @base_url = get_base_url
     @report_issue_url = "#{@base_url}/home/report_issue"
@@ -59,6 +65,9 @@ class QueryAnalysisMailer < ActionMailer::Base
          :subject => 'Your Data Upload Failed').deliver
   end
   
+  ###
+  # Sends an email to the specified user that the specified dataset had its 
+  # go terms found successfully.
   def notify_user_of_blast2go_success(user, dataset)
     @base_url = get_base_url
     @user = user
@@ -73,6 +82,9 @@ class QueryAnalysisMailer < ActionMailer::Base
          :subject => 'Finding Your Gene Ontology (GO) Terms Was Successful').deliver
   end
   
+  ###
+  # Sends an email to the specified user that the specified dataset failed to 
+  # have its go terms found.
   def notify_user_of_blast2go_failure(user, dataset)
     @base_url = get_base_url
     @user = user

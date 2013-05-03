@@ -3,6 +3,9 @@ require 'open3'
 ###
 # Utility class containing useful functions for interacting with the system.
 class SystemUtil
+  # Runs the specified command_string on the system, returning any output and 
+  # raising an exception if the command failed.
+  # Non-fatal errors are written to the logger.
   def self.backticks!(command_string)
     stdout, stderr, status = Open3.capture3(command_string)
     # Throw an exception if the command failed
@@ -17,6 +20,9 @@ class SystemUtil
     return stdout
   end
   
+  # Runs the specified command_string on the system, returning true if the 
+  # command was successful or raising an exception if the command failed. 
+  # Non-fatal errors are written to the logger.
   def self.system!(command_string)
     stdout, stderr, status = Open3.capture3(command_string)
     # Throw an exception if the command failed

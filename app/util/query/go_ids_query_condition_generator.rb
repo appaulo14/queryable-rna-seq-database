@@ -1,6 +1,11 @@
+###
+# Utility class to create a where clause query condition to 
+# match one or more GO ids (accessions).
 class GoIdsQueryConditionGenerator
   include ActiveModel::Validations
   
+  # The string containing the go id or group of go ids to use when 
+  # creating the query condition
   attr_accessor :go_ids
   
   validates :go_ids, :presence => true
@@ -9,6 +14,8 @@ class GoIdsQueryConditionGenerator
     @go_ids = go_ids_string
   end
   
+  ###
+  # Generates and returns the actual where clause query condition.
   def generate_query_condition
     #Do some validation
     if not self.valid?

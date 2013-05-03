@@ -1,4 +1,8 @@
+###
+# Validator class to see whether the transcript passes the filter of 
+# containing the specified go terms and go ids. 
 class GoFilterChecker
+  # An array of all the GoTerm records for the Transcript
   attr_reader :transcript_go_terms
   
   def initialize(transcript_id, go_ids, go_terms)

@@ -468,7 +468,7 @@ class QueryAnalysisController < ApplicationController
   ###
   # Handles both GET and POST requests for the querying using Tblastx page.
   #
-    # <b>Associated ViewModel:</b> QueryUsingTblastx
+  # <b>Associated ViewModel:</b> QueryUsingTblastx
   def query_using_tblastx
     @sequence_type = 'nucleic acid'
     if request.get?
