@@ -23,11 +23,13 @@ class QueryDiffExpGenes
   # The cutoff where differential expression tests with an fdr_or_p_value 
   # above this will not be included in the query results
   attr_accessor :cutoff
-  # Specifies that differential expression tests with genes have all of 
-  # these go terms should be displayed in the query results.
+  # Specifies that only the differential expression tests with genes that 
+  # have all of these go terms (names) should be displayed in the 
+  # query results.
   attr_accessor :go_terms
-  # Specifies that differential expression tests with genes have all of 
-  # these go ids (accessions) should be displayed in the query results.
+  # Specifies that only the differential expression tests with genes that 
+  # have all of these go ids (accessions) should be displayed in the 
+  # query results.
   attr_accessor :go_ids
   # Specifies that only records matching this gene name should be display 
   # in the query results.
@@ -39,26 +41,31 @@ class QueryDiffExpGenes
   # The name/id pairs of the datasets that can be selected to have their 
   # gene differential expression tests queried.
   attr_reader   :names_and_ids_for_available_datasets
-  attr_reader   :available_sample_comparisons 
-  attr_reader   :show_results
+  # The available sample comparisons for the selected dataset. These consist of 
+  # any two samples that have gene differential expression tests between them.
+  attr_reader   :available_sample_comparisons
+  # Contains the results from the query
   attr_reader   :results
+  # The name of the first sample in the sample comparison
   attr_reader   :sample_1_name
+  # The name of the second sample in the sample comparison
   attr_reader   :sample_2_name
+  # The program used when generating the dataset's data, such as Cuffdiff or 
+  # Trinity with EdgeR
   attr_reader   :program_used
+  # The status of the go terms for the selected dataset
   attr_reader   :go_terms_status
   
+  # The number of records in each piece of the query. This is used to 
+  # determine the values for LIMIT and OFFSET in the query itself.
   PIECE_SIZE = 100
   
   validates :dataset_id, :presence => true,
                          :dataset_belongs_to_user => true
   validates :sample_comparison_id, :presence => true,
-                                   :sample_comparison_id_belongs_to_user => true
+                                   :sample_comparison_belongs_to_user => true
   validates :cutoff, :presence => true,
                      :format => { :with => /\A\d*\.\d+\z/ }
-  
-  def show_results?
-    return @show_results
-  end
   
   def initialize(current_user)
     @current_user = current_user
@@ -109,13 +116,14 @@ class QueryDiffExpGenes
     sample_cmp = SampleComparison.find_by_id(@sample_comparison_id)
     @sample_1_name = sample_cmp.sample_1.name
     @sample_2_name = sample_cmp.sample_2.name
-    @show_results = false
     dataset = Dataset.find_by_id(@dataset_id)
     @program_used = dataset.program_used
     @go_terms_status = dataset.go_terms_status
     @piece = '0' if @piece.blank?
   end
   
+  # Execute the query to get the gene differential expression tests with the 
+  # specified filtering options and store them in #results.
   def query()
     #Don't query if it is not valid
     return if not self.valid?
@@ -182,12 +190,10 @@ class QueryDiffExpGenes
       result[:test_status] = query_result.test_status
       @results << result
     end
-    #Mark the search results as viewable
-    @show_results = true
   end
   
-  # Accoring http://railscasts.com/episodes/219-active-model?view=asciicast,
-  # this defines that this model does not persist in the database.
+  # According to http://railscasts.com/episodes/219-active-model?view=asciicast,
+  # this defines that this view model does not persist in the database.
   def persisted?
       return false
   end

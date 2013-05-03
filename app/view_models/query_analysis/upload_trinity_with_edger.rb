@@ -16,17 +16,37 @@ class UploadTrinityWithEdgeR
   include ActiveModel::Conversion
   extend ActiveModel::Naming
   
-  attr_accessor :transcripts_fasta_file, 
-                :gene_diff_exp_files, #Array
-                :gene_diff_exp_sample_1_names, #Array
-                :gene_diff_exp_sample_2_names, #Array
-                :transcript_diff_exp_files, #Array 
-                :transcript_diff_exp_sample_1_names, #Array
-                :transcript_diff_exp_sample_2_names, #Array
-                :gene_fpkm_file, 
-                :transcript_fpkm_file,
-                :has_gene_diff_exp,
-                :dataset_name
+  # The uploaded file containing the fasta sequences for the 
+  # assembled transcripts
+  attr_accessor :transcripts_fasta_file 
+  # A collection of the uploaded files containing the gene differential 
+  # expression tests
+  attr_accessor :gene_diff_exp_files #Array
+  # A collection of the sample names for the first sample of the gene 
+  # differential expression test files with the corresponding array indexes.
+  attr_accessor :gene_diff_exp_sample_1_names #Array
+  # A collection of the sample names for the second sample of the gene 
+  # differential expression test files with the corresponding array indexes.
+  attr_accessor :gene_diff_exp_sample_2_names #Array
+  # A collection of the uploaded files containing the transcript differential 
+  # expression tests
+  attr_accessor :transcript_diff_exp_files #Array 
+  # A collection of the sample names for the first sample of the transcript 
+  # differential expression test files with the corresponding array indexes.
+  attr_accessor :transcript_diff_exp_sample_1_names #Array
+  # A collection of the sample names for the first sample of the transcript 
+  # differential expression test files with the corresponding array indexes.
+  attr_accessor :transcript_diff_exp_sample_2_names #Array
+  # An uploaded file containing the fpkms for all genes and all the samples
+  attr_accessor :gene_fpkm_file
+  # An uploaded file containing the fpkms for all transcripts and all the 
+  # samples
+  attr_accessor :transcript_fpkm_file
+  # Whether or not gene differential expression tests and fpkms will be 
+  # uploaded 
+  attr_accessor :has_gene_diff_exp
+  # The name to give to the uploaded dataset
+  attr_accessor :dataset_name
   
   validates :transcripts_fasta_file, :presence => true,
                                      :uploaded_file => true,
@@ -76,6 +96,8 @@ class UploadTrinityWithEdgeR
     end
   end
   
+  # Saves the data from the uploaded files into the database under a dataset 
+  # named #dataset_name
   def save
     return if not self.valid?
     begin
@@ -90,15 +112,6 @@ class UploadTrinityWithEdgeR
           process_gene_fpkm_file()
           Rails.logger.info "Finished gene fpkm exp for dataset: #{@dataset.id}"
         end
-#         counts = Hash.new{ 0 }
-#         ObjectSpace.each_object do |o|
-#           counts[o.class] += 1
-#         end
-#         counts.each do |key, val|
-#           if counts[key] > 100
-#             puts "#{key}=#{counts[key]}"
-#           end
-#         end
         Rails.logger.info "Started trans diff exp for dataset: #{@dataset.id}"
         process_transcript_diff_exp_files()
         Rails.logger.info "Finished trans diff exp for dataset: #{@dataset.id}"
@@ -135,8 +148,8 @@ class UploadTrinityWithEdgeR
     end
   end
   
-  #Accoring http://railscasts.com/episodes/219-active-model?view=asciicast,
-  #     this defines that this model does not persist in the database.
+  # According to http://railscasts.com/episodes/219-active-model?view=asciicast,
+  # this defines that this view model does not persist in the database.
   def persisted?
       return false
   end

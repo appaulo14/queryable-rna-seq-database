@@ -12,19 +12,82 @@ class QueryTranscriptIsoforms
   include ActiveModel::Conversion
   extend ActiveModel::Naming
   
-  attr_accessor :dataset_id, :sample_id,
-                :class_code_equal, :class_code_c, :class_code_j, :class_code_e,
-                :class_code_i, :class_code_o, :class_code_p, :class_code_r,
-                :class_code_u, :class_code_x, :class_code_s, :class_code_dot,
-                :go_terms,:go_ids,
-                :transcript_length_comparison_sign, :transcript_length_value,
-                :transcript_name, :piece
-  attr_reader  :names_and_ids_for_available_datasets, 
-                :available_samples, :available_transcript_length_comparison_signs,
-                :show_results, :results, :sample_name, :go_terms_status
+  # The id of the dataset whose transcript isoforms will be queried.
+  attr_accessor :dataset_id
+  # The id of the sample whose isoforms will be queried.
+  attr_accessor :sample_id
+  # Specifies that only transcripts with the "=" class code or other selected 
+  # class codes should be displayed in the query results.
+  attr_accessor :class_code_equal
+  # Specifies that only transcripts with the "c" class code or other selected 
+  # class codes should be displayed in the query results.
+  attr_accessor :class_code_c
+  # Specifies that only transcripts with the "j" class code or other selected 
+  # class codes should be displayed in the query results.
+  attr_accessor :class_code_j
+  # Specifies that only transcripts with the "e" class code or other selected 
+  # class codes should be displayed in the query results.
+  attr_accessor :class_code_e
+  # Specifies that only transcripts with the "i" class code or other selected 
+  # class codes should be displayed in the query results.
+  attr_accessor :class_code_i
+  # Specifies that only transcripts with the "o" class code or other selected 
+  # class codes should be displayed in the query results.
+  attr_accessor :class_code_o
+  # Specifies that only transcripts with the "p" class code or other selected 
+  # class codes should be displayed in the query results.
+  attr_accessor :class_code_p
+  # Specifies that only transcripts with the "r" class code or other selected 
+  # class codes should be displayed in the query results.
+  attr_accessor :class_code_r
+  # Specifies that only transcripts with the "u" class code or other selected 
+  # class codes should be displayed in the query results.
+  attr_accessor :class_code_u
+  # Specifies that only transcripts with the "x" class code or other selected 
+  # class codes should be displayed in the query results.
+  attr_accessor :class_code_x
+  # Specifies that only transcripts with the "s" class code or other selected 
+  # class codes should be displayed in the query results.
+  attr_accessor :class_code_s
+  # Specifies that only transcripts with the "." class code or other selected 
+  # class codes should be displayed in the query results.
+  attr_accessor :class_code_dot
+  # Specifies that only the transcript that have all of these go terms 
+  # (names) should be displayed in the query results.
+  attr_accessor :go_terms
+  # Specifies that only the transcript that have all of these go ids 
+  # (accessions) should be displayed in the query results.
+  attr_accessor :go_ids
+  attr_accessor :transcript_length_comparison_sign
+  attr_accessor :transcript_length_value
+  # Specifies that only records matching this transcript name should be display 
+  # in the query results.
+  attr_accessor :transcript_name
+  # Because the query results are loaded in pieces using LIMIT and OFFSET, 
+  # this specifies which piece to load.
+  attr_accessor :piece
   
+  # The name/id pairs of the datasets that can be selected to have their 
+  # transcript isoforms queried.
+  attr_reader   :names_and_ids_for_available_datasets
+  # The available samples for the selected dataset. These consist of any sample 
+  # that has FpkmSample and TranscriptFpkmTrackingInformation associated with 
+  # its transcripts.
+  attr_reader   :available_samples
+  # The available valid options for the transcript_length_comparison_sign attribute
+  attr_reader   :available_transcript_length_comparison_signs
+  # Contains the results from the query
+  attr_reader   :results
+  # The name of the sample being queried
+  attr_reader   :sample_name
+  # The status of the go terms for the selected dataset
+  attr_reader   :go_terms_status
+  
+  # The number of records in each piece of the query. This is used to 
+  # determine the values for LIMIT and OFFSET in the query itself.
   PIECE_SIZE = 100
   
+  # Used to build the where clause for the class code filtering options
   CLASS_CODES = {
     :class_code_equal => '=', 
     :class_code_c => 'c',
@@ -40,6 +103,7 @@ class QueryTranscriptIsoforms
     :class_code_dot => '.'
   }
   
+  # The available valid options for the transcript_length_comparison_sign attribute
   AVAILABLE_TRANSCRIPT_LENGTH_COMPARISON_SIGNS = ['>','>=','<','=<','=']
 
   validates :dataset_id, :presence => true,
@@ -63,10 +127,6 @@ class QueryTranscriptIsoforms
   validates :transcript_length_value, :numericality => true
   validates :piece, :presence => true,
                     :format => { :with => /\A\d+\z/ }
-  
-  def show_results?
-    return @show_results
-  end
   
   def initialize(current_user)
     @current_user = current_user
@@ -101,11 +161,12 @@ class QueryTranscriptIsoforms
       @available_samples << [sample.name, sample.id]
     end
     @sample_id = @available_samples[0][1] if @sample_id.blank?
-    @show_results = false
     @piece = '0' if @piece.blank?
     @go_terms_status = Dataset.find_by_id(@dataset_id).go_terms_status
   end
   
+  # Execute the query to get the transcript isoforms with the 
+  # specified filtering options and store them in #results.
   def query()
     #Don't query if it is not valid
     return if not self.valid?
@@ -172,12 +233,10 @@ class QueryTranscriptIsoforms
       result[:status] = query_result.status
       @results << result
     end
-    #Mark the search results as viewable
-    @show_results = true
   end
   
-  # According http://railscasts.com/episodes/219-active-model?view=asciicast,
-  # this defines that this model does not persist in the database.
+  # According to http://railscasts.com/episodes/219-active-model?view=asciicast,
+  # this defines that this view model does not persist in the database.
   def persisted?
       return false
   end

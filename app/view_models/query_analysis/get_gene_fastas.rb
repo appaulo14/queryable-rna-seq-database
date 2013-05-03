@@ -51,8 +51,8 @@ class GetGeneFastas
     end
   end
   
-  # Accoring http://railscasts.com/episodes/219-active-model?view=asciicast,
-  # this defines that this model does not persist in the database.
+  # According to http://railscasts.com/episodes/219-active-model?view=asciicast,
+  # this defines that this view model does not persist in the database.
   def persisted?
       return false
   end

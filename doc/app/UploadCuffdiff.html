@@ -219,6 +219,8 @@
   
     <li><a href="./SampleComparison.html">SampleComparison</a>
   
+    <li><a href="./SampleComparisonBelongsToUserValidator.html">SampleComparisonBelongsToUserValidator</a>
+  
     <li><a href="./SampleFpkm.html">SampleFpkm</a>
   
     <li><a href="./SystemUtil.html">SystemUtil</a>
@@ -318,7 +320,7 @@ href="WorkerForUploadCuffdiff.html">WorkerForUploadCuffdiff</a></p>
 
         <div class="method-description">
         
-        
+        <p>The name to give to the uploaded dataset</p>
         
         </div>
       </div>
@@ -331,7 +333,7 @@ href="WorkerForUploadCuffdiff.html">WorkerForUploadCuffdiff</a></p>
 
         <div class="method-description">
         
-        
+        <p>The uploaded file containing gene differential expression tests</p>
         
         </div>
       </div>
@@ -344,7 +346,7 @@ href="WorkerForUploadCuffdiff.html">WorkerForUploadCuffdiff</a></p>
 
         <div class="method-description">
         
-        
+        <p>Whether or not differnential expression tests will be uploaded</p>
         
         </div>
       </div>
@@ -357,7 +359,7 @@ href="WorkerForUploadCuffdiff.html">WorkerForUploadCuffdiff</a></p>
 
         <div class="method-description">
         
-        
+        <p>Whether or not transcript isoforms will be uploaded</p>
         
         </div>
       </div>
@@ -370,7 +372,7 @@ href="WorkerForUploadCuffdiff.html">WorkerForUploadCuffdiff</a></p>
 
         <div class="method-description">
         
-        
+        <p>The uploaded file containing transcript differential expression tests</p>
         
         </div>
       </div>
@@ -383,7 +385,7 @@ href="WorkerForUploadCuffdiff.html">WorkerForUploadCuffdiff</a></p>
 
         <div class="method-description">
         
-        
+        <p>The uploaded file containing transcript isoform information</p>
         
         </div>
       </div>
@@ -396,7 +398,8 @@ href="WorkerForUploadCuffdiff.html">WorkerForUploadCuffdiff</a></p>
 
         <div class="method-description">
         
-        
+        <p>The uploaded file containing the fasta sequences for the  assembled
+transcripts</p>
         
         </div>
       </div>
@@ -426,7 +429,7 @@ href="WorkerForUploadCuffdiff.html">WorkerForUploadCuffdiff</a></p>
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/upload_cuffdiff.rb, line 55</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/upload_cuffdiff.rb, line 63</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">current_user</span>)
   <span class="ruby-ivar">@current_user</span> = <span class="ruby-identifier">current_user</span>
 <span class="ruby-keyword">end</span></pre>
@@ -457,17 +460,16 @@ href="WorkerForUploadCuffdiff.html">WorkerForUploadCuffdiff</a></p>
 
         <div class="method-description">
           
-          <p>According <a
-href="http://railscasts.com/episodes/219-active-model?view=asciicast">railscasts.com/episodes/219-active-model?view=asciicast</a>,</p>
-
-<pre>this defines that this model does not persist in the database.</pre>
+          <p>According to <a
+href="http://railscasts.com/episodes/219-active-model?view=asciicast">railscasts.com/episodes/219-active-model?view=asciicast</a>,
+this defines that this view model does not persist in the database.</p>
           
 
           
           <div class="method-source-code" id="persisted-3F-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/upload_cuffdiff.rb, line 118</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/upload_cuffdiff.rb, line 130</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">persisted?</span>
-    <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- persisted-3F-source -->
           
@@ -490,12 +492,14 @@ href="http://railscasts.com/episodes/219-active-model?view=asciicast">railscasts
 
         <div class="method-description">
           
-          
+          <p>Saves the data from the uploaded file(s) into the database under a dataset 
+named <a
+href="UploadCuffdiff.html#attribute-i-dataset_name">dataset_name</a></p>
           
 
           
           <div class="method-source-code" id="save-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/upload_cuffdiff.rb, line 68</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/upload_cuffdiff.rb, line 78</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">save</span>
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">valid?</span>
   <span class="ruby-keyword">begin</span>
@@ -571,7 +575,7 @@ values</p>
 
           
           <div class="method-source-code" id="set_attributes_and_defaults-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/upload_cuffdiff.rb, line 61</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/upload_cuffdiff.rb, line 69</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-identifier">attributes</span> = {})
   <span class="ruby-comment">#Load in any values from the form</span>
   <span class="ruby-identifier">attributes</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">name</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>

@@ -6,91 +6,104 @@ require 'query_analysis/abstract_query_using_blast.rb'
 #
 # <b>Associated Controller:</b> QueryAnalysisController
 class QueryUsingBlastn < AbstractQueryUsingBlast
-  attr_accessor :word_size, :gap_costs, :match_and_mismatch_scores
+  # The word size
+  attr_accessor :word_size
+  # The gap costs
+  attr_accessor :gap_costs
+  # The match/mismatch scores
+  attr_accessor :match_and_mismatch_scores
+  
+  # The available valid options for the word_size
+  attr_reader :available_word_sizes
+  # The available valid options for the match_and_mismatch_scores
+  attr_reader :available_match_and_mismatch_scores
+  # The available valid options for the gap_costs
+  attr_reader :available_gap_costs
     
-  attr_reader :available_word_sizes, :available_match_and_mismatch_scores, 
-              :available_gap_costs
-               
-    AVAILABLE_WORD_SIZES = ['16','20','24','28','32','48','64','128','256']
-    
-    #Declare Constants
-    AVAILABLE_MATCH_AND_MISMATCH_SCORES = {
-      '1,-2' => {:match => 1, :mismatch => -2},
-      '1,-3' => {:match => 1, :mismatch => -3},
-      '1,-4' => {:match => 1, :mismatch => -4},
-      '2,-3' => {:match => 2, :mismatch => -3},
-      '4,-5' => {:match => 4, :mismatch => -5},
-      '1,-1' => {:match => 1, :mismatch => -1},
-    }
-    
-    AVAILABLE_GAP_COST_DEFAULTS = {
-      '1,-2' => 'Linear',
-      '1,-3' => 'Linear',
-      '1,-4' => 'Linear',
-      '2,-3' => 'Linear',
-      '4,-5' => 'Linear',
-      '1,-1' => 'Existence: 5, Extension: 2',
-    }
-    
-    AVAILABLE_GAP_COSTS = {
-      '1,-2' => {
-        'Linear' => {:existence => 0, :extention => 0},
-        'Existence: 5, Extension: 2' => {:existence => 5, :extention => 2},
-        'Existence: 2, Extension: 2' => {:existence => 2, :extention => 2},
-        'Existence: 1, Extension: 2' => {:existence => 1, :extention => 2},
-        'Existence: 0, Extension: 2' => {:existence => 0, :extention => 2},
-        'Existence: 3, Extension: 1' => {:existence => 3, :extention => 1},
-        'Existence: 2, Extension: 1' => {:existence => 2, :extention => 1},
-        'Existence: 1, Extension: 1' => {:existence => 1, :extention => 1}, 
-      },
-      '1,-3' => {
-        'Linear' => {:existence => 0, :extention => 0},
-        'Existence: 5, Extension: 2' => {:existence => 5, :extention => 2},
-        'Existence: 2, Extension: 2' => {:existence => 2, :extention => 2},
-        'Existence: 1, Extension: 2' => {:existence => 1, :extention => 2},
-        'Existence: 0, Extension: 2' => {:existence => 0, :extention => 2},
-        'Existence: 2, Extension: 1' => {:existence => 2, :extention => 1},
-        'Existence: 1, Extension: 1' => {:existence => 1, :extention => 1},      
-      },
-      '1,-4' => {
-        'Linear' => {:existence => 0, :extention => 0},
-        'Existence: 5, Extension: 2' => {:existence => 5, :extention => 2},
-        'Existence: 2, Extension: 2' => {:existence => 2, :extention => 2},
-        'Existence: 1, Extension: 2' => {:existence => 1, :extention => 2},
-        'Existence: 0, Extension: 2' => {:existence => 0, :extention => 2},
-        'Existence: 2, Extension: 1' => {:existence => 2, :extention => 1},
-        'Existence: 1, Extension: 1' => {:existence => 1, :extention => 1},      
-      },
-      '2,-3' => {
-        'Linear' => {:existence => 0, :extention => 0},
-        'Existence: 4, Extension: 4' => {:existence => 4, :extention => 4},
-        'Existence: 2, Extension: 4' => {:existence => 2, :extention => 4}, 
-        'Existence: 0, Extension: 4' => {:existence => 0, :extention => 4},
-        'Existence: 3, Extension: 3' => {:existence => 3, :extention => 3},
-        'Existence: 6, Extension: 2' => {:existence => 6, :extention => 2},
-        'Existence: 5, Extension: 2' => {:existence => 5, :extention => 2},
-        'Existence: 4, Extension: 2' => {:existence => 4, :extention => 2},
-        'Existence: 2, Extension: 2' => {:existence => 2, :extention => 2},
-      },
-      '4,-5' => {
-        'Linear' => {:existence => 0, :extention => 0},
-        'Existence: 12, Extension: 8' => {:existence => 12, :extention => 8},
-        'Existence: 6, Extension: 5' => {:existence => 6, :extention => 5},
-        'Existence: 5, Extension: 5' => {:existence => 5, :extention => 5},
-        'Existence: 4, Extension: 5' => {:existence => 4, :extention => 5},
-        'Existence: 3, Extension: 5' => {:existence => 3, :extention => 5},
-      },
-      '1,-1' => {
-        'Existence: 5, Extension: 2' => {:existence => 5, :extention => 2},
-        'Existence: 3, Extension: 2' => {:existence => 3, :extention => 2},
-        'Existence: 2, Extension: 2' => {:existence => 2, :extention => 2},
-        'Existence: 1, Extension: 2' => {:existence => 1, :extention => 2},
-        'Existence: 0, Extension: 2' => {:existence => 0, :extention => 2},
-        'Existence: 4, Extension: 1' => {:existence => 4, :extention => 1},
-        'Existence: 3, Extension: 1' => {:existence => 3, :extention => 1},
-        'Existence: 2, Extension: 1' => {:existence => 2, :extention => 1},
-      },
-    }
+  # The available valid options for the word_size
+  AVAILABLE_WORD_SIZES = ['16','20','24','28','32','48','64','128','256']
+  
+  # The available valid options for the match_and_mismatch_scores
+  AVAILABLE_MATCH_AND_MISMATCH_SCORES = {
+    '1,-2' => {:match => 1, :mismatch => -2},
+    '1,-3' => {:match => 1, :mismatch => -3},
+    '1,-4' => {:match => 1, :mismatch => -4},
+    '2,-3' => {:match => 2, :mismatch => -3},
+    '4,-5' => {:match => 4, :mismatch => -5},
+    '1,-1' => {:match => 1, :mismatch => -1},
+  }
+  
+  # When a new match_and_mismatch_scores is select, this determines what the 
+  # default gap_costs will be for it
+  AVAILABLE_GAP_COST_DEFAULTS = {
+    '1,-2' => 'Linear',
+    '1,-3' => 'Linear',
+    '1,-4' => 'Linear',
+    '2,-3' => 'Linear',
+    '4,-5' => 'Linear',
+    '1,-1' => 'Existence: 5, Extension: 2',
+  }
+  
+  # The available valid options for the gap_costs
+  AVAILABLE_GAP_COSTS = {
+    '1,-2' => {
+      'Linear' => {:existence => 0, :extention => 0},
+      'Existence: 5, Extension: 2' => {:existence => 5, :extention => 2},
+      'Existence: 2, Extension: 2' => {:existence => 2, :extention => 2},
+      'Existence: 1, Extension: 2' => {:existence => 1, :extention => 2},
+      'Existence: 0, Extension: 2' => {:existence => 0, :extention => 2},
+      'Existence: 3, Extension: 1' => {:existence => 3, :extention => 1},
+      'Existence: 2, Extension: 1' => {:existence => 2, :extention => 1},
+      'Existence: 1, Extension: 1' => {:existence => 1, :extention => 1}, 
+    },
+    '1,-3' => {
+      'Linear' => {:existence => 0, :extention => 0},
+      'Existence: 5, Extension: 2' => {:existence => 5, :extention => 2},
+      'Existence: 2, Extension: 2' => {:existence => 2, :extention => 2},
+      'Existence: 1, Extension: 2' => {:existence => 1, :extention => 2},
+      'Existence: 0, Extension: 2' => {:existence => 0, :extention => 2},
+      'Existence: 2, Extension: 1' => {:existence => 2, :extention => 1},
+      'Existence: 1, Extension: 1' => {:existence => 1, :extention => 1},      
+    },
+    '1,-4' => {
+      'Linear' => {:existence => 0, :extention => 0},
+      'Existence: 5, Extension: 2' => {:existence => 5, :extention => 2},
+      'Existence: 2, Extension: 2' => {:existence => 2, :extention => 2},
+      'Existence: 1, Extension: 2' => {:existence => 1, :extention => 2},
+      'Existence: 0, Extension: 2' => {:existence => 0, :extention => 2},
+      'Existence: 2, Extension: 1' => {:existence => 2, :extention => 1},
+      'Existence: 1, Extension: 1' => {:existence => 1, :extention => 1},      
+    },
+    '2,-3' => {
+      'Linear' => {:existence => 0, :extention => 0},
+      'Existence: 4, Extension: 4' => {:existence => 4, :extention => 4},
+      'Existence: 2, Extension: 4' => {:existence => 2, :extention => 4}, 
+      'Existence: 0, Extension: 4' => {:existence => 0, :extention => 4},
+      'Existence: 3, Extension: 3' => {:existence => 3, :extention => 3},
+      'Existence: 6, Extension: 2' => {:existence => 6, :extention => 2},
+      'Existence: 5, Extension: 2' => {:existence => 5, :extention => 2},
+      'Existence: 4, Extension: 2' => {:existence => 4, :extention => 2},
+      'Existence: 2, Extension: 2' => {:existence => 2, :extention => 2},
+    },
+    '4,-5' => {
+      'Linear' => {:existence => 0, :extention => 0},
+      'Existence: 12, Extension: 8' => {:existence => 12, :extention => 8},
+      'Existence: 6, Extension: 5' => {:existence => 6, :extention => 5},
+      'Existence: 5, Extension: 5' => {:existence => 5, :extention => 5},
+      'Existence: 4, Extension: 5' => {:existence => 4, :extention => 5},
+      'Existence: 3, Extension: 5' => {:existence => 3, :extention => 5},
+    },
+    '1,-1' => {
+      'Existence: 5, Extension: 2' => {:existence => 5, :extention => 2},
+      'Existence: 3, Extension: 2' => {:existence => 3, :extention => 2},
+      'Existence: 2, Extension: 2' => {:existence => 2, :extention => 2},
+      'Existence: 1, Extension: 2' => {:existence => 1, :extention => 2},
+      'Existence: 0, Extension: 2' => {:existence => 0, :extention => 2},
+      'Existence: 4, Extension: 1' => {:existence => 4, :extention => 1},
+      'Existence: 3, Extension: 1' => {:existence => 3, :extention => 1},
+      'Existence: 2, Extension: 1' => {:existence => 2, :extention => 1},
+    },
+  }
     
   #Validation
   validates :text_area_fastas, :nucleotide_fasta_sequences => true

@@ -28,6 +28,7 @@ class DifferentialExpressionTest < ActiveRecord::Base
                    :sample_1_fpkm, :sample_2_fpkm, :log_fold_change,
                    :test_statistic, :p_value, :fdr
   
+  # The available valid values for the test status
   POSSIBLE_TEST_STATUSES = ['OK','NOTEST','LOWDATA','HIDATA','FAIL']
   
   belongs_to :gene

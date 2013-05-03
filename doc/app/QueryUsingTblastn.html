@@ -199,6 +199,8 @@
   
     <li><a href="./SampleComparison.html">SampleComparison</a>
   
+    <li><a href="./SampleComparisonBelongsToUserValidator.html">SampleComparisonBelongsToUserValidator</a>
+  
     <li><a href="./SampleFpkm.html">SampleFpkm</a>
   
     <li><a href="./SystemUtil.html">SystemUtil</a>
@@ -287,27 +289,34 @@ href="QueryAnalysisController.html">QueryAnalysisController</a></p>
       
         <dt id="AVAILABLE_COMPOSITIONAL_ADJUSTMENTS">AVAILABLE_COMPOSITIONAL_ADJUSTMENTS
         
-        <dd class="description">
+        <dd class="description"><p>The available valid options for the <a
+href="QueryUsingTblastn.html#attribute-i-compositional_adjustment">#compositional_adjustment</a></p>
         
       
         <dt id="AVAILABLE_GAP_COSTS">AVAILABLE_GAP_COSTS
         
-        <dd class="description">
+        <dd class="description"><p>The available valid options for the <a
+href="QueryUsingTblastn.html#attribute-i-gap_costs">#gap_costs</a></p>
         
       
         <dt id="AVAILABLE_GAP_COST_DEFAULTS">AVAILABLE_GAP_COST_DEFAULTS
         
-        <dd class="description">
+        <dd class="description"><p>When a new <a href="QueryUsingTblastn.html#attribute-i-matrix">matrix</a>
+is select, this determines what the  default <a
+href="QueryUsingTblastn.html#attribute-i-gap_costs">#gap_costs</a> will be
+for it</p>
         
       
         <dt id="AVAILABLE_MATRICES">AVAILABLE_MATRICES
         
-        <dd class="description">
+        <dd class="description"><p>The available valid options for the <a
+href="QueryUsingTblastn.html#attribute-i-matrix">matrix</a></p>
         
       
         <dt id="AVAILABLE_WORD_SIZES">AVAILABLE_WORD_SIZES
         
-        <dd class="description"><p>Declare Constants</p>
+        <dd class="description"><p>The available valid options for the <a
+href="QueryUsingTblastn.html#attribute-i-word_size">#word_size</a></p>
         
       
       </dl>
@@ -328,7 +337,8 @@ href="QueryAnalysisController.html">QueryAnalysisController</a></p>
 
         <div class="method-description">
         
-        
+        <p>The available valid options for the <a
+href="QueryUsingTblastn.html#attribute-i-compositional_adjustment">#compositional_adjustment</a></p>
         
         </div>
       </div>
@@ -341,7 +351,8 @@ href="QueryAnalysisController.html">QueryAnalysisController</a></p>
 
         <div class="method-description">
         
-        
+        <p>The available valid options for the <a
+href="QueryUsingTblastn.html#attribute-i-gap_costs">#gap_costs</a></p>
         
         </div>
       </div>
@@ -354,7 +365,8 @@ href="QueryAnalysisController.html">QueryAnalysisController</a></p>
 
         <div class="method-description">
         
-        
+        <p>The available valid options for the <a
+href="QueryUsingTblastn.html#attribute-i-matrix">matrix</a></p>
         
         </div>
       </div>
@@ -367,7 +379,8 @@ href="QueryAnalysisController.html">QueryAnalysisController</a></p>
 
         <div class="method-description">
         
-        
+        <p>The available valid options for the <a
+href="QueryUsingTblastn.html#attribute-i-word_size">#word_size</a></p>
         
         </div>
       </div>
@@ -380,7 +393,7 @@ href="QueryAnalysisController.html">QueryAnalysisController</a></p>
 
         <div class="method-description">
         
-        <p>TODO: Describe meaning of these?</p>
+        <p>The compositional adjustment</p>
         
         </div>
       </div>
@@ -393,7 +406,7 @@ href="QueryAnalysisController.html">QueryAnalysisController</a></p>
 
         <div class="method-description">
         
-        <p>TODO: Describe meaning of these?</p>
+        <p>The gap costs</p>
         
         </div>
       </div>
@@ -406,7 +419,7 @@ href="QueryAnalysisController.html">QueryAnalysisController</a></p>
 
         <div class="method-description">
         
-        <p>TODO: Describe meaning of these?</p>
+        <p>The matrix</p>
         
         </div>
       </div>
@@ -419,7 +432,7 @@ href="QueryAnalysisController.html">QueryAnalysisController</a></p>
 
         <div class="method-description">
         
-        <p>TODO: Describe meaning of these?</p>
+        <p>The word size</p>
         
         </div>
       </div>
@@ -449,7 +462,7 @@ href="QueryAnalysisController.html">QueryAnalysisController</a></p>
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_using_tblastn.rb, line 147</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_using_tblastn.rb, line 164</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">current_user</span>)
   <span class="ruby-keyword">super</span>
   <span class="ruby-comment">#Set the available options for the number of alignments</span>
@@ -490,7 +503,7 @@ values</p>
 
           
           <div class="method-source-code" id="set_attributes_and_defaults-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_using_tblastn.rb, line 157</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_using_tblastn.rb, line 174</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-identifier">attributes</span> = {})
   <span class="ruby-keyword">super</span>
   <span class="ruby-comment">#Set default values for Megablast, which is the only blastn program we will use</span>

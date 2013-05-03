@@ -6,15 +6,24 @@ require 'query_analysis/abstract_query_using_blast.rb'
 #
 # <b>Associated Controller:</b> QueryAnalysisController
 class QueryUsingTblastx < AbstractQueryUsingBlast
+  # The word size
+  attr_accessor  :word_size
+  # The genetic code
+  attr_accessor  :genetic_code
+  # The matrix 
+  attr_accessor  :matrix
   
-  #TODO: Describe meaning of these?
-  attr_accessor  :word_size, :genetic_code, :matrix
-    
-    attr_reader  :available_word_sizes,
-                :available_matrices, :available_num_alignments,
-                :available_genetic_codes
-    
+  # The available valid options for the word_size
+  attr_reader    :available_word_sizes
+  # The available valid options for the #matrix
+  attr_reader    :available_matrices
+  # The available valid options for the genetic_code
+  attr_reader    :available_genetic_codes
+  
+  # The available valid options for the word_size
   AVAILABLE_WORD_SIZES = ['2','3']
+  
+  # The available valid options for the genetic_code
   AVAILABLE_GENETIC_CODES = {
     'Standard (1)' => '1',
     'Vertebrate Mitochondrial (2)' => '2',
@@ -30,6 +39,8 @@ class QueryUsingTblastx < AbstractQueryUsingBlast
     'Flatworm Mitochondrial (14)' => '14',
     'Blepharisma Macronuclear (15)' => '15'
   }
+  
+  # The available valid options for the #matrix
   AVAILABLE_MATRICES = ['PAM30','PAM70','PAM250','BLOSUM80',
                              'BLOSUM62','BLOSUM45','BLOSUM90']
     

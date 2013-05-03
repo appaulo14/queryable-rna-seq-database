@@ -199,6 +199,8 @@
   
     <li><a href="./SampleComparison.html">SampleComparison</a>
   
+    <li><a href="./SampleComparisonBelongsToUserValidator.html">SampleComparisonBelongsToUserValidator</a>
+  
     <li><a href="./SampleFpkm.html">SampleFpkm</a>
   
     <li><a href="./SystemUtil.html">SystemUtil</a>
@@ -320,7 +322,7 @@ is_relation :integer          default(0), not null</pre>
 
           
           <div class="method-source-code" id="delete-source">
-            <pre><span class="ruby-comment"># File app/models/go_term.rb, line 42</span>
+            <pre><span class="ruby-comment"># File app/models/go_term.rb, line 36</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">delete</span>()
   <span class="ruby-identifier">raise</span> <span class="ruby-constant">NotImplementedError</span>, <span class="ruby-string">&quot;GO Terms are in a different db and should &quot;</span> <span class="ruby-operator">+</span>
                                 <span class="ruby-string">&quot;not be manipulated from here&quot;</span>
@@ -351,7 +353,7 @@ is_relation :integer          default(0), not null</pre>
 
           
           <div class="method-source-code" id="destroy-source">
-            <pre><span class="ruby-comment"># File app/models/go_term.rb, line 38</span>
+            <pre><span class="ruby-comment"># File app/models/go_term.rb, line 32</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">destroy</span>()
   <span class="ruby-identifier">raise</span> <span class="ruby-constant">NotImplementedError</span>, <span class="ruby-string">&quot;GO Terms are in a different db and should &quot;</span> <span class="ruby-operator">+</span>
                                 <span class="ruby-string">&quot;not be manipulated from here&quot;</span>

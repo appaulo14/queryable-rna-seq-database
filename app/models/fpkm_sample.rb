@@ -27,7 +27,7 @@ class FpkmSample < ActiveRecord::Base
   attr_accessible :transcript, :fpkm, :fpkm_hi, :fpkm_lo, :status, 
                   :sample
   
-  # The possible valid values for the status attribute
+  # The available valid values for the status
   POSSIBLE_STATUSES = ['OK','LOWDATA','HIDATA','FAIL']
   
   #Associations

@@ -11,8 +11,11 @@ class UploadFastaSequences
   include ActiveModel::Conversion
   extend ActiveModel::Naming
   
-  attr_accessor :transcripts_fasta_file, 
-                  :dataset_name
+  # The uploaded file containing the fasta sequences for the 
+  # assembled transcripts
+  attr_accessor :transcripts_fasta_file
+  # The name to give to the uploaded dataset
+  attr_accessor :dataset_name
                   
   validates :transcripts_fasta_file, :presence => true,
                                      :uploaded_file => true,
@@ -33,6 +36,8 @@ class UploadFastaSequences
     end
   end
   
+  # Saves the data from the uploaded file(s) into the database under a dataset 
+  # named #dataset_name
   def save
     return if not self.valid?
     begin
@@ -58,8 +63,8 @@ class UploadFastaSequences
     end
   end
   
-  #According http://railscasts.com/episodes/219-active-model?view=asciicast,
-  #     this defines that this model does not persist in the database.
+  # According to http://railscasts.com/episodes/219-active-model?view=asciicast,
+  # this defines that this view model does not persist in the database.
   def persisted?
       return false
   end 

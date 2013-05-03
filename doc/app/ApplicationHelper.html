@@ -70,8 +70,6 @@
     
     <li><a href="#method-i-more_info_link">#more_info_link</a>
     
-    <li><a href="#method-i-more_info_link_to_wiki">#more_info_link_to_wiki</a>
-    
     <li><a href="#method-i-querying_indicator">#querying_indicator</a>
     
   </ul>
@@ -199,6 +197,8 @@
   
     <li><a href="./SampleComparison.html">SampleComparison</a>
   
+    <li><a href="./SampleComparisonBelongsToUserValidator.html">SampleComparisonBelongsToUserValidator</a>
+  
     <li><a href="./SampleFpkm.html">SampleFpkm</a>
   
     <li><a href="./SystemUtil.html">SystemUtil</a>
@@ -264,6 +264,8 @@
 
   <div id="description" class="description">
     
+<p>Contains helpers used within all the controllers</p>
+
   </div><!-- description -->
 
   
@@ -295,18 +297,12 @@
 
         <div class="method-description">
           
-          <p>TODO: Delete after replacing everywhere</p>
-
-<pre class="ruby"><span class="ruby-keyword">def</span> <span class="ruby-identifier">help_tip</span>(<span class="ruby-identifier">id</span>)
-  <span class="ruby-keyword">return</span>  <span class="ruby-identifier">image_tag</span>(<span class="ruby-string">'question_mark.png'</span>, :<span class="ruby-identifier">id=</span><span class="ruby-operator">&gt;</span> <span class="ruby-identifier">id</span>, 
-                                          :<span class="ruby-identifier">alt</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;Help tip for #{id}&quot;</span> ) 
-<span class="ruby-keyword">end</span>
-</pre>
+          <p>Diplays for the page the help tip with the specified id</p>
           
 
           
           <div class="method-source-code" id="help_tip-source">
-            <pre><span class="ruby-comment"># File app/helpers/application_helper.rb, line 19</span>
+            <pre><span class="ruby-comment"># File app/helpers/application_helper.rb, line 17</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">help_tip</span>(<span class="ruby-identifier">id</span>, <span class="ruby-identifier">position</span> = <span class="ruby-value">:right</span>)
   <span class="ruby-ivar">@controller</span> = <span class="ruby-identifier">request</span>.<span class="ruby-identifier">filtered_parameters</span>[<span class="ruby-string">'controller'</span>]
   <span class="ruby-ivar">@action</span>     = <span class="ruby-identifier">request</span>.<span class="ruby-identifier">filtered_parameters</span>[<span class="ruby-string">'action'</span>]
@@ -334,12 +330,12 @@
 
         <div class="method-description">
           
-          
+          <p>Displays the site logo</p>
           
 
           
           <div class="method-source-code" id="logo-source">
-            <pre><span class="ruby-comment"># File app/helpers/application_helper.rb, line 3</span>
+            <pre><span class="ruby-comment"># File app/helpers/application_helper.rb, line 5</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">logo</span>
     <span class="ruby-identifier">logo</span> = <span class="ruby-identifier">image_tag</span>(<span class="ruby-string">&quot;ksu/powercat-glowing-android.jpg&quot;</span>, 
             <span class="ruby-value">:alt</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;RNA-Seq Analysis pipeline&quot;</span>, <span class="ruby-value">:class</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;logo&quot;</span>)
@@ -365,14 +361,14 @@
 
         <div class="method-description">
           
-          
+          <p>Displays a link with the text ‘More Info’ to the specified URL</p>
           
 
           
           <div class="method-source-code" id="more_info_link-source">
-            <pre><span class="ruby-comment"># File app/helpers/application_helper.rb, line 26</span>
+            <pre><span class="ruby-comment"># File app/helpers/application_helper.rb, line 25</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">more_info_link</span>(<span class="ruby-identifier">url</span>)
-  <span class="ruby-keyword">return</span> <span class="ruby-identifier">link_to</span>(<span class="ruby-string">'More Info'</span>,<span class="ruby-identifier">url</span>, <span class="ruby-value">:target</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'_blank'</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">link_to</span>(<span class="ruby-string">'More Info'</span>, <span class="ruby-identifier">url</span>, <span class="ruby-value">:target</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'_blank'</span>)
 <span class="ruby-keyword">end</span></pre>
           </div><!-- more_info_link-source -->
           
@@ -382,37 +378,6 @@
 
         
       </div><!-- more_info_link-method -->
-
-    
-      <div id="method-i-more_info_link_to_wiki" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">more_info_link_to_wiki</span><span
-            class="method-args">(path)</span>
-          <span class="method-click-advice">click to toggle source</span>
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-
-          
-          <div class="method-source-code" id="more_info_link_to_wiki-source">
-            <pre><span class="ruby-comment"># File app/helpers/application_helper.rb, line 30</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">more_info_link_to_wiki</span>(<span class="ruby-identifier">path</span>)
-  <span class="ruby-keyword">return</span> <span class="ruby-identifier">link_to</span>(<span class="ruby-string">'More Information'</span>, <span class="ruby-string">&quot;https://github.com/fatPerlHacker/&quot;</span> <span class="ruby-operator">+</span>
-                                <span class="ruby-node">&quot;queryable-rna-seq-database/wiki/#{path}&quot;</span>)
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- more_info_link_to_wiki-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- more_info_link_to_wiki-method -->
 
     
       <div id="method-i-querying_indicator" class="method-detail ">
@@ -426,12 +391,12 @@
 
         <div class="method-description">
           
-          
+          <p>Displays an indicator that querying is currently in-progress</p>
           
 
           
           <div class="method-source-code" id="querying_indicator-source">
-            <pre><span class="ruby-comment"># File app/helpers/application_helper.rb, line 8</span>
+            <pre><span class="ruby-comment"># File app/helpers/application_helper.rb, line 11</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">querying_indicator</span>
   <span class="ruby-keyword">return</span> <span class="ruby-identifier">image_tag</span>(<span class="ruby-string">&quot;querying-indicator.gif&quot;</span>, 
             <span class="ruby-value">:alt</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;querying indicator&quot;</span>, <span class="ruby-value">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:querying_indicator</span>)

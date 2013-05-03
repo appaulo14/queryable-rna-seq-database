@@ -15,16 +15,24 @@ class UploadCuffdiff
   include ActiveModel::Conversion
   extend ActiveModel::Naming
   
-  attr_accessor :transcripts_fasta_file, 
-                  :transcript_diff_exp_file, 
-                  :gene_diff_exp_file, 
-                  :transcript_isoforms_file,
-                  :has_diff_exp,
-                  :has_transcript_isoforms,
-                  :dataset_name
+  # The uploaded file containing the fasta sequences for the 
+  # assembled transcripts
+  attr_accessor :transcripts_fasta_file
+  # The uploaded file containing transcript differential expression tests
+  attr_accessor :transcript_diff_exp_file
+  # The uploaded file containing gene differential expression tests
+  attr_accessor :gene_diff_exp_file
+  # The uploaded file containing transcript isoform information
+  attr_accessor :transcript_isoforms_file
+  # Whether or not differnential expression tests will be uploaded
+  attr_accessor :has_diff_exp
+  # Whether or not transcript isoforms will be uploaded
+  attr_accessor :has_transcript_isoforms
+  # The name to give to the uploaded dataset
+  attr_accessor :dataset_name
  
   #validate :validate_all_or_none_gene_files
-  ##Validte for file presence only???
+  ##Validate for file presence only???
   
   validates :transcripts_fasta_file, :presence => true,
                                      :uploaded_file => true,
@@ -65,6 +73,8 @@ class UploadCuffdiff
     end
   end
   
+  # Saves the data from the uploaded file(s) into the database under a dataset 
+  # named #dataset_name
   def save
     return if not self.valid?
     begin
@@ -113,10 +123,12 @@ class UploadCuffdiff
       end
     end
   end
-  #According http://railscasts.com/episodes/219-active-model?view=asciicast,
-  #     this defines that this model does not persist in the database.
+  
+  
+  # According to http://railscasts.com/episodes/219-active-model?view=asciicast,
+  # this defines that this view model does not persist in the database.
   def persisted?
-      return false
+    return false
   end
   
   private
