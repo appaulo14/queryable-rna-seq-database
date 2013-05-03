@@ -1,3 +1,8 @@
+# == Description
+#
+# Represents additional transcript classification information for a Transcript.
+#
+#
 # == Schema Information
 #
 # Table name: transcript_fpkm_tracking_informations
@@ -11,6 +16,7 @@
 class TranscriptFpkmTrackingInformation < ActiveRecord::Base
   attr_accessible :class_code, :coverage, :length, :transcript
   
+  # The possible valid values for the class_code attribute
   POSSIBLE_CLASS_CODES = %w(= c j e i o p r u x s . -) 
   
   belongs_to :transcript

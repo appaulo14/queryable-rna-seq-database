@@ -1,8 +1,8 @@
 # == Description
 #
 # Represents a set of data from one run of 
-# Use Case 1: Upload Data to the Database. It links to all the genes and
-# transcripts uploaded during the given run of that use case. 
+# Use Case 1: Upload Data to the Database. All data associated with an upload 
+# operation is directly or indirectly associated with a dataset.
 #
 #
 # == Schema Information

@@ -35,6 +35,8 @@ class ReportIssue
     @current_user = current_user
   end
   
+  # Set the view model's attributes or set those attributes to their 
+  # default values
   def set_attributes_and_defaults(attributes = {})
     if not attributes.empty?
       year = attributes['when_issue_occured(1i)'].to_i

@@ -343,11 +343,13 @@ href="Gene.html">Gene</a> Ontology (GO)  terms for uploaded data.</p>
           
           <p>For the upload Trinity with EdgeR page, ajax request to add html to the 
 form to upload an additional gene differential expression file.</p>
+
+<p><strong>Associated ViewModel:</strong> None</p>
           
 
           
           <div class="method-source-code" id="add_sample_cmp_for_trinity_with_edger_genes-source">
-            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 126</span>
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 136</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">add_sample_cmp_for_trinity_with_edger_genes</span>
   <span class="ruby-identifier">render</span> <span class="ruby-value">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'trinity_with_edger_genes_sample_cmp'</span>
 <span class="ruby-keyword">end</span></pre>
@@ -374,11 +376,13 @@ form to upload an additional gene differential expression file.</p>
           
           <p>For the upload Trinity with EdgeR page, ajax request to add html to the 
 form to upload an additional transcript differential expression file.</p>
+
+<p><strong>Associated ViewModel:</strong> None</p>
           
 
           
           <div class="method-source-code" id="add_sample_cmp_for_trinity_with_edger_transcripts-source">
-            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 120</span>
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 128</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">add_sample_cmp_for_trinity_with_edger_transcripts</span>
   <span class="ruby-identifier">render</span> <span class="ruby-value">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'trinity_with_edger_transcripts_sample_cmp'</span>
 <span class="ruby-keyword">end</span></pre>
@@ -404,11 +408,14 @@ form to upload an additional transcript differential expression file.</p>
         <div class="method-description">
           
           <p>Handles both GET and POST requests for the find go terms for dataset page.</p>
+
+<p><strong>Associated ViewModel:</strong> <a
+href="FindGoTermsForDataset.html">FindGoTermsForDataset</a></p>
           
 
           
           <div class="method-source-code" id="find_go_terms_for_dataset-source">
-            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 132</span>
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 144</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">find_go_terms_for_dataset</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">get?</span>
     <span class="ruby-ivar">@finder</span> = <span class="ruby-constant">FindGoTermsForDataset</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
@@ -461,11 +468,14 @@ form to upload an additional transcript differential expression file.</p>
           <p>When a new set of match/mismatch scores is selected on the query using 
 blastn page, handles ajax requests to get the gap costs for the new 
 selected matrix.</p>
+
+<p><strong>Associated ViewModel:</strong> <a
+href="QueryUsingBlastn.html">QueryUsingBlastn</a></p>
           
 
           
           <div class="method-source-code" id="get_blastn_gap_costs_for_match_and_mismatch_scores-source">
-            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 380</span>
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 420</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_blastn_gap_costs_for_match_and_mismatch_scores</span>
   <span class="ruby-comment">#Calculate the new gap costs from the match and mismatch scores </span>
   <span class="ruby-ivar">@query_using_blastn</span> = <span class="ruby-constant">QueryUsingBlastn</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
@@ -500,11 +510,14 @@ selected matrix.</p>
           <p>When a new dataset is selected on the query differentially expressed page, 
 handles ajax requests to get the sample comparisons for the newly  selected
 dataset.</p>
+
+<p><strong>Associated ViewModel:</strong> <a
+href="QueryDiffExpGenes.html">QueryDiffExpGenes</a></p>
           
 
           
           <div class="method-source-code" id="get_gene_diff_exp_samples_for_dataset-source">
-            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 291</span>
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 319</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_gene_diff_exp_samples_for_dataset</span>
   <span class="ruby-ivar">@qdeg</span> = <span class="ruby-constant">QueryDiffExpGenes</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
   <span class="ruby-identifier">dataset_id</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:dataset_id</span>]
@@ -537,11 +550,14 @@ dataset.</p>
           
           <p>Handles requests to display the fasta sequences for the transcripts 
 associated with a given gene.</p>
+
+<p><strong>Associated ViewModel:</strong> <a
+href="GetGeneFastas.html">GetGeneFastas</a></p>
           
 
           
           <div class="method-source-code" id="get_gene_fastas-source">
-            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 232</span>
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 254</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_gene_fastas</span>
   <span class="ruby-comment">#Create/fill in the view model</span>
   <span class="ruby-identifier">get_gene_fastas</span> = <span class="ruby-constant">GetGeneFastas</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
@@ -582,11 +598,13 @@ associated with a given gene.</p>
           
           <p>Handles ajax requests asking whether a dataset has go terms. Returns a 
 boolean value or an error message.</p>
+
+<p><strong>Associated ViewModel:</strong> None</p>
           
 
           
           <div class="method-source-code" id="get_if_dataset_has_go_terms-source">
-            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 253</span>
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 277</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_if_dataset_has_go_terms</span>
   <span class="ruby-identifier">dataset</span> = <span class="ruby-constant">Dataset</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:dataset_id</span>])
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">dataset</span>.<span class="ruby-identifier">user</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">current_user</span>
@@ -624,11 +642,14 @@ boolean value or an error message.</p>
           
           <p>For the query differentially expressed genes page,  ajax request to add the
 table header row to the query results table.</p>
+
+<p><strong>Associated ViewModel:</strong> <a
+href="QueryDiffExpGenes.html">QueryDiffExpGenes</a></p>
           
 
           
           <div class="method-source-code" id="get_query_diff_exp_genes_header_row-source">
-            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 304</span>
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 334</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_query_diff_exp_genes_header_row</span>
   <span class="ruby-ivar">@qdeg</span> = <span class="ruby-constant">QueryDiffExpGenes</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
   <span class="ruby-ivar">@qdeg</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:query_diff_exp_genes</span>])
@@ -660,11 +681,14 @@ table header row to the query results table.</p>
           
           <p>For the query differentially expressed transcripts page,  ajax request to
 add the table header row to the query results table.</p>
+
+<p><strong>Associated ViewModel:</strong> <a
+href="QueryDiffExpTranscripts.html">QueryDiffExpTranscripts</a></p>
           
 
           
           <div class="method-source-code" id="get_query_diff_exp_transcripts_header_row-source">
-            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 199</span>
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 217</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_query_diff_exp_transcripts_header_row</span>
   <span class="ruby-ivar">@qdet</span> = <span class="ruby-constant">QueryDiffExpTranscripts</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
   <span class="ruby-ivar">@qdet</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:query_diff_exp_transcripts</span>])
@@ -696,11 +720,14 @@ add the table header row to the query results table.</p>
           
           <p>For the query transcript isoforms page,  ajax request to add the table
 header row to the query results table.</p>
+
+<p><strong>Associated ViewModel:</strong> <a
+href="QueryTranscriptIsoforms.html">QueryTranscriptIsoforms</a></p>
           
 
           
           <div class="method-source-code" id="get_query_transcript_isoforms_header_row-source">
-            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 347</span>
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 383</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_query_transcript_isoforms_header_row</span>
   <span class="ruby-ivar">@qti</span> = <span class="ruby-constant">QueryTranscriptIsoforms</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
   <span class="ruby-ivar">@qti</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:query_transcript_isoforms</span>])
@@ -732,11 +759,14 @@ header row to the query results table.</p>
           
           <p>When a new matrix is selected on the query using Tblastn page,  handles
 ajax requests to get the gap costs for the new selected matrix.</p>
+
+<p><strong>Associated ViewModel:</strong> <a
+href="QueryUsingTblastn.html">QueryUsingTblastn</a></p>
           
 
           
           <div class="method-source-code" id="get_tblastn_gap_costs_for_matrix-source">
-            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 415</span>
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 459</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_tblastn_gap_costs_for_matrix</span>
   <span class="ruby-comment">#Calculate the new gap costs from the match and mismatch scores </span>
   <span class="ruby-ivar">@query_using_blastn</span> = <span class="ruby-constant">QueryUsingTblastn</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
@@ -769,11 +799,14 @@ ajax requests to get the gap costs for the new selected matrix.</p>
           <p>When a new dataset is selected on the query differentially expressed 
 transcripts page, handles ajax requests to get the sample comparisons for
 the newly selected dataset.</p>
+
+<p><strong>Associated ViewModel:</strong> <a
+href="QueryDiffExpTranscripts.html">QueryDiffExpTranscripts</a></p>
           
 
           
           <div class="method-source-code" id="get_transcript_diff_exp_samples_for_dataset-source">
-            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 184</span>
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 200</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_transcript_diff_exp_samples_for_dataset</span>
   <span class="ruby-ivar">@qdet</span> = <span class="ruby-constant">QueryDiffExpTranscripts</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
   <span class="ruby-identifier">dataset_id</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:dataset_id</span>]
@@ -807,11 +840,14 @@ the newly selected dataset.</p>
         <div class="method-description">
           
           <p>Handles requests to display the fasta sequence for a given transcript.</p>
+
+<p><strong>Associated ViewModel:</strong> <a
+href="GetTranscriptFasta.html">GetTranscriptFasta</a></p>
           
 
           
           <div class="method-source-code" id="get_transcript_fasta-source">
-            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 210</span>
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 230</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_transcript_fasta</span>
   <span class="ruby-comment">#Create/fill in the view model</span>
   <span class="ruby-identifier">get_transcript_fasta</span> = <span class="ruby-constant">GetTranscriptFasta</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
@@ -853,11 +889,14 @@ the newly selected dataset.</p>
           
           <p>When a new dataset is selected on the query transcript isoforms page, 
 handles ajax requests to get the samples for the newly selected dataset.</p>
+
+<p><strong>Associated ViewModel:</strong> <a
+href="QueryTranscriptIsoforms.html">QueryTranscriptIsoforms</a></p>
           
 
           
           <div class="method-source-code" id="get_transcript_isoforms_samples_for_dataset-source">
-            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 334</span>
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 368</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_transcript_isoforms_samples_for_dataset</span>
   <span class="ruby-ivar">@qti</span> = <span class="ruby-constant">QueryTranscriptIsoforms</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
   <span class="ruby-identifier">dataset_id</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:dataset_id</span>]
@@ -890,11 +929,14 @@ handles ajax requests to get the samples for the newly selected dataset.</p>
           
           <p>Handles both GET and POST requests for the query differentially expressed 
 genes page.</p>
+
+<p><strong>Associated ViewModel:</strong> <a
+href="QueryDiffExpGenes.html">QueryDiffExpGenes</a></p>
           
 
           
           <div class="method-source-code" id="query_diff_exp_genes-source">
-            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 271</span>
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 297</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">query_diff_exp_genes</span>
   <span class="ruby-comment">#Create the view model, giving the current user</span>
   <span class="ruby-ivar">@qdeg</span> = <span class="ruby-constant">QueryDiffExpGenes</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
@@ -933,11 +975,14 @@ genes page.</p>
           
           <p>Handles both GET and POST requests for the query differentially expressed 
 transcripts page.</p>
+
+<p><strong>Associated ViewModel:</strong> <a
+href="QueryDiffExpTranscripts.html">QueryDiffExpTranscripts</a></p>
           
 
           
           <div class="method-source-code" id="query_diff_exp_transcripts-source">
-            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 164</span>
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 178</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">query_diff_exp_transcripts</span>
   <span class="ruby-comment">#Create the view model, giving the current user</span>
   <span class="ruby-ivar">@qdet</span> = <span class="ruby-constant">QueryDiffExpTranscripts</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
@@ -975,11 +1020,14 @@ transcripts page.</p>
         <div class="method-description">
           
           <p>Handles both GET and POST requests for the query using blast page.</p>
+
+<p><strong>Associated ViewModel:</strong> <a
+href="QueryTranscriptIsoforms.html">QueryTranscriptIsoforms</a></p>
           
 
           
           <div class="method-source-code" id="query_transcript_isoforms-source">
-            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 315</span>
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 347</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">query_transcript_isoforms</span>
   <span class="ruby-comment">#Create the view model, giving the current user</span>
   <span class="ruby-ivar">@qti</span> = <span class="ruby-constant">QueryTranscriptIsoforms</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
@@ -1017,11 +1065,14 @@ transcripts page.</p>
         <div class="method-description">
           
           <p>Handles both GET and POST requests for the query using blastn page.</p>
+
+<p><strong>Associated ViewModel:</strong> <a
+href="QueryUsingBlastn.html">QueryUsingBlastn</a></p>
           
 
           
           <div class="method-source-code" id="query_using_blastn-source">
-            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 358</span>
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 396</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">query_using_blastn</span>    <span class="ruby-comment">#Changed after architecture design</span>
   <span class="ruby-ivar">@sequence_type</span> = <span class="ruby-string">'nucleic acid'</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">get?</span>
@@ -1061,11 +1112,14 @@ transcripts page.</p>
         <div class="method-description">
           
           <p>Handles both GET and POST requests for the query using tblastn page.</p>
+
+<p><strong>Associated ViewModel:</strong> <a
+href="QueryUsingTblastn.html">QueryUsingTblastn</a></p>
           
 
           
           <div class="method-source-code" id="query_using_tblastn-source">
-            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 393</span>
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 435</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">query_using_tblastn</span>
   <span class="ruby-ivar">@sequence_type</span> = <span class="ruby-string">'amino acid'</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">get?</span>
@@ -1106,12 +1160,15 @@ transcripts page.</p>
         <div class="method-description">
           
           <p>Handles both GET and POST requests for the querying using Tblastx page.</p>
+
+<p><strong>Associated ViewModel:</strong> <a
+href="QueryUsingTblastx.html">QueryUsingTblastx</a></p>
           
 
           
           <div class="method-source-code" id="query_using_tblastx-source">
-            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 426</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">query_using_tblastx</span>  <span class="ruby-comment">#changed after the architecture design</span>
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 472</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">query_using_tblastx</span>
   <span class="ruby-ivar">@sequence_type</span> = <span class="ruby-string">'nucleic acid'</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">get?</span>
     <span class="ruby-ivar">@query_using_tblastx</span> = <span class="ruby-constant">QueryUsingTblastx</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
@@ -1151,11 +1208,14 @@ transcripts page.</p>
         <div class="method-description">
           
           <p>Handles both GET and POST requests for the upload Cuffdiff page</p>
+
+<p><strong>Associated ViewModel:</strong> <a
+href="UploadCuffdiff.html">UploadCuffdiff</a></p>
           
 
           
           <div class="method-source-code" id="upload_cuffdiff-source">
-            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 56</span>
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 58</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">upload_cuffdiff</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">get?</span>
     <span class="ruby-ivar">@upload_cuffdiff</span> = <span class="ruby-constant">UploadCuffdiff</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
@@ -1195,11 +1255,14 @@ transcripts page.</p>
         <div class="method-description">
           
           <p>Handles both GET and POST requests for the upload fasta sequences page.</p>
+
+<p><strong>Associated ViewModel:</strong> <a
+href="UploadFastaSequences.html">UploadFastaSequences</a></p>
           
 
           
           <div class="method-source-code" id="upload_fasta_sequences-source">
-            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 76</span>
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 80</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">upload_fasta_sequences</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">get?</span>
     <span class="ruby-ivar">@upload</span> = <span class="ruby-constant">UploadFastaSequences</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
@@ -1239,11 +1302,14 @@ transcripts page.</p>
         <div class="method-description">
           
           <p>Handles both GET and POST requests for the upload Trinity with EdgeR  page.</p>
+
+<p><strong>Associated ViewModel:</strong> <a
+href="UploadTrinityWithEdgeR.html">UploadTrinityWithEdgeR</a></p>
           
 
           
           <div class="method-source-code" id="upload_trinity_with_edger-source">
-            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 97</span>
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 103</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">upload_trinity_with_edger</span>
   <span class="ruby-keyword">if</span> (<span class="ruby-identifier">request</span>.<span class="ruby-identifier">get?</span>)
     <span class="ruby-ivar">@upload</span> = <span class="ruby-constant">UploadTrinityWithEdgeR</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)

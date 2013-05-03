@@ -1,3 +1,11 @@
+# == Description
+# 
+# Represents a differential expression test for a gene or transcript. 
+# In a differential expression test, the level of expression of a gene or 
+# transcript is compared between two samples to see if the gene or transcript 
+# is more highly expressed in one sample than the other. 
+#
+#
 # == Schema Information
 #
 # Table name: differential_expression_tests

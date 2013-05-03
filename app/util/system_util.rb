@@ -1,5 +1,7 @@
 require 'open3'
 
+###
+# Utility class containing useful functions for interacting with the system.
 class SystemUtil
   def self.backticks!(command_string)
     stdout, stderr, status = Open3.capture3(command_string)

@@ -1,3 +1,9 @@
+# == Description
+#
+# A user represents a user of the system. All datasets are tied to the 
+# user who uploaded them. Most of the table columns are used by the Devise gem.
+#
+#
 # == Schema Information
 #
 # Table name: users

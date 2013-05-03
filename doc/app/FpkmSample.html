@@ -252,6 +252,17 @@
 
   <div id="description" class="description">
     
+<h2 id="label-Description">Description</h2>
+
+<p>Represents an FPKM sample for a given transcript and sample. FPKM is a  way
+to measure gene and transcript expression. Since each sample has  different
+expression levels, each sample has different FPKM values for each  of its
+genes and transcripts. Although a gene has an <a
+href="FpkmSample.html">FpkmSample</a>, unlike  transcripts, there is no use
+case to directly query a gene’s fpkm samples.  A gene’s FpkmSamples are
+only accessed through the gene’s differential  expression tests page.
+Therefore, no direct link between the two is required.</p>
+
 <h2 id="label-Schema+Information">Schema Information</h2>
 
 <p>Table name: fpkm_samples</p>
@@ -282,7 +293,7 @@ status        :string(255)      not null</pre>
       
         <dt id="POSSIBLE_STATUSES">POSSIBLE_STATUSES
         
-        <dd class="description">
+        <dd class="description"><p>The possible valid values for the status attribute</p>
         
       
       </dl>

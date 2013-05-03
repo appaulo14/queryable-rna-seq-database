@@ -3,6 +3,10 @@ require 'query/go_ids_query_condition_generator.rb'
 require 'query/go_terms_query_condition_generator.rb'
 require 'query/go_filter_checker.rb'
 
+###
+# View model for the query differentially expressed transcripts page.
+#
+# <b>Associated Controller:</b> QueryAnalysisController
 class QueryDiffExpTranscripts
   include ActiveModel::Validations
   include ActiveModel::Conversion
@@ -20,6 +24,10 @@ class QueryDiffExpTranscripts
   
   validates :dataset_id, :presence => true,
                          :dataset_belongs_to_user => true
+  validates :sample_comparison_id, :presence => true,
+                                   :sample_comparison_id_belongs_to_user => true
+  validates :cutoff, :presence => true,
+                     :format => { :with => /\A\d*\.\d+\z/ }
   
   def initialize(user)
     @current_user = user
@@ -29,6 +37,8 @@ class QueryDiffExpTranscripts
     return @show_results
   end
   
+  # Set the view model's attributes or set those attributes to their 
+  # default values
   def set_attributes_and_defaults(attributes = {})
     #Load in any values from the form
     attributes.each do |name, value|
@@ -155,8 +165,8 @@ class QueryDiffExpTranscripts
     @show_results = true
   end
   
-  #Accoring http://railscasts.com/episodes/219-active-model?view=asciicast,
-  #     this defines that this model does not persist in the database.
+  # Accoring http://railscasts.com/episodes/219-active-model?view=asciicast,
+  # this defines that this model does not persist in the database.
   def persisted?
       return false
   end

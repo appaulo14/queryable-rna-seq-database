@@ -5,6 +5,12 @@ require 'upload/trinity_gene_fpkm_file_processor.rb'
 require 'upload/go_term_finder_and_processor.rb'
 require 'upload/blast_util.rb'
 
+###
+# View model for the upload Trinity with EdgeR page.
+#
+# <b>Associated Controller:</b> QueryAnalysisController
+#
+# <b>Associated Worker:</b> WorkerForUploadTrinityWithEdgeR
 class UploadTrinityWithEdgeR
   include ActiveModel::Validations
   include ActiveModel::Conversion
@@ -61,6 +67,8 @@ class UploadTrinityWithEdgeR
     @current_user = current_user
   end
   
+  # Set the view model's attributes or set those attributes to their 
+  # default values
   def set_attributes_and_defaults(attributes = {})
     #Load in any values from the form
     attributes.each do |name, value|

@@ -264,6 +264,11 @@
 
   <div id="description" class="description">
     
+<p>View model for the query using Tblastx page.</p>
+
+<p><strong>Associated Controller:</strong> <a
+href="QueryAnalysisController.html">QueryAnalysisController</a></p>
+
   </div><!-- description -->
 
   
@@ -421,7 +426,7 @@
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_using_tblastx.rb, line 41</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_using_tblastx.rb, line 45</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">current_user</span>)
   <span class="ruby-keyword">super</span>
   <span class="ruby-comment">#Set the available options for the number of alignments</span>
@@ -456,12 +461,13 @@
 
         <div class="method-description">
           
-          
+          <p>Set the view model’s attributes or set those attributes to their  default
+values</p>
           
 
           
           <div class="method-source-code" id="set_attributes_and_defaults-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_using_tblastx.rb, line 49</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_using_tblastx.rb, line 55</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-identifier">attributes</span> = {})
   <span class="ruby-keyword">super</span>
   <span class="ruby-comment">#Set default values for Megablast, which is the only blastn program we will use</span>

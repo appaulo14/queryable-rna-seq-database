@@ -292,7 +292,10 @@
 
   <div id="description" class="description">
     
-<p>This is an abstract class</p>
+<p>Abstract view model for the view models of all of the blast pages.</p>
+
+<p><strong>Associated Controller:</strong> <a
+href="QueryAnalysisController.html">QueryAnalysisController</a></p>
 
   </div><!-- description -->
 
@@ -312,7 +315,9 @@
       
         <dt id="AVAILABLE_NUM_ALIGNMENTS">AVAILABLE_NUM_ALIGNMENTS
         
-        <dd class="description">
+        <dd class="description"><p>The available valid options for the <a
+href="AbstractQueryUsingBlast.html#attribute-i-num_alignments">#num_alignments</a>
+attribute</p>
         
       
       </dl>
@@ -333,7 +338,8 @@
 
         <div class="method-description">
         
-        
+        <p>The datasets that are available to the user for having their blast 
+databases blasted</p>
         
         </div>
       </div>
@@ -346,7 +352,9 @@
 
         <div class="method-description">
         
-        
+        <p>The available valid options for the <a
+href="AbstractQueryUsingBlast.html#attribute-i-num_alignments">#num_alignments</a>
+attribute</p>
         
         </div>
       </div>
@@ -359,7 +367,7 @@
 
         <div class="method-description">
         
-        
+        <p>The id of the dataset whose blast database will be queried</p>
         
         </div>
       </div>
@@ -372,7 +380,7 @@
 
         <div class="method-description">
         
-        
+        <p>The e-value</p>
         
         </div>
       </div>
@@ -385,7 +393,9 @@
 
         <div class="method-description">
         
-        
+        <p>The file containing the fasta sequences that will be queried if  <a
+href="AbstractQueryUsingBlast.html#attribute-i-query_input_method">#query_input_method</a>
+is ‘file’</p>
         
         </div>
       </div>
@@ -398,7 +408,7 @@
 
         <div class="method-description">
         
-        
+        <p>Whether to filter by low complexity regions</p>
         
         </div>
       </div>
@@ -411,7 +421,7 @@
 
         <div class="method-description">
         
-        
+        <p>The number of alignments to show for the blast query</p>
         
         </div>
       </div>
@@ -424,7 +434,8 @@
 
         <div class="method-description">
         
-        
+        <p>Whether to get the query sequences from the html text area or an uploaded
+file</p>
         
         </div>
       </div>
@@ -437,7 +448,9 @@
 
         <div class="method-description">
         
-        
+        <p>The fasta sequences that will be queried if <a
+href="AbstractQueryUsingBlast.html#attribute-i-query_input_method">#query_input_method</a>
+is ‘text_area’</p>
         
         </div>
       </div>
@@ -450,7 +463,7 @@
 
         <div class="method-description">
         
-        
+        <p>Whether to use lowercase masking</p>
         
         </div>
       </div>
@@ -463,7 +476,7 @@
 
         <div class="method-description">
         
-        
+        <p>Whether to use the soft masking blast option</p>
         
         </div>
       </div>
@@ -493,7 +506,7 @@
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/abstract_query_using_blast.rb, line 43</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/abstract_query_using_blast.rb, line 66</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">current_user</span>)
   <span class="ruby-comment">#Set the current user</span>
   <span class="ruby-ivar">@current_user</span> = <span class="ruby-identifier">current_user</span>
@@ -531,12 +544,14 @@
 
         <div class="method-description">
           
-          
+          <p>Blast the dataset’s blast database and return the results as a  <a
+href="http://bioruby.org/rdoc/Bio/Blast/Report.html">Bio::Blast::Report</a>
+object.</p>
           
 
           
           <div class="method-source-code" id="blast-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/abstract_query_using_blast.rb, line 65</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/abstract_query_using_blast.rb, line 92</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">blast</span>()
   <span class="ruby-comment">#Don't query if it is not valid</span>
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">valid?</span>
@@ -576,14 +591,13 @@
         <div class="method-description">
           
           <p>Accoring <a
-href="http://railscasts.com/episodes/219-active-model?view=asciicast">railscasts.com/episodes/219-active-model?view=asciicast</a>,</p>
-
-<pre>this defines that this model does not persist in the database.</pre>
+href="http://railscasts.com/episodes/219-active-model?view=asciicast">railscasts.com/episodes/219-active-model?view=asciicast</a>,
+this defines that this model does not persist in the database.</p>
           
 
           
           <div class="method-source-code" id="persisted-3F-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/abstract_query_using_blast.rb, line 85</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/abstract_query_using_blast.rb, line 112</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">persisted?</span>
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
 <span class="ruby-keyword">end</span></pre>
@@ -608,12 +622,13 @@ href="http://railscasts.com/episodes/219-active-model?view=asciicast">railscasts
 
         <div class="method-description">
           
-          
+          <p>Set the view model’s attributes or set those attributes to their  default
+values</p>
           
 
           
           <div class="method-source-code" id="set_attributes_and_defaults-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/abstract_query_using_blast.rb, line 54</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/abstract_query_using_blast.rb, line 79</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-identifier">attributes</span> = {})
   <span class="ruby-comment">#Load in any values from the form</span>
   <span class="ruby-identifier">attributes</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">name</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
@@ -651,12 +666,12 @@ href="http://railscasts.com/episodes/219-active-model?view=asciicast">railscasts
 
         <div class="method-description">
           
-          
+          <p>Delete the temporary files generated during the blast query</p>
           
 
           
           <div class="method-source-code" id="cleanup_files-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/abstract_query_using_blast.rb, line 124</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/abstract_query_using_blast.rb, line 158</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">cleanup_files</span>()
   <span class="ruby-constant">File</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-ivar">@query_input_file</span>.<span class="ruby-identifier">path</span>)
   <span class="ruby-constant">File</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-ivar">@xml_results_file</span>.<span class="ruby-identifier">path</span>)
@@ -682,12 +697,14 @@ href="http://railscasts.com/episodes/219-active-model?view=asciicast">railscasts
 
         <div class="method-description">
           
-          
+          <p>Reads the xml results file from the blast, turn it into a  <a
+href="http://bioruby.org/rdoc/Bio/Blast/Report.html">Bio::Blast::Report</a>
+object,  and return it</p>
           
 
           
           <div class="method-source-code" id="generate_blast_report_from_xml_results-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/abstract_query_using_blast.rb, line 112</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/abstract_query_using_blast.rb, line 145</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">generate_blast_report_from_xml_results</span>()
   <span class="ruby-comment">#Parse the xml into Blast reports</span>
   <span class="ruby-identifier">f</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-ivar">@xml_results_file</span>.<span class="ruby-identifier">path</span>)
@@ -720,16 +737,17 @@ href="http://railscasts.com/episodes/219-active-model?view=asciicast">railscasts
 
         <div class="method-description">
           
-          
+          <p>This is an abstract method that must be implemented in the subclass.  It
+generates the execution string used to do the blasting.</p>
           
 
           
           <div class="method-source-code" id="generate_execution_string-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/abstract_query_using_blast.rb, line 91</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/abstract_query_using_blast.rb, line 120</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">generate_execution_string</span>
   <span class="ruby-comment">#Filter by low complexity and soft masking map to soft masking due to</span>
-  <span class="ruby-comment">#       http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.blastn_application_o/?report=objectonly</span>
-  <span class="ruby-comment">#       and http://www.ncbi.nlm.nih.gov/BLAST/blastcgihelp.shtml#filter</span>
+  <span class="ruby-comment"># http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.blastn_application_o/?report=objectonly</span>
+  <span class="ruby-comment"># and http://www.ncbi.nlm.nih.gov/BLAST/blastcgihelp.shtml#filter</span>
   <span class="ruby-comment">#If given a fasta sequence, write it to a temporary file so that it </span>
   <span class="ruby-identifier">raise</span> <span class="ruby-constant">NotImplementedError</span>, <span class="ruby-string">'Must be implemented in subclass'</span>
 <span class="ruby-keyword">end</span></pre>
@@ -754,12 +772,12 @@ href="http://railscasts.com/episodes/219-active-model?view=asciicast">railscasts
 
         <div class="method-description">
           
-          
+          <p>Create some temporary files to use for blast querying</p>
           
 
           
           <div class="method-source-code" id="prepare_IO_files-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/abstract_query_using_blast.rb, line 99</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/abstract_query_using_blast.rb, line 129</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">prepare_IO_files</span>()
   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@query_input_method</span> <span class="ruby-operator">==</span> <span class="ruby-string">'text_area'</span>
     <span class="ruby-ivar">@query_input_file</span> = <span class="ruby-constant">Tempfile</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">'query_using_blast'</span>)

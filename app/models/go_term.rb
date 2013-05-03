@@ -1,3 +1,12 @@
+# == Description
+#
+# GoTerm represents a gene ontology (GO) term from the website 
+# http://geneontology.org, which provides a structured vocabulary for 
+# talking about genes. Since RNA-seq data centers around transcripts, 
+# go terms in this database are linked to the transcripts table 
+# instead of the genes table.  
+#
+#
 # == Schema Information
 #
 # Table name: term

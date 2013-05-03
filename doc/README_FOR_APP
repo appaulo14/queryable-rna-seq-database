@@ -1,2 +1,52 @@
-Use this README file to introduce your application and point to useful places in the API for learning more.
-Run "rake doc:app" to generate API documentation for your models, controllers, helpers, and libraries.
+Controllers::
+* AdminController
+* ApplicationController
+* ConfirmationsController
+* HomeController
+* RegistrationsController
+* QueryAnalysisController
+
+
+Helpers::
+* AdminHelper
+* ApplicationHelper
+* HomeHelper
+* QueryAnalysisHelper
+
+Mailers::
+
+Models::
+
+Utility Classes::
+* General Utility Classes
+  * SystemUtil
+* Query Utility Classes
+  * GeneNameQueryConditionGenerator
+  * GoFilterChecker
+  * GoIdsQueryConditionGenerator
+  * GoTermsQueryConditionGenerator
+  * TranscriptNameQueryConditionGenerator
+* Upload Utility Classes
+  * BlastUtil
+  * GoTermFinderAndProcessor
+  * TrinityDiffExpFileProcessor
+  * TrinityFpkmFileProcessor
+  * TrinityGeneDiffExpFileProcessor
+  * TrinityGeneFpkmFileProcessor
+  * TrinityTranscriptDiffExpFileProcessor
+  * TrinityFpkmFileProcessor
+  * UploadedTrinityDiffExpFile
+  * UploadedTrinityFpkmFile
+  
+
+Validators::
+
+ViewModels::
+
+Workers::
+
+
+
+
+
+

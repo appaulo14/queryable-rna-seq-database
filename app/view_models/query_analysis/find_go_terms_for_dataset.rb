@@ -1,12 +1,24 @@
 require 'tempfile'
 
+###
+# View model for the find go terms for dataset page.
+#
+# <b>Associated Controller:</b> QueryAnalysisController
+#
+# <b>Associated Worker:</b> WorkerForFindGoTermsForDataset
 class FindGoTermsForDataset
   include ActiveModel::Validations
   include ActiveModel::Conversion
   extend ActiveModel::Naming
   
+  # The id of the dataset for which the go terms will be found
   attr_accessor :dataset_id
-  attr_reader :names_and_ids_for_available_datasets, :datasets_in_progress
+  
+  # The name/id pairs of the datasets that can be selected to have their 
+  # go terms found.
+  attr_reader   :names_and_ids_for_available_datasets
+  # A list of datasets that are in the process of having their go terms found.
+  attr_reader   :datasets_in_progress
   
   validates :dataset_id, :dataset_belongs_to_user => true
   
@@ -14,6 +26,8 @@ class FindGoTermsForDataset
     @current_user = current_user
   end
   
+  # Set the view model's attributes or set those attributes to their 
+  # default values
   def set_attributes_and_defaults(attributes = {})
     #Load in any values from the form
     attributes.each do |name, value|
@@ -34,6 +48,9 @@ class FindGoTermsForDataset
                                            :go_terms_status => 'in-progress')
   end
   
+  # Find the GoTerm records for the dataset specified in dataset_id and then 
+  # save the associated between them in the database using 
+  # TranscriptHasGoTerm records.
   def find_and_save()
     return if not self.valid?
     begin
@@ -62,8 +79,8 @@ class FindGoTermsForDataset
     end
   end
   
-  #According http://railscasts.com/episodes/219-active-model?view=asciicast,
-  #     this defines that this model does not persist in the database.
+  # According http://railscasts.com/episodes/219-active-model?view=asciicast,
+  # this defines that this model does not persist in the database.
   def persisted?
       return false
   end

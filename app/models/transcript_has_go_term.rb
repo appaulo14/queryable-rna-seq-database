@@ -1,3 +1,10 @@
+# == Description
+#
+# Represents a bridge table designed to show the relationship between 
+# Transcript records and GoTerm records because a Transcript record can have 
+# many GoTerm records but a GoTerm record can also have many Transcript records.
+#
+#
 # == Schema Information
 #
 # Table name: transcript_has_go_terms

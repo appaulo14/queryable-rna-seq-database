@@ -1,3 +1,10 @@
+# == Description
+#
+# SampleComparison represents comparison between two samples for 
+# differential expression testing. All instances of DifferentialExpressionTest 
+# link to a SampleComparison.
+#
+#
 # == Schema Information
 #
 # Table name: sample_comparisons

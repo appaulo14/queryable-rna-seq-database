@@ -1,6 +1,10 @@
 require 'tempfile'
 require 'query_analysis/abstract_query_using_blast.rb'
 
+###
+# View model for the query using Tblastn page.
+#
+# <b>Associated Controller:</b> QueryAnalysisController
 class QueryUsingTblastn < AbstractQueryUsingBlast
   
   #TODO: Describe meaning of these?
@@ -140,35 +144,37 @@ class QueryUsingTblastn < AbstractQueryUsingBlast
   validates :matrix, :presence => true,
                      :inclusion => {:in => AVAILABLE_MATRICES}
     
-    def initialize(current_user)
-      super
-      #Set the available options for the number of alignments
-      @available_compositional_adjustments = AVAILABLE_COMPOSITIONAL_ADJUSTMENTS
-      @available_matrices = AVAILABLE_MATRICES
-      @available_word_sizes = AVAILABLE_WORD_SIZES
-    end
+  def initialize(current_user)
+    super
+    #Set the available options for the number of alignments
+    @available_compositional_adjustments = AVAILABLE_COMPOSITIONAL_ADJUSTMENTS
+    @available_matrices = AVAILABLE_MATRICES
+    @available_word_sizes = AVAILABLE_WORD_SIZES
+  end
   
-    def set_attributes_and_defaults(attributes = {})
-      super
-      #Set default values for Megablast, which is the only blastn program we will use
-      #Defaults taken from http://www.ncbi.nlm.nih.gov/books/NBK1763/#CmdLineAppsManual.Appendix_C_Options_for
-      # and http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.blastn_application_o/?report=objectonly
-      @word_size = '3' if @word_size.blank?
-      @compositional_adjustment = '2'
-      @use_soft_masking = '0' if @use_soft_masking.blank?
-      @use_lowercase_masking = '0' if @use_lowercase_masking.blank?
-      if @filter_low_complexity_regions.blank?
-        @filter_low_complexity_regions = '1'
-      end
-      if @matrix.blank?
-        @matrix = 'BLOSUM62'
-      end
-      #Set available gap costs for the given matrix
-      @available_gap_costs = AVAILABLE_GAP_COSTS[@matrix].keys
-      if @gap_costs.blank? or not @available_gap_costs.include?(@gap_costs)
-        @gap_costs = AVAILABLE_GAP_COST_DEFAULTS[@matrix]
-      end
+  # Set the view model's attributes or set those attributes to their 
+  # default values
+  def set_attributes_and_defaults(attributes = {})
+    super
+    #Set default values for Megablast, which is the only blastn program we will use
+    #Defaults taken from http://www.ncbi.nlm.nih.gov/books/NBK1763/#CmdLineAppsManual.Appendix_C_Options_for
+    # and http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.blastn_application_o/?report=objectonly
+    @word_size = '3' if @word_size.blank?
+    @compositional_adjustment = '2'
+    @use_soft_masking = '0' if @use_soft_masking.blank?
+    @use_lowercase_masking = '0' if @use_lowercase_masking.blank?
+    if @filter_low_complexity_regions.blank?
+      @filter_low_complexity_regions = '1'
     end
+    if @matrix.blank?
+      @matrix = 'BLOSUM62'
+    end
+    #Set available gap costs for the given matrix
+    @available_gap_costs = AVAILABLE_GAP_COSTS[@matrix].keys
+    if @gap_costs.blank? or not @available_gap_costs.include?(@gap_costs)
+      @gap_costs = AVAILABLE_GAP_COST_DEFAULTS[@matrix]
+    end
+  end
    
     
     private

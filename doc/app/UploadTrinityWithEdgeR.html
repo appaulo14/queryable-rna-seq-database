@@ -284,6 +284,13 @@
 
   <div id="description" class="description">
     
+<p>View model for the upload Trinity with EdgeR page.</p>
+
+<p><strong>Associated Controller:</strong> <a
+href="QueryAnalysisController.html">QueryAnalysisController</a></p>
+
+<p><strong>Associated Worker:</strong> WorkerForUploadTrinityWithEdgeR</p>
+
   </div><!-- description -->
 
   
@@ -470,7 +477,7 @@
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/upload_trinity_with_edger.rb, line 60</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/upload_trinity_with_edger.rb, line 66</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">current_user</span>)
   <span class="ruby-ivar">@current_user</span> = <span class="ruby-identifier">current_user</span>
 <span class="ruby-keyword">end</span></pre>
@@ -509,7 +516,7 @@ href="http://railscasts.com/episodes/219-active-model?view=asciicast">railscasts
 
           
           <div class="method-source-code" id="persisted-3F-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/upload_trinity_with_edger.rb, line 132</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/upload_trinity_with_edger.rb, line 140</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">persisted?</span>
     <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
 <span class="ruby-keyword">end</span></pre>
@@ -539,7 +546,7 @@ href="http://railscasts.com/episodes/219-active-model?view=asciicast">railscasts
 
           
           <div class="method-source-code" id="save-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/upload_trinity_with_edger.rb, line 71</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/upload_trinity_with_edger.rb, line 79</span>
   <span class="ruby-keyword">def</span> <span class="ruby-identifier">save</span>
     <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">valid?</span>
     <span class="ruby-keyword">begin</span>
@@ -619,12 +626,13 @@ href="http://railscasts.com/episodes/219-active-model?view=asciicast">railscasts
 
         <div class="method-description">
           
-          
+          <p>Set the view model’s attributes or set those attributes to their  default
+values</p>
           
 
           
           <div class="method-source-code" id="set_attributes_and_defaults-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/upload_trinity_with_edger.rb, line 64</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/upload_trinity_with_edger.rb, line 72</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-identifier">attributes</span> = {})
   <span class="ruby-comment">#Load in any values from the form</span>
   <span class="ruby-identifier">attributes</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">name</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>

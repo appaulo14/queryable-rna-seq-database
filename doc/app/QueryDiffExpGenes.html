@@ -286,6 +286,11 @@
 
   <div id="description" class="description">
     
+<p>View model for the query differentially expressed genes page.</p>
+
+<p><strong>Associated Controller:</strong> <a
+href="QueryAnalysisController.html">QueryAnalysisController</a></p>
+
   </div><!-- description -->
 
   
@@ -338,7 +343,9 @@
 
         <div class="method-description">
         
-        
+        <p>The cutoff where differential expression tests with an <a
+href="QueryDiffExpGenes.html#attribute-i-fdr_or_p_value">#fdr_or_p_value</a>
+above this will not be included in the query results</p>
         
         </div>
       </div>
@@ -351,7 +358,8 @@
 
         <div class="method-description">
         
-        
+        <p>The id of the dataset whose gene differential expression tests will be 
+queried.</p>
         
         </div>
       </div>
@@ -364,7 +372,7 @@
 
         <div class="method-description">
         
-        
+        <p>Whether the cutoff should be by fdr or p_value</p>
         
         </div>
       </div>
@@ -377,7 +385,8 @@
 
         <div class="method-description">
         
-        
+        <p>Specifies that only records matching this gene name should be display  in
+the query results.</p>
         
         </div>
       </div>
@@ -390,7 +399,8 @@
 
         <div class="method-description">
         
-        
+        <p>Specifies that differential expression tests with genes have all of  these
+go ids (accessions) should be displayed in the query results.</p>
         
         </div>
       </div>
@@ -403,7 +413,8 @@
 
         <div class="method-description">
         
-        
+        <p>Specifies that differential expression tests with genes have all of  these
+go terms should be displayed in the query results.</p>
         
         </div>
       </div>
@@ -429,7 +440,8 @@
 
         <div class="method-description">
         
-        
+        <p>The name/id pairs of the datasets that can be selected to have their  gene
+differential expression tests queried.</p>
         
         </div>
       </div>
@@ -442,7 +454,8 @@
 
         <div class="method-description">
         
-        
+        <p>Because the query results are loaded in pieces using LIMIT and OFFSET, 
+this specifies which piece to load.</p>
         
         </div>
       </div>
@@ -507,7 +520,8 @@
 
         <div class="method-description">
         
-        
+        <p>The id of the sample comparison whose gene differential expression tests 
+will be queried.</p>
         
         </div>
       </div>
@@ -550,7 +564,7 @@
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_diff_exp_genes.rb, line 29</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_diff_exp_genes.rb, line 63</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">current_user</span>)
   <span class="ruby-ivar">@current_user</span> = <span class="ruby-identifier">current_user</span>
 <span class="ruby-keyword">end</span></pre>
@@ -582,14 +596,13 @@
         <div class="method-description">
           
           <p>Accoring <a
-href="http://railscasts.com/episodes/219-active-model?view=asciicast">railscasts.com/episodes/219-active-model?view=asciicast</a>,</p>
-
-<pre>this defines that this model does not persist in the database.</pre>
+href="http://railscasts.com/episodes/219-active-model?view=asciicast">railscasts.com/episodes/219-active-model?view=asciicast</a>,
+this defines that this model does not persist in the database.</p>
           
 
           
           <div class="method-source-code" id="persisted-3F-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_diff_exp_genes.rb, line 155</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_diff_exp_genes.rb, line 191</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">persisted?</span>
     <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
 <span class="ruby-keyword">end</span></pre>
@@ -619,7 +632,7 @@ href="http://railscasts.com/episodes/219-active-model?view=asciicast">railscasts
 
           
           <div class="method-source-code" id="query-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_diff_exp_genes.rb, line 83</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_diff_exp_genes.rb, line 119</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">query</span>()
   <span class="ruby-comment">#Don't query if it is not valid</span>
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">valid?</span>
@@ -710,12 +723,13 @@ href="http://railscasts.com/episodes/219-active-model?view=asciicast">railscasts
 
         <div class="method-description">
           
-          
+          <p>Set the view model’s attributes or set those attributes to their  default
+values</p>
           
 
           
           <div class="method-source-code" id="set_attributes_and_defaults-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_diff_exp_genes.rb, line 33</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_diff_exp_genes.rb, line 69</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-identifier">attributes</span> = {})
   <span class="ruby-comment">#Load in any values from the form</span>
   <span class="ruby-identifier">attributes</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">name</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
@@ -791,7 +805,7 @@ href="http://railscasts.com/episodes/219-active-model?view=asciicast">railscasts
 
           
           <div class="method-source-code" id="show_results-3F-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_diff_exp_genes.rb, line 25</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_diff_exp_genes.rb, line 59</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">show_results?</span>
   <span class="ruby-keyword">return</span> <span class="ruby-ivar">@show_results</span>
 <span class="ruby-keyword">end</span></pre>

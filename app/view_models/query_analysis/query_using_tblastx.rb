@@ -1,6 +1,10 @@
 require 'tempfile'
 require 'query_analysis/abstract_query_using_blast.rb'
 
+###
+# View model for the query using Tblastx page.
+#
+# <b>Associated Controller:</b> QueryAnalysisController
 class QueryUsingTblastx < AbstractQueryUsingBlast
   
   #TODO: Describe meaning of these?
@@ -46,6 +50,8 @@ class QueryUsingTblastx < AbstractQueryUsingBlast
       @available_word_sizes = AVAILABLE_WORD_SIZES
     end
   
+    # Set the view model's attributes or set those attributes to their 
+    # default values
     def set_attributes_and_defaults(attributes = {})
       super
       #Set default values for Megablast, which is the only blastn program we will use

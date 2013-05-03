@@ -264,6 +264,14 @@
 
   <div id="description" class="description">
     
+<h2 id="label-Description">Description</h2>
+
+<p><a href="GoTerm.html">GoTerm</a> represents a gene ontology (GO) term from
+the website  <a href="http://geneontology.org">geneontology.org</a>, which
+provides a structured vocabulary for  talking about genes. Since RNA-seq
+data centers around transcripts,  go terms in this database are linked to
+the transcripts table  instead of the genes table.</p>
+
 <h2 id="label-Schema+Information">Schema Information</h2>
 
 <p>Table name: term</p>
@@ -312,7 +320,7 @@ is_relation :integer          default(0), not null</pre>
 
           
           <div class="method-source-code" id="delete-source">
-            <pre><span class="ruby-comment"># File app/models/go_term.rb, line 33</span>
+            <pre><span class="ruby-comment"># File app/models/go_term.rb, line 42</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">delete</span>()
   <span class="ruby-identifier">raise</span> <span class="ruby-constant">NotImplementedError</span>, <span class="ruby-string">&quot;GO Terms are in a different db and should &quot;</span> <span class="ruby-operator">+</span>
                                 <span class="ruby-string">&quot;not be manipulated from here&quot;</span>
@@ -343,7 +351,7 @@ is_relation :integer          default(0), not null</pre>
 
           
           <div class="method-source-code" id="destroy-source">
-            <pre><span class="ruby-comment"># File app/models/go_term.rb, line 29</span>
+            <pre><span class="ruby-comment"># File app/models/go_term.rb, line 38</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">destroy</span>()
   <span class="ruby-identifier">raise</span> <span class="ruby-constant">NotImplementedError</span>, <span class="ruby-string">&quot;GO Terms are in a different db and should &quot;</span> <span class="ruby-operator">+</span>
                                 <span class="ruby-string">&quot;not be manipulated from here&quot;</span>

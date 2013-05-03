@@ -3,6 +3,10 @@ require 'query/go_ids_query_condition_generator.rb'
 require 'query/go_terms_query_condition_generator.rb'
 require 'query/go_filter_checker.rb'
 
+###
+# View model for the query transcript isoforms page.
+#
+# <b>Associated Controller:</b> QueryAnalysisController
 class QueryTranscriptIsoforms
   include ActiveModel::Validations
   include ActiveModel::Conversion
@@ -68,6 +72,8 @@ class QueryTranscriptIsoforms
     @current_user = current_user
   end
   
+  # Set the view model's attributes or set those attributes to their 
+  # default values
   def set_attributes_and_defaults(attributes = {})
     #Load in any values from the form
     attributes.each do |name, value|
@@ -170,8 +176,8 @@ class QueryTranscriptIsoforms
     @show_results = true
   end
   
-  #According http://railscasts.com/episodes/219-active-model?view=asciicast,
-  #     this defines that this model does not persist in the database.
+  # According http://railscasts.com/episodes/219-active-model?view=asciicast,
+  # this defines that this model does not persist in the database.
   def persisted?
       return false
   end

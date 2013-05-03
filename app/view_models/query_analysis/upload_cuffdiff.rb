@@ -4,6 +4,12 @@ require 'system_util.rb'
 require 'upload/blast_util.rb'
 require 'upload/go_term_finder_and_processor.rb'
 
+###
+# View model for the upload Cuffdiff page.
+#
+# <b>Associated Controller:</b> QueryAnalysisController
+#
+# <b>Associated Worker:</b> WorkerForUploadCuffdiff
 class UploadCuffdiff
   include ActiveModel::Validations
   include ActiveModel::Conversion
@@ -50,6 +56,8 @@ class UploadCuffdiff
     @current_user = current_user
   end
   
+  # Set the view model's attributes or set those attributes to their 
+  # default values
   def set_attributes_and_defaults(attributes = {})
     #Load in any values from the form
     attributes.each do |name, value|
@@ -76,15 +84,6 @@ class UploadCuffdiff
           process_transcript_isoforms_file()
           Rails.logger.info "Finished trans isoforms for dataset: #{@dataset.id}"
         end
-#         counts = Hash.new{ 0 }
-#         ObjectSpace.each_object do |o|
-#           counts[o.class] += 1
-#         end
-#         counts.each do |key, val|
-#           if counts[key] > 100
-#             puts "#{key}=#{counts[key]}"
-#           end
-#         end
         Rails.logger.info "Started blast db creation for dataset: #{@dataset.id}"
         BlastUtil.makeblastdb_with_seqids(@transcripts_fasta_file.tempfile.path,
                                            @dataset)

@@ -1,16 +1,39 @@
-#This is an abstract class
+###
+# Abstract view model for the view models of all of the blast pages.
+#
+# <b>Associated Controller:</b> QueryAnalysisController
 class AbstractQueryUsingBlast
   include ActiveModel::Validations
   include ActiveModel::Conversion
   extend ActiveModel::Naming
   
-  attr_accessor :dataset_id, :text_area_fastas, :fasta_file, :num_alignments, 
-                :evalue, :query_input_method, 
-                :use_soft_masking, :filter_low_complexity_regions,
-                :use_lowercase_masking
-                
-  attr_reader   :available_datasets, :available_num_alignments
+  # The id of the dataset whose blast database will be queried
+  attr_accessor :dataset_id
+  # The fasta sequences that will be queried if query_input_method is 'text_area'
+  attr_accessor :text_area_fastas
+  # The file containing the fasta sequences that will be queried if 
+  # query_input_method is 'file'
+  attr_accessor :fasta_file
+  # The number of alignments to show for the blast query
+  attr_accessor :num_alignments
+  # The e-value
+  attr_accessor :evalue
+  # Whether to get the query sequences from the html text area or an uploaded file
+  attr_accessor :query_input_method 
+  # Whether to use the soft masking blast option
+  attr_accessor :use_soft_masking
+  # Whether to filter by low complexity regions
+  attr_accessor :filter_low_complexity_regions
+  # Whether to use lowercase masking
+  attr_accessor :use_lowercase_masking
   
+  # The datasets that are available to the user for having their blast 
+  # databases blasted
+  attr_reader   :available_datasets
+  # The available valid options for the num_alignments attribute
+  attr_reader   :available_num_alignments
+  
+  # The available valid options for the num_alignments attribute
   AVAILABLE_NUM_ALIGNMENTS = ['0','10','50','100','250','500']
   
   validates :dataset_id, :presence => true,
@@ -51,6 +74,8 @@ class AbstractQueryUsingBlast
     @available_num_alignments = AVAILABLE_NUM_ALIGNMENTS
   end
   
+  # Set the view model's attributes or set those attributes to their 
+  # default values
   def set_attributes_and_defaults(attributes = {})
     #Load in any values from the form
     attributes.each do |name, value|
@@ -62,6 +87,8 @@ class AbstractQueryUsingBlast
     @query_input_method = 'text_area' if @query_input_method.blank?
   end
   
+  # Blast the dataset's blast database and return the results as a 
+  # Bio::Blast::Report[http://bioruby.org/rdoc/Bio/Blast/Report.html] object.
   def blast()
     #Don't query if it is not valid
     return if not self.valid?
@@ -80,22 +107,25 @@ class AbstractQueryUsingBlast
     return blast_report
   end
   
-  #Accoring http://railscasts.com/episodes/219-active-model?view=asciicast,
-  #     this defines that this model does not persist in the database.
+  # Accoring http://railscasts.com/episodes/219-active-model?view=asciicast,
+  # this defines that this model does not persist in the database.
   def persisted?
     return false
   end
   
   protected
   
+  # This is an abstract method that must be implemented in the subclass. 
+  # It generates the execution string used to do the blasting.
   def generate_execution_string
     #Filter by low complexity and soft masking map to soft masking due to
-    #       http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.blastn_application_o/?report=objectonly
-    #       and http://www.ncbi.nlm.nih.gov/BLAST/blastcgihelp.shtml#filter
+    # http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.blastn_application_o/?report=objectonly
+    # and http://www.ncbi.nlm.nih.gov/BLAST/blastcgihelp.shtml#filter
     #If given a fasta sequence, write it to a temporary file so that it 
     raise NotImplementedError, 'Must be implemented in subclass'
   end
   
+  # Create some temporary files to use for blast querying
   def prepare_IO_files()
     if @query_input_method == 'text_area'
       @query_input_file = Tempfile.new('query_using_blast')
@@ -109,6 +139,9 @@ class AbstractQueryUsingBlast
     @xml_results_file.close
   end
   
+  # Reads the xml results file from the blast, turn it into a 
+  # Bio::Blast::Report[http://bioruby.org/rdoc/Bio/Blast/Report.html] object, 
+  # and return it
   def generate_blast_report_from_xml_results()
     #Parse the xml into Blast reports
     f = File.open(@xml_results_file.path)
@@ -121,6 +154,7 @@ class AbstractQueryUsingBlast
     return blast_report
   end
   
+  # Delete the temporary files generated during the blast query
   def cleanup_files()
     File.delete(@query_input_file.path)
     File.delete(@xml_results_file.path)

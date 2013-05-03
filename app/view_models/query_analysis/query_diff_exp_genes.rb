@@ -3,24 +3,58 @@ require 'query/go_ids_query_condition_generator.rb'
 require 'query/go_terms_query_condition_generator.rb'
 require 'query/go_filter_checker.rb'
 
+###
+# View model for the query differentially expressed genes page.
+#
+# <b>Associated Controller:</b> QueryAnalysisController
 class QueryDiffExpGenes
   include ActiveModel::Validations
   include ActiveModel::Conversion
   extend ActiveModel::Naming
   
-  attr_accessor :dataset_id, :sample_comparison_id,
-                :fdr_or_p_value, :cutoff, :go_terms, :go_ids, :gene_name,
-                :piece
-  attr_reader   :names_and_ids_for_available_datasets, 
-                :available_sample_comparisons, 
-                :show_results, :results, :sample_1_name, :sample_2_name,
-                :program_used, :go_terms_status
+  # The id of the dataset whose gene differential expression tests will be 
+  # queried.
+  attr_accessor :dataset_id
+  # The id of the sample comparison whose gene differential expression tests 
+  # will be queried. 
+  attr_accessor :sample_comparison_id
+  # Whether the cutoff should be by fdr or p_value
+  attr_accessor :fdr_or_p_value
+  # The cutoff where differential expression tests with an fdr_or_p_value 
+  # above this will not be included in the query results
+  attr_accessor :cutoff
+  # Specifies that differential expression tests with genes have all of 
+  # these go terms should be displayed in the query results.
+  attr_accessor :go_terms
+  # Specifies that differential expression tests with genes have all of 
+  # these go ids (accessions) should be displayed in the query results.
+  attr_accessor :go_ids
+  # Specifies that only records matching this gene name should be display 
+  # in the query results.
+  attr_accessor :gene_name
+  # Because the query results are loaded in pieces using LIMIT and OFFSET, 
+  # this specifies which piece to load.
+  attr_accessor :piece
+  
+  # The name/id pairs of the datasets that can be selected to have their 
+  # gene differential expression tests queried.
+  attr_reader   :names_and_ids_for_available_datasets
+  attr_reader   :available_sample_comparisons 
+  attr_reader   :show_results
+  attr_reader   :results
+  attr_reader   :sample_1_name
+  attr_reader   :sample_2_name
+  attr_reader   :program_used
+  attr_reader   :go_terms_status
   
   PIECE_SIZE = 100
   
-  #TODO: Add validation 
-  validate :user_has_permission_to_access_dataset
-  validate :sample_is_not_compared_against_itself
+  validates :dataset_id, :presence => true,
+                         :dataset_belongs_to_user => true
+  validates :sample_comparison_id, :presence => true,
+                                   :sample_comparison_id_belongs_to_user => true
+  validates :cutoff, :presence => true,
+                     :format => { :with => /\A\d*\.\d+\z/ }
   
   def show_results?
     return @show_results
@@ -30,6 +64,8 @@ class QueryDiffExpGenes
     @current_user = current_user
   end
   
+  # Set the view model's attributes or set those attributes to their 
+  # default values
   def set_attributes_and_defaults(attributes = {})
     #Load in any values from the form
     attributes.each do |name, value|
@@ -150,16 +186,9 @@ class QueryDiffExpGenes
     @show_results = true
   end
   
-  #Accoring http://railscasts.com/episodes/219-active-model?view=asciicast,
-  #     this defines that this model does not persist in the database.
+  # Accoring http://railscasts.com/episodes/219-active-model?view=asciicast,
+  # this defines that this model does not persist in the database.
   def persisted?
       return false
-  end
-  
-  private
-  def user_has_permission_to_access_dataset
-  end
-  
-  def sample_is_not_compared_against_itself
   end
 end

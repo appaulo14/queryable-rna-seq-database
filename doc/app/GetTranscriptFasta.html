@@ -284,6 +284,11 @@
 
   <div id="description" class="description">
     
+<p>View model for displaying the fasta sequence for a given transcript.</p>
+
+<p><strong>Associated Controller:</strong> <a
+href="QueryAnalysisController.html">QueryAnalysisController</a></p>
+
   </div><!-- description -->
 
   
@@ -310,7 +315,8 @@
 
         <div class="method-description">
         
-        
+        <p>The id of the dataset containing the <a
+href="GetTranscriptFasta.html#attribute-i-transcript_name">#transcript_name</a></p>
         
         </div>
       </div>
@@ -323,7 +329,7 @@
 
         <div class="method-description">
         
-        
+        <p>The name of the transcript to find the fasta sequence for</p>
         
         </div>
       </div>
@@ -353,7 +359,7 @@
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/get_transcript_fasta.rb, line 15</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/get_transcript_fasta.rb, line 20</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">user</span>)
   <span class="ruby-ivar">@current_user</span> = <span class="ruby-identifier">user</span>
 <span class="ruby-keyword">end</span></pre>
@@ -385,14 +391,13 @@
         <div class="method-description">
           
           <p>Accoring <a
-href="http://railscasts.com/episodes/219-active-model?view=asciicast">railscasts.com/episodes/219-active-model?view=asciicast</a>,</p>
-
-<pre>this defines that this model does not persist in the database.</pre>
+href="http://railscasts.com/episodes/219-active-model?view=asciicast">railscasts.com/episodes/219-active-model?view=asciicast</a>,
+this defines that this model does not persist in the database.</p>
           
 
           
           <div class="method-source-code" id="persisted-3F-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/get_transcript_fasta.rb, line 60</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/get_transcript_fasta.rb, line 54</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">persisted?</span>
     <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
 <span class="ruby-keyword">end</span></pre>
@@ -417,45 +422,32 @@ href="http://railscasts.com/episodes/219-active-model?view=asciicast">railscasts
 
         <div class="method-description">
           
-          
+          <p>Return the transcripts fasta sequence by querying the dataset’s blast 
+database.</p>
           
 
           
           <div class="method-source-code" id="query-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/get_transcript_fasta.rb, line 24</span>
-  <span class="ruby-keyword">def</span> <span class="ruby-identifier">query</span>
-    <span class="ruby-comment">#Get the transcript from the parameters</span>
-    <span class="ruby-identifier">raise</span>(<span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">RecordInvalid</span>,<span class="ruby-keyword">self</span>) <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">valid?</span>
-    <span class="ruby-identifier">dataset</span> = <span class="ruby-constant">Dataset</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-ivar">@dataset_id</span>)
-<span class="ruby-comment">#    transcript = Transcript.where(:dataset_id =&gt; @dataset_id, </span>
-<span class="ruby-comment">#                                  :name_from_program =&gt; @transcript_name)[0]</span>
-<span class="ruby-comment">#    #Create the fasta string</span>
-<span class="ruby-comment">#    if transcript.nil?</span>
-<span class="ruby-comment">#      return 'No fasta sequences found.'</span>
-<span class="ruby-comment">#    else</span>
-      <span class="ruby-comment">#Create the fasta string for the transcript</span>
-      <span class="ruby-comment">#TODO figure out how to handle failure</span>
-<span class="ruby-comment">#      stdin, stdout, stderr = </span>
-<span class="ruby-comment">#        Open3.popen3('bin/blast/bin/blastdbcmd', </span>
-<span class="ruby-comment">#                     '-entry',&quot;#{transcript.name_from_program}&quot;, </span>
-<span class="ruby-comment">#                     '-db',&quot;#{transcript.dataset.blast_db_location}&quot;, </span>
-<span class="ruby-comment">#                     '-dbtype','nucl')</span>
-      <span class="ruby-identifier">stdout</span>, <span class="ruby-identifier">stderr</span>, <span class="ruby-identifier">status</span> = 
-        <span class="ruby-constant">Open3</span>.<span class="ruby-identifier">capture3</span>(<span class="ruby-string">'bin/blast/bin/blastdbcmd'</span>, 
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/get_transcript_fasta.rb, line 32</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">query</span>
+  <span class="ruby-comment">#Get the transcript from the parameters</span>
+  <span class="ruby-identifier">raise</span>(<span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">RecordInvalid</span>,<span class="ruby-keyword">self</span>) <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">valid?</span>
+  <span class="ruby-identifier">dataset</span> = <span class="ruby-constant">Dataset</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-ivar">@dataset_id</span>)
+    <span class="ruby-identifier">stdout</span>, <span class="ruby-identifier">stderr</span>, <span class="ruby-identifier">status</span> = 
+      <span class="ruby-constant">Open3</span>.<span class="ruby-identifier">capture3</span>(<span class="ruby-string">'bin/blast/bin/blastdbcmd'</span>, 
                      <span class="ruby-string">'-entry'</span>,<span class="ruby-node">&quot;#{@transcript_name}&quot;</span>, 
                      <span class="ruby-string">'-db'</span>,<span class="ruby-node">&quot;#{dataset.blast_db_location}&quot;</span>, 
                      <span class="ruby-string">'-dbtype'</span>,<span class="ruby-string">'nucl'</span>)
-      <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">stderr</span>.<span class="ruby-identifier">blank?</span>
-        <span class="ruby-keyword">if</span> <span class="ruby-identifier">stderr</span>.<span class="ruby-identifier">match</span>(<span class="ruby-regexp">/Entry not found in BLAST database/</span>)
-          <span class="ruby-keyword">return</span> <span class="ruby-identifier">stderr</span>
-        <span class="ruby-keyword">else</span>
-          <span class="ruby-identifier">raise</span> <span class="ruby-constant">StandardError</span>, <span class="ruby-identifier">stderr</span>
-        <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">stderr</span>.<span class="ruby-identifier">blank?</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">stderr</span>.<span class="ruby-identifier">match</span>(<span class="ruby-regexp">/Entry not found in BLAST database/</span>)
+        <span class="ruby-keyword">return</span> <span class="ruby-identifier">stderr</span>
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">raise</span> <span class="ruby-constant">StandardError</span>, <span class="ruby-identifier">stderr</span>
       <span class="ruby-keyword">end</span>
-     
-        <span class="ruby-keyword">return</span> <span class="ruby-identifier">stdout</span>
-<span class="ruby-comment">#    end</span>
-  <span class="ruby-keyword">end</span></pre>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-comment"># Return the transcript fasta sequence</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">stdout</span>
+<span class="ruby-keyword">end</span></pre>
           </div><!-- query-source -->
           
         </div>
@@ -477,12 +469,12 @@ href="http://railscasts.com/episodes/219-active-model?view=asciicast">railscasts
 
         <div class="method-description">
           
-          
+          <p>Set the view model’s attributes</p>
           
 
           
           <div class="method-source-code" id="set_attributes-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/get_transcript_fasta.rb, line 19</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/get_transcript_fasta.rb, line 25</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">set_attributes</span>(<span class="ruby-identifier">attributes</span> = {})
   <span class="ruby-ivar">@dataset_id</span> = <span class="ruby-identifier">attributes</span>[<span class="ruby-value">:dataset_id</span>]
   <span class="ruby-ivar">@transcript_name</span> = <span class="ruby-identifier">attributes</span>[<span class="ruby-value">:transcript_name</span>]

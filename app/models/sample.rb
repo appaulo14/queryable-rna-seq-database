@@ -1,3 +1,10 @@
+# == Description
+#
+# Sample represents a sample from one of the uploaded data files. 
+# For example, one sample might be from the spleen and another from the 
+# pancreas of the same organism. 
+#
+#
 # == Schema Information
 #
 # Table name: samples
@@ -11,6 +18,7 @@
 class Sample < ActiveRecord::Base
   attr_accessible :dataset, :name, :sample_type
   
+  # The possible valid values for the sample_type attribute
   AVAILABLE_SAMPLE_TYPES = ['transcript','gene','both']
   
   validates :name, :presence => true

@@ -1,3 +1,8 @@
+# == Description
+#
+# Represents a transcript from the upload data files.
+#
+#
 # == Schema Information
 #
 # Table name: transcripts
@@ -9,12 +14,7 @@
 #
 
 class Transcript < ActiveRecord::Base
-    attr_accessible :gene, :dataset, :name_from_program
-  
-  ###Constants###
-  #Based off the NCBI fasta format guide: 
-  #     http://www.ncbi.nlm.nih.gov/blast/blastcgihelp.shtml
-  NUCLEOTIDE_FASTA_SEQUENCE_REGEX = /\A[ACGTNUKSYMWRBDHV\-]+\z/i 
+  attr_accessible :gene, :dataset, :name_from_program
   
   #Associations
   belongs_to :dataset
@@ -29,6 +29,8 @@ class Transcript < ActiveRecord::Base
   validates :dataset, :presence => true
   validates :name_from_program, :presence => true
   
+  ###
+  # The GoTerm records associated with this Transcript.
   def go_terms
     return GoTerm.where("id in (?)", self.transcript_has_go_terms.map{|t| t.go_term_id})
   end

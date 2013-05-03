@@ -264,6 +264,8 @@
 
   <div id="description" class="description">
     
+<p>Utility class containing useful functions for interacting with the system.</p>
+
   </div><!-- description -->
 
   
@@ -300,7 +302,7 @@
 
           
           <div class="method-source-code" id="backticks-21-source">
-            <pre><span class="ruby-comment"># File app/util/system_util.rb, line 4</span>
+            <pre><span class="ruby-comment"># File app/util/system_util.rb, line 6</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">backticks!</span>(<span class="ruby-identifier">command_string</span>)
   <span class="ruby-identifier">stdout</span>, <span class="ruby-identifier">stderr</span>, <span class="ruby-identifier">status</span> = <span class="ruby-constant">Open3</span>.<span class="ruby-identifier">capture3</span>(<span class="ruby-identifier">command_string</span>)
   <span class="ruby-comment"># Throw an exception if the command failed</span>
@@ -340,7 +342,7 @@
 
           
           <div class="method-source-code" id="system-21-source">
-            <pre><span class="ruby-comment"># File app/util/system_util.rb, line 18</span>
+            <pre><span class="ruby-comment"># File app/util/system_util.rb, line 20</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">system!</span>(<span class="ruby-identifier">command_string</span>)
   <span class="ruby-identifier">stdout</span>, <span class="ruby-identifier">stderr</span>, <span class="ruby-identifier">status</span> = <span class="ruby-constant">Open3</span>.<span class="ruby-identifier">capture3</span>(<span class="ruby-identifier">command_string</span>)
   <span class="ruby-comment"># Throw an exception if the command failed</span>

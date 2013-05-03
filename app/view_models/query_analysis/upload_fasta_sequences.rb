@@ -1,5 +1,11 @@
 require 'upload/blast_util.rb'
 
+###
+# View model for the upload fasta sequences page.
+#
+# <b>Associated Controller:</b> QueryAnalysisController
+#
+# <b>Associated Worker:</b> WorkerForUploadFastaSequences
 class UploadFastaSequences
   include ActiveModel::Validations
   include ActiveModel::Conversion
@@ -18,6 +24,8 @@ class UploadFastaSequences
     @current_user = current_user
   end
   
+  # Set the view model's attributes or set those attributes to their 
+  # default values
   def set_attributes_and_defaults(attributes = {})
     #Load in any values from the form
     attributes.each do |name, value|
@@ -26,7 +34,7 @@ class UploadFastaSequences
   end
   
   def save
-     return if not self.valid?
+    return if not self.valid?
     begin
       ActiveRecord::Base.transaction do   #Transactions work with sub-methods 
         process_args_to_create_dataset()

@@ -1,3 +1,8 @@
+# == Description
+#
+# Represents a gene from the upload data files.
+#
+#
 # == Schema Information
 #
 # Table name: genes

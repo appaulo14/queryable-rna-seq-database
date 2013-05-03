@@ -262,6 +262,10 @@
 
   <div id="description" class="description">
     
+<h2 id="label-Description">Description</h2>
+
+<p>Represents a transcript from the upload data files.</p>
+
 <h2 id="label-Schema+Information">Schema Information</h2>
 
 <p>Table name: transcripts</p>
@@ -281,23 +285,6 @@ name_from_program :string(255)      not null</pre>
 
     
 
-    
-    <!-- Constants -->
-    <section id="constants-list" class="section">
-      <h3 class="section-header">Constants</h3>
-      <dl>
-      
-        <dt id="NUCLEOTIDE_FASTA_SEQUENCE_REGEX">NUCLEOTIDE_FASTA_SEQUENCE_REGEX
-        
-        <dd class="description"><pre>Constants###</pre>
-
-<p>Based off the NCBI fasta format guide:</p>
-
-<pre>http://www.ncbi.nlm.nih.gov/blast/blastcgihelp.shtml</pre>
-        
-      
-      </dl>
-    </section>
     
 
     
@@ -319,12 +306,13 @@ name_from_program :string(255)      not null</pre>
 
         <div class="method-description">
           
-          
+          <p>The <a href="GoTerm.html">GoTerm</a> records associated with this <a
+href="Transcript.html">Transcript</a>.</p>
           
 
           
           <div class="method-source-code" id="go_terms-source">
-            <pre><span class="ruby-comment"># File app/models/transcript.rb, line 32</span>
+            <pre><span class="ruby-comment"># File app/models/transcript.rb, line 34</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">go_terms</span>
   <span class="ruby-keyword">return</span> <span class="ruby-constant">GoTerm</span>.<span class="ruby-identifier">where</span>(<span class="ruby-string">&quot;id in (?)&quot;</span>, <span class="ruby-keyword">self</span>.<span class="ruby-identifier">transcript_has_go_terms</span>.<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">go_term_id</span>})
 <span class="ruby-keyword">end</span></pre>

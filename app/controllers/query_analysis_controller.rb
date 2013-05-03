@@ -53,6 +53,8 @@ class QueryAnalysisController < ApplicationController
     
     ###  
     # Handles both GET and POST requests for the upload Cuffdiff page
+    #
+    # <b>Associated ViewModel:</b> UploadCuffdiff
     def upload_cuffdiff
       if request.get?
         @upload_cuffdiff = UploadCuffdiff.new(current_user)
@@ -73,6 +75,8 @@ class QueryAnalysisController < ApplicationController
     
     ###
     # Handles both GET and POST requests for the upload fasta sequences page. 
+    #
+    # <b>Associated ViewModel:</b> UploadFastaSequences
     def upload_fasta_sequences
       if request.get?
         @upload = UploadFastaSequences.new(current_user)
@@ -94,6 +98,8 @@ class QueryAnalysisController < ApplicationController
     ###
     # Handles both GET and POST requests for the upload Trinity with EdgeR 
     # page.
+    #
+    # <b>Associated ViewModel:</b> UploadTrinityWithEdgeR
     def upload_trinity_with_edger
       if (request.get?)
         @upload = UploadTrinityWithEdgeR.new(current_user)
@@ -117,18 +123,24 @@ class QueryAnalysisController < ApplicationController
     ###
     # For the upload Trinity with EdgeR page, ajax request to add html to the 
     # form to upload an additional transcript differential expression file.
+    #
+    # <b>Associated ViewModel:</b> None
     def add_sample_cmp_for_trinity_with_edger_transcripts
       render :partial => 'trinity_with_edger_transcripts_sample_cmp'
     end
     
     # For the upload Trinity with EdgeR page, ajax request to add html to the 
     # form to upload an additional gene differential expression file.
+    #
+    # <b>Associated ViewModel:</b> None
     def add_sample_cmp_for_trinity_with_edger_genes
       render :partial => 'trinity_with_edger_genes_sample_cmp'
     end
     
     ###
     # Handles both GET and POST requests for the find go terms for dataset page.
+    #
+    # <b>Associated ViewModel:</b> FindGoTermsForDataset
     def find_go_terms_for_dataset
       if request.get?
         @finder = FindGoTermsForDataset.new(current_user)
@@ -161,6 +173,8 @@ class QueryAnalysisController < ApplicationController
     ###
     # Handles both GET and POST requests for the query differentially expressed 
     # transcripts page.
+    #
+    # <b>Associated ViewModel:</b> QueryDiffExpTranscripts
     def query_diff_exp_transcripts
       #Create the view model, giving the current user
       @qdet = QueryDiffExpTranscripts.new(current_user)
@@ -181,6 +195,8 @@ class QueryAnalysisController < ApplicationController
     # When a new dataset is selected on the query differentially expressed 
     # transcripts page, handles ajax requests to get the sample comparisons
     # for the newly selected dataset.
+    #
+    # <b>Associated ViewModel:</b> QueryDiffExpTranscripts
     def get_transcript_diff_exp_samples_for_dataset
       @qdet = QueryDiffExpTranscripts.new(current_user)
       dataset_id = params[:dataset_id]
@@ -196,6 +212,8 @@ class QueryAnalysisController < ApplicationController
     ###
     # For the query differentially expressed transcripts page, 
     # ajax request to add the table header row to the query results table.
+    #
+    # <b>Associated ViewModel:</b> QueryDiffExpTranscripts
     def get_query_diff_exp_transcripts_header_row
       @qdet = QueryDiffExpTranscripts.new(current_user)
       @qdet.set_attributes_and_defaults(params[:query_diff_exp_transcripts])
@@ -207,6 +225,8 @@ class QueryAnalysisController < ApplicationController
     
     ###
     # Handles requests to display the fasta sequence for a given transcript.
+    #
+    # <b>Associated ViewModel:</b> GetTranscriptFasta
     def get_transcript_fasta
       #Create/fill in the view model
       get_transcript_fasta = GetTranscriptFasta.new(current_user)
@@ -229,6 +249,8 @@ class QueryAnalysisController < ApplicationController
     ###
     # Handles requests to display the fasta sequences for the transcripts 
     # associated with a given gene.
+    #
+    # <b>Associated ViewModel:</b> GetGeneFastas
     def get_gene_fastas
       #Create/fill in the view model
       get_gene_fastas = GetGeneFastas.new(current_user)
@@ -250,6 +272,8 @@ class QueryAnalysisController < ApplicationController
     ###
     # Handles ajax requests asking whether a dataset has go terms. Returns a 
     # boolean value or an error message.
+    #
+    # <b>Associated ViewModel:</b> None
     def get_if_dataset_has_go_terms
       dataset = Dataset.find_by_id(params[:dataset_id])
       if dataset.user != current_user
@@ -268,6 +292,8 @@ class QueryAnalysisController < ApplicationController
     ###
     # Handles both GET and POST requests for the query differentially expressed 
     # genes page.
+    #
+    # <b>Associated ViewModel:</b> QueryDiffExpGenes
     def query_diff_exp_genes
       #Create the view model, giving the current user
       @qdeg = QueryDiffExpGenes.new(current_user)
@@ -288,6 +314,8 @@ class QueryAnalysisController < ApplicationController
     # When a new dataset is selected on the query differentially expressed page, 
     # handles ajax requests to get the sample comparisons for the newly 
     # selected dataset.
+    #
+    # <b>Associated ViewModel:</b> QueryDiffExpGenes
     def get_gene_diff_exp_samples_for_dataset
       @qdeg = QueryDiffExpGenes.new(current_user)
       dataset_id = params[:dataset_id]
@@ -301,6 +329,8 @@ class QueryAnalysisController < ApplicationController
     ###
     # For the query differentially expressed genes page, 
     # ajax request to add the table header row to the query results table.
+    #
+    # <b>Associated ViewModel:</b> QueryDiffExpGenes
     def get_query_diff_exp_genes_header_row
       @qdeg = QueryDiffExpGenes.new(current_user)
       @qdeg.set_attributes_and_defaults(params[:query_diff_exp_genes])
@@ -312,6 +342,8 @@ class QueryAnalysisController < ApplicationController
     
     ###
     # Handles both GET and POST requests for the query using blast page.
+    #
+    # <b>Associated ViewModel:</b> QueryTranscriptIsoforms
     def query_transcript_isoforms
       #Create the view model, giving the current user
       @qti = QueryTranscriptIsoforms.new(current_user)
@@ -331,6 +363,8 @@ class QueryAnalysisController < ApplicationController
     ###
     # When a new dataset is selected on the query transcript isoforms page, 
     # handles ajax requests to get the samples for the newly selected dataset.
+    #
+    # <b>Associated ViewModel:</b> QueryTranscriptIsoforms
     def get_transcript_isoforms_samples_for_dataset
       @qti = QueryTranscriptIsoforms.new(current_user)
       dataset_id = params[:dataset_id]
@@ -344,6 +378,8 @@ class QueryAnalysisController < ApplicationController
     ###
     # For the query transcript isoforms page, 
     # ajax request to add the table header row to the query results table.
+    #
+    # <b>Associated ViewModel:</b> QueryTranscriptIsoforms
     def get_query_transcript_isoforms_header_row
       @qti = QueryTranscriptIsoforms.new(current_user)
       @qti.set_attributes_and_defaults(params[:query_transcript_isoforms])
@@ -355,6 +391,8 @@ class QueryAnalysisController < ApplicationController
     
     ###
     # Handles both GET and POST requests for the query using blastn page.
+    #
+    # <b>Associated ViewModel:</b> QueryUsingBlastn
     def query_using_blastn    #Changed after architecture design
       @sequence_type = 'nucleic acid'
       if request.get?
@@ -377,6 +415,8 @@ class QueryAnalysisController < ApplicationController
     # When a new set of match/mismatch scores is selected on the query using 
     # blastn page, handles ajax requests to get the gap costs for the new 
     # selected matrix.
+    #
+    # <b>Associated ViewModel:</b> QueryUsingBlastn
     def get_blastn_gap_costs_for_match_and_mismatch_scores
       #Calculate the new gap costs from the match and mismatch scores 
       @query_using_blastn = QueryUsingBlastn.new(current_user)
@@ -390,6 +430,8 @@ class QueryAnalysisController < ApplicationController
     
     ###
     # Handles both GET and POST requests for the query using tblastn page.
+    #
+    # <b>Associated ViewModel:</b> QueryUsingTblastn
     def query_using_tblastn
       @sequence_type = 'amino acid'
       if request.get?
@@ -412,6 +454,8 @@ class QueryAnalysisController < ApplicationController
     ###
     # When a new matrix is selected on the query using Tblastn page, 
     # handles ajax requests to get the gap costs for the new selected matrix.
+    #
+    # <b>Associated ViewModel:</b> QueryUsingTblastn
     def get_tblastn_gap_costs_for_matrix
       #Calculate the new gap costs from the match and mismatch scores 
       @query_using_blastn = QueryUsingTblastn.new(current_user)
@@ -423,7 +467,9 @@ class QueryAnalysisController < ApplicationController
   
   ###
   # Handles both GET and POST requests for the querying using Tblastx page.
-  def query_using_tblastx  #changed after the architecture design
+  #
+    # <b>Associated ViewModel:</b> QueryUsingTblastx
+  def query_using_tblastx
     @sequence_type = 'nucleic acid'
     if request.get?
       @query_using_tblastx = QueryUsingTblastx.new(current_user)

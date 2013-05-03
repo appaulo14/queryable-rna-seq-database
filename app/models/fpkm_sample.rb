@@ -1,3 +1,14 @@
+# == Description
+#
+# Represents an FPKM sample for a given transcript and sample. FPKM is a 
+# way to measure gene and transcript expression. Since each sample has 
+# different expression levels, each sample has different FPKM values for each 
+# of its genes and transcripts. Although a gene has an FpkmSample, unlike 
+# transcripts, there is no use case to directly query a gene’s fpkm samples. 
+# A gene’s FpkmSamples are only accessed through the gene’s differential 
+# expression tests page. Therefore, no direct link between the two is required. 
+#
+#
 # == Schema Information
 #
 # Table name: fpkm_samples
@@ -15,6 +26,8 @@
 class FpkmSample < ActiveRecord::Base
   attr_accessible :transcript, :fpkm, :fpkm_hi, :fpkm_lo, :status, 
                   :sample
+  
+  # The possible valid values for the status attribute
   POSSIBLE_STATUSES = ['OK','LOWDATA','HIDATA','FAIL']
   
   #Associations
