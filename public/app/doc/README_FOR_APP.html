@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+
+<title>README_FOR_APP - Rails Application Documentation</title>
+
+<link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/darkfish.js"></script>
+
+
+<body class="file">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../index.html">Home</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="../doc/README_FOR_APP.html">README_FOR_APP</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../AbstractQueryUsingBlast.html">AbstractQueryUsingBlast</a>
+  
+    <li><a href="../AdminController.html">AdminController</a>
+  
+    <li><a href="../AdminHelper.html">AdminHelper</a>
+  
+    <li><a href="../ApplicationController.html">ApplicationController</a>
+  
+    <li><a href="../ApplicationHelper.html">ApplicationHelper</a>
+  
+    <li><a href="../ArrayElementsAreNotEmptyValidator.html">ArrayElementsAreNotEmptyValidator</a>
+  
+    <li><a href="../ArrayOfUploadedFilesValidator.html">ArrayOfUploadedFilesValidator</a>
+  
+    <li><a href="../ArrayValidator.html">ArrayValidator</a>
+  
+    <li><a href="../BlastUtil.html">BlastUtil</a>
+  
+    <li><a href="../ConfirmUser.html">ConfirmUser</a>
+  
+    <li><a href="../ConfirmationsController.html">ConfirmationsController</a>
+  
+    <li><a href="../Dataset.html">Dataset</a>
+  
+    <li><a href="../DatasetBelongsToUserValidator.html">DatasetBelongsToUserValidator</a>
+  
+    <li><a href="../DatasetNameUniqueForUserValidator.html">DatasetNameUniqueForUserValidator</a>
+  
+    <li><a href="../DeleteUnconfirmedUser.html">DeleteUnconfirmedUser</a>
+  
+    <li><a href="../DifferentialExpressionTest.html">DifferentialExpressionTest</a>
+  
+    <li><a href="../FindGoTermsForDataset.html">FindGoTermsForDataset</a>
+  
+    <li><a href="../FpkmSample.html">FpkmSample</a>
+  
+    <li><a href="../Gene.html">Gene</a>
+  
+    <li><a href="../GeneNameQueryConditionGenerator.html">GeneNameQueryConditionGenerator</a>
+  
+    <li><a href="../GetGeneFastas.html">GetGeneFastas</a>
+  
+    <li><a href="../GetTranscriptFasta.html">GetTranscriptFasta</a>
+  
+    <li><a href="../GoFilterChecker.html">GoFilterChecker</a>
+  
+    <li><a href="../GoIdsQueryConditionGenerator.html">GoIdsQueryConditionGenerator</a>
+  
+    <li><a href="../GoTerm.html">GoTerm</a>
+  
+    <li><a href="../GoTermFinderAndProcessor.html">GoTermFinderAndProcessor</a>
+  
+    <li><a href="../GoTermsQueryConditionGenerator.html">GoTermsQueryConditionGenerator</a>
+  
+    <li><a href="../HasFastaFileExtensionValidator.html">HasFastaFileExtensionValidator</a>
+  
+    <li><a href="../HomeController.html">HomeController</a>
+  
+    <li><a href="../HomeHelper.html">HomeHelper</a>
+  
+    <li><a href="../HomeMailer.html">HomeMailer</a>
+  
+    <li><a href="../NameIsGeneExpDiffValidator.html">NameIsGeneExpDiffValidator</a>
+  
+    <li><a href="../NameIsIsoformExpDiffValidator.html">NameIsIsoformExpDiffValidator</a>
+  
+    <li><a href="../NameIsIsoformFpkmTrackingValidator.html">NameIsIsoformFpkmTrackingValidator</a>
+  
+    <li><a href="../NameIsTrinityFastaValidator.html">NameIsTrinityFastaValidator</a>
+  
+    <li><a href="../NucleotideFastaSequencesValidator.html">NucleotideFastaSequencesValidator</a>
+  
+    <li><a href="../ProteinFastaSequencesValidator.html">ProteinFastaSequencesValidator</a>
+  
+    <li><a href="../QueryAnalysisController.html">QueryAnalysisController</a>
+  
+    <li><a href="../QueryAnalysisHelper.html">QueryAnalysisHelper</a>
+  
+    <li><a href="../QueryAnalysisMailer.html">QueryAnalysisMailer</a>
+  
+    <li><a href="../QueryDiffExpGenes.html">QueryDiffExpGenes</a>
+  
+    <li><a href="../QueryDiffExpTranscripts.html">QueryDiffExpTranscripts</a>
+  
+    <li><a href="../QueryTranscriptIsoforms.html">QueryTranscriptIsoforms</a>
+  
+    <li><a href="../QueryUsingBlastn.html">QueryUsingBlastn</a>
+  
+    <li><a href="../QueryUsingTblastn.html">QueryUsingTblastn</a>
+  
+    <li><a href="../QueryUsingTblastx.html">QueryUsingTblastx</a>
+  
+    <li><a href="../RegistrationMailer.html">RegistrationMailer</a>
+  
+    <li><a href="../RegistrationsController.html">RegistrationsController</a>
+  
+    <li><a href="../ReportIssue.html">ReportIssue</a>
+  
+    <li><a href="../Sample.html">Sample</a>
+  
+    <li><a href="../SampleBelongsToUserValidator.html">SampleBelongsToUserValidator</a>
+  
+    <li><a href="../SampleComparison.html">SampleComparison</a>
+  
+    <li><a href="../SampleComparisonBelongsToUserValidator.html">SampleComparisonBelongsToUserValidator</a>
+  
+    <li><a href="../SampleFpkm.html">SampleFpkm</a>
+  
+    <li><a href="../SystemUtil.html">SystemUtil</a>
+  
+    <li><a href="../Transcript.html">Transcript</a>
+  
+    <li><a href="../TranscriptFpkmTrackingInformation.html">TranscriptFpkmTrackingInformation</a>
+  
+    <li><a href="../TranscriptHasGoTerm.html">TranscriptHasGoTerm</a>
+  
+    <li><a href="../TranscriptNameQueryConditionGenerator.html">TranscriptNameQueryConditionGenerator</a>
+  
+    <li><a href="../TrinityDiffExpFileProcessor.html">TrinityDiffExpFileProcessor</a>
+  
+    <li><a href="../TrinityDiffExpLine.html">TrinityDiffExpLine</a>
+  
+    <li><a href="../TrinityFpkmFileProcessor.html">TrinityFpkmFileProcessor</a>
+  
+    <li><a href="../TrinityFpkmLine.html">TrinityFpkmLine</a>
+  
+    <li><a href="../TrinityGeneDiffExpFileProcessor.html">TrinityGeneDiffExpFileProcessor</a>
+  
+    <li><a href="../TrinityGeneFpkmFileProcessor.html">TrinityGeneFpkmFileProcessor</a>
+  
+    <li><a href="../TrinityTranscriptDiffExpFileProcessor.html">TrinityTranscriptDiffExpFileProcessor</a>
+  
+    <li><a href="../TrinityTranscriptFpkmFileProcessor.html">TrinityTranscriptFpkmFileProcessor</a>
+  
+    <li><a href="../UnconfirmedUserValidator.html">UnconfirmedUserValidator</a>
+  
+    <li><a href="../UploadCuffdiff.html">UploadCuffdiff</a>
+  
+    <li><a href="../UploadFastaSequences.html">UploadFastaSequences</a>
+  
+    <li><a href="../UploadTrinityWithEdgeR.html">UploadTrinityWithEdgeR</a>
+  
+    <li><a href="../UploadedFileValidator.html">UploadedFileValidator</a>
+  
+    <li><a href="../UploadedTrinityDiffExpFile.html">UploadedTrinityDiffExpFile</a>
+  
+    <li><a href="../UploadedTrinityFpkmFile.html">UploadedTrinityFpkmFile</a>
+  
+    <li><a href="../User.html">User</a>
+  
+    <li><a href="../ViewModelBooleanValidator.html">ViewModelBooleanValidator</a>
+  
+    <li><a href="../WorkerForFindGoTermsForDataset.html">WorkerForFindGoTermsForDataset</a>
+  
+    <li><a href="../WorkerForUploadCuffdiff.html">WorkerForUploadCuffdiff</a>
+  
+    <li><a href="../WorkerForUploadFastaSequences.html">WorkerForUploadFastaSequences</a>
+  
+    <li><a href="../WorkerForUploadTrinityWithEdger.html">WorkerForUploadTrinityWithEdger</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation" class="description">
+  <dl class="rdoc-list note-list"><dt>Controllers
+<dd></dd></dl>
+<ul><li>
+<p><a href="../AdminController.html">AdminController</a></p>
+</li><li>
+<p><a href="../ApplicationController.html">ApplicationController</a></p>
+</li><li>
+<p><a href="../ConfirmationsController.html">ConfirmationsController</a></p>
+</li><li>
+<p><a href="../HomeController.html">HomeController</a></p>
+</li><li>
+<p><a href="../RegistrationsController.html">RegistrationsController</a></p>
+</li><li>
+<p><a href="../QueryAnalysisController.html">QueryAnalysisController</a></p>
+</li></ul>
+<dl class="rdoc-list note-list"><dt>Helpers
+<dd></dd></dl>
+<ul><li>
+<p><a href="../AdminHelper.html">AdminHelper</a></p>
+</li><li>
+<p><a href="../ApplicationHelper.html">ApplicationHelper</a></p>
+</li><li>
+<p><a href="../HomeHelper.html">HomeHelper</a></p>
+</li><li>
+<p><a href="../QueryAnalysisHelper.html">QueryAnalysisHelper</a></p>
+</li></ul>
+<dl class="rdoc-list note-list"><dt>Mailers
+<dd></dd></dl>
+<ul><li>
+<p><a href="../HomeMailer.html">HomeMailer</a></p>
+</li><li>
+<p><a href="../RegistrationMailer.html">RegistrationMailer</a></p>
+</li><li>
+<p><a href="../QueryAnalysisMailer.html">QueryAnalysisMailer</a></p>
+</li></ul>
+<dl class="rdoc-list note-list"><dt>Models
+<dd></dd></dl>
+<ul><li>
+<p><a href="../Dataset.html">Dataset</a></p>
+</li><li>
+<p><a href="../DifferentialExpressionTest.html">DifferentialExpressionTest</a></p>
+</li><li>
+<p><a href="../FpkmSample.html">FpkmSample</a></p>
+</li><li>
+<p><a href="../Gene.html">Gene</a></p>
+</li><li>
+<p><a href="../GoTerm.html">GoTerm</a></p>
+</li><li>
+<p><a href="../Sample.html">Sample</a></p>
+</li><li>
+<p><a href="../SampleComparison.html">SampleComparison</a></p>
+</li><li>
+<p><a href="../Transcript.html">Transcript</a></p>
+</li><li>
+<p><a
+href="../TranscriptFpkmTrackingInformation.html">TranscriptFpkmTrackingInformation</a></p>
+</li><li>
+<p><a href="../TranscriptHasGoTerm.html">TranscriptHasGoTerm</a></p>
+</li><li>
+<p><a href="../User.html">User</a></p>
+</li></ul>
+<dl class="rdoc-list note-list"><dt>Utility Classes
+<dd></dd></dl>
+<ul><li>
+<p>General Utility Classes</p>
+<ul><li>
+<p><a href="../SystemUtil.html">SystemUtil</a></p>
+</li></ul>
+</li><li>
+<p>Query Utility Classes</p>
+<ul><li>
+<p><a
+href="../GeneNameQueryConditionGenerator.html">GeneNameQueryConditionGenerator</a></p>
+</li><li>
+<p><a href="../GoFilterChecker.html">GoFilterChecker</a></p>
+</li><li>
+<p><a
+href="../GoIdsQueryConditionGenerator.html">GoIdsQueryConditionGenerator</a></p>
+</li><li>
+<p><a
+href="../GoTermsQueryConditionGenerator.html">GoTermsQueryConditionGenerator</a></p>
+</li><li>
+<p><a
+href="../TranscriptNameQueryConditionGenerator.html">TranscriptNameQueryConditionGenerator</a></p>
+</li></ul>
+</li><li>
+<p>Upload Utility Classes</p>
+<ul><li>
+<p><a href="../BlastUtil.html">BlastUtil</a></p>
+</li><li>
+<p><a href="../GoTermFinderAndProcessor.html">GoTermFinderAndProcessor</a></p>
+</li><li>
+<p><a
+href="../TrinityDiffExpFileProcessor.html">TrinityDiffExpFileProcessor</a></p>
+</li><li>
+<p><a href="../TrinityFpkmFileProcessor.html">TrinityFpkmFileProcessor</a></p>
+</li><li>
+<p><a
+href="../TrinityGeneDiffExpFileProcessor.html">TrinityGeneDiffExpFileProcessor</a></p>
+</li><li>
+<p><a
+href="../TrinityGeneFpkmFileProcessor.html">TrinityGeneFpkmFileProcessor</a></p>
+</li><li>
+<p><a
+href="../TrinityTranscriptDiffExpFileProcessor.html">TrinityTranscriptDiffExpFileProcessor</a></p>
+</li><li>
+<p><a href="../TrinityFpkmFileProcessor.html">TrinityFpkmFileProcessor</a></p>
+</li><li>
+<p><a href="../UploadedTrinityDiffExpFile.html">UploadedTrinityDiffExpFile</a></p>
+</li><li>
+<p><a href="../UploadedTrinityFpkmFile.html">UploadedTrinityFpkmFile</a></p>
+</li></ul>
+</li></ul>
+<dl class="rdoc-list note-list"><dt>Validators
+<dd></dd></dl>
+<ul><li>
+<p><a
+href="../ArrayElementsAreNotEmptyValidator.html">ArrayElementsAreNotEmptyValidator</a></p>
+</li><li>
+<p><a
+href="../ArrayOfUploadedFilesValidator.html">ArrayOfUploadedFilesValidator</a></p>
+</li><li>
+<p><a href="../ArrayValidator.html">ArrayValidator</a></p>
+</li><li>
+<p><a
+href="../DatasetBelongsToUserValidator.html">DatasetBelongsToUserValidator</a></p>
+</li><li>
+<p><a
+href="../DatasetNameUniqueForUserValidator.html">DatasetNameUniqueForUserValidator</a></p>
+</li><li>
+<p><a
+href="../HasFastaFileExtensionValidator.html">HasFastaFileExtensionValidator</a></p>
+</li><li>
+<p><a href="../NameIsGeneExpDiffValidator.html">NameIsGeneExpDiffValidator</a></p>
+</li><li>
+<p><a
+href="../NameIsIsoformExpDiffValidator.html">NameIsIsoformExpDiffValidator</a></p>
+</li><li>
+<p><a
+href="../NameIsIsoformFpkmTrackingValidator.html">NameIsIsoformFpkmTrackingValidator</a></p>
+</li><li>
+<p><a
+href="../NameIsTrinityFastaValidator.html">NameIsTrinityFastaValidator</a></p>
+</li><li>
+<p><a
+href="../NucleotideFastaSequencesValidator.html">NucleotideFastaSequencesValidator</a></p>
+</li><li>
+<p><a
+href="../ProteinFastaSequencesValidator.html">ProteinFastaSequencesValidator</a></p>
+</li><li>
+<p><a
+href="../SampleBelongsToUserValidator.html">SampleBelongsToUserValidator</a></p>
+</li><li>
+<p><a
+href="../SampleComparisonBelongsToUserValidator.html">SampleComparisonBelongsToUserValidator</a></p>
+</li><li>
+<p><a href="../UnconfirmedUserValidator.html">UnconfirmedUserValidator</a></p>
+</li><li>
+<p><a href="../UploadedFileValidator.html">UploadedFileValidator</a></p>
+</li><li>
+<p><a href="../ViewModelBooleanValidator.html">ViewModelBooleanValidator</a></p>
+</li></ul>
+<dl class="rdoc-list note-list"><dt>ViewModels
+<dd></dd></dl>
+<ul><li>
+<p>Admin</p>
+<ul><li>
+<p><a href="../ConfirmUser.html">ConfirmUser</a></p>
+</li><li>
+<p><a href="../DeleteUnconfirmedUser.html">DeleteUnconfirmedUser</a></p>
+</li></ul>
+</li><li>
+<p>Home</p>
+<ul><li>
+<p><a href="../ReportIssue.html">ReportIssue</a></p>
+</li></ul>
+</li><li>
+<p>QueryAnalysis</p>
+<ul><li>
+<p><a href="../AbstractQueryUsingBlast.html">AbstractQueryUsingBlast</a></p>
+</li><li>
+<p><a href="../FindGoTermsForDataset.html">FindGoTermsForDataset</a></p>
+</li><li>
+<p><a href="../GetGeneFastas.html">GetGeneFastas</a></p>
+</li><li>
+<p><a href="../GetTranscriptFasta.html">GetTranscriptFasta</a></p>
+</li><li>
+<p><a href="../QueryDiffExpGenes.html">QueryDiffExpGenes</a></p>
+</li><li>
+<p><a href="../QueryDiffExpTranscripts.html">QueryDiffExpTranscripts</a></p>
+</li><li>
+<p><a href="../QueryTranscriptIsoforms.html">QueryTranscriptIsoforms</a></p>
+</li><li>
+<p><a href="../QueryUsingBlastn.html">QueryUsingBlastn</a></p>
+</li><li>
+<p><a href="../QueryUsingTblastn.html">QueryUsingTblastn</a></p>
+</li><li>
+<p><a href="../QueryUsingTblastx.html">QueryUsingTblastx</a></p>
+</li><li>
+<p><a href="../UploadCuffdiff.html">UploadCuffdiff</a></p>
+</li><li>
+<p><a href="../UploadFastaSequences.html">UploadFastaSequences</a></p>
+</li><li>
+<p><a href="../UploadTrinityWithEdgeR.html">UploadTrinityWithEdgeR</a></p>
+</li></ul>
+</li></ul>
+<dl class="rdoc-list note-list"><dt>Workers
+<dd></dd></dl>
+<ul><li>
+<p><a
+href="../WorkerForFindGoTermsForDataset.html">WorkerForFindGoTermsForDataset</a></p>
+</li><li>
+<p><a href="../WorkerForUploadCuffdiff.html">WorkerForUploadCuffdiff</a></p>
+</li><li>
+<p><a
+href="../WorkerForUploadFastaSequences.html">WorkerForUploadFastaSequences</a></p>
+</li><li>
+<p><a
+href="../WorkerForUploadTrinityWithEdger.html">WorkerForUploadTrinityWithEdger</a></p>
+</li></ul>
+
+</div>
+
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.2.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

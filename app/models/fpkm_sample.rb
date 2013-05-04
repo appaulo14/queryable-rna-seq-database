@@ -21,8 +21,6 @@
 #  fpkm_lo       :string(255)      not null
 #  status        :string(255)      not null
 #
-
-
 class FpkmSample < ActiveRecord::Base
   attr_accessible :transcript, :fpkm, :fpkm_hi, :fpkm_lo, :status, 
                   :sample

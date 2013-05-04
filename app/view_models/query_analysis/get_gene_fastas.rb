@@ -17,6 +17,9 @@ class GetGeneFastas
                          :dataset_belongs_to_user => true
   validates :gene_name, :presence => true 
   
+  ###
+  # parameters::
+  # * <b>current_user:</b> The currently logged in user
   def initialize(current_user)
     @current_user = current_user
   end

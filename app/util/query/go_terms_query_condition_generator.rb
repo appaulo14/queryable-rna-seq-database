@@ -10,6 +10,10 @@ class GoTermsQueryConditionGenerator
   
   validates :go_terms, :presence => true
   
+  ###
+  # parameters::
+  # * <b>go_terms_string:</b> The string containing the go term or group of 
+  #   go terms to use when creating the query condition
   def initialize(go_terms_string)
     @go_terms = go_terms_string
   end

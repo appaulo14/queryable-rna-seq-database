@@ -160,7 +160,10 @@ class QueryUsingTblastn < AbstractQueryUsingBlast
                 :inclusion => {:in => AVAILABLE_COMPOSITIONAL_ADJUSTMENTS.values}
   validates :matrix, :presence => true,
                      :inclusion => {:in => AVAILABLE_MATRICES}
-    
+  
+  ###
+  # parameters::
+  # * <b>current_user:</b> The currently logged in user
   def initialize(current_user)
     super
     #Set the available options for the number of alignments

@@ -113,7 +113,10 @@ class QueryUsingBlastn < AbstractQueryUsingBlast
   validate  :gap_costs_valid_for_selected_match_and_mismatch_scores              
   validates :match_and_mismatch_scores, :presence => true,
                 :inclusion => {:in => AVAILABLE_MATCH_AND_MISMATCH_SCORES.keys}
-    
+  
+  ###
+  # parameters::
+  # * <b>current_user:</b> The currently logged in user
   def initialize(current_user)
     super
     #Set the available word sizes

@@ -11,8 +11,6 @@
 #  dataset_id        :integer          not null
 #  name_from_program :string(255)      not null
 #
-
-
 class Gene < ActiveRecord::Base
   attr_accessible :dataset, :name_from_program
     

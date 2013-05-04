@@ -4,12 +4,17 @@
 class GoIdsQueryConditionGenerator
   include ActiveModel::Validations
   
+  ###
   # The string containing the go id or group of go ids to use when 
   # creating the query condition
   attr_accessor :go_ids
   
   validates :go_ids, :presence => true
   
+  ###
+  # parameters::
+  # * <b>go_ids_string:</b> The string containing the go ids or group of 
+  #   go ids to use when creating the query condition
   def initialize(go_ids_string)
     @go_ids = go_ids_string
   end

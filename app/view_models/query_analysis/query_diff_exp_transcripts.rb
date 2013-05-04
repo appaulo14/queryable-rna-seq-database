@@ -67,8 +67,11 @@ class QueryDiffExpTranscripts
   validates :cutoff, :presence => true,
                      :format => { :with => /\A\d*\.\d+\z/ }
   
-  def initialize(user)
-    @current_user = user
+  ###
+  # parameters::
+  # * <b>current_user:</b> The currently logged in user
+  def initialize(current_user)
+    @current_user = current_user
   end
   
   # Set the view model's attributes or set those attributes to their 

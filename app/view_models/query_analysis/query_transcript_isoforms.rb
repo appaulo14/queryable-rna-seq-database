@@ -58,7 +58,9 @@ class QueryTranscriptIsoforms
   # Specifies that only the transcript that have all of these go ids 
   # (accessions) should be displayed in the query results.
   attr_accessor :go_ids
+  # Which comparison sign to use for filtering the transcript length
   attr_accessor :transcript_length_comparison_sign
+  # The transcript length to filter by
   attr_accessor :transcript_length_value
   # Specifies that only records matching this transcript name should be display 
   # in the query results.
@@ -128,6 +130,9 @@ class QueryTranscriptIsoforms
   validates :piece, :presence => true,
                     :format => { :with => /\A\d+\z/ }
   
+  ###
+  # parameters::
+  # * <b>current_user:</b> The currently logged in user
   def initialize(current_user)
     @current_user = current_user
   end

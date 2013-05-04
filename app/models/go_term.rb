@@ -28,15 +28,19 @@ class GoTerm < ActiveRecord::Base
   has_many :transcript_has_go_terms, :dependent => :destroy
   has_many :transcripts, :through => :transcript_has_go_terms
   
-  #Overide these methods because they shouldn't do anything
+  ###
+  # Overides this method to prevent it from destroying GoTerm records
+  # because GoTerm records reside in the blast2go database 
+  # and should never be destroyed/deleted from here.
   def destroy()
     raise NotImplementedError, "GO Terms are in a different db and should " +
                                   "not be manipulated from here"
   end
-  def delete()
-    raise NotImplementedError, "GO Terms are in a different db and should " +
-                                  "not be manipulated from here"
-  end
+  
+  ###
+  # Overides this method to prevent it from destroying GoTerm records
+  # because GoTerm records reside in the blast2go database 
+  # and should never be destroyed/deleted from here.
   def delete()
     raise NotImplementedError, "GO Terms are in a different db and should " +
                                   "not be manipulated from here"

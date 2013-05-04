@@ -1,13 +1,23 @@
+###
+# Represents an uploaded Trinity fpkm file
 class UploadedTrinityFpkmFile
+  ###
+  # parameters::
+  # * <b>uploaded_file:</b> The uploaded file to provide a wrapper for
   def initialize(uploaded_file)
     @uploaded_file = uploaded_file
     @sample_names = @uploaded_file.tempfile.readline.strip.split(/\s+/)
   end
 
+  ###
+  # Whether the eof marker has been reached for the file
   def eof?
     return @uploaded_file.tempfile.eof?
   end
   
+  ###
+  # Get the next TrinityFpkmLine, or nil if the file line could not be 
+  # parsed into a TrinityFpkmLine.
   def get_next_line
     line = @uploaded_file.tempfile.readline
     cells = line.split(/\s+/)
@@ -28,8 +38,12 @@ class UploadedTrinityFpkmFile
   end
 end
 
+###
+# Represents a single line of an uploaded Trinity fpkm file
 class TrinityFpkmLine < Struct.new :item, :sample_fpkms
 end
 
+###
+# An fpkm value paired with the name of the sample it belongs to
 class SampleFpkm < Struct.new :sample_name, :fpkm
 end

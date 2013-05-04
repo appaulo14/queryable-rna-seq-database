@@ -27,8 +27,6 @@
 #  updated_at             :datetime         not null
 #  admin                  :boolean          default(FALSE), not null
 #
-
-
 class User < ActiveRecord::Base
   apply_simple_captcha
   # Include default devise modules. Others available are:

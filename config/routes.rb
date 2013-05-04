@@ -3,10 +3,6 @@ RnaSeqAnalysisPipeline::Application.routes.draw do
   ##########          Configure routes for home controller     ###############
   ###########################################################################
   get 'admin/view_confirmed_users'
-
-  get 'admin/add_new_user_to_system'
-
-  get 'admin/delete_datasets_from_database'
   
   get 'admin/view_unconfirmed_users'
   

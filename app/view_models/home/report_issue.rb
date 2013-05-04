@@ -1,3 +1,7 @@
+###
+# View model for the report issue page.
+#
+# <b>Associated Controller:</b> HomeController
 class ReportIssue
   include ActiveModel::Validations
   include ActiveModel::Conversion
@@ -5,10 +9,22 @@ class ReportIssue
   extend ActiveModel::Naming
   apply_simple_captcha
   
-  attr_accessor :name, :email, :category, :when_issue_occured,
-                  :description, :captcha
+  # The name of the person reporting the issue
+  attr_accessor :name
+  # The email of the person reporting the issue
+  attr_accessor :email
+  # The category that the issue falls into
+  attr_accessor :category
+  # The approximate date/time that the issue occured
+  attr_accessor :when_issue_occured
+  # A description of the issue
+  attr_accessor :description
+  # A captcha to prove that the person submitting the issue is not a spam bot
+  attr_accessor :captcha
+  # The available validation options for the #category attribute
   attr_reader   :available_categories
 
+  # The available validation options for the #category attribute
   AVAILABLE_CATEGORIES = [
     'Applying For An Account',
     'Uploading Cuffdiff Data',
@@ -30,7 +46,10 @@ class ReportIssue
                        :inclusion => {:in => AVAILABLE_CATEGORIES}
   validates :when_issue_occured, :presence => true                    
   validates :description, :presence => true
-
+  
+  ###
+  # parameters::
+  # * <b>current_user:</b> The currently logged in user
   def initialize(current_user)
     @current_user = current_user
   end
@@ -61,6 +80,8 @@ class ReportIssue
     end
   end
   
+  ###
+  # Report the issue to the adminstrator(s)
   def report_issue()
     #Don't query if it is not valid
     return if not self.valid?

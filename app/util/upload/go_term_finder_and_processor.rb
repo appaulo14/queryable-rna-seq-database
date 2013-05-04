@@ -1,17 +1,28 @@
 require 'open3'
 require 'system_util'
 
+###
+# Utility class to find the Gene Ontology (GO) terms for a dataset and 
+# store them in the database.
 class GoTermFinderAndProcessor
+  ###
+  # parameters::
+  # * <b>transcripts_fasta_file:</b> The fasta file needed to find the go terms
+  # * <b>dataset:</b> the dataset to find the go terms for
   def initialize(transcripts_fasta_file,dataset)
     @transcripts_fasta_file = transcripts_fasta_file
     @dataset = dataset
   end
   
+  ###
+  # Finds the go terms by running blastx and blast2go
   def find_go_terms()
     run_blastx()
     @go_terms_file_path = run_blast2go()
   end
   
+  ###
+  # Saves the go terms found in the find_go_terms method to the database
   def process_go_terms()
     go_terms_file = File.open(@go_terms_file_path)
     while not go_terms_file.eof?

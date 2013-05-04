@@ -17,8 +17,11 @@ class GetTranscriptFasta
                          :dataset_belongs_to_user => true
   validates :transcript_name, :presence => true
   
-  def initialize(user)
-    @current_user = user
+  ###
+  # parameters::
+  # * <b>current_user:</b> The currently logged in user
+  def initialize(current_user)
+    @current_user = current_user
   end
   
   # Set the view model's attributes

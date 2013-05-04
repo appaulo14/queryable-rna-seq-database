@@ -60,6 +60,9 @@ class UploadCuffdiff
   validates :transcript_isoforms_file, :presence => true,
                                        :if => "@has_transcript_isoforms == '1'"
   
+  ###
+  # parameters::
+  # * <b>current_user:</b> The currently logged in user
   def initialize(current_user)
     @current_user = current_user
   end

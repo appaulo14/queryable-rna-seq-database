@@ -9,6 +9,9 @@ class TranscriptNameQueryConditionGenerator
   
   validates :name, :presence => true
   
+  ###
+  # parameters::
+  # * <b>attributes:</b> A hash containing any instance attributes
   def initialize(attributes = {})
     #Load in any values from the form
     attributes.each do |name, value|

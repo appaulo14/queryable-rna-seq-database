@@ -9,6 +9,7 @@ en:
                            have been found.
   simple_captcha:
     label: "Please Enter the Letters Above To Confirm You Are Human"
+    placeholder: ""
     message:
       reportissue: "did not match"
       user:        "did not match"

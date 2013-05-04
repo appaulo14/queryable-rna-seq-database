@@ -1,7 +1,11 @@
 require 'upload/trinity_fpkm_file_processor.rb' 
 
+###
+# Utility class for processing trinity transcript fpkm files
 class TrinityTranscriptFpkmFileProcessor < TrinityFpkmFileProcessor
-  
+  ###
+  # Do the actual processing of the transcript fpkm file, 
+  # writing the records to the database.
   def process_file()
     while not @uploaded_fpkm_file.eof?
       fpkm_line = @uploaded_fpkm_file.get_next_line

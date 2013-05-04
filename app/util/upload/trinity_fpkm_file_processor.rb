@@ -1,18 +1,30 @@
 require 'upload/uploaded_trinity_fpkm_file.rb'
 
+###
+# Utility class for processing trinity fpkm files
 class TrinityFpkmFileProcessor
-
+  
+  ###
+  # parameters::
+  # * <b>uploaded_file:</b> The uploaded file to process
+  # * <b>dataset:</b> The dataset for this upload operation
   def initialize(uploaded_fpkm_file,dataset)
     @uploaded_fpkm_file = UploadedTrinityFpkmFile.new(uploaded_fpkm_file)
     @dataset = dataset
   end
   
+  ###
+  # Do the actual processing of the fpkm file. This method needs to be 
+  # implemented in the subclass.
   def process_file()
     raise NotImplementedError, 'Method must be implemented in child class'
   end
   
   protected 
   
+  ###
+  # Takes a Gene or Transcript and a TrinityFpkmLine and puts the fpkm values 
+  # from the TrinityFpkmLine into the proper DifferentialExpressionTest records.
   def set_fpkms_for_item(item,fpkm_line)
     item.differential_expression_tests.each do |diff_exp_test|
       #Add any FPKMs for this item

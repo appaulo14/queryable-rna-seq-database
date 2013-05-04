@@ -53,13 +53,16 @@ class QueryUsingTblastx < AbstractQueryUsingBlast
   validates :matrix, :presence => true,
                      :inclusion => {:in => AVAILABLE_MATRICES}
     
-    def initialize(current_user)
-      super
-      #Set the available options for the number of alignments
-      @available_genetic_codes = AVAILABLE_GENETIC_CODES
-      @available_matrices = AVAILABLE_MATRICES
-      @available_word_sizes = AVAILABLE_WORD_SIZES
-    end
+  ###
+  # parameters::
+  # * <b>current_user:</b> The currently logged in user
+  def initialize(current_user)
+    super
+    #Set the available options for the number of alignments
+    @available_genetic_codes = AVAILABLE_GENETIC_CODES
+    @available_matrices = AVAILABLE_MATRICES
+    @available_word_sizes = AVAILABLE_WORD_SIZES
+  end
   
     # Set the view model's attributes or set those attributes to their 
     # default values

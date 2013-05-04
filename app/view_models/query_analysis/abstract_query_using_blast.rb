@@ -62,7 +62,9 @@ class AbstractQueryUsingBlast
   validates :filter_low_complexity_regions, :presence => true,
                                             :view_model_boolean => true
   
-  
+  ###
+  # parameters::
+  # * <b>current_user:</b> The currently logged in user
   def initialize(current_user)
     #Set the current user
     @current_user = current_user

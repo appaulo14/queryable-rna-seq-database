@@ -1,0 +1,105 @@
+Controllers::
+* AdminController
+* ApplicationController
+* ConfirmationsController
+* HomeController
+* RegistrationsController
+* QueryAnalysisController
+
+Helpers::
+* AdminHelper
+* ApplicationHelper
+* HomeHelper
+* QueryAnalysisHelper
+
+Mailers::
+* HomeMailer
+* RegistrationMailer
+* QueryAnalysisMailer
+
+Models::
+* Dataset
+* DifferentialExpressionTest
+* FpkmSample
+* Gene
+* GoTerm
+* Sample
+* SampleComparison
+* Transcript
+* TranscriptFpkmTrackingInformation
+* TranscriptHasGoTerm
+* User
+
+Utility Classes::
+* General Utility Classes
+  * SystemUtil
+* Query Utility Classes
+  * GeneNameQueryConditionGenerator
+  * GoFilterChecker
+  * GoIdsQueryConditionGenerator
+  * GoTermsQueryConditionGenerator
+  * TranscriptNameQueryConditionGenerator
+* Upload Utility Classes
+  * BlastUtil
+  * GoTermFinderAndProcessor
+  * TrinityDiffExpFileProcessor
+  * TrinityFpkmFileProcessor
+  * TrinityGeneDiffExpFileProcessor
+  * TrinityGeneFpkmFileProcessor
+  * TrinityTranscriptDiffExpFileProcessor
+  * TrinityFpkmFileProcessor
+  * UploadedTrinityDiffExpFile
+  * UploadedTrinityFpkmFile
+  
+Validators::
+* ArrayElementsAreNotEmptyValidator
+* ArrayOfUploadedFilesValidator
+* ArrayValidator
+* DatasetBelongsToUserValidator
+* DatasetNameUniqueForUserValidator
+* HasFastaFileExtensionValidator
+* NameIsGeneExpDiffValidator
+* NameIsIsoformExpDiffValidator
+* NameIsIsoformFpkmTrackingValidator
+* NameIsTrinityFastaValidator
+* NucleotideFastaSequencesValidator
+* ProteinFastaSequencesValidator
+* SampleBelongsToUserValidator
+* SampleComparisonBelongsToUserValidator
+* UnconfirmedUserValidator
+* UploadedFileValidator
+* ViewModelBooleanValidator
+
+ViewModels::
+* Admin
+  * ConfirmUser
+  * DeleteUnconfirmedUser
+* Home
+  * ReportIssue
+* QueryAnalysis
+  * AbstractQueryUsingBlast
+  * FindGoTermsForDataset
+  * GetGeneFastas
+  * GetTranscriptFasta
+  * QueryDiffExpGenes
+  * QueryDiffExpTranscripts
+  * QueryTranscriptIsoforms
+  * QueryUsingBlastn
+  * QueryUsingTblastn
+  * QueryUsingTblastx
+  * UploadCuffdiff
+  * UploadFastaSequences
+  * UploadTrinityWithEdgeR
+
+
+Workers::
+* WorkerForFindGoTermsForDataset
+* WorkerForUploadCuffdiff
+* WorkerForUploadFastaSequences
+* WorkerForUploadTrinityWithEdger
+
+
+
+
+
+

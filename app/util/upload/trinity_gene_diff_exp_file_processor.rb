@@ -1,12 +1,24 @@
 require 'upload/trinity_diff_exp_file_processor.rb'
 
+###
+# Utility class for processing trinity gene differential expression files
 class TrinityGeneDiffExpFileProcessor < TrinityDiffExpFileProcessor
-  
+  ###
+  # parameters::
+  # * <b>uploaded_file:</b> The uploaded file to process
+  # * <b>dataset:</b> The dataset for this upload operation
+  # * <b>sample_1_name:</b> The name of the first sample in the differential 
+  #   expression file.
+  # * <b>sample_2_name:</b> The name of the second sample in the differential 
+  #   expression file.
   def initialize(uploaded_file, dataset, sample_1_name, sample_2_name)
     super
     @sample_type = 'gene'
   end
   
+  ###
+  # Do the actual processing of the gene differential expression file, 
+  # writing the records to the database.
   def process_file()
     super
     while not @uploaded_diff_exp_file.eof?

@@ -83,6 +83,9 @@ class UploadTrinityWithEdgeR
                            :dataset_name_unique_for_user => true
   
   
+  ###
+  # parameters::
+  # * <b>current_user:</b> The currently logged in user
   def initialize(current_user)
     @current_user = current_user
   end
