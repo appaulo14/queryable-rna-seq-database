@@ -21,10 +21,10 @@ class ReportIssue
   attr_accessor :description
   # A captcha to prove that the person submitting the issue is not a spam bot
   attr_accessor :captcha
-  # The available validation options for the #category attribute
+  # The available valid options for the #category attribute
   attr_reader   :available_categories
 
-  # The available validation options for the #category attribute
+  # The available valid options for the #category attribute
   AVAILABLE_CATEGORIES = [
     'Applying For An Account',
     'Uploading Cuffdiff Data',
@@ -81,7 +81,8 @@ class ReportIssue
   end
   
   ###
-  # Report the issue to the adminstrator(s)
+  # Report the issue to the adminstrator(s) by sending email(s) containing the 
+  # issue information.
   def report_issue()
     #Don't query if it is not valid
     return if not self.valid?
@@ -89,8 +90,9 @@ class ReportIssue
     HomeMailer.send_report_on_issue(self)
   end
   
-  #According http://railscasts.com/episodes/219-active-model?view=asciicast,
-  #     this defines that this model does not persist in the database.
+  ###
+  # According http://railscasts.com/episodes/219-active-model?view=asciicast,
+  # this defines that this model does not persist in the database.
   def persisted?
       return false
   end

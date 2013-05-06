@@ -411,14 +411,13 @@ href="AdminController.html">AdminController</a></p>
         <div class="method-description">
           
           <p>Accoring <a
-href="http://railscasts.com/episodes/219-active-model?view=asciicast">railscasts.com/episodes/219-active-model?view=asciicast</a>,</p>
-
-<pre>this defines that this model does not persist in the database.</pre>
+href="http://railscasts.com/episodes/219-active-model?view=asciicast">railscasts.com/episodes/219-active-model?view=asciicast</a>,
+this defines that this model does not persist in the database.</p>
           
 
           
           <div class="method-source-code" id="persisted-3F-source">
-            <pre><span class="ruby-comment"># File app/view_models/admin/confirm_user.rb, line 46</span>
+            <pre><span class="ruby-comment"># File app/view_models/admin/confirm_user.rb, line 47</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">persisted?</span>
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
 <span class="ruby-keyword">end</span></pre>
@@ -443,15 +442,16 @@ href="http://railscasts.com/episodes/219-active-model?view=asciicast">railscasts
 
         <div class="method-description">
           
-          <p>Send the confirmation emails to the user who was just confirmed  The one is
-sent using the Devise gem and contains the confirmation  instructions. The
-second email tells the user they have been confirmed  and contains an
-optionaly not from the administrator to the user.</p>
+          <p>Send the two confirmation emails to the user who was just confirmed.  The
+first email tells the user they have been confirmed  and contains an
+optional note from the administrator to the user. The second email is sent
+using the Devise gem and contains the confirmation  instructions that
+actually allow the user to activate their account.</p>
           
 
           
           <div class="method-source-code" id="send_confirmation_emails-source">
-            <pre><span class="ruby-comment"># File app/view_models/admin/confirm_user.rb, line 37</span>
+            <pre><span class="ruby-comment"># File app/view_models/admin/confirm_user.rb, line 38</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">send_confirmation_emails</span>
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">valid?</span>
   <span class="ruby-constant">RegistrationMailer</span>.<span class="ruby-identifier">notify_user_that_confirmation_email_will_be_sent</span>(<span class="ruby-identifier">user</span>,

@@ -286,7 +286,8 @@
 
   <div id="description" class="description">
     
-<p>View model for displaying the fasta sequences associated with a given gene.</p>
+<p>View model for displaying the fasta sequences for the transcripts
+associated  with a given gene.</p>
 
 <p><strong>Associated Controller:</strong> <a
 href="QueryAnalysisController.html">QueryAnalysisController</a></p>
@@ -366,7 +367,7 @@ for</p>
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/get_gene_fastas.rb, line 23</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/get_gene_fastas.rb, line 24</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">current_user</span>)
   <span class="ruby-ivar">@current_user</span> = <span class="ruby-identifier">current_user</span>
 <span class="ruby-keyword">end</span></pre>
@@ -404,7 +405,7 @@ this defines that this view model does not persist in the database.</p>
 
           
           <div class="method-source-code" id="persisted-3F-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/get_gene_fastas.rb, line 59</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/get_gene_fastas.rb, line 60</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">persisted?</span>
     <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
 <span class="ruby-keyword">end</span></pre>
@@ -435,7 +436,7 @@ querying the dataset’s blast database.</p>
 
           
           <div class="method-source-code" id="query-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/get_gene_fastas.rb, line 35</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/get_gene_fastas.rb, line 36</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">query</span>
   <span class="ruby-comment">#Get the transcripts from the parameters</span>
   <span class="ruby-identifier">raise</span>(<span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">RecordInvalid</span>,<span class="ruby-keyword">self</span>) <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">valid?</span>
@@ -483,7 +484,7 @@ querying the dataset’s blast database.</p>
 
           
           <div class="method-source-code" id="set_attributes-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/get_gene_fastas.rb, line 28</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/get_gene_fastas.rb, line 29</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">set_attributes</span>(<span class="ruby-identifier">attributes</span> = {})
   <span class="ruby-ivar">@dataset_id</span> = <span class="ruby-identifier">attributes</span>[<span class="ruby-value">:dataset_id</span>]
   <span class="ruby-ivar">@gene_name</span> = <span class="ruby-identifier">attributes</span>[<span class="ruby-value">:gene_name</span>]

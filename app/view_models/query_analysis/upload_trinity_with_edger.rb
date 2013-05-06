@@ -10,7 +10,7 @@ require 'upload/blast_util.rb'
 #
 # <b>Associated Controller:</b> QueryAnalysisController
 #
-# <b>Associated Worker:</b> WorkerForUploadTrinityWithEdgeR
+# <b>Associated Worker:</b> WorkerForUploadTrinityWithEdger
 class UploadTrinityWithEdgeR
   include ActiveModel::Validations
   include ActiveModel::Conversion
@@ -34,7 +34,7 @@ class UploadTrinityWithEdgeR
   # A collection of the sample names for the first sample of the transcript 
   # differential expression test files with the corresponding array indexes.
   attr_accessor :transcript_diff_exp_sample_1_names #Array
-  # A collection of the sample names for the first sample of the transcript 
+  # A collection of the sample names for the second sample of the transcript 
   # differential expression test files with the corresponding array indexes.
   attr_accessor :transcript_diff_exp_sample_2_names #Array
   # An uploaded file containing the fpkms for all genes and all the samples

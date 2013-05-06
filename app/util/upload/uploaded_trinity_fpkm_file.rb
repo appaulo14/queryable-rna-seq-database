@@ -40,10 +40,18 @@ end
 
 ###
 # Represents a single line of an uploaded Trinity fpkm file
-class TrinityFpkmLine < Struct.new :item, :sample_fpkms
+class TrinityFpkmLine
+  # The Gene or Transcript name for the line of the fpkm file
+  attr_accessor :item
+  # The SampleFpkm object(s) for the line of the fpkm file
+  attr_accessor :sample_fpkms
 end
 
 ###
 # An fpkm value paired with the name of the sample it belongs to
-class SampleFpkm < Struct.new :sample_name, :fpkm
+class SampleFpkm
+  # The same name
+  attr_accessor :sample_name
+  # The fpkm
+  attr_accessor :fpkm
 end

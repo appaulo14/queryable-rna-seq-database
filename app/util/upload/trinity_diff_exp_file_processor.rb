@@ -1,7 +1,7 @@
 require 'upload/uploaded_trinity_diff_exp_file.rb'
 
 ###
-# Utility class for processing trinity differential expression files
+# Abstract utility class for processing trinity differential expression files
 class TrinityDiffExpFileProcessor
   
   ###

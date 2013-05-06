@@ -42,14 +42,18 @@ Utility Classes::
 * Upload Utility Classes
   * BlastUtil
   * GoTermFinderAndProcessor
+  * SampleFpkm
   * TrinityDiffExpFileProcessor
+  * TrinityDiffExpLine
   * TrinityFpkmFileProcessor
   * TrinityGeneDiffExpFileProcessor
   * TrinityGeneFpkmFileProcessor
   * TrinityTranscriptDiffExpFileProcessor
   * TrinityFpkmFileProcessor
+  * TrinityFpkmLine
   * UploadedTrinityDiffExpFile
   * UploadedTrinityFpkmFile
+  
   
 Validators::
 * ArrayElementsAreNotEmptyValidator

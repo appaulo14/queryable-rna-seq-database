@@ -1,7 +1,7 @@
 require 'upload/uploaded_trinity_fpkm_file.rb'
 
 ###
-# Utility class for processing trinity fpkm files
+# Abstract Utility class for processing trinity fpkm files
 class TrinityFpkmFileProcessor
   
   ###
