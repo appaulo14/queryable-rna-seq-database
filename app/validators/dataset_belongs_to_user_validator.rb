@@ -1,5 +1,5 @@
 ###
-# Validator class to verify that Dataset for the dataset id being validated 
+# Validator class to verify that the Dataset for the dataset id being validated 
 # is owned by the current user.
 class DatasetBelongsToUserValidator < ActiveModel::EachValidator
   ### 

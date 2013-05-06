@@ -1,5 +1,5 @@
 ###
-# Validator class to verify that an upload file has the name "isoform_exp.diff".
+# Validator class to verify that an uploaded file has the name "isoform_exp.diff".
 class NameIsIsoformExpDiffValidator < ActiveModel::EachValidator
   ### 
   # The method that actually does the validation

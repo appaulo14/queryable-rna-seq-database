@@ -1,5 +1,5 @@
 ###
-# A subclass of the Devise gem's registrations controller. This subclass just 
+# A subclass of the Devise gem's registrations controller.  
 # This subclass alters the registration process to fit with the requirements 
 # for the project.
 class RegistrationsController < Devise::RegistrationsController

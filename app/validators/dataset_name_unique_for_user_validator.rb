@@ -1,6 +1,6 @@
 ###
-# Validator class to verify that the dataset id being validated does not 
-# have the same name as any other datasets the user has. 
+# Validator class to verify that the Dataset for the dataset id being 
+# validated does not have the same name as any other Dataset records the user has. 
 class DatasetNameUniqueForUserValidator < ActiveModel::EachValidator
   ### 
   # The method that actually does the validation

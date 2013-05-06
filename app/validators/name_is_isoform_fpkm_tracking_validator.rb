@@ -1,5 +1,5 @@
 ###
-# Validator class to verify that an upload file has the name 
+# Validator class to verify that an uploaded file has the name 
 # "isoforms.fpkm_tracking".
 class NameIsIsoformFpkmTrackingValidator < ActiveModel::EachValidator
   ### 

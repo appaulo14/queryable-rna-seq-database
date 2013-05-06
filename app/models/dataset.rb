@@ -2,7 +2,9 @@
 #
 # Represents a set of data from one run of 
 # Use Case 1: Upload Data to the Database. All data associated with an upload 
-# operation is directly or indirectly associated with a dataset.
+# operation is directly or indirectly associated with a dataset. Deleting a 
+# dataset for an upload operation will also delete all other records from that 
+# upload operation because cascading deletions are set for them.
 #
 #
 # == Schema Information

@@ -2,7 +2,7 @@ require 'admin/confirm_user'
 require 'admin/delete_unconfirmed_user'
 
 ###
-# Handles all actions related administrative functions.
+# Handles all actions related to administrative functions.
 class AdminController < ApplicationController
   
   before_filter :authenticate_admin_user!
