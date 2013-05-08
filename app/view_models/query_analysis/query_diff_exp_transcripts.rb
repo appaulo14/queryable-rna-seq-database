@@ -148,6 +148,16 @@ class QueryDiffExpTranscripts
                     'differential_expression_tests.sample_2_fpkm,' +
                     'differential_expression_tests.log_fold_change,' +
                     'differential_expression_tests.test_status'
+#      select_string += 'array_agg(transcript_has_go_terms.go_term_id)'
+#     group_by_string = "transcripts.id, genes.name_from_program, test_statistic, p_value, fdr, sample_1_fpkm, sample_2_fpkm, log_fold_change, test_status"
+#     left_join = "LEFT OUTER JOIN transcript_has_go_terms on transcript_has_go_terms.transcript_id = transcripts.id"
+#     DifferentialExpressionTest
+#       .joins(:transcript => [:gene])
+#       .joins(left_join)
+#       .where(:sample_comparison_id => 7)
+#       .group(group_by_string)
+#       .select(select_string)
+#       .order('transcripts.id')
     #Retreive some variables to use later
     sample_comparison = SampleComparison.find_by_id(@sample_comparison_id)
     @sample_1_name = sample_comparison.sample_1.name
