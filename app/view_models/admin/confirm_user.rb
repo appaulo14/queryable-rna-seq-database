@@ -30,10 +30,11 @@ class ConfirmUser
   end
   
   ###
-  # Send the confirmation emails to the user who was just confirmed 
-  # The one is sent using the Devise gem and contains the confirmation 
-  # instructions. The second email tells the user they have been confirmed 
-  # and contains an optionaly not from the administrator to the user.
+  # Send the two confirmation emails to the user who was just confirmed. 
+  # The first email tells the user they have been confirmed 
+  # and contains an optional note from the administrator to the user.
+  # The second email is sent using the Devise gem and contains the confirmation 
+  # instructions that actually allow the user to activate their account. 
   def send_confirmation_emails
     return if not self.valid?
     RegistrationMailer.notify_user_that_confirmation_email_will_be_sent(user,
@@ -41,8 +42,8 @@ class ConfirmUser
     user.send_confirmation_instructions
   end
   
-  #Accoring http://railscasts.com/episodes/219-active-model?view=asciicast,
-  #     this defines that this model does not persist in the database.
+  # Accoring http://railscasts.com/episodes/219-active-model?view=asciicast,
+  # this defines that this model does not persist in the database.
   def persisted?
     return false
   end

@@ -141,7 +141,7 @@ class AbstractQueryUsingBlast
     @xml_results_file.close
   end
   
-  # Reads the xml results file from the blast, turn it into a 
+  # Read the xml results file from the blast, turn it into a 
   # Bio::Blast::Report[http://bioruby.org/rdoc/Bio/Blast/Report.html] object, 
   # and return it
   def generate_blast_report_from_xml_results()

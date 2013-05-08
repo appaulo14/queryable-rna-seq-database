@@ -1,8 +1,7 @@
 require 'home/report_issue.rb'
 
 ###
-# Handles actions for the home page and reporting an issue, which don't 
-# really fit into any other controller.
+# Handles actions for the home page and reporting an issue.
 class HomeController < ApplicationController
   ###
   # Displays the home page

@@ -1,3 +1,3 @@
-# Contains all the helper modules for the AdminController
+# Contains all the helper methods for the AdminController
 module AdminHelper
 end

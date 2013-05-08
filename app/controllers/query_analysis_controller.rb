@@ -342,7 +342,7 @@ class QueryAnalysisController < ApplicationController
     end
     
     ###
-    # Handles both GET and POST requests for the query using blast page.
+    # Handles both GET and POST requests for the query transcript isoforms page.
     #
     # <b>Associated ViewModel:</b> QueryTranscriptIsoforms
     def query_transcript_isoforms
@@ -414,8 +414,8 @@ class QueryAnalysisController < ApplicationController
     
     ###
     # When a new set of match/mismatch scores is selected on the query using 
-    # blastn page, handles ajax requests to get the gap costs for the new 
-    # selected matrix.
+    # blastn page, handles ajax requests to get the gap costs for the newly 
+    # selected match/mismatch scores.
     #
     # <b>Associated ViewModel:</b> QueryUsingBlastn
     def get_blastn_gap_costs_for_match_and_mismatch_scores
@@ -454,7 +454,7 @@ class QueryAnalysisController < ApplicationController
     
     ###
     # When a new matrix is selected on the query using Tblastn page, 
-    # handles ajax requests to get the gap costs for the new selected matrix.
+    # handles ajax requests to get the gap costs for the newly selected matrix.
     #
     # <b>Associated ViewModel:</b> QueryUsingTblastn
     def get_tblastn_gap_costs_for_matrix
@@ -467,7 +467,7 @@ class QueryAnalysisController < ApplicationController
     end
   
   ###
-  # Handles both GET and POST requests for the querying using Tblastx page.
+  # Handles both GET and POST requests for the query using Tblastx page.
   #
   # <b>Associated ViewModel:</b> QueryUsingTblastx
   def query_using_tblastx

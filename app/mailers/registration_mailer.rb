@@ -1,10 +1,10 @@
 ###
-# Mailer class to emails related to user registration.
+# Mailer class for emails related to user registration.
 class RegistrationMailer < ActionMailer::Base
    
    ###
    # Sends an email to all of the administrators stating that 
-   # the specified use has requested to register with the system.
+   # the specified user has requested to register with the system.
    def notify_admin_of_registration_request_email(user)
     @base_url = get_base_url
     @user = user
@@ -20,7 +20,7 @@ class RegistrationMailer < ActionMailer::Base
   end
   
   ###
-  # Sends an email to the specified user information them that they have 
+  # Sends an email to the specified user stating that they have 
   # just been confirmed by the administrator and 
   # that a confirmation email will be sent to them soon. The confirmation email 
   # itself is sent by the Devise gem. 

@@ -1,5 +1,5 @@
 ###
-# Worker class that runs jobs to find the Gene Ontology (GO) terms for a 
+# Worker class that runs jobs to find the GoTerm records that relate to a  
 # dataset in a background queue so that the user can continue to do other 
 # things while the go terms for their dataset are being found.
 class WorkerForFindGoTermsForDataset

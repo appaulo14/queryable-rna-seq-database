@@ -1,5 +1,6 @@
 ###
-# View model for displaying the fasta sequences associated with a given gene.
+# View model for displaying the fasta sequences for the transcripts associated 
+# with a given gene.
 #
 # <b>Associated Controller:</b> QueryAnalysisController
 class GetGeneFastas

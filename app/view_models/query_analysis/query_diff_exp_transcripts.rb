@@ -27,7 +27,7 @@ class QueryDiffExpTranscripts
   # have all of these go terms (names) should be displayed in the 
   # query results.
   attr_accessor :go_terms
-  # Specifies that only the differential expression tests with genes that 
+  # Specifies that only the differential expression tests with transcripts that 
   # have all of these go ids (accessions) should be displayed in the 
   # query results.
   attr_accessor :go_ids

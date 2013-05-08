@@ -1,5 +1,5 @@
 ###
-# Validator class to verify that an upload file is a fasta file by checking 
+# Validator class to verify that an uploaded file is a fasta file by checking 
 # its file extension.
 class HasFastaFileExtensionValidator < ActiveModel::EachValidator
   ### 

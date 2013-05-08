@@ -1,5 +1,5 @@
 ###
-# Validator class to verify that an upload file has the name "gene_exp.diff".
+# Validator class to verify that an uploaded file has the name "gene_exp.diff".
 class NameIsGeneExpDiffValidator < ActiveModel::EachValidator
   ### 
   # The method that actually does the validation

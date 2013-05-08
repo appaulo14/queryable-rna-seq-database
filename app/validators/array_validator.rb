@@ -1,5 +1,5 @@
 ###
-# Validator class to verify that the item behind validated is an array.
+# Validator class to verify that the item being validated is an array.
 class ArrayValidator < ActiveModel::EachValidator
   ### 
   # The method that actually does the validation

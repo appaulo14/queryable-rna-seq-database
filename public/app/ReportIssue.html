@@ -313,7 +313,7 @@ href="HomeController.html">HomeController</a></p>
       
         <dt id="AVAILABLE_CATEGORIES">AVAILABLE_CATEGORIES
         
-        <dd class="description"><p>The available validation options for the <a
+        <dd class="description"><p>The available valid options for the <a
 href="ReportIssue.html#attribute-i-category">category</a> attribute</p>
         
       
@@ -335,7 +335,7 @@ href="ReportIssue.html#attribute-i-category">category</a> attribute</p>
 
         <div class="method-description">
         
-        <p>The available validation options for the <a
+        <p>The available valid options for the <a
 href="ReportIssue.html#attribute-i-category">category</a> attribute</p>
         
         </div>
@@ -480,14 +480,13 @@ href="ReportIssue.html#attribute-i-category">category</a> attribute</p>
         <div class="method-description">
           
           <p>According <a
-href="http://railscasts.com/episodes/219-active-model?view=asciicast">railscasts.com/episodes/219-active-model?view=asciicast</a>,</p>
-
-<pre>this defines that this model does not persist in the database.</pre>
+href="http://railscasts.com/episodes/219-active-model?view=asciicast">railscasts.com/episodes/219-active-model?view=asciicast</a>,
+this defines that this model does not persist in the database.</p>
           
 
           
           <div class="method-source-code" id="persisted-3F-source">
-            <pre><span class="ruby-comment"># File app/view_models/home/report_issue.rb, line 94</span>
+            <pre><span class="ruby-comment"># File app/view_models/home/report_issue.rb, line 96</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">persisted?</span>
     <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
 <span class="ruby-keyword">end</span></pre>
@@ -512,12 +511,13 @@ href="http://railscasts.com/episodes/219-active-model?view=asciicast">railscasts
 
         <div class="method-description">
           
-          <p>Report the issue to the adminstrator(s)</p>
+          <p>Report the issue to the adminstrator(s) by sending email(s) containing the 
+issue information.</p>
           
 
           
           <div class="method-source-code" id="report_issue-source">
-            <pre><span class="ruby-comment"># File app/view_models/home/report_issue.rb, line 85</span>
+            <pre><span class="ruby-comment"># File app/view_models/home/report_issue.rb, line 86</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">report_issue</span>()
   <span class="ruby-comment">#Don't query if it is not valid</span>
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">valid?</span>

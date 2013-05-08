@@ -29,5 +29,13 @@ end
 
 ###
 # Represents a single line of an uploaded Trinity differential expression file
-class TrinityDiffExpLine < Struct.new :item, :log_fold_change, :p_value, :fdr
+class TrinityDiffExpLine
+  # The Gene or Transcript name for the line of the differential expression file
+  attr_accessor :item
+  # The log fold change for the line of the differential expression file
+  attr_accessor :log_fold_change
+  # The p-value for the line of the differential expression file
+  attr_accessor :p_value
+  # The fdr for the line of the differential expression file
+  attr_accessor :fdr
 end

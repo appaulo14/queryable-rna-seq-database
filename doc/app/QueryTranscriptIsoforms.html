@@ -316,7 +316,8 @@ attribute</p>
       
         <dt id="CLASS_CODES">CLASS_CODES
         
-        <dd class="description"><p>Used to build the where clause for the class code filtering options</p>
+        <dd class="description"><p>Contains all the possible class codes and is used to build the where 
+clause for the class code filtering options</p>
         
       
         <dt id="PIECE_SIZE">PIECE_SIZE
@@ -343,10 +344,7 @@ determine the values for LIMIT and OFFSET in the query itself.</p>
 
         <div class="method-description">
         
-        <p>The available samples for the selected dataset. These consist of any sample
-that has <a href="FpkmSample.html">FpkmSample</a> and <a
-href="TranscriptFpkmTrackingInformation.html">TranscriptFpkmTrackingInformation</a>
-associated with  its transcripts.</p>
+        <p>The available samples for the selected dataset.</p>
         
         </div>
       </div>
@@ -724,7 +722,7 @@ in the query results.</p>
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_transcript_isoforms.rb, line 136</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_transcript_isoforms.rb, line 135</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">current_user</span>)
   <span class="ruby-ivar">@current_user</span> = <span class="ruby-identifier">current_user</span>
 <span class="ruby-keyword">end</span></pre>
@@ -762,7 +760,7 @@ this defines that this view model does not persist in the database.</p>
 
           
           <div class="method-source-code" id="persisted-3F-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_transcript_isoforms.rb, line 245</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_transcript_isoforms.rb, line 244</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">persisted?</span>
     <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
 <span class="ruby-keyword">end</span></pre>
@@ -794,7 +792,7 @@ href="QueryTranscriptIsoforms.html#attribute-i-results">results</a>.</p>
 
           
           <div class="method-source-code" id="query-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_transcript_isoforms.rb, line 175</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_transcript_isoforms.rb, line 174</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">query</span>()
   <span class="ruby-comment">#Don't query if it is not valid</span>
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">valid?</span>
@@ -889,7 +887,7 @@ values</p>
 
           
           <div class="method-source-code" id="set_attributes_and_defaults-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_transcript_isoforms.rb, line 142</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_transcript_isoforms.rb, line 141</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-identifier">attributes</span> = {})
   <span class="ruby-comment">#Load in any values from the form</span>
   <span class="ruby-identifier">attributes</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">name</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>

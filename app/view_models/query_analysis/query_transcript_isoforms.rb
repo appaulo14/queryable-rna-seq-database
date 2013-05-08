@@ -72,9 +72,7 @@ class QueryTranscriptIsoforms
   # The name/id pairs of the datasets that can be selected to have their 
   # transcript isoforms queried.
   attr_reader   :names_and_ids_for_available_datasets
-  # The available samples for the selected dataset. These consist of any sample 
-  # that has FpkmSample and TranscriptFpkmTrackingInformation associated with 
-  # its transcripts.
+  # The available samples for the selected dataset.
   attr_reader   :available_samples
   # The available valid options for the transcript_length_comparison_sign attribute
   attr_reader   :available_transcript_length_comparison_signs
@@ -89,7 +87,8 @@ class QueryTranscriptIsoforms
   # determine the values for LIMIT and OFFSET in the query itself.
   PIECE_SIZE = 100
   
-  # Used to build the where clause for the class code filtering options
+  # Contains all the possible class codes and is used to build the where 
+  # clause for the class code filtering options
   CLASS_CODES = {
     :class_code_equal => '=', 
     :class_code_c => 'c',

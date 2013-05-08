@@ -10,7 +10,7 @@ module QueryAnalysisHelper
     return image_tag('descending_sort_arrow.png', :class => 'sort_arrow')
   end
   
-  # Displays link to the fasta sequence for a given transcript name in a 
+  # Displays a link to the fasta sequence for a given transcript name in a 
   # given dataset.
   def link_to_fasta_sequence_for_transcript(dataset_id, transcript_name)
     link_address = "get_transcript_fasta?" +
@@ -19,7 +19,7 @@ module QueryAnalysisHelper
     return link_to(transcript_name, link_address, :target => '_blank')
   end
   
-  # Displays link to the fasta sequences for the transcripts for a given 
+  # Displays a link to the fasta sequences for the transcripts for a given 
   # gene name in a given dataset.
   def link_to_fasta_sequences_for_gene(dataset_id, gene_name)
     link_address = "get_gene_fastas?" +

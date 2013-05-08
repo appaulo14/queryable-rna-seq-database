@@ -1,5 +1,5 @@
 ###
-# Validator class to verify that an upload file has the name "Trinity.fasta".
+# Validator class to verify that an uploaded file has the name "Trinity.fasta".
 class NameIsTrinityFastaValidator < ActiveModel::EachValidator
   ### 
   # The method that actually does the validation
