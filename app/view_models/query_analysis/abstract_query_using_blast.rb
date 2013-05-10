@@ -34,7 +34,7 @@ class AbstractQueryUsingBlast
   attr_reader   :available_num_alignments
   
   # The available valid options for the num_alignments attribute
-  AVAILABLE_NUM_ALIGNMENTS = ['0','10','50','100','250','500']
+  AVAILABLE_NUM_ALIGNMENTS = ['10','50','100','250','500','1000','5000','10000','20000']
   
   validates :dataset_id, :presence => true,
                          :dataset_belongs_to_user => true
@@ -71,6 +71,7 @@ class AbstractQueryUsingBlast
     #Set available datasets
     all_datasets_for_user = Dataset.where(:user_id => @current_user.id,
                                           :finished_uploading => true)
+                                   .order(:name)
     @available_datasets = all_datasets_for_user.map{|ds| [ds.name, ds.id]}
     #Set the available options for the number of alignments
     @available_num_alignments = AVAILABLE_NUM_ALIGNMENTS
