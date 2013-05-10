@@ -15,8 +15,8 @@ class CreateFpkmSamples < ActiveRecord::Migration
         throw NotImplementedError.new("Unknown adapter type '#{adapter_type}'")
       end
       t.integer :sample_id, :null => false
-      t.float :fpkm, :null => false
-      t.decimal :fpkm_hi, :null => false
+      t.string :fpkm, :null => false
+      t.string :fpkm_hi, :null => false
       t.string :fpkm_lo, :null => false
       t.string  :status, :null => false
 
