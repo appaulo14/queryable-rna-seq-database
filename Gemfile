@@ -25,14 +25,15 @@ end
 #    to the lastest version when updating this
 gem 'jquery-rails', '2.1.3'
 
-group :bioinformatics do
-    gem 'bio', '1.4.2'
-end
+
+gem 'bio', '1.4.2'
+
 
 group :development do
   gem 'rspec-rails', '>= 2.0.1'
   gem 'annotate'
   gem 'debugger'
+  gem 'faker'
 end
 
 group :test do

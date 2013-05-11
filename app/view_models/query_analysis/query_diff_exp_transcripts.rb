@@ -69,6 +69,24 @@ class QueryDiffExpTranscripts
   
   AVAILABLE_SORT_ORDERS = {'ascending' => 'ASC', 'descending' => 'DESC'}
   
+  # The string to use for the GROUP BY section of the query.
+  # transcripts.id is at the end of the string to prevent a strange error 
+  # with counting
+  GROUP_BY_STRING= "genes.name_from_program, " +
+                    "test_statistic, " +
+                    "p_value, " +
+                    "fdr, " +
+                    "sample_1_fpkm, " +
+                    "sample_2_fpkm, " +
+                    "log_fold_change, " +
+                    "test_status, " +
+                    "transcripts.id "
+  
+  THGT_LEFT_JOIN_STRING = "LEFT OUTER JOIN transcript_has_go_terms " +
+                  "ON transcript_has_go_terms.transcript_id = transcripts.id"
+  
+  GO_TERMS_LEFT_JOIN_STRING = "LEFT OUTER JOIN go_terms " +
+                  "ON transcript_has_go_terms.go_term_id = go_terms.id"
   
   validates :dataset_id, :presence => true,
                          :dataset_belongs_to_user => true
@@ -168,6 +186,48 @@ class QueryDiffExpTranscripts
     @dataset = Dataset.find_by_id(@dataset_id)
     @dataset.when_last_queried = Time.now
     @dataset.save!
+    # Build the parts of the query
+    select_string = build_select_string()
+    where_clauses = generate_where_clauses()
+    having_string = generate_having_string()
+    order_string = build_order_string()
+    # Execute the query
+    @results = DifferentialExpressionTest
+       .joins(:transcript => [:gene])
+       .joins(THGT_LEFT_JOIN_STRING)
+       .joins(GO_TERMS_LEFT_JOIN_STRING)
+       .where(where_clauses)
+       .group(GROUP_BY_STRING)
+       .having(having_string)
+       .select(select_string)
+       .order(order_string)
+       .limit(PAGE_SIZE)
+       .offset(PAGE_SIZE*(@page_number.to_i-1))
+    # Get the total number of records in the query
+    @results_count = DifferentialExpressionTest
+       .joins(:transcript => [:gene])
+       .joins(THGT_LEFT_JOIN_STRING)
+       .joins(GO_TERMS_LEFT_JOIN_STRING)
+       .where(where_clauses)
+       .group(GROUP_BY_STRING)
+       .having(having_string)
+       .select(select_string)
+       .order(order_string)
+       .count.count
+    @available_page_numbers = (1..(@results_count.to_f/PAGE_SIZE.to_f).ceil).to_a
+    @show_results = true
+  end
+  
+  ###
+  # According to http://railscasts.com/episodes/219-active-model?view=asciicast,
+  # this defines that this view model does not persist in the database.
+  def persisted?
+      return false
+  end
+  
+  private
+  
+  def build_select_string()
     select_string = 'transcripts.id as transcript_id,' +
                     'transcripts.name_from_program as transcript_name, ' +
                     'genes.name_from_program as gene_name,' +
@@ -178,51 +238,21 @@ class QueryDiffExpTranscripts
                     'differential_expression_tests.sample_2_fpkm,' +
                     'differential_expression_tests.log_fold_change,' +
                     'differential_expression_tests.test_status, '
-     adapter_type = ActiveRecord::Base.connection.adapter_name.downcase
-      case adapter_type
-      when /mysql/
-        select_string += 'group_concat(go_terms.id SEPARATOR ";") as go_ids, '
-        select_string += 'group_concat(go_terms.term SEPARATOR ";") as go_terms'
-      when /postgresql/
-        #TODO: Make sure these work
-        select_string += 'array_agg(go_terms.id) as go_ids, '
-        select_string += 'array_agg(go_terms.term) as go_terms'
-      else
-        throw NotImplementedError.new("Unknown adapter type '#{adapter_type}'")
-      end
-     # transcripts.id is at the end of the string to prevent a strange error 
-     # with counting
-     group_by_string = "genes.name_from_program, " +
-                       "test_statistic, " +
-                       "p_value, " +
-                       "fdr, " +
-                       "sample_1_fpkm, " +
-                       "sample_2_fpkm, " +
-                       "log_fold_change, " +
-                       "test_status, " +
-                       "transcripts.id "
-     thgt_left_join = "LEFT OUTER JOIN transcript_has_go_terms " +
-                 "ON transcript_has_go_terms.transcript_id = transcripts.id"
-     go_terms_left_join = "LEFT OUTER JOIN go_terms " +
-                          "ON transcript_has_go_terms.go_term_id = go_terms.id"
-    #Retreive some variables to use later
-    sample_comparison = SampleComparison.find_by_id(@sample_comparison_id)
-    @sample_1_name = sample_comparison.sample_1.name
-    @sample_2_name = sample_comparison.sample_2.name
-    #Require parts of the where clause
-    det_t = DifferentialExpressionTest.arel_table
-    where_clause = det_t[:sample_comparison_id].eq(sample_comparison.id)
-    if @fdr_or_p_value == 'p_value'
-      where_clause = where_clause.and(det_t[:p_value].lteq(@cutoff))
+    adapter_type = ActiveRecord::Base.connection.adapter_name.downcase
+    case adapter_type
+    when /mysql/
+      select_string += 'group_concat(go_terms.id SEPARATOR ";") as go_ids, '
+      select_string += 'group_concat(go_terms.term SEPARATOR ";") as go_terms'
+    when /postgresql/
+      #TODO: Make sure these work
+      select_string += "string_agg(go_terms.id,';') as go_ids, "
+      select_string += "string_agg(go_terms.term,';') as go_terms"
     else
-      where_clause = where_clause.and(det_t[:fdr].lteq(@cutoff))
+      throw NotImplementedError.new("Unknown adapter type '#{adapter_type}'")
     end
-    #Optional parts of the where clause
-    if not @transcript_name.blank?
-      tnqcg = TranscriptNameQueryConditionGenerator.new()
-      tnqcg.name = @transcript_name
-      where_clause = where_clause.and(tnqcg.generate_query_condition())
-    end
+  end
+  
+  def build_order_string()
     case @sort_column
     when'Transcript'
       sort_column = 'transcripts.name_from_program'
@@ -243,78 +273,40 @@ class QueryDiffExpTranscripts
     when 'Test Status'
       sort_column = 'differential_expression_tests.test_status'
     end
-     @results = DifferentialExpressionTest
-       .joins(:transcript => [:gene])
-       .joins(thgt_left_join)
-       .joins(go_terms_left_join)
-       .where(where_clause)
-       .group(group_by_string)
-       .select(select_string)
-       .order("#{sort_column} #{AVAILABLE_SORT_ORDERS[@sort_order]}")
-       .limit(PAGE_SIZE)
-       .offset(PAGE_SIZE*(@page_number.to_i-1)) #TODO: Fixme
-#    query_results = 
-#      DifferentialExpressionTest.joins(:transcript => [:gene])
-#                                .where(where_clause)
-#                                .select(select_string)
-#                                .limit(PAGE_SIZE)
-#                                .offset(PAGE_SIZE*@page_number.to_i)
-#    #Extract the query results to a form that can be put in the view
-#    @results = []
-#    query_results.each do |query_result|
-#      #Fill in the result hash that the view will use to display the data
-#      if (@dataset.go_terms_status == 'found')
-#        go_filter_checker = GoFilterChecker.new(query_result.transcript_id,
-#                                                  @go_ids,
-#                                                  @go_terms)
-#        next if go_filter_checker.passes_go_filters() == false
-#      end
-#      result = {}
-#      result[:transcript_name] = query_result.transcript_name
-#      result[:gene_name] =  query_result.gene_name
-#      if (@dataset.go_terms_status == 'found')
-#        result[:go_terms] = go_filter_checker.transcript_go_terms
-#      else
-#        result[:go_terms] = []
-#      end
-#      result[:test_statistic] = query_result.test_statistic
-#      result[:p_value] = query_result.p_value
-#      result[:fdr] = query_result.fdr
-#      result[:sample_1_fpkm] =  query_result.sample_1_fpkm
-#      result[:sample_2_fpkm] =  query_result.sample_2_fpkm
-#      result[:log_fold_change] = query_result.log_fold_change
-#      result[:test_status] = query_result.test_status
-#      @results << result
-#    end
-    #@available_page_numbers = 100
-#    results.each do |result|
-#      go_term_objects = []
-#      if not result[:go_terms].nil?
-#        go_terms = result[:go_terms].strip.split(';')
-#        go_ids = result[:go_ids].strip.split(';')
-#        (0..go_terms.length - 1).each do |i|
-#          go_term_objects << GoTerm.new(:term => go_terms[i], :id => go_ids[i])
-#        end
-#      end
-#      result.write_attribute(:go_term_objects,go_term_objects)
-#    end
-    
-    @results_count = DifferentialExpressionTest
-       .joins(:transcript => [:gene])
-       .joins(thgt_left_join)
-       .joins(go_terms_left_join)
-       .where(where_clause)
-       .group(group_by_string)
-       .select(select_string)
-       .count.count
-    @available_page_numbers = (1..(@results_count.to_f/PAGE_SIZE.to_f).ceil).to_a
-    @show_results = true
+    return "#{sort_column} #{AVAILABLE_SORT_ORDERS[@sort_order]}"
   end
   
-  ###
-  # According to http://railscasts.com/episodes/219-active-model?view=asciicast,
-  # this defines that this view model does not persist in the database.
-  def persisted?
-      return false
+  def generate_where_clauses()
+    #Require parts of the where clause
+    det_t = DifferentialExpressionTest.arel_table
+    where_clauses = det_t[:sample_comparison_id].eq(@sample_comparison_id)
+    if @fdr_or_p_value == 'p_value'
+      where_clauses = where_clauses.and(det_t[:p_value].lteq(@cutoff))
+    else
+      where_clauses = where_clauses.and(det_t[:fdr].lteq(@cutoff))
+    end
+    #Optional parts of the where clause
+    if not @transcript_name.strip.blank?
+      tnqcg = TranscriptNameQueryConditionGenerator.new()
+      tnqcg.name = @transcript_name
+      where_clauses = where_clauses.and(tnqcg.generate_query_condition())
+    end
+    return where_clauses
+  end
+  
+  def generate_having_string()
+    having_string = ""
+    if not @go_ids.strip.blank?
+      giqcg = GoIdsQueryConditionGenerator.new(@go_ids)
+      having_string += giqcg.generate_having_string()
+    end
+    if not @go_terms.strip.blank?
+      gtqcg = GoTermsQueryConditionGenerator.new(@go_terms)
+      if not having_string.strip.blank?
+        having_string += " AND "
+      end
+      having_string += gtqcg.generate_having_string()
+    end
+    return having_string
   end
 end

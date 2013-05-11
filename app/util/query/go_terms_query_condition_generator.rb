@@ -20,25 +20,30 @@ class GoTermsQueryConditionGenerator
   
   ###
   # Generates and returns the actual where clause query condition.
-  def generate_query_condition
+  def generate_having_string()
     #Do some validation
     if not self.valid?
       raise ArgumentError.new(self.errors.full_messages)
     end
+    having_string = ""
+    # string_agg(go_terms.id,';') LIKE '%GO:0070373%' AND string_agg(go_terms.id,';') LIKE '%GO:0010540%'
     go_terms = @go_terms.split(';')
-    gt_t = GoTerm.arel_table
-    where_clauses = []
     go_terms.each do |go_term|
-      where_clauses << gt_t[:name].matches("%#{go_term.strip}%")
-    end
-    if where_clauses.count > 1
-      combined_where_clause = where_clauses[0]
-      (1..where_clauses.count-1).each do |i|
-        combined_where_clause = combined_where_clause.and(where_clauses[i])
+      # Strip and quote to help prevent sql injection attacks
+      go_term =  ActiveRecord::Base.connection.quote_string(go_term.strip())
+      if not having_string.strip.blank?
+        having_string += " AND "
       end
-      return combined_where_clause
-    else
-      return where_clauses[0]
+      adapter_type = ActiveRecord::Base.connection.adapter_name.downcase
+      case adapter_type
+      when /mysql/
+        having_string += "group_concat(go_terms.term SEPARATOR ';') LIKE '%#{go_term}%' "
+      when /postgresql/
+        having_string += "string_agg(go_terms.term,';') LIKE '%#{go_term}%' "
+      else
+        throw NotImplementedError.new("Unknown adapter type '#{adapter_type}'")
+      end   
     end
+    return having_string
   end
 end
