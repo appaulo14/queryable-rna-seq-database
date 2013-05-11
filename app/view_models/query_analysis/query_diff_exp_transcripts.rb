@@ -36,7 +36,9 @@ class QueryDiffExpTranscripts
   attr_accessor :transcript_name
   # Because the query results are loaded in pieces using LIMIT and OFFSET, 
   # this specifies which piece to load.
-  attr_accessor :piece
+  attr_accessor :page_number
+  attr_accessor :sort_order
+  attr_accessor :sort_column
   
   # The name/id pairs of the datasets that can be selected to have their 
   # transcript differential expression tests queried.
@@ -55,17 +57,30 @@ class QueryDiffExpTranscripts
   attr_reader   :program_used
   # The status of the go terms for the selected dataset
   attr_reader   :go_terms_status
+  attr_reader   :show_results
+  attr_reader   :available_sort_columns
+  attr_reader   :available_sort_orders
+  attr_reader   :available_page_numbers
+  attr_reader   :results_count
   
   # The number of records in each piece of the query. This is used to 
   # determine the values for LIMIT and OFFSET in the query itself.
-  PIECE_SIZE = 100
+  PAGE_SIZE = 50
+  
+  AVAILABLE_SORT_ORDERS = {'ascending' => 'ASC', 'descending' => 'DESC'}
+  
   
   validates :dataset_id, :presence => true,
                          :dataset_belongs_to_user => true
   validates :sample_comparison_id, :presence => true,
                                    :sample_comparison_belongs_to_user => true
   validates :cutoff, :presence => true,
-                     :format => { :with => /\A\d*\.\d+\z/ }
+                     :format => { :with => /\A\d*\.?\d*\z/ }
+  
+  
+  def show_results?
+    return @show_results
+  end
   
   ###
   # parameters::
@@ -126,7 +141,22 @@ class QueryDiffExpTranscripts
     dataset = Dataset.find_by_id(@dataset_id)
     @program_used = dataset.program_used
     @go_terms_status = dataset.go_terms_status
-    @piece = '0' if @piece.blank?
+    @page_number = '1' if @page_number.blank?
+    @available_sort_orders = AVAILABLE_SORT_ORDERS.keys
+    if @program_used == 'cuffdiff'
+      @available_sort_columns = ['Transcript','Associated Gene', 
+                                 'Test Statistic', 'P-value','FDR', 
+                                "#{@sample_1_name} FPKM", 
+                                "#{@sample_2_name} FPKM", 'Log Fold Change',
+                                'Test Status']
+    else
+      @available_sort_columns = ['Transcript','Associated Gene', 'P-value','FDR', 
+                                "#{@sample_1_name} FPKM", "#{@sample_2_name} FPKM",
+                                'Log Fold Change']
+    end
+    @sort_order = @available_sort_orders.first if @sort_order.blank?
+    @sort_column = @available_sort_columns.first if @sort_column.blank?
+    @show_results = false if @show_results.blank?
   end
   
   # Execute the query to get the transcript differential expression tests 
@@ -147,17 +177,34 @@ class QueryDiffExpTranscripts
                     'differential_expression_tests.sample_1_fpkm,' +
                     'differential_expression_tests.sample_2_fpkm,' +
                     'differential_expression_tests.log_fold_change,' +
-                    'differential_expression_tests.test_status'
-#      select_string += 'array_agg(transcript_has_go_terms.go_term_id)'
-#     group_by_string = "transcripts.id, genes.name_from_program, test_statistic, p_value, fdr, sample_1_fpkm, sample_2_fpkm, log_fold_change, test_status"
-#     left_join = "LEFT OUTER JOIN transcript_has_go_terms on transcript_has_go_terms.transcript_id = transcripts.id"
-#     DifferentialExpressionTest
-#       .joins(:transcript => [:gene])
-#       .joins(left_join)
-#       .where(:sample_comparison_id => 7)
-#       .group(group_by_string)
-#       .select(select_string)
-#       .order('transcripts.id')
+                    'differential_expression_tests.test_status, '
+     adapter_type = ActiveRecord::Base.connection.adapter_name.downcase
+      case adapter_type
+      when /mysql/
+        select_string += 'group_concat(go_terms.id SEPARATOR ";") as go_ids, '
+        select_string += 'group_concat(go_terms.term SEPARATOR ";") as go_terms'
+      when /postgresql/
+        #TODO: Make sure these work
+        select_string += 'array_agg(go_terms.id) as go_ids, '
+        select_string += 'array_agg(go_terms.term) as go_terms'
+      else
+        throw NotImplementedError.new("Unknown adapter type '#{adapter_type}'")
+      end
+     # transcripts.id is at the end of the string to prevent a strange error 
+     # with counting
+     group_by_string = "genes.name_from_program, " +
+                       "test_statistic, " +
+                       "p_value, " +
+                       "fdr, " +
+                       "sample_1_fpkm, " +
+                       "sample_2_fpkm, " +
+                       "log_fold_change, " +
+                       "test_status, " +
+                       "transcripts.id "
+     thgt_left_join = "LEFT OUTER JOIN transcript_has_go_terms " +
+                 "ON transcript_has_go_terms.transcript_id = transcripts.id"
+     go_terms_left_join = "LEFT OUTER JOIN go_terms " +
+                          "ON transcript_has_go_terms.go_term_id = go_terms.id"
     #Retreive some variables to use later
     sample_comparison = SampleComparison.find_by_id(@sample_comparison_id)
     @sample_1_name = sample_comparison.sample_1.name
@@ -176,51 +223,98 @@ class QueryDiffExpTranscripts
       tnqcg.name = @transcript_name
       where_clause = where_clause.and(tnqcg.generate_query_condition())
     end
-    query_results = 
-      DifferentialExpressionTest.joins(:transcript => [:gene])
-                                .where(where_clause)
-                                .select(select_string)
-                                .limit(PIECE_SIZE)
-                                .offset(PIECE_SIZE*@piece.to_i)
-    #Extract the query results to a form that can be put in the view
-    @results = []
-    query_results.each do |query_result|
-      #Fill in the result hash that the view will use to display the data
-      if (@dataset.go_terms_status == 'found')
-        go_filter_checker = GoFilterChecker.new(query_result.transcript_id,
-                                                  @go_ids,
-                                                  @go_terms)
-        next if go_filter_checker.passes_go_filters() == false
-      end
-      result = {}
-      result[:transcript_name] = query_result.transcript_name
-      result[:gene_name] =  query_result.gene_name
-      if (@dataset.go_terms_status == 'found')
-        result[:go_terms] = go_filter_checker.transcript_go_terms
-      else
-        result[:go_terms] = []
-      end
-      result[:test_statistic] = query_result.test_statistic
-      result[:p_value] = query_result.p_value
-      result[:fdr] = query_result.fdr
-      result[:sample_1_fpkm] =  query_result.sample_1_fpkm
-      result[:sample_2_fpkm] =  query_result.sample_2_fpkm
-      result[:log_fold_change] = query_result.log_fold_change
-      result[:test_status] = query_result.test_status
-      @results << result
+    case @sort_column
+    when'Transcript'
+      sort_column = 'transcripts.name_from_program'
+    when 'Associated Gene'
+      sort_column = 'genes.name_from_program'
+    when 'Test Statistic'
+      sort_column = 'differential_expression_tests.test_statistic'
+    when 'P-value'
+      sort_column = 'differential_expression_tests.p_value'
+    when 'FDR'
+      sort_column = 'differential_expression_tests.fdr'
+    when "#{@sample_1_name} FPKM"
+      sort_column = 'differential_expression_tests.sample_1_fpkm'
+    when "#{@sample_2_name} FPKM"
+      sort_column = 'differential_expression_tests.sample_2_fpkm'
+    when 'Log Fold Change'
+      sort_column = 'differential_expression_tests.log_fold_change'
+    when 'Test Status'
+      sort_column = 'differential_expression_tests.test_status'
     end
+     @results = DifferentialExpressionTest
+       .joins(:transcript => [:gene])
+       .joins(thgt_left_join)
+       .joins(go_terms_left_join)
+       .where(where_clause)
+       .group(group_by_string)
+       .select(select_string)
+       .order("#{sort_column} #{AVAILABLE_SORT_ORDERS[@sort_order]}")
+       .limit(PAGE_SIZE)
+       .offset(PAGE_SIZE*(@page_number.to_i-1)) #TODO: Fixme
+#    query_results = 
+#      DifferentialExpressionTest.joins(:transcript => [:gene])
+#                                .where(where_clause)
+#                                .select(select_string)
+#                                .limit(PAGE_SIZE)
+#                                .offset(PAGE_SIZE*@page_number.to_i)
+#    #Extract the query results to a form that can be put in the view
+#    @results = []
+#    query_results.each do |query_result|
+#      #Fill in the result hash that the view will use to display the data
+#      if (@dataset.go_terms_status == 'found')
+#        go_filter_checker = GoFilterChecker.new(query_result.transcript_id,
+#                                                  @go_ids,
+#                                                  @go_terms)
+#        next if go_filter_checker.passes_go_filters() == false
+#      end
+#      result = {}
+#      result[:transcript_name] = query_result.transcript_name
+#      result[:gene_name] =  query_result.gene_name
+#      if (@dataset.go_terms_status == 'found')
+#        result[:go_terms] = go_filter_checker.transcript_go_terms
+#      else
+#        result[:go_terms] = []
+#      end
+#      result[:test_statistic] = query_result.test_statistic
+#      result[:p_value] = query_result.p_value
+#      result[:fdr] = query_result.fdr
+#      result[:sample_1_fpkm] =  query_result.sample_1_fpkm
+#      result[:sample_2_fpkm] =  query_result.sample_2_fpkm
+#      result[:log_fold_change] = query_result.log_fold_change
+#      result[:test_status] = query_result.test_status
+#      @results << result
+#    end
+    #@available_page_numbers = 100
+#    results.each do |result|
+#      go_term_objects = []
+#      if not result[:go_terms].nil?
+#        go_terms = result[:go_terms].strip.split(';')
+#        go_ids = result[:go_ids].strip.split(';')
+#        (0..go_terms.length - 1).each do |i|
+#          go_term_objects << GoTerm.new(:term => go_terms[i], :id => go_ids[i])
+#        end
+#      end
+#      result.write_attribute(:go_term_objects,go_term_objects)
+#    end
+    
+    @results_count = DifferentialExpressionTest
+       .joins(:transcript => [:gene])
+       .joins(thgt_left_join)
+       .joins(go_terms_left_join)
+       .where(where_clause)
+       .group(group_by_string)
+       .select(select_string)
+       .count.count
+    @available_page_numbers = (1..(@results_count.to_f/PAGE_SIZE.to_f).ceil).to_a
+    @show_results = true
   end
   
+  ###
   # According to http://railscasts.com/episodes/219-active-model?view=asciicast,
   # this defines that this view model does not persist in the database.
   def persisted?
       return false
-  end
-  
-  private
-  def user_has_permission_to_access_dataset
-  end
-  
-  def user_has_permission_to_access_comparison
   end
 end

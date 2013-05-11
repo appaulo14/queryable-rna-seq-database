@@ -186,9 +186,9 @@ class QueryAnalysisController < ApplicationController
         @qdet.set_attributes_and_defaults(params[:query_diff_exp_transcripts])
         # If valid, query and return results; otherwise return failure
         @qdet.query() if @qdet.valid?
-        debugger
-        render :partial => 'query_diff_exp_transcripts_table_rows', 
-               :locals => {:object => @qdet}
+#        debugger
+#        render :partial => 'query_diff_exp_transcripts_table_rows', 
+#               :locals => {:object => @qdet}
       end
     end
     

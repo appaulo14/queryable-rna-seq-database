@@ -23,15 +23,15 @@ class Transcript < ActiveRecord::Base
   has_many :differential_expression_tests, :dependent => :destroy
   has_many :fpkm_samples, :dependent => :destroy
   has_many :transcript_has_go_terms, :dependent => :destroy
-#  has_many :go_terms, :through => :transcript_has_go_terms
+  has_many :go_terms, :through => :transcript_has_go_terms
   
   #Validation
   validates :dataset, :presence => true
   validates :name_from_program, :presence => true
   
-  ###
-  # The GoTerm records associated with this Transcript.
-  def go_terms
-    return GoTerm.where("id in (?)", self.transcript_has_go_terms.map{|t| t.go_term_id})
-  end
+#  ###
+#  # The GoTerm records associated with this Transcript.
+#  def go_terms
+#    return GoTerm.where("id in (?)", self.transcript_has_go_terms.map{|t| t.go_term_id})
+#  end
 end

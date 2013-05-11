@@ -31,8 +31,15 @@ class GoTermFinderAndProcessor
       #Remove from the transcript name the "lcl|" part put there by blast
       line.gsub!(/\Alcl\|/,'')
       line_regex = /\A(\S+)\s+(\S+)\s+(.+)\z/
-      (transcript_name, go_accession) = line.strip.match(line_regex).captures
-      go_term = GoTerm.find_by_acc(go_accession)
+      (transcript_name, go_id) = line.strip.match(line_regex).captures
+      go_term = GoTerm.find_by_id(go_id)
+      # If the go term doesn't currently exist in the rails database, 
+      # copy it from the Blast2go database
+      if go_term.nil?
+        b2gdb_go_term = B2gdbGoTerm.find_by_acc(go_id)
+        go_term = GoTerm.create!(:id => b2gdb_go_term.acc,
+                                 :term => b2gdb_go_term.name)
+      end
       transcript = Transcript.where(:dataset_id => @dataset.id, 
                                      :name_from_program => transcript_name)[0]
       TranscriptHasGoTerm.create!(:transcript => transcript, 

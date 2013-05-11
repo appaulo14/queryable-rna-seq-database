@@ -10,7 +10,7 @@ class CreateTranscriptHasGoTerm < ActiveRecord::Migration
       else
         throw NotImplementedError.new("Unsupported adapter '#{adapter_type}'")
       end
-      t.integer :go_term_id, :null => false
+      t.string :go_term_id, :null => false
 
       #t.timestamps
     end

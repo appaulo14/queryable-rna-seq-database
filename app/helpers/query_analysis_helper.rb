@@ -28,12 +28,22 @@ module QueryAnalysisHelper
     return link_to(gene_name, link_address, :target => '_blank')
   end
   
-  # Displays a link to the Gene Onotology website for the specified go_id 
-  # having the text specified in body.
-  def link_to_amigo_web_page_for_term(body,go_id)
-    link_address = "http://amigo.geneontology.org/" +
-                   "cgi-bin/amigo/term_details?term=#{go_id}"
-    return link_to(body, link_address, :target => '_blank')
+  def create_list_of_go_terms(go_ids_string, go_terms_string)
+    go_term_objects = []
+    go_terms = go_terms_string.strip.split(';')
+    go_ids = go_ids_string.strip.split(';')
+    (0..go_terms.length - 1).each do |i|
+      go_term_objects << GoTerm.new(:term => go_terms[i], :id => go_ids[i])
+    end
+    html = "<ul>"
+    go_term_objects.each do |go_term|
+      link_address = "http://amigo.geneontology.org/" +
+                   "cgi-bin/amigo/term_details?term=#{go_term.id}"
+      link_body = "#{go_term.term} [#{go_term.id}]"
+      html += "<li>#{link_to(link_body, link_address, :target => '_blank')}</li>"
+    end
+    html += "<ul>"
+    return raw(html)
   end
   
   # Displays a link to the NCBI search website for the specified search term

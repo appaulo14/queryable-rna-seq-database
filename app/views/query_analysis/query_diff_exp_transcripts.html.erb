@@ -1,14 +1,5 @@
 <%= render 'shared/error_messages', :object => @qdet %>
 <script type='text/javascript' src='query_diff_exp_transcripts.js' ></script>
-<%= javascript_tag do %>
-  view_info = {action: "<%= params[:action] %>"};
-<% end %>
-<%= javascript_include_tag 'large_query_loader.js' %>
-<%= javascript_include_tag 'downloadify/swfobject.js' %>
-<%= javascript_include_tag 'downloadify/downloadify.min.js' %>
-<%= javascript_include_tag 'downloadify_wrapper.js' %>
-<%= javascript_include_tag 'Stupid-Table-Plugin/stupidtable.min.js' %>
-<%= javascript_include_tag 'table_sorting.js' %>
 <%= form_for(@qdet, :url => 'query_diff_exp_transcripts') do |qdet| %>
   <h1>Query Transcript Differential Expression Tests
     <%= help_tip(:query_diff_exp_transcripts) %>
@@ -23,44 +14,204 @@
     </span>
   </p>
   <p>
-    <%= render 'diff_exp_cutoff', :object => @qdet %>
+    <div>
+        <%= help_tip(:cutoff) %>
+        <%= qdet.label(:fdr_or_p_value, "Filter By:") %>
+        <%= qdet.radio_button(:fdr_or_p_value, :p_value) %>
+        <%= qdet.label(:filter_by_p_value, "P-value") %>
+        <%= qdet.radio_button(:fdr_or_p_value, :fdr) %>
+        <%= qdet.label(:filter_by_fdr, "FDR") %>
+    </div>
+    <div>
+        <%= qdet.label(:cutoff, "Select cutoff:") %>
+        <%= qdet.text_field(:cutoff, {:size=>10}) %>
+    </div>
   </p>
   <br/>
   <h2>Query filtering options</h2>
   <p>
-    <%= render 'go_query_filters', :object => @qdet %>
+    <div>
+        <%= qdet.label(:go_terms, "GO Terms, separated by semicolons") %>
+        <%= qdet.text_field(:go_terms, :size => 70) %>
+        <%= help_tip(:go_terms) %>
+        <%= link_to('Browse GO Terms','http://amigo.geneontology.org/cgi-bin/amigo/browse.cgi', :target => '_blank') %>
+    </div>
+    <div>
+        <%= qdet.label(:go_ids, "GO IDs (a.k.a Accessions), separated by semicolons") %>
+        <%= qdet.text_field(:go_ids) %>
+        <%= help_tip(:go_ids) %>
+        <%= link_to('Browse GO Terms','http://amigo.geneontology.org/cgi-bin/amigo/browse.cgi', :target => '_blank') %>
+    </div>
     <div>
         <%= qdet.label(:transcript_name, "Transcript name:") %>
         <%= qdet.text_field(:transcript_name) %>
-        <%= help_tip(:transcript_name) %>
     </div>
-    <%= qdet.hidden_field :piece, :value => "0" %>
   </p>
-  <p><%= qdet.submit('Query', :id => :submit_button) %></p>
+  <p><%= qdet.submit("Query", :disable_with => "Querying...") %></p>
+  <!--Section for the query results-->
+  <% if @qdet.show_results? %>
+    <p>
+      <%= @qdet.results_count %> results found for 
+      <em><b>
+        <%= @qdet.sample_1_name %>
+        </b> vs <b>
+        <%= @qdet.sample_2_name %>
+      </b></em>
+    </p>
+    <%= javascript_include_tag 'downloadify/swfobject.js' %>
+    <%= javascript_include_tag 'downloadify/downloadify.min.js' %>
+    <%= javascript_include_tag 'downloadify_wrapper.js' %>
+    <%= javascript_include_tag 'Stupid-Table-Plugin/stupidtable.min.js' %>
+    <%= javascript_include_tag 'table_sorting.js' %>
+    <p id="downloadify">
+        You must have Flash 10 installed to download this file.
+    </p>
+    <%= button_tag('Download Results As File', 
+                    :type => 'button',
+                    :id => :btn_download_as_file) %>
+    <div>
+      <%= qdet.label(:sort_column, 'Sort by:') %>
+      <%= qdet.select(:sort_column,
+        options_for_select(@qdet.available_sort_columns,
+          @qdet.sort_column)) %>
+      <%= qdet.select(:sort_order, 
+        options_for_select(@qdet.available_sort_orders, 
+        @qdet.sort_order)) %>
+      <%= qdet.submit("Sort", :disable_with => "Sorting...") %>
+    </div>
+    <div>
+      <%= qdet.label(:page_number, 'Page:') %>
+      <%= qdet.select(:page_number,
+        options_for_select(@qdet.available_page_numbers,
+        @qdet.page_number)) %>
+      <%= qdet.submit("Go To Page", :disable_with => "Going to Page...") %>
+    </div>
+    <br/>
+    <div style="float:center">
+      <%= link_to('Learn More About These Table Columns',
+                  'https://sites.google.com/site/rnaseqanalysispipeline/' +
+                  'user-manual/step-5-query-and-blast-your-data' +
+                  '#TOC-Output-Table-Data-Columns') %>
+    </div>
+    <!--Table containing the query results-->
+    <table border="1" id="query_results_table">
+        <thead>
+            <tr class="header_row">
+              <th data-sort='string'>
+                <table>
+                  <tr>
+                    <td>Transcript</td>
+                    <td class="sort-arrow-td"></td>
+                  </tr>
+                </table>
+              </th>
+              <th data-sort='string'>
+                <table>
+                  <tr>
+                    <td>Associated Gene</td>
+                    <td class="sort-arrow-td"></td>
+                  </tr>
+                </table>
+              </th>
+              <th>GO Terms</th>
+              <% if @qdet.program_used == 'cuffdiff' %>
+                <th data-sort='float'>
+                  <table>
+                    <tr>
+                      <td>Test Statistic</td>
+                      <td class="sort-arrow-td"></td>
+                    </tr>
+                  </table>
+                </th>
+              <% end %>
+              <th data-sort='float'>
+                <table>
+                  <tr>
+                    <td>P-Value</td>
+                    <td class="sort-arrow-td"></td>
+                  </tr>
+                </table>
+              </th>
+              <th data-sort='float'>
+                <table>
+                  <tr>
+                    <td>FDR</td>
+                    <td class="sort-arrow-td"></td>
+                  </tr>
+                </table>
+              </th>
+              <th data-sort='float'>
+                <table>
+                  <tr>
+                    <td><%= @qdet.sample_1_name %> FPKM</td>
+                    <td class="sort-arrow-td"></td>
+                  </tr>
+                </table>
+              </th>
+              <th data-sort='float'>
+                <table>
+                  <tr>
+                    <td><%= @qdet.sample_2_name %> FPKM</td>
+                    <td class="sort-arrow-td"></td>
+                  </tr>
+                </table>
+              </th>
+              <th data-sort='float'>
+                <table>
+                  <tr>
+                    <td>Log Fold Change</td>
+                    <td class="sort-arrow-td"></td>
+                  </tr>
+                </table>
+              </th>
+              <% if @qdet.program_used == 'cuffdiff' %>
+                <th data-sort='string'>
+                  <table>
+                    <tr>
+                      <td>Test Status</td>
+                      <td class="sort-arrow-td"></td>
+                    </tr>
+                  </table>
+                </th>
+              <% end %>
+            </tr>
+        </thead>
+        <tbody>
+            <% @qdet.results.each do |result| %>
+                <tr class="body_row">
+                    <td>
+                      <%= link_to_fasta_sequence_for_transcript(@qdet.dataset_id, 
+                              result[:transcript_name]) %>
+                    </td>
+                    <td>
+                      <% if result[:gene_name].nil? %>
+                        Not available
+                      <% else %>
+                        <%= link_to_fasta_sequences_for_gene(@qdet.dataset_id, 
+                                result[:gene_name]) %>
+                      <% end %>
+                    </td>
+                    <td>
+                      <% if result[:go_ids].blank? %>
+                        No Go Terms found
+                      <% else %>
+                        <%= create_list_of_go_terms(result[:go_ids],result[:go_terms]) %>
+                      <% end %>
+                    </td>
+                    <% if @qdet.program_used == 'cuffdiff' %>
+                      <td><pre><%= ("% .5E" % result[:test_statistic]) %></pre></td>
+                    <% end %>
+                    <td><pre><%= ("%6.5f" % result[:p_value]) %></pre></td>
+                    <td><pre><%= ("%6.5f" % result[:fdr]) %></pre></td>
+                    <td><pre><%= ("% .3E" % result[:sample_1_fpkm]) %></pre></td>
+                    <td><pre><%= ("% .3E" % result[:sample_2_fpkm]) %></pre></td>
+                    <td><pre><%= ("% .3E" % result[:log_fold_change]) %></pre></td>
+                    <% if @qdet.program_used == 'cuffdiff' %>
+                      <td><%= result[:test_status] %></td>
+                    <% end %>
+                </tr>
+            <% end %>
+        </tbody>
+    </table>
+  <% end %>
 <% end %>
-<!--Section for the query results-->
-<div id="query_results_div" style="display:none">
-  <p>
-    <%= querying_indicator %>
-    <span id="num_results_found"></span> for
-    <em><b><span id="results_for"></span></b></em>
-  </p>
-  <p id="downloadify">
-      You must have Flash 10 installed to download this file.
-  </p>
-  <div style="float:center">
-    <%= link_to('Learn More About These Table Columns',
-                'https://sites.google.com/site/rnaseqanalysispipeline/' +
-                'user-manual/step-5-query-and-blast-your-data' +
-                '#TOC-Output-Table-Data-Columns') %>
-  </div>
-  <!--Table containing the query results-->
-  <table border="1" id="query_results_table">
-      <thead id="insert_header_row_here">
-          
-      </thead>
-      <tbody id="insert_query_results_here">
-
-      </tbody>
-  </table>
-</div>

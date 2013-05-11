@@ -88,7 +88,7 @@ def make_genes
   print 'Populating genes...'
   Dataset.all.each do |ds|
     gene_count = 0
-    3.times do |n|
+    100.times do |n|
       gene = Gene.create!(:name_from_program => Faker::Lorem.word,
                           :dataset => ds)
       gene_count += 1
@@ -282,13 +282,21 @@ end
 
 def make_transcript_has_go_terms
   print 'Populating transcript_has_go_terms table...'
+  go_terms_count = B2gdbGoTerm.where("acc like '%GO:0%'").count
   Dataset.all.each do |ds|
     ds.transcripts.each do |t|
       rand(0..3).times do |n|
-        random_go_term = GoTerm.find(:all, :limit => 1, :offset => rand(1..30000))[0]
-        #redo if t.go_terms.include?(random_go_term)
+        random_b2gdb_go_term = B2gdbGoTerm.where("acc like '%GO:0%'") 
+                                            .limit(1)
+                                            .offset(rand(0..go_terms_count-1))[0]
+        go_term = GoTerm.find_by_id(random_b2gdb_go_term.acc)
+        if go_term.nil?
+          go_term = GoTerm.create!(:term => random_b2gdb_go_term.name,
+                                    :id => random_b2gdb_go_term.acc)
+        end                                         
+        redo if t.go_terms.include?(go_term)
         TranscriptHasGoTerm.create!(:transcript => t, 
-                                      :go_term => random_go_term)
+                                      :go_term => go_term)
       end
     end
   end
