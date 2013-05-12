@@ -55,8 +55,8 @@ class QueryDiffExpTranscripts
   # The program used when generating the dataset's data, such as Cuffdiff or 
   # Trinity with EdgeR
   attr_reader   :program_used
-  # The status of the go terms for the selected dataset
-  attr_reader   :go_terms_status
+  # Whether the select dataset has go terms
+  attr_reader   :has_go_terms
   attr_reader   :show_results
   attr_reader   :available_sort_columns
   attr_reader   :available_sort_orders
@@ -72,7 +72,7 @@ class QueryDiffExpTranscripts
   # The string to use for the GROUP BY section of the query.
   # transcripts.id is at the end of the string to prevent a strange error 
   # with counting
-  GROUP_BY_STRING= "genes.name_from_program, " +
+  GROUP_BY_STRING = "genes.name_from_program, " +
                     "test_statistic, " +
                     "p_value, " +
                     "fdr, " +
@@ -89,9 +89,17 @@ class QueryDiffExpTranscripts
                   "ON transcript_has_go_terms.go_term_id = go_terms.id"
   
   validates :dataset_id, :presence => true,
-                         :dataset_belongs_to_user => true
+                         :dataset_belongs_to_user => true,
+                         :numericality => {
+                              :only_integer => true, 
+                              :greater_than_or_equal => 0 
+                          }
   validates :sample_comparison_id, :presence => true,
-                                   :sample_comparison_belongs_to_user => true
+                                   :sample_comparison_belongs_to_user => true,
+                                   :numericality => {
+                                          :only_integer => true, 
+                                          :greater_than_or_equal => 0 
+                                   }
   validates :cutoff, :presence => true,
                      :format => { :with => /\A\d*\.?\d*\z/ }
   
@@ -114,6 +122,34 @@ class QueryDiffExpTranscripts
     attributes.each do |name, value|
         send("#{name}=", value)
     end
+    set_available_datasets_and_default_dataset()
+    set_sample_related_defaults()
+    set_sort_defaults()
+    set_other_defaults()
+  end
+  
+  # Execute the query to get the transcript differential expression tests 
+  # with the specified filtering options and store them in #results.
+  def query()
+    #Don't query if it is not valid
+    return if not self.valid?
+    record_that_dataset_has_been_queried()
+    build_query_parts()
+    execute_query()
+    count_query_results()
+    @show_results = true
+  end
+  
+  ###
+  # According to http://railscasts.com/episodes/219-active-model?view=asciicast,
+  # this defines that this view model does not persist in the database.
+  def persisted?
+      return false
+  end
+  
+  private
+  
+  def set_available_datasets_and_default_dataset()
     #Set available datasets
     @names_and_ids_for_available_datasets = []
     available_datasets = Dataset.where(:user_id => @current_user.id, 
@@ -126,11 +162,11 @@ class QueryDiffExpTranscripts
     #Set default values for the relavent blank attributes
     if @dataset_id.blank?
       @dataset_id = available_datasets.first.id
-    elsif not @dataset_id.to_s.match(/\A\d+\z/)
-      @dataset_id = available_datasets.first.id
     end
-    @fdr_or_p_value = 'p_value' if fdr_or_p_value.blank?
-    @cutoff = '0.05' if cutoff.blank?
+    @dataset = Dataset.find_by_id(@dataset_id)
+  end
+  
+  def set_sample_related_defaults()
     #Set available samples for comparison
     @available_sample_comparisons = []
     s_t = Sample.arel_table
@@ -156,10 +192,9 @@ class QueryDiffExpTranscripts
     sample_cmp = SampleComparison.find_by_id(@sample_comparison_id)
     @sample_1_name = sample_cmp.sample_1.name
     @sample_2_name = sample_cmp.sample_2.name
-    dataset = Dataset.find_by_id(@dataset_id)
-    @program_used = dataset.program_used
-    @go_terms_status = dataset.go_terms_status
-    @page_number = '1' if @page_number.blank?
+  end
+  
+  def set_sort_defaults()
     @available_sort_orders = AVAILABLE_SORT_ORDERS.keys
     if @program_used == 'cuffdiff'
       @available_sort_columns = ['Transcript','Associated Gene', 
@@ -168,64 +203,29 @@ class QueryDiffExpTranscripts
                                 "#{@sample_2_name} FPKM", 'Log Fold Change',
                                 'Test Status']
     else
-      @available_sort_columns = ['Transcript','Associated Gene', 'P-value','FDR', 
-                                "#{@sample_1_name} FPKM", "#{@sample_2_name} FPKM",
+      @available_sort_columns = ['Transcript','Associated Gene', 'P-value',
+                                 'FDR', 
+                                "#{@sample_1_name} FPKM", 
+                                 "#{@sample_2_name} FPKM",
                                 'Log Fold Change']
     end
     @sort_order = @available_sort_orders.first if @sort_order.blank?
     @sort_column = @available_sort_columns.first if @sort_column.blank?
+  end
+  
+  def set_other_defaults()
+    @program_used = @dataset.program_used
+    @has_go_terms = (@dataset.go_terms_status == 'done') ? true : false
+    @page_number = '1' if @page_number.blank?
+    @fdr_or_p_value = 'p_value' if fdr_or_p_value.blank?
+    @cutoff = '0.05' if cutoff.blank?
     @show_results = false if @show_results.blank?
   end
   
-  # Execute the query to get the transcript differential expression tests 
-  # with the specified filtering options and store them in #results.
-  def query()
-    #Don't query if it is not valid
-    return if not self.valid?
-    #Record that the dataset was queried at this time
-    @dataset = Dataset.find_by_id(@dataset_id)
+  def record_that_dataset_has_been_queried()
     @dataset.when_last_queried = Time.now
     @dataset.save!
-    # Build the parts of the query
-    select_string = build_select_string()
-    where_clauses = generate_where_clauses()
-    having_string = generate_having_string()
-    order_string = build_order_string()
-    # Execute the query
-    @results = DifferentialExpressionTest
-       .joins(:transcript => [:gene])
-       .joins(THGT_LEFT_JOIN_STRING)
-       .joins(GO_TERMS_LEFT_JOIN_STRING)
-       .where(where_clauses)
-       .group(GROUP_BY_STRING)
-       .having(having_string)
-       .select(select_string)
-       .order(order_string)
-       .limit(PAGE_SIZE)
-       .offset(PAGE_SIZE*(@page_number.to_i-1))
-    # Get the total number of records in the query
-    @results_count = DifferentialExpressionTest
-       .joins(:transcript => [:gene])
-       .joins(THGT_LEFT_JOIN_STRING)
-       .joins(GO_TERMS_LEFT_JOIN_STRING)
-       .where(where_clauses)
-       .group(GROUP_BY_STRING)
-       .having(having_string)
-       .select(select_string)
-       .order(order_string)
-       .count.count
-    @available_page_numbers = (1..(@results_count.to_f/PAGE_SIZE.to_f).ceil).to_a
-    @show_results = true
   end
-  
-  ###
-  # According to http://railscasts.com/episodes/219-active-model?view=asciicast,
-  # this defines that this view model does not persist in the database.
-  def persisted?
-      return false
-  end
-  
-  private
   
   def build_select_string()
     select_string = 'transcripts.id as transcript_id,' +
@@ -237,19 +237,18 @@ class QueryDiffExpTranscripts
                     'differential_expression_tests.sample_1_fpkm,' +
                     'differential_expression_tests.sample_2_fpkm,' +
                     'differential_expression_tests.log_fold_change,' +
-                    'differential_expression_tests.test_status, '
-    adapter_type = ActiveRecord::Base.connection.adapter_name.downcase
-    case adapter_type
-    when /mysql/
-      select_string += 'group_concat(go_terms.id SEPARATOR ";") as go_ids, '
-      select_string += 'group_concat(go_terms.term SEPARATOR ";") as go_terms'
-    when /postgresql/
-      #TODO: Make sure these work
-      select_string += "string_agg(go_terms.id,';') as go_ids, "
-      select_string += "string_agg(go_terms.term,';') as go_terms"
-    else
-      throw NotImplementedError.new("Unknown adapter type '#{adapter_type}'")
+                    'differential_expression_tests.test_status '
+    if @has_go_terms == true
+      select_string += ', '
+      # Add aggregate select string for the go ids
+      go_ids_agg_str_gen = AggregateStringGenerator.new('go_terms.id','go_ids')
+      select_string += "#{go_ids_agg_str_gen.generate_aggregate_string()}, "
+      # Add the aggregate select string for the go terms
+      go_terms_agg_str_gen = AggregateStringGenerator.new('go_terms.term',
+                                                          'go_terms')
+      select_string += go_terms_agg_str_gen.generate_aggregate_string()
     end
+    return select_string
   end
   
   def build_order_string()
@@ -295,6 +294,7 @@ class QueryDiffExpTranscripts
   end
   
   def generate_having_string()
+    return "" if @has_go_terms == false
     having_string = ""
     if not @go_ids.strip.blank?
       giqcg = GoIdsQueryConditionGenerator.new(@go_ids)
@@ -308,5 +308,67 @@ class QueryDiffExpTranscripts
       having_string += gtqcg.generate_having_string()
     end
     return having_string
+  end
+  
+  def build_query_parts()
+    @select_string = build_select_string()
+    @where_clauses = generate_where_clauses()
+    @having_string = generate_having_string()
+    @order_string = build_order_string()
+  end
+  
+  def execute_query()
+    if @has_go_terms == true
+      @results = DifferentialExpressionTest
+        .joins(:transcript => [:gene])
+        .joins(THGT_LEFT_JOIN_STRING)
+        .joins(GO_TERMS_LEFT_JOIN_STRING)
+        .where(@where_clauses)
+        .group(GROUP_BY_STRING)
+        .having(@having_string)
+        .select(@select_string)
+        .order(@order_string)
+        .limit(PAGE_SIZE)
+        .offset(PAGE_SIZE*(@page_number.to_i-1))
+    else
+      @results = DifferentialExpressionTest
+        .joins(:transcript => [:gene])
+        .where(@where_clauses)
+        .group(GROUP_BY_STRING)
+        .having(@having_string)
+        .select(@select_string)
+        .order(@order_string)
+        .limit(PAGE_SIZE)
+        .offset(PAGE_SIZE*(@page_number.to_i-1))
+    end
+  end
+  
+  def count_query_results()
+    if @has_go_terms == true
+      @results_count = DifferentialExpressionTest
+        .joins(:transcript => [:gene])
+        .joins(THGT_LEFT_JOIN_STRING)
+        .joins(GO_TERMS_LEFT_JOIN_STRING)
+        .where(@where_clauses)
+        .group(GROUP_BY_STRING)
+        .having(@having_string)
+        .select(@select_string)
+        .order(@order_string)
+        .count.count
+    else
+      @results_count = DifferentialExpressionTest
+        .joins(:transcript => [:gene])
+        .where(@where_clauses)
+        .group(GROUP_BY_STRING)
+        .having(@having_string)
+        .select(@select_string)
+        .order(@order_string)
+        .count.count
+    end
+    if @results_count == 0
+      available_page_numbers = [1]
+    else
+      @available_page_numbers = (1..(@results_count.to_f/PAGE_SIZE.to_f).ceil).to_a
+    end
   end
 end

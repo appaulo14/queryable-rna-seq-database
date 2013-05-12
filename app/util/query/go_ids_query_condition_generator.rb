@@ -35,15 +35,9 @@ class GoIdsQueryConditionGenerator
       if not having_string.strip.blank?
         having_string += " AND "
       end
-      adapter_type = ActiveRecord::Base.connection.adapter_name.downcase
-      case adapter_type
-      when /mysql/
-        having_string += "group_concat(go_terms.id SEPARATOR ';') LIKE '%#{go_id}%' "
-      when /postgresql/
-        having_string += "string_agg(go_terms.id,';') LIKE '%#{go_id}%' "
-      else
-        throw NotImplementedError.new("Unknown adapter type '#{adapter_type}'")
-      end   
+      go_ids_agg_str_generator = AggregateStringGenerator.new('go_terms.id')
+      agg_string = go_ids_agg_str_generator.generate_aggregate_string()
+      having_string += "#{agg_string} LIKE '%#{go_id}%' " 
     end
     return having_string
   end
