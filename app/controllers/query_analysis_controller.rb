@@ -211,20 +211,6 @@ class QueryAnalysisController < ApplicationController
     end
     
     ###
-    # For the query differentially expressed transcripts page, 
-    # ajax request to add the table header row to the query results table.
-    #
-    # <b>Associated ViewModel:</b> QueryDiffExpTranscripts
-    def get_query_diff_exp_transcripts_header_row
-      @qdet = QueryDiffExpTranscripts.new(current_user)
-      @qdet.set_attributes_and_defaults(params[:query_diff_exp_transcripts])
-      if @qdet.valid?
-        render :partial => 'query_diff_exp_transcripts_header_row', 
-               :locals => {:object => @qdet}
-      end
-    end
-    
-    ###
     # Handles requests to display the fasta sequence for a given transcript.
     #
     # <b>Associated ViewModel:</b> GetTranscriptFasta
@@ -306,8 +292,8 @@ class QueryAnalysisController < ApplicationController
         @qdeg.set_attributes_and_defaults(params[:query_diff_exp_genes])
         # If valid, query and return results; otherwise return failure
         @qdeg.query() if @qdeg.valid?
-        render :partial => 'query_diff_exp_genes_table_rows', 
-               :locals => {:object => @qdeg}
+#         render :partial => 'query_diff_exp_genes_table_rows', 
+#                :locals => {:object => @qdeg}
       end
     end
     
@@ -328,20 +314,6 @@ class QueryAnalysisController < ApplicationController
     end
     
     ###
-    # For the query differentially expressed genes page, 
-    # ajax request to add the table header row to the query results table.
-    #
-    # <b>Associated ViewModel:</b> QueryDiffExpGenes
-    def get_query_diff_exp_genes_header_row
-      @qdeg = QueryDiffExpGenes.new(current_user)
-      @qdeg.set_attributes_and_defaults(params[:query_diff_exp_genes])
-      if @qdeg.valid?
-        render :partial => 'query_diff_exp_genes_header_row', 
-               :locals => {:object => @qdeg}
-      end
-    end
-    
-    ###
     # Handles both GET and POST requests for the query transcript isoforms page.
     #
     # <b>Associated ViewModel:</b> QueryTranscriptIsoforms
@@ -356,8 +328,8 @@ class QueryAnalysisController < ApplicationController
         @qti.set_attributes_and_defaults(params[:query_transcript_isoforms])
         # If valid, query and return results; otherwise return failure
         @qti.query() if @qti.valid?
-        render :partial => 'query_transcript_isoforms_table_rows', 
-               :locals => {:object => @qti}
+#         render :partial => 'query_transcript_isoforms_table_rows', 
+#                :locals => {:object => @qti}
       end
     end
     
@@ -372,20 +344,6 @@ class QueryAnalysisController < ApplicationController
       @qti.set_attributes_and_defaults(:dataset_id => dataset_id)
       if @qti.valid?
         render :partial => 'transcript_isoforms_samples_for_dataset', 
-               :locals => {:object => @qti}
-      end
-    end
-    
-    ###
-    # For the query transcript isoforms page, 
-    # ajax request to add the table header row to the query results table.
-    #
-    # <b>Associated ViewModel:</b> QueryTranscriptIsoforms
-    def get_query_transcript_isoforms_header_row
-      @qti = QueryTranscriptIsoforms.new(current_user)
-      @qti.set_attributes_and_defaults(params[:query_transcript_isoforms])
-      if @qti.valid?
-        render :partial => 'query_transcript_isoforms_header_row', 
                :locals => {:object => @qti}
       end
     end

@@ -1,19 +1,12 @@
 require 'query/transcript_name_query_condition_generator.rb'
-require 'query/go_ids_query_condition_generator.rb'
-require 'query/go_terms_query_condition_generator.rb'
-require 'query/go_filter_checker.rb'
+require 'query_analysis/abstract_query_regular_db.rb'
 
 ###
 # View model for the query transcript isoforms page.
 #
 # <b>Associated Controller:</b> QueryAnalysisController
-class QueryTranscriptIsoforms
-  include ActiveModel::Validations
-  include ActiveModel::Conversion
-  extend ActiveModel::Naming
+class QueryTranscriptIsoforms < AbstractQueryRegularDb
   
-  # The id of the dataset whose transcript isoforms will be queried.
-  attr_accessor :dataset_id
   # The id of the sample whose isoforms will be queried.
   attr_accessor :sample_id
   # Specifies that only transcripts with the "=" class code or other selected 
@@ -52,12 +45,6 @@ class QueryTranscriptIsoforms
   # Specifies that only transcripts with the "." class code or other selected 
   # class codes should be displayed in the query results.
   attr_accessor :class_code_dot
-  # Specifies that only the transcript that have all of these go terms 
-  # (names) should be displayed in the query results.
-  attr_accessor :go_terms
-  # Specifies that only the transcript that have all of these go ids 
-  # (accessions) should be displayed in the query results.
-  attr_accessor :go_ids
   # Which comparison sign to use for filtering the transcript length
   attr_accessor :transcript_length_comparison_sign
   # The transcript length to filter by
@@ -65,27 +52,13 @@ class QueryTranscriptIsoforms
   # Specifies that only records matching this transcript name should be display 
   # in the query results.
   attr_accessor :transcript_name
-  # Because the query results are loaded in pieces using LIMIT and OFFSET, 
-  # this specifies which piece to load.
-  attr_accessor :piece
   
-  # The name/id pairs of the datasets that can be selected to have their 
-  # transcript isoforms queried.
-  attr_reader   :names_and_ids_for_available_datasets
   # The available samples for the selected dataset.
   attr_reader   :available_samples
   # The available valid options for the transcript_length_comparison_sign attribute
   attr_reader   :available_transcript_length_comparison_signs
-  # Contains the results from the query
-  attr_reader   :results
   # The name of the sample being queried
   attr_reader   :sample_name
-  # The status of the go terms for the selected dataset
-  attr_reader   :go_terms_status
-  
-  # The number of records in each piece of the query. This is used to 
-  # determine the values for LIMIT and OFFSET in the query itself.
-  PIECE_SIZE = 100
   
   # Contains all the possible class codes and is used to build the where 
   # clause for the class code filtering options
@@ -126,61 +99,80 @@ class QueryTranscriptIsoforms
   validates :transcript_length_comparison_sign, 
      :inclusion => {:in => AVAILABLE_TRANSCRIPT_LENGTH_COMPARISON_SIGNS}
   validates :transcript_length_value, :numericality => true
-  validates :piece, :presence => true,
-                    :format => { :with => /\A\d+\z/ }
   
-  ###
-  # parameters::
-  # * <b>current_user:</b> The currently logged in user
-  def initialize(current_user)
-    @current_user = current_user
+  
+  # According to http://railscasts.com/episodes/219-active-model?view=asciicast,
+  # this defines that this view model does not persist in the database.
+  def persisted?
+      return false
   end
   
-  # Set the view model's attributes or set those attributes to their 
-  # default values
-  def set_attributes_and_defaults(attributes = {})
-    #Load in any values from the form
-    attributes.each do |name, value|
-        send("#{name}=", value)
-    end
+  protected
+  
+  ###
+  # The string to use for the GROUP BY section of the query.
+  # transcripts.id is at the end of the string to prevent a strange error 
+  # with counting
+  def self.group_by_string
+    return 'genes.name_from_program,' +
+           'transcript_fpkm_tracking_informations.class_code,' +
+           'transcript_fpkm_tracking_informations.length,' +
+           'transcript_fpkm_tracking_informations.coverage,' +
+           'fpkm_samples.fpkm,' +
+           'fpkm_samples.fpkm_lo,' +
+           'fpkm_samples.fpkm_hi,' +
+           'fpkm_samples.status, ' +
+           'transcripts.name_from_program'
+  end
+  
+  def set_available_datasets_and_default_dataset()
     #Set available datasets
     @names_and_ids_for_available_datasets = []
-    available_datasets = Dataset.where(:user_id => @current_user.id,
+    available_datasets = Dataset.where(:user_id => @current_user.id, 
                                        :has_transcript_isoforms => true,
                                        :finished_uploading => true)
                                 .order(:name)
     available_datasets.each do |ds|
       @names_and_ids_for_available_datasets << [ds.name, ds.id]
     end
-    @available_transcript_length_comparison_signs =
-      AVAILABLE_TRANSCRIPT_LENGTH_COMPARISON_SIGNS
     #Set default values for the relavent blank attributes
-    @dataset_id = available_datasets.first.id if @dataset_id.blank?
-    @transcript_length_value = '0' if transcript_length_value.blank?
-    @transcript_length_comparison_sign = '>=' if @transcript_length_comparison_sign.blank?
-    #Set available samples for querying
-    ds = Dataset.find_by_id(@dataset_id)
-    @available_samples = []
-    ds.samples.sort.each do |sample|
-      @available_samples << [sample.name, sample.id]
+    if @dataset_id.blank?
+      @dataset_id = available_datasets.first.id
     end
-    @sample_id = @available_samples[0][1] if @sample_id.blank?
-    @piece = '0' if @piece.blank?
-    @go_terms_status = Dataset.find_by_id(@dataset_id).go_terms_status
+    @dataset = Dataset.find_by_id(@dataset_id)
   end
   
-  # Execute the query to get the transcript isoforms with the 
-  # specified filtering options and store them in #results.
-  def query()
-    #Don't query if it is not valid
-    return if not self.valid?
-    #Record that the dataset was queried at this time
-    @dataset = Dataset.find_by_id(@dataset_id)
-    @dataset.when_last_queried = Time.now
-    @dataset.save!
-    #Create and run the query
-    select_string = 'transcripts.id as transcript_id,' +
-                    'transcripts.name_from_program as transcript_name, ' +
+  def set_sample_related_defaults()
+    @available_samples = []
+    @dataset.samples.sort.each do |sample|
+      @available_samples << [sample.name, sample.id]
+    end
+    @sample_id = @available_samples.first[1]
+    @sample_name = @available_samples.first[0]
+  end
+  
+  def set_sort_defaults()
+    @available_sort_orders = AVAILABLE_SORT_ORDERS.keys
+    @available_sort_columns = ['Transcript','Associated Gene', 
+                                'Class Code', 'Length','Coverage', 
+                              'FPKM','FPKM Lower Bound','FPKM Upper Bound',
+                              'Status']
+    @sort_order = @available_sort_orders.first if @sort_order.blank?
+    @sort_column = @available_sort_columns.first if @sort_column.blank?
+  end
+  
+  def set_other_defaults()
+    super
+    @available_transcript_length_comparison_signs = 
+        AVAILABLE_TRANSCRIPT_LENGTH_COMPARISON_SIGNS
+    @transcript_length_value = '0' if @transcript_length_value.blank?
+    if @transcript_length_comparison_sign.blank?
+      @transcript_length_comparison_sign = '>='
+    end
+  end
+
+  def build_select_string()
+    select_string = 'transcripts.name_from_program as transcript_name, ' +
                     'genes.name_from_program as gene_name,' +
                     'transcript_fpkm_tracking_informations.class_code,' +
                     'transcript_fpkm_tracking_informations.length,' +
@@ -189,60 +181,120 @@ class QueryTranscriptIsoforms
                     'fpkm_samples.fpkm_lo,' +
                     'fpkm_samples.fpkm_hi,' +
                     'fpkm_samples.status'
+    if @has_go_terms == true
+      select_string += ', '
+      # Add aggregate select string for the go ids
+      go_ids_agg_str_gen = AggregateStringGenerator.new('go_terms.id','go_ids')
+      select_string += "#{go_ids_agg_str_gen.generate_aggregate_string()}, "
+      # Add the aggregate select string for the go terms
+      go_terms_agg_str_gen = AggregateStringGenerator.new('go_terms.term',
+                                                          'go_terms')
+      select_string += go_terms_agg_str_gen.generate_aggregate_string()
+    end
+    return select_string
+  end
+  
+  def build_order_string()
+    case @sort_column
+    when'Transcript'
+      sort_column = 'transcripts.name_from_program'
+    when 'Associated Gene'
+      sort_column = 'genes.name_from_program'
+    when 'Class Code'
+      sort_column = 'transcript_fpkm_tracking_informations.class_code'
+    when 'Length'
+      sort_column = 'transcript_fpkm_tracking_informations.length'
+    when 'Coverage'
+      sort_column = 'transcript_fpkm_tracking_informations.coverage'
+    when 'FPKM'
+      sort_column = 'fpkm_samples.fpkm'
+    when 'FPKM Lower Bound'
+      sort_column = 'fpkm_samples.fpkm_lo'
+    when 'FPKM Upper Bound'
+      sort_column = 'fpkm_samples.fpkm_hi'
+    when 'Status'
+      sort_column = 'fpkm_samples.status'
+    end
+    return "#{sort_column} #{AVAILABLE_SORT_ORDERS[@sort_order]}"
+  end
+  
+  def generate_where_clauses()
+     #Create and run the query
     ds_t = Dataset.arel_table
-    where_clause = ds_t[:id].eq(@dataset_id)
+    where_clauses = ds_t[:id].eq(@dataset_id)
     fs_t = FpkmSample.arel_table
-    where_clause = where_clause.and(fs_t[:sample_id].eq(@sample_id))
+    where_clauses = where_clauses.and(fs_t[:sample_id].eq(@sample_id))
     class_codes_where_clause = class_codes_where_clause()
     if not class_codes_where_clause.nil?
-      where_clause = where_clause.and(class_codes_where_clause)
+      where_clauses = where_clauses.and(class_codes_where_clause)
     end
-    where_clause = where_clause.and(transcript_length_query_condition())
+    where_clauses = where_clauses.and(transcript_length_query_condition())
     if not @transcript_name.blank?
       tnqcg = TranscriptNameQueryConditionGenerator.new()
       tnqcg.name = @transcript_name
-      where_clause = where_clause.and(tnqcg.generate_query_condition())
+      where_clauses = where_clauses.and(tnqcg.generate_query_condition())
     end
-    query_results = 
-       Dataset.joins(
-          :transcripts => [:transcript_fpkm_tracking_information, :gene, :fpkm_samples]
-        ).where(where_clause).select(select_string)
-         .limit(PIECE_SIZE).offset(PIECE_SIZE*@piece.to_i)
-    #Extract the query results to form that can be put in the view
-    @sample_name = Sample.find_by_id(@sample_id).name
-    @results = []
-    query_results.each do |query_result|
-      #Do a few more minor queries to get the data in the needed format
-      if (@dataset.go_terms_status == 'found')
-        go_filter_checker = GoFilterChecker.new(query_result.transcript_id,
-                                                  @go_ids,
-                                                  @go_terms)
-        next if go_filter_checker.passes_go_filters() == false
-      end
-      #Fill in the result hash that the view will use to display the data
-      result = {}
-      result[:transcript_name] = query_result.transcript_name
-      result[:gene_name] = query_result.gene_name
-      if (@dataset.go_terms_status == 'found')
-        result[:go_terms] = go_filter_checker.transcript_go_terms
-      else
-        result[:go_terms] = []
-      end
-      result[:class_code] = query_result.class_code
-      result[:transcript_length] = query_result.length
-      result[:coverage] = query_result.coverage
-      result[:fpkm] = query_result.fpkm
-      result[:fpkm_lo] =  query_result.fpkm_lo
-      result[:fpkm_hi] =  query_result.fpkm_hi
-      result[:status] = query_result.status
-      @results << result
+    return where_clauses
+  end
+  
+  def execute_query()
+    
+    if @has_go_terms == true
+      @results = Dataset
+        .joins(:transcripts => [:transcript_fpkm_tracking_information, 
+                                :gene, :fpkm_samples])
+        .joins(self.class.thgt_left_join_string)
+        .joins(self.class.go_terms_left_join_string)
+        .where(@where_clauses)
+        .group(self.class.group_by_string)
+        .having(@having_string)
+        .select(@select_string)
+        .order(@order_string)
+        .limit(self.class.page_size)
+        .offset(self.class.page_size*(@page_number.to_i-1))
+    else
+      @results = Dataset
+        .joins(:transcripts => [:transcript_fpkm_tracking_information, 
+                                :gene, :fpkm_samples])
+        .where(@where_clauses)
+        .group(self.class.group_by_string)
+        .having(@having_string)
+        .select(@select_string)
+        .order(@order_string)
+        .limit(self.class.page_size)
+        .offset(self.class.page_size*(@page_number.to_i-1))
     end
   end
   
-  # According to http://railscasts.com/episodes/219-active-model?view=asciicast,
-  # this defines that this view model does not persist in the database.
-  def persisted?
-      return false
+  def count_query_results()
+    if @has_go_terms == true
+      @results_count = Dataset
+        .joins(:transcripts => [:transcript_fpkm_tracking_information, 
+                                :gene, :fpkm_samples])
+        .joins(self.class.thgt_left_join_string)
+        .joins(self.class.go_terms_left_join_string)
+        .where(@where_clauses)
+        .group(self.class.group_by_string)
+        .having(@having_string)
+        .select(@select_string)
+        .order(@order_string)
+        .count.count
+    else
+      @results_count = Dataset
+        .joins(:transcripts => [:transcript_fpkm_tracking_information, 
+                                :gene, :fpkm_samples])
+        .where(@where_clauses)
+        .group(self.class.group_by_string)
+        .having(@having_string)
+        .select(@select_string)
+        .order(@order_string)
+        .count.count
+    end
+    if @results_count == 0
+      available_page_numbers = [1]
+    else
+      @available_page_numbers = (1..(@results_count.to_f/self.class.page_size.to_f).ceil).to_a
+    end
   end
   
   private

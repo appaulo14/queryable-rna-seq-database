@@ -102,11 +102,9 @@
                     </td>
                     <% if @qdet.has_go_terms == true %>
                       <td>
-                        <% if result[:go_ids].blank? %>
-                          No Go Terms found
-                        <% else %>
-                          <%= create_list_of_go_terms(result[:go_ids],result[:go_terms]) %>
-                        <% end %>
+                        <%= render 'list_of_go_terms',
+                                   :go_ids_string => result[:go_ids],
+                                   :go_terms_string => result[:go_terms] %>
                       </td>
                     <% end %>
                     <% if @qdet.program_used == 'cuffdiff' %>

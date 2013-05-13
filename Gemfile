@@ -33,7 +33,6 @@ group :development do
   gem 'rspec-rails', '>= 2.0.1'
   gem 'annotate'
   gem 'debugger'
-  gem 'faker'
 end
 
 group :test do
@@ -42,12 +41,11 @@ group :test do
   gem 'capybara', '2.0.2'
   gem 'capybara-webkit'
   gem 'debugger'
-  gem 'faker'
   gem 'database_cleaner'
 end
 
 gem 'thin'
-
+gem 'faker'
 
 gem 'galetahub-simple_captcha', :require => 'simple_captcha'
 gem 'sucker_punch'

@@ -1,4 +1,4 @@
-class AggregrateStringGenerator
+class AggregateStringGenerator
   
   attr_accessor :column
   attr_accessor :aggregate_name
@@ -15,13 +15,12 @@ class AggregrateStringGenerator
     when /mysql/
       agg_string += "group_concat(#{@column} SEPARATOR ';')"
     when /postgresql/
-      #TODO: Make sure these work
-      select_string += "string_agg(#{@column},';')"
+      agg_string += "string_agg(#{@column},';')"
     else
       throw NotImplementedError.new("Unknown adapter type '#{adapter_type}'")
     end
     if not @aggregate_name.nil?
-      @agg_string += " as #{@aggregate_name}"
+      agg_string += " as #{@aggregate_name}"
     end
     return agg_string
   end

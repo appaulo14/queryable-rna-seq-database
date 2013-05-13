@@ -1,20 +1,12 @@
 require 'query/gene_name_query_condition_generator.rb'
-require 'query/go_ids_query_condition_generator.rb'
-require 'query/go_terms_query_condition_generator.rb'
-require 'query/go_filter_checker.rb'
+require 'query_analysis/abstract_query_regular_db.rb'
 
 ###
 # View model for the query differentially expressed genes page.
 #
 # <b>Associated Controller:</b> QueryAnalysisController
-class QueryDiffExpGenes
-  include ActiveModel::Validations
-  include ActiveModel::Conversion
-  extend ActiveModel::Naming
-  
-  # The id of the dataset whose gene differential expression tests will be 
-  # queried.
-  attr_accessor :dataset_id
+class QueryDiffExpGenes < AbstractQueryRegularDb
+
   # The id of the sample comparison whose gene differential expression tests 
   # will be queried. 
   attr_accessor :sample_comparison_id
@@ -23,64 +15,40 @@ class QueryDiffExpGenes
   # The cutoff where differential expression tests with an fdr_or_p_value 
   # above this will not be included in the query results
   attr_accessor :cutoff
-  # Specifies that only the differential expression tests with genes that 
-  # have all of these go terms (names) should be displayed in the 
-  # query results.
-  attr_accessor :go_terms
-  # Specifies that only the differential expression tests with genes that 
-  # have all of these go ids (accessions) should be displayed in the 
-  # query results.
-  attr_accessor :go_ids
   # Specifies that only records matching this gene name should be display 
   # in the query results.
   attr_accessor :gene_name
-  # Because the query results are loaded in pieces using LIMIT and OFFSET, 
-  # this specifies which piece to load.
-  attr_accessor :piece
-  
-  # The name/id pairs of the datasets that can be selected to have their 
-  # gene differential expression tests queried.
-  attr_reader   :names_and_ids_for_available_datasets
-  # The available sample comparisons for the selected dataset. These consist of 
-  # any two samples that have gene differential expression tests between them.
+
   attr_reader   :available_sample_comparisons
-  # Contains the results from the query
-  attr_reader   :results
   # The name of the first sample in the sample comparison
   attr_reader   :sample_1_name
   # The name of the second sample in the sample comparison
   attr_reader   :sample_2_name
-  # The program used when generating the dataset's data, such as Cuffdiff or 
-  # Trinity with EdgeR
-  attr_reader   :program_used
-  # The status of the go terms for the selected dataset
-  attr_reader   :go_terms_status
   
-  # The number of records in each piece of the query. This is used to 
-  # determine the values for LIMIT and OFFSET in the query itself.
-  PIECE_SIZE = 100
-  
-  validates :dataset_id, :presence => true,
-                         :dataset_belongs_to_user => true
   validates :sample_comparison_id, :presence => true,
                                    :sample_comparison_belongs_to_user => true
   validates :cutoff, :presence => true,
-                     :format => { :with => /\A\d*\.\d+\z/ }
+                     :format => { :with => /\A\d*\.?\d*\z/ }
+  
+
+  protected 
   
   ###
-  # parameters::
-  # * <b>current_user:</b> The currently logged in user
-  def initialize(current_user)
-    @current_user = current_user
+  # The string to use for the GROUP BY section of the query.
+  # transcripts.id is at the end of the string to prevent a strange error 
+  # with counting
+  def self.group_by_string
+    return "test_statistic, " +
+           "p_value, " +
+           "fdr, " +
+           "sample_1_fpkm, " +
+           "sample_2_fpkm, " +
+           "log_fold_change, " +
+           "test_status, " +
+           "genes.name_from_program "
   end
   
-  # Set the view model's attributes or set those attributes to their 
-  # default values
-  def set_attributes_and_defaults(attributes = {})
-    #Load in any values from the form
-    attributes.each do |name, value|
-        send("#{name}=", value)
-    end
+  def set_available_datasets_and_default_dataset()
     #Set available datasets
     @names_and_ids_for_available_datasets = []
     available_datasets = Dataset.where(:user_id => @current_user.id, 
@@ -91,9 +59,13 @@ class QueryDiffExpGenes
       @names_and_ids_for_available_datasets << [ds.name, ds.id]
     end
     #Set default values for the relavent blank attributes
-    @dataset_id = available_datasets.first.id if @dataset_id.blank?
-    @fdr_or_p_value = 'p_value' if fdr_or_p_value.blank?
-    @cutoff = '0.05' if cutoff.blank?
+    if @dataset_id.blank?
+      @dataset_id = available_datasets.first.id
+    end
+    @dataset = Dataset.find_by_id(@dataset_id)
+  end
+  
+  def set_sample_related_defaults()
     #Set available samples for comparison
     @available_sample_comparisons = []
     s_t = Sample.arel_table
@@ -119,85 +91,150 @@ class QueryDiffExpGenes
     sample_cmp = SampleComparison.find_by_id(@sample_comparison_id)
     @sample_1_name = sample_cmp.sample_1.name
     @sample_2_name = sample_cmp.sample_2.name
-    dataset = Dataset.find_by_id(@dataset_id)
-    @program_used = dataset.program_used
-    @go_terms_status = dataset.go_terms_status
-    @piece = '0' if @piece.blank?
   end
   
-  # Execute the query to get the gene differential expression tests with the 
-  # specified filtering options and store them in #results.
-  def query()
-    #Don't query if it is not valid
-    return if not self.valid?
-    #Record that the dataset was queried at this time
-    @dataset = Dataset.find_by_id(@dataset_id)
-    @dataset.when_last_queried = Time.now
-    @dataset.save!
-    #Retreive some variables to use later
-    sample_comparison = SampleComparison.find_by_id(@sample_comparison_id)
-    @sample_1_name = sample_comparison.sample_1.name
-    @sample_2_name = sample_comparison.sample_2.name
+  def set_sort_defaults()
+    @available_sort_orders = AVAILABLE_SORT_ORDERS.keys
+    if @program_used == 'cuffdiff'
+      @available_sort_columns = ['Gene', 
+                                 'Test Statistic', 'P-value','FDR', 
+                                "#{@sample_1_name} FPKM", 
+                                "#{@sample_2_name} FPKM", 'Log Fold Change',
+                                'Test Status']
+    else
+      @available_sort_columns = ['Gene', 'P-value', 'FDR', 
+                                "#{@sample_1_name} FPKM", 
+                                "#{@sample_2_name} FPKM",
+                                'Log Fold Change']
+    end
+    @sort_order = @available_sort_orders.first if @sort_order.blank?
+    @sort_column = @available_sort_columns.first if @sort_column.blank?
+  end
+  
+  def set_other_defaults()
+    super
+    @fdr_or_p_value = 'p_value' if fdr_or_p_value.blank?
+    @cutoff = '0.05' if cutoff.blank?
+  end
+
+  def build_select_string()
+    select_string = 'genes.name_from_program as gene_name,' +
+                    'differential_expression_tests.test_statistic,' +
+                    'differential_expression_tests.p_value,' +
+                    'differential_expression_tests.fdr,' +
+                    'differential_expression_tests.sample_1_fpkm,' +
+                    'differential_expression_tests.sample_2_fpkm,' +
+                    'differential_expression_tests.log_fold_change,' +
+                    'differential_expression_tests.test_status, '
+    trans_name_agg_gen = AggregateStringGenerator.new('transcripts.name_from_program',
+                                                      'transcript_names')
+    select_string += trans_name_agg_gen.generate_aggregate_string()
+    if @has_go_terms == true
+      select_string += ', '
+      # Add aggregate select string for the go ids
+      go_ids_agg_str_gen = AggregateStringGenerator.new('go_terms.id','go_ids')
+      select_string += "#{go_ids_agg_str_gen.generate_aggregate_string()}, "
+      # Add the aggregate select string for the go terms
+      go_terms_agg_str_gen = AggregateStringGenerator.new('go_terms.term',
+                                                          'go_terms')
+      select_string += go_terms_agg_str_gen.generate_aggregate_string()
+    end
+    return select_string
+  end
+  
+  def build_order_string()
+    case @sort_column
+    when'Gene'
+      sort_column = 'genes.name_from_program'
+    when 'Test Statistic'
+      sort_column = 'differential_expression_tests.test_statistic'
+    when 'P-value'
+      sort_column = 'differential_expression_tests.p_value'
+    when 'FDR'
+      sort_column = 'differential_expression_tests.fdr'
+    when "#{@sample_1_name} FPKM"
+      sort_column = 'differential_expression_tests.sample_1_fpkm'
+    when "#{@sample_2_name} FPKM"
+      sort_column = 'differential_expression_tests.sample_2_fpkm'
+    when 'Log Fold Change'
+      sort_column = 'differential_expression_tests.log_fold_change'
+    when 'Test Status'
+      sort_column = 'differential_expression_tests.test_status'
+    end
+    return "#{sort_column} #{AVAILABLE_SORT_ORDERS[@sort_order]}"
+  end
+  
+  def generate_where_clauses()
     #Require parts of the where clause
     det_t = DifferentialExpressionTest.arel_table
-    where_clause = det_t[:sample_comparison_id].eq(sample_comparison.id)
+    where_clauses = det_t[:sample_comparison_id].eq(@sample_comparison_id)
     #where_clause = where_clause.and(sample_cmp_clause)
     if @fdr_or_p_value == 'p_value'
-      where_clause = where_clause.and(det_t[:p_value].lteq(@cutoff))
+      where_clauses = where_clauses.and(det_t[:p_value].lteq(@cutoff))
     else
-      where_clause = where_clause.and(det_t[:fdr].lteq(@cutoff))
+      where_clauses = where_clauses.and(det_t[:fdr].lteq(@cutoff))
     end
     #Optional parts of the where clause
     if not @gene_name.blank?
       gnqcg = GeneNameQueryConditionGenerator.new()
       gnqcg.name = @gene_name
-      where_clause = where_clause.and(gnqcg.generate_query_condition())
+      where_clauses = where_clauses.and(gnqcg.generate_query_condition())
     end
-    query_results = 
-      DifferentialExpressionTest.joins(:gene)
-                                .where(where_clause)
-                                .limit(PIECE_SIZE)
-                                .offset(PIECE_SIZE*@piece.to_i)
-    #Extract the query results to form that can be put in the view
-    @results = []
-    query_results.each do |query_result|
-      #Do a few more minor queries to get the data in the needed format
-      gene = Gene.find_by_id(query_result.gene_id)
-      transcripts = gene.transcripts
-      if (@dataset.go_terms_status == 'found' and (not @go_ids.blank? or not @go_terms.blank?))
-        match_found = false
-        transcripts.each do |transcript|
-          go_filter_checker = GoFilterChecker.new(transcript.id,@go_ids,@go_terms)
-          if go_filter_checker.passes_go_filters() == true
-            match_found = true
-            break
-          end
-        end
-        next if not match_found
-      end
-      #Fill in the result hash that the view will use to display the data
-      result = {}
-      result[:gene_name] = gene.name_from_program #det.gene
-      result[:transcript_names] = transcripts.map{|t| t.name_from_program} #det.gene.transcript_names
-      if (@dataset.go_terms_status == 'found')
-        result[:go_terms] = transcripts.map{|t| t.go_terms}.flatten.uniq{|g| g.id}
-      else
-        result[:go_terms] = []
-      end
-      result[:test_statistic] = query_result.test_statistic
-      result[:p_value] = query_result.p_value
-      result[:fdr] = query_result.fdr
-      result[:sample_1_fpkm] =  query_result.sample_1_fpkm
-      result[:sample_2_fpkm] =  query_result.sample_2_fpkm
-      result[:log_fold_change] = query_result.log_fold_change
-      result[:test_status] = query_result.test_status
-      @results << result
+    return where_clauses
+  end
+  
+  def execute_query()
+    if @has_go_terms == true
+      @results = DifferentialExpressionTest
+        .joins(:gene => [:transcripts])
+        .joins(self.class.thgt_left_join_string)
+        .joins(self.class.go_terms_left_join_string)
+        .where(@where_clauses)
+        .group(self.class.group_by_string)
+        .having(@having_string)
+        .select(@select_string)
+        .order(@order_string)
+        .limit(self.class.page_size)
+        .offset(self.class.page_size*(@page_number.to_i-1))
+    else
+      @results = DifferentialExpressionTest
+        .joins(:gene => [:transcripts])
+        .where(@where_clauses)
+        .group(self.class.group_by_string)
+        .having(@having_string)
+        .select(@select_string)
+        .order(@order_string)
+        .limit(self.class.page_size)
+        .offset(self.class.page_size*(@page_number.to_i-1))
     end
   end
   
-  # According to http://railscasts.com/episodes/219-active-model?view=asciicast,
-  # this defines that this view model does not persist in the database.
-  def persisted?
-      return false
+  def count_query_results()
+    if @has_go_terms == true
+      @results_count = DifferentialExpressionTest
+        .joins(:gene => [:transcripts])
+        .joins(self.class.thgt_left_join_string)
+        .joins(self.class.go_terms_left_join_string)
+        .where(@where_clauses)
+        .group(self.class.group_by_string)
+        .having(@having_string)
+        .select(@select_string)
+        .order(@order_string)
+        .count.count
+    else
+      @results_count = DifferentialExpressionTest
+        .joins(:gene => [:transcripts])
+        .where(@where_clauses)
+        .group(self.class.group_by_string)
+        .having(@having_string)
+        .select(@select_string)
+        .order(@order_string)
+        .count.count
+    end
+    if @results_count == 0
+      available_page_numbers = [1]
+    else
+      @available_page_numbers = (1..(@results_count.to_f/self.class.page_size.to_f).ceil).to_a
+    end
   end
 end

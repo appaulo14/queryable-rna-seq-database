@@ -94,141 +94,90 @@
     </div>
   </p>
   <p><%= qti.submit('Query', :disable_with => 'Querying...', :id => :submit_query) %></p>
-<% end %>
-<!--Section for the query results-->
-<% if @qti.show_results? %>
-  <p><%= @qti.results.length %> results found for <em><b><%= @qti.sample_name %></b></em></p>
-  <%= javascript_include_tag 'downloadify/swfobject.js' %>
-  <%= javascript_include_tag 'downloadify/downloadify.min.js' %>
-  <%= javascript_include_tag 'downloadify_wrapper.js' %>
-  <%= javascript_include_tag 'Stupid-Table-Plugin/stupidtable.min.js' %>
-  <%= javascript_include_tag 'table_sorting.js' %>
-  <p id="downloadify">
-      You must have Flash 10 installed to download this file.
-  </p>
-  <div style="float:center">
-    <%= link_to('Learn More About These Table Columns',
-                'https://sites.google.com/site/rnaseqanalysispipeline/' +
-                'user-manual/step-5-query-and-blast-your-data' +
-                '#TOC-Output-Table-Data-Columns2') %>
-  </div>
-  <!--Table containing the query results-->
-  <table border="1" id="query_results_table">
-      <thead>
-          <tr class="header_row">
-            <th data-sort='string'>
-              <table>
-                <tr>
-                  <td>Transcript</td>
-                  <td class="sort-arrow-td"></td>
-                </tr>
-              </table>
-            </th>
-            <th data-sort='string'>
-              <table>
-                <tr>
-                  <td>Associated Gene</td>
-                  <td class="sort-arrow-td"></td>
-                </tr>
-              </table>
-            </th>
-            <th>GO Terms</th>
-            <th data-sort='string'>
-              <table>
-                <tr>
-                  <td>Class Code</td>
-                  <td class="sort-arrow-td"></td>
-                </tr>
-              </table>
-            </th>
-            <th data-sort='float'>
-              <table>
-                <tr>
-                  <td>Transcript length</td>
-                  <td class="sort-arrow-td"></td>
-                </tr>
-              </table>
-            </th>
-            <th data-sort='float'>
-              <table>
-                <tr>
-                  <td>Coverage</td>
-                  <td class="sort-arrow-td"></td>
-                </tr>
-              </table>
-            </th>
-            <th data-sort='float'>
-              <table>
-                <tr>
-                  <td>FPKM</td>
-                  <td class="sort-arrow-td"></td>
-                </tr>
-              </table>
-            </th>
-            <th data-sort='float'>
-              <table>
-                <tr>
-                  <td>FPKM Lower Bound</td>
-                  <td class="sort-arrow-td"></td>
-                </tr>
-              </table>
-            </th>
-            <th data-sort='float'>
-              <table>
-                <tr>
-                  <td>FPKM Upper Bound</td>
-                  <td class="sort-arrow-td"></td>
-                </tr>
-              </table>
-            </th>
-            <th data-sort='string'>
-              <table>
-                <tr>
-                  <td>Quantification Status</td>
-                  <td></td>
-                </tr>
-              </table>
-            </th>
-          </tr>
-      </thead>
-      <tbody>
-          <% @qti.results.each do |result| %>
-              <tr class="body_row">
-                <td>
-                  <%= link_to_fasta_sequence_for_transcript(@qti.dataset_id, 
-                          result[:transcript_name]) %>
-                </td>
-                <td>
-                  <%= link_to_fasta_sequences_for_gene(@qti.dataset_id, result[:gene_name]) %>
-                </td>
-                  
-                <% if result[:go_terms].empty? == false %>
-                  <td class="list_cell">
-                    <ul>
-                      <!-- Sort by ascending GO ID for the go terms-->
-                      <% result[:go_terms].sort{|a,b| a.id.gsub(/GO:/,'').to_i <=> b.id.gsub(/GO:/,'').to_i}.each do |go_term| %>
-                        <li><%= link_to_amigo_web_page_for_term("#{go_term.term} [#{go_term.id}]",go_term.id) %></li>
-                      <% end %>
-                    </ul>
-                  </td>
-                <% else %>
+  <!--Section for the query results-->
+  <% if @qti.show_results? %>
+    <p>
+      <%= @qti.results_count %> results found for 
+      <em><b>
+        <%= @qti.sample_name %>
+      </b></em>
+    </p>
+    <%= button_tag('Download Results As File', 
+                    :type => 'button',
+                    :id => :btn_download_as_file) %>
+    <div>
+      <%= qti.label(:sort_column, 'Sort by:') %>
+      <%= qti.select(:sort_column,
+        options_for_select(@qti.available_sort_columns,
+          @qti.sort_column)) %>
+      <%= qti.select(:sort_order, 
+        options_for_select(@qti.available_sort_orders, 
+        @qti.sort_order)) %>
+      <%= qti.submit("Sort", :disable_with => "Sorting...") %>
+    </div>
+    <div>
+      <%= qti.label(:page_number, 'Page:') %>
+      <%= qti.select(:page_number,
+        options_for_select(@qti.available_page_numbers,
+        @qti.page_number)) %>
+      <%= qti.submit("Go To Page", :disable_with => "Going to Page...") %>
+    </div>
+    <br/>
+    <div style="float:center">
+      <%= link_to('Learn More About These Table Columns',
+                  'https://sites.google.com/site/rnaseqanalysispipeline/' +
+                  'user-manual/step-5-query-and-blast-your-data' +
+                  '#TOC-Output-Table-Data-Columns2') %>
+    </div>
+    <!--Table containing the query results-->
+    <table border="1" id="query_results_table">
+        <thead>
+            <tr class="header_row">
+              <th>Transcript</th>
+              <th>Associated Gene</th>
+              <% if @qti.has_go_terms %>
+                <th>GO Terms</th>
+              <% end %>
+              <th>Class Code</th>
+              <th>Transcript length</th>
+              <th>Coverage</th>
+              <th>FPKM</th>
+              <th>FPKM Lower Bound</th>
+              <th>FPKM Upper Bound</th>
+              <th>Quantification Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% @qti.results.each do |result| %>
+                <tr class="body_row">
                   <td>
-                    No GO ids found.
+                    <%= link_to_fasta_sequence_for_transcript(@qti.dataset_id, 
+                            result[:transcript_name]) %>
                   </td>
-                <% end %>
-                <td>
-                  <%= result[:class_code] %>
-                </td>
-                <td><pre><%= "%5d" % result[:transcript_length] %></pre></td>
-                <td><pre><%= result[:coverage] %></pre></td>
-                <td><pre><%= "% .3E" % result[:fpkm] %></pre></td>
-                <td><pre><%= "% .3E" % result[:fpkm_lo] %></pre></td>
-                <td><pre><%= "% .3E" % result[:fpkm_hi] %></pre></td>
-                <td>
-                  <%= result[:status] %>
-                </td>
-              </tr>
-          <% end %>
-      </tbody>
-  </table>
+                  <td>
+                    <%= link_to_fasta_sequences_for_gene(@qti.dataset_id, result[:gene_name]) %>
+                  </td>
+                  <% if @qti.has_go_terms == true %>
+                    <td>
+                      <%= render 'list_of_go_terms',
+                                  :go_ids_string => result[:go_ids],
+                                  :go_terms_string => result[:go_terms] %>
+                    </td>
+                  <% end %>
+                  <td>
+                    <%= result[:class_code] %>
+                  </td>
+                  <td><pre><%= "%5d" % result[:length] %></pre></td>
+                  <td><pre><%= result[:coverage] %></pre></td>
+                  <td><pre><%= "% .3E" % result[:fpkm] %></pre></td>
+                  <td><pre><%= "% .3E" % result[:fpkm_lo] %></pre></td>
+                  <td><pre><%= "% .3E" % result[:fpkm_hi] %></pre></td>
+                  <td>
+                    <%= result[:status] %>
+                  </td>
+                </tr>
+            <% end %>
+        </tbody>
+    </table>
+  <% end %>
 <% end %>
