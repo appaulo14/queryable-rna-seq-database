@@ -13,7 +13,8 @@ module QueryAnalysisHelper
   # Displays a link to the fasta sequence for a given transcript name in a 
   # given dataset.
   def link_to_fasta_sequence_for_transcript(dataset_id, transcript_name)
-    link_address = "get_transcript_fasta?" +
+    link_address = "#{request.protocol}#{request.host_with_port}/" +
+                   "query_analysis/get_transcript_fasta?" +
                    "dataset_id=#{dataset_id}&" +
                    "transcript_name=#{URI.encode(transcript_name)}"
     return link_to(transcript_name, link_address, :target => '_blank')
@@ -22,7 +23,8 @@ module QueryAnalysisHelper
   # Displays a link to the fasta sequences for the transcripts for a given 
   # gene name in a given dataset.
   def link_to_fasta_sequences_for_gene(dataset_id, gene_name)
-    link_address = "get_gene_fastas?" +
+    link_address = "#{request.protocol}#{request.host_with_port}/" +
+                   "query_analysis/get_gene_fastas?" +
                    "dataset_id=#{dataset_id}&" +
                    "gene_name=#{gene_name}"
     return link_to(gene_name, link_address, :target => '_blank')

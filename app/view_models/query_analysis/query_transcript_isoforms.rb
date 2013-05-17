@@ -257,8 +257,6 @@ class QueryTranscriptIsoforms < AbstractQueryRegularDb
         .joins(:transcripts => [:transcript_fpkm_tracking_information, 
                                 :gene, :fpkm_samples])
         .where(@where_clauses)
-        .group(self.class.group_by_string)
-        .having(@having_string)
         .select(@select_string)
         .order(@order_string)
         .limit(self.class.page_size)
@@ -276,19 +274,14 @@ class QueryTranscriptIsoforms < AbstractQueryRegularDb
         .where(@where_clauses)
         .group(self.class.group_by_string)
         .having(@having_string)
-        .select(@select_string)
-        .order(@order_string)
-        .count.count
+        .select('count(*)')
+        .length
     else
       @results_count = Dataset
         .joins(:transcripts => [:transcript_fpkm_tracking_information, 
                                 :gene, :fpkm_samples])
         .where(@where_clauses)
-        .group(self.class.group_by_string)
-        .having(@having_string)
-        .select(@select_string)
-        .order(@order_string)
-        .count.count
+        .select('count(*)')[0].count.to_i
     end
     if @results_count == 0
       available_page_numbers = [1]

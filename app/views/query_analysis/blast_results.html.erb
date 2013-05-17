@@ -1,3 +1,4 @@
+<% debugger %>
 <div style="font-weight:bold;font-size:50pt;text-align:center">Blast Results</div>
 <!--Version Information-->
 <p style="font-weight:bold"><%= @blast_report.version %></p>
@@ -27,7 +28,8 @@
     <!--Display the graphical summary -->
     <h4 style="text-align:center">
       Graphical Summary
-      <%= help_tip(:graphical_summary) %>
+      <%= #help_tip(:graphical_summary) 
+      %>
     </h4>
       <% width = 49 %>
       <% left = 24.7 %>
@@ -60,8 +62,8 @@
         <table style="margin:0 auto;border:0;padding:0;position:absolute;left:24.7%;width:49%;background-color:white">
           <tr style="height:15px">
             <% marks.each do |mark| %>
-              <td style="width:1%;text-align:center;">
-                <%= image_tag 'black.png', :style => 'width:4px;height:15px' %>
+              <td style="width:1%;text-align:center;background-color:black">
+<!--                 <img src="black.png" style='width:4px;height:15px;background-color:black;' /> -->
               </td>
               <% if mark != marks.last %>
                 <td style="width:<%= spacer %>%;"><td>
@@ -101,12 +103,10 @@
                               "HSP number=#{hsp.num}\n" +
                               "Bit score=#{hsp.bit_score} E-value=#{hsp.evalue}" %>
                   <% color = get_color_for_score(hsp.bit_score) %>
-                  <!--<% if w1 > 0 %>
-                    <%= image_tag('white.png', :style => "width:#{w1}%;height:5px;opacity:0;filter:alpha(opacity=0);") %>
-                  <% end %>-->
                   <a href="<%= "##{get_unique_hit_id(report,iteration,hit)}" %>">
-                    <% image_style = "width:#{w2}%;height:5px;border:3px outset gray;position:absolute;left:#{w1}%" %>
-                    <%= image_tag "#{color}.png", :style => image_style, :title => tooltip %>
+                    <% hsp_style = "width:#{w2}%;height:5px;border:3px outset gray;position:absolute;left:#{w1}%;background-color:#{color}" %>
+                    <span style="<%= hsp_style %>" title="<%= tooltip %>"></span>
+                    <!--<%= image_tag "#{color}.png", :style => hsp_style, :title => tooltip %>-->
                   </a>
                 </td></tr>
               </table>
@@ -186,17 +186,17 @@
             <a target="_blank" href="http://www.ncbi.nlm.nih.gov/books/NBK62051/def-item/blast_glossary.gap/?report=objectonly">
               Gaps</a>=<%= hsp.gaps %>/<%= hsp.align_len %> (<%= percent_gaps %>%)<br/>
             <!-- Display strand or frame info depending on what type of blast this is -->
-            <% if @program == :blastn %>
+            <% if @blast_report.program == 'blastn' %>
               <% query_strand = (hsp.query_frame > 0) ? 'Plus' : 'Minus' %>
               <% hit_strand = (hsp.hit_frame > 0) ? 'Plus' : 'Minus' %>
               Strand = <%= query_strand %>/<%= hit_strand %><br/>
-            <% elsif @program == :tblastx or @program == :tblastn %>
+            <% elsif @blast_report.program == 'tblastx' or @blast_report.program == 'tblastn' %>
               Frame = <%= '%+d' % hsp.query_frame %>/<%= '%+d' % hsp.hit_frame %><br/>
             <% end %>
           </p>
           <!-- Display the alignment for the hsp -->
           <table style="font-family:monospace">
-            <% if @program == :blastn %>
+            <% if @blast_report.program == 'blastn' %>
               <% (0..(hsp.midline.length/60.0).ceil-1).each do |n| %>
                 <% seq_range = (n*60)..(n*60)+59 %>
                 <tr>
@@ -234,7 +234,7 @@
                 </tr>
                 <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
               <% end %>
-            <% elsif @program == :tblastx or @program == :tblastn %>
+            <% elsif @blast_report.program == 'tblastx' or @blast_report.program == 'tblastn' %>
               <% max_row_count = (hsp.midline.length/60.0).ceil-1 %>
               <% (0..max_row_count).each do |n| %>
                 <% seq_range = (n*60)..(n*60)+59 %>

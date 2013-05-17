@@ -437,12 +437,15 @@ class QueryAnalysisController < ApplicationController
       @query_using_tblastx = QueryUsingTblastx.new(current_user)
       @query_using_tblastx.set_attributes_and_defaults(params[:query_using_tblastx])
       if @query_using_tblastx.valid?
-        @program = :tblastx
         #Run the blast query and get the file path of the result
         @blast_report = @query_using_tblastx.blast()
         #Send the result to the user
         @dataset = Dataset.find_by_id(@query_using_tblastx.dataset_id)
-        render :file => 'query_analysis/blast_results'
+#         if @query_using_tblastx.results_display_method == 'email'
+          QueryAnalysisMailer.send_blast_report(@blast_report,@dataset)
+#         else # Display on the form as usual
+#           render :file => 'query_analysis/blast_results'
+#         end
       end
     end
   end

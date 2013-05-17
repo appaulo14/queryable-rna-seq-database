@@ -1,6 +1,7 @@
 ###
 # Mailer class for emails in the QueryAnalysisController
-class QueryAnalysisMailer < ActionMailer::Base 
+class QueryAnalysisMailer < ActionMailer::Base
+ 
    ###
    # Sends an email to the specified user that the specified dataset was 
    # successfully uploaded.
@@ -43,7 +44,7 @@ class QueryAnalysisMailer < ActionMailer::Base
     ).where('transcripts.dataset_id' => dataset.id).count 
     mail(:to => @user.email,
          # Name <email>
-         :from => mailer_bot_from_field,
+         :from => mailer_bot_from_field(),
          #:reply_to => MAILER_BOT_CONFIG['email'],
          :subject => 'Your Data Upload Was Successful').deliver
     #@url  = "http://example.com/login"
@@ -60,7 +61,7 @@ class QueryAnalysisMailer < ActionMailer::Base
     @dataset = dataset
     mail(:to => @user.email,
          # Name <email>
-         :from => mailer_bot_from_field,
+         :from => mailer_bot_from_field(),
          #:reply_to => MAILER_BOT_CONFIG['email'],
          :subject => 'Your Data Upload Failed').deliver
   end
@@ -77,7 +78,7 @@ class QueryAnalysisMailer < ActionMailer::Base
     ).where('transcripts.dataset_id' => dataset.id).count 
     mail(:to => @user.email,
          # Name <email>
-         :from => mailer_bot_from_field,
+         :from => mailer_bot_from_field(),
          #:reply_to => MAILER_BOT_CONFIG['email'],
          :subject => 'Finding Your Gene Ontology (GO) Terms Was Successful').deliver
   end
@@ -92,9 +93,39 @@ class QueryAnalysisMailer < ActionMailer::Base
     @report_issue_url = "#{@base_url}/home/report_issue"
     mail(:to => @user.email,
          # Name <email>
-         :from => mailer_bot_from_field,
+         :from => mailer_bot_from_field(),
          #:reply_to => MAILER_BOT_CONFIG['email'],
          :subject => 'Finding Your Gene Ontology (GO) Terms Failed').deliver
+  end
+  
+  def send_blast_report(blast_report,dataset)
+    view = ActionView::Base.new( 'app/views/query_analysis')
+    view.instance_variable_set('@blast_report',blast_report)
+    view.instance_variable_set('@dataset',dataset)
+    debugger
+    results_string = view.render({:template => 'blast_results'})
+#     results_string = view.render({:locals => [blast_report,dataset],
+#                                   :template => 'blast_results'})
+    #results_string = render_to_string(:file => 'query_analysis/blast_results')
+    compressed_results_string = ActiveSupport::Gzip.compress(results_string)
+#     fzip = Tempfile.new(['blast_results','.gz'], :encoding => 'ascii-8bit')
+#     fzip.write(compressed_results_string)
+#     fzip.close
+    #attachments['blast_results.gz'] = compressed_results_string
+    attachments['blast_results.gz'] = {:mime_type => 'application/x-gzip',
+                                       :encoding => 'ascii-8bit',
+                                       :content => compressed_results_string }
+    #@dataset = dataset
+    subject = "#{blast_report.program.capitalize()} " +
+              "Results for Dataset #{@dataset.id}"
+    mail(:to => @user.email,
+         :from => mailer_bot_from_field(),
+         :template_path => 'query_analysis',
+         :template_name => 'blast_results',
+         :subject => subject ).deliver
+  end
+  
+  def send_blast_failure_message()
   end
   
   private
