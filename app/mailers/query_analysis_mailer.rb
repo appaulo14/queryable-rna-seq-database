@@ -98,11 +98,10 @@ class QueryAnalysisMailer < ActionMailer::Base
          :subject => 'Finding Your Gene Ontology (GO) Terms Failed').deliver
   end
   
-  def send_blast_report(blast_report,dataset)
+  def send_blast_report(blast_report,user,dataset)
     view = ActionView::Base.new( 'app/views/query_analysis')
     view.instance_variable_set('@blast_report',blast_report)
     view.instance_variable_set('@dataset',dataset)
-    debugger
     results_string = view.render({:template => 'blast_results'})
 #     results_string = view.render({:locals => [blast_report,dataset],
 #                                   :template => 'blast_results'})
@@ -111,17 +110,16 @@ class QueryAnalysisMailer < ActionMailer::Base
 #     fzip = Tempfile.new(['blast_results','.gz'], :encoding => 'ascii-8bit')
 #     fzip.write(compressed_results_string)
 #     fzip.close
-    #attachments['blast_results.gz'] = compressed_results_string
-    attachments['blast_results.gz'] = {:mime_type => 'application/x-gzip',
-                                       :encoding => 'ascii-8bit',
-                                       :content => compressed_results_string }
+    attachments['blast_results.html.gz'] = compressed_results_string
+    #attachments['blast_results.html'] = results_string
+#     attachments['blast_results.gz'] = {:mime_type => 'application/x-gzip',
+#                                        :encoding => 'ascii-8bit',
+#                                        :content => compressed_results_string }
     #@dataset = dataset
     subject = "#{blast_report.program.capitalize()} " +
-              "Results for Dataset #{@dataset.id}"
-    mail(:to => @user.email,
+              "Results for Dataset #{dataset.id}"
+    mail(:to => user.email,
          :from => mailer_bot_from_field(),
-         :template_path => 'query_analysis',
-         :template_name => 'blast_results',
          :subject => subject ).deliver
   end
   

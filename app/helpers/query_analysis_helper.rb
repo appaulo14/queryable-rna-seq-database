@@ -1,20 +1,9 @@
 # Contains helpers for the QueryAnalysisController
-module QueryAnalysisHelper
-  # Displays an ascending sort arrow used for table sorting
-  def ascending_sort_arrow
-    return image_tag('ascending_sort_arrow.png', :class => 'sort_arrow')
-  end
-  
-  # Displays a descending sort arrow used for table sorting
-  def descending_sort_arrow
-    return image_tag('descending_sort_arrow.png', :class => 'sort_arrow')
-  end
-  
+module QueryAnalysisHelper  
   # Displays a link to the fasta sequence for a given transcript name in a 
   # given dataset.
   def link_to_fasta_sequence_for_transcript(dataset_id, transcript_name)
-    link_address = "#{request.protocol}#{request.host_with_port}/" +
-                   "query_analysis/get_transcript_fasta?" +
+    link_address = "get_transcript_fasta?" +
                    "dataset_id=#{dataset_id}&" +
                    "transcript_name=#{URI.encode(transcript_name)}"
     return link_to(transcript_name, link_address, :target => '_blank')
@@ -23,30 +12,11 @@ module QueryAnalysisHelper
   # Displays a link to the fasta sequences for the transcripts for a given 
   # gene name in a given dataset.
   def link_to_fasta_sequences_for_gene(dataset_id, gene_name)
-    link_address = "#{request.protocol}#{request.host_with_port}/" +
-                   "query_analysis/get_gene_fastas?" +
+    link_address = "get_gene_fastas?" +
                    "dataset_id=#{dataset_id}&" +
                    "gene_name=#{gene_name}"
     return link_to(gene_name, link_address, :target => '_blank')
   end
-  
-#   def create_list_of_go_terms(go_ids_string, go_terms_string)
-#     go_term_objects = []
-#     go_terms = go_terms_string.strip.split(';')
-#     go_ids = go_ids_string.strip.split(';')
-#     (0..go_terms.length - 1).each do |i|
-#       go_term_objects << GoTerm.new(:term => go_terms[i], :id => go_ids[i])
-#     end
-#     html = "<ul>"
-#     go_term_objects.each do |go_term|
-#       link_address = "http://amigo.geneontology.org/" +
-#                    "cgi-bin/amigo/term_details?term=#{go_term.id}"
-#       link_body = "#{go_term.term} [#{go_term.id}]"
-#       html += "<li>#{link_to(link_body, link_address, :target => '_blank')}</li>"
-#     end
-#     html += "<ul>"
-#     return raw(html)
-#   end
   
   def link_to_amigo_web_page_for_term(go_term,go_id)
     go_term = go_term.strip()
