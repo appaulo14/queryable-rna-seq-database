@@ -365,6 +365,7 @@ class QueryAnalysisController < ApplicationController
             if @query_using_blastn.results_display_method == 'email'
               q_name = :query_using_blast_queue
               SuckerPunch::Queue[q_name].async.perform(@query_using_blastn)
+              # Reset the form before rendering
               flash[:notice] = I18n.t(:added_to_query_using_blast_queue,
                                       :name => @dataset.name)
             else
@@ -407,12 +408,19 @@ class QueryAnalysisController < ApplicationController
         @query_using_tblastn = QueryUsingTblastn.new(current_user)
         @query_using_tblastn.set_attributes_and_defaults(params[:query_using_tblastn])
         if @query_using_tblastn.valid?
-          @program = :tblastn
-          #Run the blast query and get the file path of the result
-          @blast_report = @query_using_tblastn.blast()
-          #Send the result to the user
           @dataset = Dataset.find_by_id(@query_using_tblastn.dataset_id)
-          render :file => 'query_analysis/blast_results'
+          if @query_using_tblastn.results_display_method == 'email'
+            q_name = :query_using_blast_queue
+            SuckerPunch::Queue[q_name].async.perform(@query_using_tblastn)
+            # Reset the form before rendering
+            flash[:notice] = I18n.t(:added_to_query_using_blast_queue,
+                                    :name => @dataset.name)
+          else
+            #Run the blast query and get the file path of the result
+            @blast_report = @query_using_tblastn.blast()
+            #Send the result to the user
+            render :file => 'query_analysis/blast_results'
+          end
         end
       end
     end
@@ -424,11 +432,11 @@ class QueryAnalysisController < ApplicationController
     # <b>Associated ViewModel:</b> QueryUsingTblastn
     def get_tblastn_gap_costs_for_matrix
       #Calculate the new gap costs from the match and mismatch scores 
-      @query_using_blastn = QueryUsingTblastn.new(current_user)
+      @query_using_tblastn = QueryUsingTblastn.new(current_user)
       matrix = params[:matrix]
-      @query_using_blastn.set_attributes_and_defaults(:matrix => matrix)
+      @query_using_tblastn.set_attributes_and_defaults(:matrix => matrix)
       #Render the new gap costs
-      render :partial => 'gap_costs', :locals => {:object => @query_using_blastn}
+      render :partial => 'gap_costs', :locals => {:object => @query_using_tblastn}
     end
   
   ###
@@ -446,7 +454,9 @@ class QueryAnalysisController < ApplicationController
       if @query_using_tblastx.valid?
         @dataset = Dataset.find_by_id(@query_using_tblastx.dataset_id)
         if @query_using_tblastx.results_display_method == 'email'
-          SuckerPunch::Queue[:query_using_blast].async.perform(@query_using_tblastx)
+          q_name = :query_using_blast_queue
+          SuckerPunch::Queue[q_name].async.perform(@query_using_tblastx)
+          # Reset the form before rendering
           flash[:notice] = I18n.t(:added_to_query_using_blast_queue,
                                   :name => @dataset.name)
         else

@@ -6,7 +6,7 @@ class QueryAnalysisMailer < ActionMailer::Base
    # Sends an email to the specified user that the specified dataset was 
    # successfully uploaded.
    def notify_user_of_upload_success(user, dataset)
-    @base_url = get_base_url
+    @base_url = get_base_url()
     @user = user
     @dataset = dataset
     #Calculate the number of datasets uploaded
@@ -55,7 +55,7 @@ class QueryAnalysisMailer < ActionMailer::Base
   # Sends an email to the specified user that the specified dataset did not 
   # upload successfully.
   def notify_user_of_upload_failure(user, dataset)
-    @base_url = get_base_url
+    @base_url = get_base_url()
     @report_issue_url = "#{@base_url}/home/report_issue"
     @user = user
     @dataset = dataset
@@ -70,7 +70,7 @@ class QueryAnalysisMailer < ActionMailer::Base
   # Sends an email to the specified user that the specified dataset had its 
   # go terms found successfully.
   def notify_user_of_blast2go_success(user, dataset)
-    @base_url = get_base_url
+    @base_url = get_base_url()
     @user = user
     @dataset = dataset
     @go_terms_count = TranscriptHasGoTerm.joins(
@@ -87,7 +87,7 @@ class QueryAnalysisMailer < ActionMailer::Base
   # Sends an email to the specified user that the specified dataset failed to 
   # have its go terms found.
   def notify_user_of_blast2go_failure(user, dataset)
-    @base_url = get_base_url
+    @base_url = get_base_url()
     @user = user
     @dataset = dataset
     @report_issue_url = "#{@base_url}/home/report_issue"
@@ -122,7 +122,18 @@ class QueryAnalysisMailer < ActionMailer::Base
          :subject => subject ).deliver
   end
   
-  def send_blast_failure_message()
+  def send_blast_failure_message(query_using_blast,user)
+    @bq = query_using_blast
+    @dataset = Dataset.find_by_id(query_using_blast.dataset_id)
+    @program = query_using_blast.class.get_program_name.capitalize()
+    @user = user
+    @report_issue_url = "#{get_base_url()}/home/report_issue"
+    subject = "#{@program.capitalize()} " +
+              "for Dataset \"#{@dataset.name}\" Failed"
+    # Send the email
+    mail(:to => user.email,
+         :from => mailer_bot_from_field(),
+         :subject => subject ).deliver
   end
   
   private

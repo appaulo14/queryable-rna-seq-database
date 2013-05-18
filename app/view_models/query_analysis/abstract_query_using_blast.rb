@@ -65,6 +65,10 @@ class AbstractQueryUsingBlast
   validates :results_display_method, :presence => true,
                                      :inclusion => {:in => ['normal','email']}
   
+  def self.get_program_name()
+    raise NotImplementedError, 'Must be implemented in subclass'
+  end
+  
   ###
   # parameters::
   # * <b>current_user:</b> The currently logged in user
@@ -99,28 +103,37 @@ class AbstractQueryUsingBlast
   def blast()
     #Don't query if it is not valid
     return if not self.valid?
-#       begin 
-        #Record that the dataset was queried at this time
-        ds = Dataset.find_by_id(@dataset_id)
-        ds.when_last_queried = Time.now
-        ds.save!
-        prepare_IO_files()
-        #Build the execution string
-        blast_execution_string = generate_execution_string()
-        #Execute blast
-        SystemUtil.system!(blast_execution_string)
-        #Run the blast query and get the file path of the result
-        blast_report = generate_blast_report_from_xml_results()
-        cleanup_files()
-        if @results_display_method == 'email'
-          QueryAnalysisMailer.send_blast_report(self,blast_report,@current_user)
-        else
-          return blast_report
-        end
-#       rescue Exception => ex
-#         # QueryAnalysisMailer.send_blast_report(self,blast_report,@current_user)
-#         raise ex, ex.message
-#       end
+    begin 
+      #Record that the dataset was queried at this time
+      dataset = Dataset.find_by_id(@dataset_id)
+      dataset.when_last_queried = Time.now
+      dataset.save!
+      prepare_IO_files()
+      #Build the execution string
+      blast_execution_string = generate_execution_string()
+      #Execute blast
+      SystemUtil.system!(blast_execution_string)
+      #Run the blast query and get the file path of the result
+      blast_report = generate_blast_report_from_xml_results()
+      cleanup_files()
+      if @results_display_method == 'email'
+        QueryAnalysisMailer.send_blast_report(self,blast_report,@current_user)
+      else
+        return blast_report
+      end
+    rescue Exception => ex
+      begin
+        QueryAnalysisMailer.send_blast_failure_message(self,@current_user)
+      rescue Exception => ex2
+        Rails.logger.error "For dataset #{dataset.id} with name #{dataset.name}:\n" +
+                          "#{ex2.message}\n#{ex2.backtrace.join("\n")}"
+        raise ex2, ex2.message
+      ensure
+        #Log the exception manually because Rails doesn't want to in this case
+        Rails.logger.error "For dataset #{dataset.id} with name #{dataset.name}:\n" +
+                          "#{ex.message}\n#{ex.backtrace.join("\n")}"
+      end
+    end
   end
   
   # Accoring http://railscasts.com/episodes/219-active-model?view=asciicast,

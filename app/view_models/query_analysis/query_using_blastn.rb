@@ -19,7 +19,7 @@ class QueryUsingBlastn < AbstractQueryUsingBlast
   attr_reader :available_match_and_mismatch_scores
   # The available valid options for the gap_costs
   attr_reader :available_gap_costs
-    
+  
   # The available valid options for the word_size
   AVAILABLE_WORD_SIZES = ['16','20','24','28','32','48','64','128','256']
   
@@ -113,6 +113,10 @@ class QueryUsingBlastn < AbstractQueryUsingBlast
   validate  :gap_costs_valid_for_selected_match_and_mismatch_scores              
   validates :match_and_mismatch_scores, :presence => true,
                 :inclusion => {:in => AVAILABLE_MATCH_AND_MISMATCH_SCORES.keys}
+  
+  def self.get_program_name()
+    return 'blastn'
+  end
   
   ###
   # parameters::

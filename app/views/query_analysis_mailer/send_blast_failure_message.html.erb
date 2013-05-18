@@ -1,12 +1,15 @@
 <html>
   <head>
-    <title>Your Data Upload Was Successful</title>
+    <title>Your Blast Failed</title>
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
     <style></style>
   </head>
   <body>
-    <p>Hello,</p>
-    
-<!--    <div>Number of GO Terms = <%= @go_terms_count %></div>-->
+    <p>Hello <%= @user.name %>,</p>
+    <p>
+      Your blast was unsuccessful. If problems persist, contact the administrator at 
+      <a href="<%= @report_issue_url %>"><%= @report_issue_url %></a>.
+    </p>
+    <%= render 'blast_settings' %>
   </body>
 </html>

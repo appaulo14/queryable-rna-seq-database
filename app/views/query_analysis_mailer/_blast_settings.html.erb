@@ -1,0 +1,73 @@
+<table border="1">
+  <caption>Your Blast Settings</caption>
+  <tr><th>Program</th><td><%= @program %></td></tr>
+  <tr><th>Dataset</th><td><%= @dataset.name %></td></tr>
+  <tr>
+    <th>Number of Alignments To Show</th>
+    <td><%= @bq.num_alignments %></td>
+  </tr>
+  <tr>
+    <th>Query</th>
+    <td>
+      <% if @bq.query_input_method == 'file' %>
+        <%= @bq.fasta_file.original_filename %>
+      <% else %>
+        <pre><%= @bq.text_area_fastas %></pre>
+      <% end %>
+    </td>
+  </tr>
+  <tr>
+    <th>E-Value</th>
+    <td><%= @bq.evalue %></td>
+  </tr>
+  <% if @bq.respond_to?('word_size') %>
+    <tr><th>Word Size</th><td><%= @bq.word_size %></td></tr>
+  <% end %>
+  <% if @bq.respond_to?('gap_costs') %>
+    <tr><th>Gap Costs</th><td><%= @bq.gap_costs %></td></tr>
+  <% end %>
+  <% if @bq.respond_to?('match_and_mismatch_scores') %>
+    <tr><th>Match/Mismatch Scores</th><td><%= @bq.match_and_mismatch_scores %></td></tr>
+  <% end %>
+  <% if @bq.respond_to?('matrix') %>
+    <tr><th>Matrix</th><td><%= @bq.matrix %></td></tr>
+  <% end %>
+  <% if @bq.respond_to?('compositional_adjustment') %>
+    <tr>
+      <th>Compositional Adjustment</th>
+      <td>
+        <% @bq.available_compositional_adjustments.each do |key,value| %>
+          <% if value.to_s == @bq.compositional_adjustment.to_s %>
+            <%= key %>
+            <% break %>
+          <% end %>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  <% if @bq.respond_to?('genetic_code') %>
+    <tr>
+      <th>Genetic Code</th>
+      <td>
+        <% @bq.available_genetic_codes.each do |key,value| %>
+          <% if value.to_s == @bq.genetic_code.to_s %>
+            <%= key %>
+            <% break %>
+          <% end %>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  <tr>
+    <th>Filter By Low Complexity Regions?</th>
+    <td><%= (@bq.filter_low_complexity_regions == '1') ? 'yes' : 'no' %></td>
+  </tr>
+  <tr>
+    <th>Mask For Lookup Table Only?</th>
+    <td><%= (@bq.use_soft_masking == '1') ? 'yes' : 'no' %></td>
+  </tr>
+  <tr>
+    <th>Mask Lowercase Letters?</th>
+    <td><%= (@bq.use_lowercase_masking == '1') ? 'yes' : 'no' %></td>
+  </tr>
+</table>

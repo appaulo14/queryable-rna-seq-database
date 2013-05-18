@@ -96,45 +96,6 @@ en:
                      <p>For example, "comp123" would find all the transcripts that 
                      have "comp123" in the name somewhere.</p>
             more_info_link: ""
-        query_using_blastn:
-          graphical_summary:
-            title: Graphical Summary
-            message: \"This graphic is an overview of 
-                     database sequences aligned to the query sequence. 
-                     Alignments are color-coded by score, within one of 
-                     five score ranges.\" Multiple alignments on the same 
-                     database sequence overlap may overlap with the more 
-                     significant ones on top. Hovering your mouse cursor over 
-                     an alignment shows the alignment definition, bit score,
-                     and e-value as a tooltip. Clicking an alignment 
-                     goes to full details of the alignment. [1]
-            more_info_link: ""
-        query_using_tblastn:
-          graphical_summary:
-            title: Graphical Summary
-            message: \"This graphic is an overview of 
-                     database sequences aligned to the query sequence. 
-                     Alignments are color-coded by score, within one of 
-                     five score ranges.\" Multiple alignments on the same 
-                     database sequence overlap may overlap with the more 
-                     significant ones on top. Hovering your mouse cursor over 
-                     an alignment shows the alignment definition, bit score,
-                     and e-value as a tooltip. Clicking an alignment 
-                     goes to full details of the alignment. [1]
-            more_info_link: ""
-        query_using_tblastx:
-          graphical_summary:
-            title: Graphical Summary
-            message: \"This graphic is an overview of 
-                     database sequences aligned to the query sequence. 
-                     Alignments are color-coded by score, within one of 
-                     five score ranges.\" Multiple alignments on the same 
-                     database sequence overlap may overlap with the more 
-                     significant ones on top. Hovering your mouse cursor over 
-                     an alignment shows the alignment definition, bit score,
-                     and e-value as a tooltip. Clicking an alignment 
-                     goes to full details of the alignment. [1]
-            more_info_link: ""
         upload_cuffdiff:
           upload_cuffdiff:
             title: Upload Cuffdiff

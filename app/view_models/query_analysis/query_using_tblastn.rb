@@ -161,6 +161,10 @@ class QueryUsingTblastn < AbstractQueryUsingBlast
   validates :matrix, :presence => true,
                      :inclusion => {:in => AVAILABLE_MATRICES}
   
+  def self.get_program_name()
+    return 'tblastn'
+  end
+  
   ###
   # parameters::
   # * <b>current_user:</b> The currently logged in user
