@@ -77,9 +77,8 @@ class QueryUsingTblastx < AbstractQueryUsingBlast
       if @filter_low_complexity_regions.blank?
         @filter_low_complexity_regions = '1'
       end
-      if @matrix.blank?
-        @matrix = 'BLOSUM62'
-      end
+      @matrix = 'BLOSUM62' if @matrix.blank?
+      @genetic_code = '1' if @genetic_code.blank?
     end
     
     private

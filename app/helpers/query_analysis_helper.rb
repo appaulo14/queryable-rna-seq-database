@@ -33,43 +33,4 @@ module QueryAnalysisHelper
                    "db=nucleotide&cmd=search&term=#{search_term}"
     return link_to search_term, link_address         
   end
-  
-  # Returns a color based on the specified blast score
-  def get_color_for_score(score)
-    if score < 40
-      color = 'black'
-    elsif score >= 40 && score < 50
-      color = 'blue'
-    elsif score >= 50 && score < 80
-      color = 'lime'
-    elsif score >= 80 && score < 200
-      color = 'magenta'
-    elsif score >= 200
-      color = 'red'
-    end
-    return color
-  end
-  
-  # Returns the starting width percent page needed for some calculations on 
-  # the blast results page.
-  def get_start_width_percent(hsp)
-    return (hsp.query_from == 1 ) ? 0 : (hsp.query_from/_1_percent-1)
-  end
-  
-  # Returns the ending width percent page needed for some calculations on 
-  # the blast results page.
-  def get_end_width_percent(hsp)
-    return (hit.query_to/_1_percent) - get_start_width_percent(hsp) - 1
-  end
-  
-  #Returns a tooltip to use for hsps in the blast graphical summary
-  def get_tooltip(hit, hsp)
-    return ">#{hit.hit_id} #{hit.target_def}\nBit score=#{hit.bit_score} E-value=#{hit.evalue}"
-  end
-  
- # Returns a unique html id for a blast result hit that can be used to link 
- # directly to the hit
- def get_unique_hit_id(report,iteration,hit)
-   return "Report-#{report.query_id},Iteration-#{iteration.num},Hit-#{hit.num}"
- end
 end

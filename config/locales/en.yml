@@ -7,6 +7,9 @@ en:
   added_to_go_terms_queue: Your job for dataset "%{name}" has 
                            been queued. You will be emailed when the go terms 
                            have been found.
+  added_to_query_using_blast_queue: Your blast query job for "%{name}" has 
+                                    been queued. The results will be emailed to 
+                                    you.
   simple_captcha:
     label: "Please Enter the Letters Above To Confirm You Are Human"
     placeholder: ""

@@ -26,6 +26,7 @@ class AbstractQueryUsingBlast
   attr_accessor :filter_low_complexity_regions
   # Whether to use lowercase masking
   attr_accessor :use_lowercase_masking
+  attr_accessor :results_display_method
   
   # The datasets that are available to the user for having their blast 
   # databases blasted
@@ -61,6 +62,8 @@ class AbstractQueryUsingBlast
                                     :view_model_boolean => true
   validates :filter_low_complexity_regions, :presence => true,
                                             :view_model_boolean => true
+  validates :results_display_method, :presence => true,
+                                     :inclusion => {:in => ['normal','email']}
   
   ###
   # parameters::
@@ -88,6 +91,7 @@ class AbstractQueryUsingBlast
     @num_alignments = '100' if @num_alignments.blank?
     @evalue = 10.0 if @evalue.blank?
     @query_input_method = 'text_area' if @query_input_method.blank?
+    @results_display_method = 'normal' if @results_display_method.blank?
   end
   
   # Blast the dataset's blast database and return the results as a 
@@ -95,19 +99,28 @@ class AbstractQueryUsingBlast
   def blast()
     #Don't query if it is not valid
     return if not self.valid?
-    #Record that the dataset was queried at this time
-    ds = Dataset.find_by_id(@dataset_id)
-    ds.when_last_queried = Time.now
-    ds.save!
-    prepare_IO_files()
-    #Build the execution string
-    blast_execution_string = generate_execution_string()
-    #Execute blast
-    SystemUtil.system!(blast_execution_string)
-    #Run the blast query and get the file path of the result
-    blast_report = generate_blast_report_from_xml_results()
-    cleanup_files()
-    return blast_report
+#       begin 
+        #Record that the dataset was queried at this time
+        ds = Dataset.find_by_id(@dataset_id)
+        ds.when_last_queried = Time.now
+        ds.save!
+        prepare_IO_files()
+        #Build the execution string
+        blast_execution_string = generate_execution_string()
+        #Execute blast
+        SystemUtil.system!(blast_execution_string)
+        #Run the blast query and get the file path of the result
+        blast_report = generate_blast_report_from_xml_results()
+        cleanup_files()
+        if @results_display_method == 'email'
+          QueryAnalysisMailer.send_blast_report(self,blast_report,@current_user)
+        else
+          return blast_report
+        end
+#       rescue Exception => ex
+#         # QueryAnalysisMailer.send_blast_report(self,blast_report,@current_user)
+#         raise ex, ex.message
+#       end
   end
   
   # Accoring http://railscasts.com/episodes/219-active-model?view=asciicast,

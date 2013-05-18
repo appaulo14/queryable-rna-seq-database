@@ -361,11 +361,18 @@ class QueryAnalysisController < ApplicationController
         @query_using_blastn = QueryUsingBlastn.new(current_user)
         @query_using_blastn.set_attributes_and_defaults(params[:query_using_blastn])
         if @query_using_blastn.valid?
-            @program = :blastn
-            @blast_report = @query_using_blastn.blast
-            #Send the result to the user
             @dataset = Dataset.find_by_id(@query_using_blastn.dataset_id)
-            render :file => 'query_analysis/blast_results'
+            if @query_using_blastn.results_display_method == 'email'
+              q_name = :query_using_blast_queue
+              SuckerPunch::Queue[q_name].async.perform(@query_using_blastn)
+              flash[:notice] = I18n.t(:added_to_query_using_blast_queue,
+                                      :name => @dataset.name)
+            else
+              #Run the blast query and get the file path of the result
+              @blast_report = @query_using_blastn.blast()
+              #Send the result to the user
+              render :file => 'query_analysis/blast_results'
+            end
         end
       end
     end
@@ -437,15 +444,17 @@ class QueryAnalysisController < ApplicationController
       @query_using_tblastx = QueryUsingTblastx.new(current_user)
       @query_using_tblastx.set_attributes_and_defaults(params[:query_using_tblastx])
       if @query_using_tblastx.valid?
-        #Run the blast query and get the file path of the result
-        @blast_report = @query_using_tblastx.blast()
-        #Send the result to the user
         @dataset = Dataset.find_by_id(@query_using_tblastx.dataset_id)
-#         if @query_using_tblastx.results_display_method == 'email'
-          QueryAnalysisMailer.send_blast_report(@blast_report,current_user,@dataset)
-#         else # Display on the form as usual
-#           render :file => 'query_analysis/blast_results'
-#         end
+        if @query_using_tblastx.results_display_method == 'email'
+          SuckerPunch::Queue[:query_using_blast].async.perform(@query_using_tblastx)
+          flash[:notice] = I18n.t(:added_to_query_using_blast_queue,
+                                  :name => @dataset.name)
+        else
+          #Run the blast query and get the file path of the result
+          @blast_report = @query_using_tblastx.blast()
+          #Send the result to the user
+          render :file => 'query_analysis/blast_results'
+        end
       end
     end
   end

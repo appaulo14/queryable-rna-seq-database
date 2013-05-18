@@ -5,8 +5,85 @@
     <style></style>
   </head>
   <body>
-    <p>Hello,</p>
-    
-<!--    <div>Number of GO Terms = <%= @go_terms_count %></div>-->
+    <p>Hello, <%= @user.name %></p>
+    <p>
+      You blast was succesfully. The zipped blast results are attached to 
+      this email. If you are a windows user you can use 
+      <a href="http://www.7-zip.org/">7zip</a> to unzip it. For Linux, you 
+      can use gunzip to unzip it. For Mac OS X, 
+    </p>
+    <table border="1">
+      <caption>Your Blast Settings</caption>
+      <tr><th>Program</th><td><%= @program %></td></tr>
+      <tr><th>Dataset</th><td><%= @dataset.name %></td></tr>
+      <tr>
+        <th>Number of Alignments To Show</th>
+        <td><%= @bq.num_alignments %></td>
+      </tr>
+      <tr>
+        <th>Query</th>
+        <td>
+          <% if @bq.query_input_method == 'file' %>
+            <%= @bq.fasta_file.original_filename %>
+          <% else %>
+            <%= @bq.text_area_fastas %>
+          <% end %>
+        </td>
+      </tr>
+      <tr>
+        <th>E-Value</th>
+        <td><%= @bq.evalue %></td>
+      </tr>
+      <% if @bq.respond_to?('word_size') %>
+        <tr><th>Word Size</th><td><%= @bq.word_size %></td></tr>
+      <% end %>
+      <% if @bq.respond_to?('gap_costs') %>
+        <tr><th>Word Size</th><td><%= @bq.gap_costs %></td></tr>
+      <% end %>
+      <% if @bq.respond_to?('match_and_mismatch_scores') %>
+        <tr><th>Word Size</th><td><%= @bq.match_and_mismatch_scores %></td></tr>
+      <% end %>
+      <% if @bq.respond_to?('matrix') %>
+        <tr><th>Matrix</th><td><%= @bq.matrix %></td></tr>
+      <% end %>
+      <% if @bq.respond_to?('compositional_adjustment') %>
+        <tr>
+          <th>Compositional Adjustment</th>
+          <td>
+            <% @bq.available_compositional_adjustments do |key,value| %>
+              <% if value == @bq.compositional_adjustment %>
+                <%= key %>
+                <% break %>
+              <% end %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+      <% if @bq.respond_to?('genetic_code') %>
+        <tr>
+          <th>Genetic Code</th>
+          <td>
+            <% @bq.available_genetic_codes do |key,value| %>
+              <% if value == @bq.genetic_code %>
+                <%= key %>
+                <% break %>
+              <% end %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+      <tr>
+        <th>Mask For Lookup Table Only?</th>
+        <td><%= (@bq.use_soft_masking == '1' ? 'yes' : 'no' %></td>
+      </tr>
+      <tr>
+        <th>Filter By Low Complexity Regions?</th>
+        <td><%= (@bq.filter_low_complexity_regions == '1' ? 'yes' : 'no' %></td>
+      </tr>
+      <tr>
+        <th>Mask Lowercase Letters?</th>
+        <td><%= (@bq.use_lowercase_masking == '1' ? 'yes' : 'no' %></td>
+      </tr>
+    </table>
   </body>
 </html>
