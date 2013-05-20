@@ -104,10 +104,7 @@ class AbstractQueryUsingBlast
     #Don't query if it is not valid
     return if not self.valid?
     begin 
-      #Record that the dataset was queried at this time
-      dataset = Dataset.find_by_id(@dataset_id)
-      dataset.when_last_queried = Time.now
-      dataset.save!
+      record_that_dataset_has_been_queried()
       prepare_IO_files()
       #Build the execution string
       blast_execution_string = generate_execution_string()
@@ -122,16 +119,20 @@ class AbstractQueryUsingBlast
         return blast_report
       end
     rescue Exception => ex
-      begin
-        QueryAnalysisMailer.send_blast_failure_message(self,@current_user)
-      rescue Exception => ex2
-        Rails.logger.error "For dataset #{dataset.id} with name #{dataset.name}:\n" +
-                          "#{ex2.message}\n#{ex2.backtrace.join("\n")}"
-        raise ex2, ex2.message
-      ensure
-        #Log the exception manually because Rails doesn't want to in this case
-        Rails.logger.error "For dataset #{dataset.id} with name #{dataset.name}:\n" +
-                          "#{ex.message}\n#{ex.backtrace.join("\n")}"
+      if @results_display_method == 'email'
+        begin
+          QueryAnalysisMailer.send_blast_failure_message(self,@current_user)
+        rescue Exception => ex2
+          Rails.logger.error "For dataset #{dataset.id} with name #{dataset.name}:\n" +
+                            "#{ex2.message}\n#{ex2.backtrace.join("\n")}"
+          raise ex2, ex2.message
+        ensure
+          #Log the exception manually because Rails doesn't want to in this case
+          Rails.logger.error "For dataset #{dataset.id} with name #{dataset.name}:\n" +
+                            "#{ex.message}\n#{ex.backtrace.join("\n")}"
+        end
+      else
+        raise ex, "#{ex.message}\n#{ex.backtrace.join("\n")}"
       end
     end
   end
@@ -143,6 +144,12 @@ class AbstractQueryUsingBlast
   end
   
   protected
+  
+  def record_that_dataset_has_been_queried()
+    dataset = Dataset.find_by_id(@dataset_id)
+    dataset.when_last_queried = Time.now
+    dataset.save!
+  end
   
   # This is an abstract method that must be implemented in the subclass. 
   # It generates the execution string used to do the blasting.

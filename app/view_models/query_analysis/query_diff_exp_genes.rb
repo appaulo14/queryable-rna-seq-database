@@ -203,6 +203,7 @@ class QueryDiffExpGenes < AbstractQueryRegularDb
       @results = DifferentialExpressionTest
         .joins(:gene => [:transcripts])
         .where(@where_clauses)
+        .group(self.class.group_by_string)
         .select(@select_string)
         .order(@order_string)
         .limit(self.class.page_size)
@@ -225,6 +226,7 @@ class QueryDiffExpGenes < AbstractQueryRegularDb
       @results = DifferentialExpressionTest
         .joins(:gene => [:transcripts])
         .where(@where_clauses)
+        .group(self.class.group_by_string)
         .select(@select_string)
         .order(@order_string)
     end
@@ -239,16 +241,13 @@ class QueryDiffExpGenes < AbstractQueryRegularDb
         .where(@where_clauses)
         .group(self.class.group_by_string)
         .having(@having_string)
-        .select(@select_string)
-        .order(@order_string)
-        .count.count
+        .select('count(*)')
+        .length
     else
       @results_count = DifferentialExpressionTest
-        .joins(:gene => [:transcripts])
+        .joins(:gene)
         .where(@where_clauses)
-        .select(@select_string)
-        .order(@order_string)
-        .count.count
+        .select('count(*)')[0].count.to_i
     end
     if @results_count == 0
       @available_page_numbers = [1]

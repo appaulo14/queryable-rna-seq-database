@@ -98,17 +98,21 @@ class AbstractQueryRegularDb
         @show_results = true
       end
     rescue Exception => ex
-      begin
-        dataset = Dataset.find_by_id(@dataset_id)
-        QueryAnalysisMailer.send_query_regular_db_failure_message(self,@current_user)
-      rescue Exception => ex2
-        Rails.logger.error "For dataset #{dataset.id} with name #{dataset.name}:\n" +
-                          "#{ex2.message}\n#{ex2.backtrace.join("\n")}"
-        raise ex2, ex2.message
-      ensure
-        #Log the exception manually because Rails doesn't want to in this case
-        Rails.logger.error "For dataset #{dataset.id} with name #{dataset.name}:\n" +
-                          "#{ex.message}\n#{ex.backtrace.join("\n")}"
+      if @results_display_method == 'email'
+        begin
+          dataset = Dataset.find_by_id(@dataset_id)
+          QueryAnalysisMailer.send_query_regular_db_failure_message(self,@current_user)
+        rescue Exception => ex2
+          Rails.logger.error "For dataset #{dataset.id} with name #{dataset.name}:\n" +
+                            "#{ex2.message}\n#{ex2.backtrace.join("\n")}"
+          raise ex2, ex2.message
+        ensure
+          #Log the exception manually because Rails doesn't want to in this case
+          Rails.logger.error "For dataset #{dataset.id} with name #{dataset.name}:\n" +
+                            "#{ex.message}\n#{ex.backtrace.join("\n")}"
+        end
+      else
+        raise ex, "#{ex.message}\n#{ex.backtrace.join("\n")}"
       end
     end
   end

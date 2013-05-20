@@ -344,9 +344,9 @@ class QueryAnalysisController < ApplicationController
         # If valid, query and return results; otherwise return failure
         if @qti.valid?
           if @qti.results_display_method == 'email'
+            dataset = Dataset.find_by_id(@qti.dataset_id)
             SuckerPunch::Queue[:query_regular_db_queue].async.perform(@qti)
             # Reset the form before rendering
-            dataset = Dataset.find_by_id(@qti.dataset_id)
             flash[:notice] = I18n.t(:added_to_query_regular_db_queue,
                                     :name => dataset.name)
           else

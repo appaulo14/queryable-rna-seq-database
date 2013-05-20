@@ -153,15 +153,20 @@ class QueryAnalysisMailer < ActionMailer::Base
     end
     # If there are results, create, compress, and attach the results file
     if not query_regular_db.results.empty?
-      results_string = query_regular_db.results[0].attributes.keys.join("\t")
-      results_string += "\n"
-      query_regular_db.results.each do |result|
-        results_string += "#{result.attributes.values.join("\t")}\n"
+      results_string = ""
+      200000.times do |i|
+        results_string = "#{Faker::Lorem.paragraph}\n"
       end
-      compressed_results_string = ActiveSupport::Gzip.compress(results_string)
-      attachment_name = "#{@query_type}_results_for_" +
-                        "#{@dataset.name}.txt.gz"
-      attachments[attachment_name] = compressed_results_string
+#       results_string = query_regular_db.results[0].attributes.keys.join("\t")
+#       results_string += "\n"
+#       query_regular_db.results.each do |result|
+#         results_string += "#{result.attributes.values.join("\t")}\n"
+#       end
+#       compressed_results_string = ActiveSupport::Gzip.compress(results_string)
+#       attachment_name = "#{@query_type}_results_for_" +
+#                         "#{@dataset.name}.txt.gz"
+# #       attachments[attachment_name] = compressed_results_string
+#       attachments[attachment_name] = results_string
     end
     # Create the email's subject
     subject = "#{@query_type.capitalize()} " +
