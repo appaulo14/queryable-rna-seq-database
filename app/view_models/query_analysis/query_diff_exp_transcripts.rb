@@ -38,6 +38,10 @@ class QueryDiffExpTranscripts < AbstractQueryRegularDb
                      :format => { :with => /\A\d*\.?\d*\z/ }
   
   
+  def self.get_query_type()
+    return 'query_diff_exp_transcripts'
+  end
+  
   protected
   
   ###
@@ -191,7 +195,7 @@ class QueryDiffExpTranscripts < AbstractQueryRegularDb
     return where_clauses
   end
   
-  def execute_query()
+  def execute_paged_query()
     if @has_go_terms == true
       @results = DifferentialExpressionTest
         .joins(:transcript => [:gene])
@@ -208,12 +212,30 @@ class QueryDiffExpTranscripts < AbstractQueryRegularDb
       @results = DifferentialExpressionTest
         .joins(:transcript => [:gene])
         .where(@where_clauses)
-        .group(self.class.group_by_string)
-        .having(@having_string)
         .select(@select_string)
         .order(@order_string)
         .limit(self.class.page_size)
         .offset(self.class.page_size*(@page_number.to_i-1))
+    end
+  end
+  
+  def execute_full_query()
+    if @has_go_terms == true
+      @results = DifferentialExpressionTest
+        .joins(:transcript => [:gene])
+        .joins(self.class.thgt_left_join_string)
+        .joins(self.class.go_terms_left_join_string)
+        .where(@where_clauses)
+        .group(self.class.group_by_string)
+        .having(@having_string)
+        .select(@select_string)
+        .order(@order_string)
+    else
+      @results = DifferentialExpressionTest
+        .joins(:transcript => [:gene])
+        .where(@where_clauses)
+        .select(@select_string)
+        .order(@order_string)
     end
   end
   
@@ -233,14 +255,12 @@ class QueryDiffExpTranscripts < AbstractQueryRegularDb
       @results_count = DifferentialExpressionTest
         .joins(:transcript => [:gene])
         .where(@where_clauses)
-        .group(self.class.group_by_string)
-        .having(@having_string)
         .select(@select_string)
         .order(@order_string)
         .count.count
     end
     if @results_count == 0
-      available_page_numbers = [1]
+      @available_page_numbers = [1]
     else
       @available_page_numbers = (1..(@results_count.to_f/self.class.page_size.to_f).ceil).to_a
     end

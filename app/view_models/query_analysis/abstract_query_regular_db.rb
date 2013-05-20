@@ -23,6 +23,7 @@ class AbstractQueryRegularDb
   attr_accessor :page_number
   attr_accessor :sort_order
   attr_accessor :sort_column
+  attr_accessor :results_display_method
   
   # The name/id pairs of the datasets that can be selected to have their 
   # transcript differential expression tests queried.
@@ -40,6 +41,8 @@ class AbstractQueryRegularDb
   attr_reader   :available_page_numbers
   attr_reader   :results_count
   
+  AVAILABLE_SORT_ORDERS = {'ascending' => 'ASC', 'descending' => 'DESC'}
+  
   validates :dataset_id, :presence => true,
                          :dataset_belongs_to_user => true,
                          :numericality => {
@@ -47,7 +50,12 @@ class AbstractQueryRegularDb
                               :greater_than_or_equal => 0 
                           }
   
-  AVAILABLE_SORT_ORDERS = {'ascending' => 'ASC', 'descending' => 'DESC'}
+  validates :results_display_method, :presence => true,
+                                     :inclusion => {:in => ['normal','email']}
+  
+  def self.get_query_type()
+    raise NotImplementedError, 'Must be implemented in subclass'
+  end
   
   def show_results?
     return @show_results
@@ -78,11 +86,31 @@ class AbstractQueryRegularDb
   def query()
     #Don't query if it is not valid
     return if not self.valid?
-    record_that_dataset_has_been_queried()
-    build_query_parts()
-    execute_query()
-    count_query_results()
-    @show_results = true
+    begin
+      record_that_dataset_has_been_queried()
+      build_query_parts()
+      if @results_display_method == 'email'
+        execute_full_query()
+        QueryAnalysisMailer.send_query_regular_db_results(self,@current_user)
+      else
+        execute_paged_query()
+        count_query_results()
+        @show_results = true
+      end
+    rescue Exception => ex
+      begin
+        dataset = Dataset.find_by_id(@dataset_id)
+        QueryAnalysisMailer.send_query_regular_db_failure_message(self,@current_user)
+      rescue Exception => ex2
+        Rails.logger.error "For dataset #{dataset.id} with name #{dataset.name}:\n" +
+                          "#{ex2.message}\n#{ex2.backtrace.join("\n")}"
+        raise ex2, ex2.message
+      ensure
+        #Log the exception manually because Rails doesn't want to in this case
+        Rails.logger.error "For dataset #{dataset.id} with name #{dataset.name}:\n" +
+                          "#{ex.message}\n#{ex.backtrace.join("\n")}"
+      end
+    end
   end
   
   ###
@@ -136,6 +164,7 @@ class AbstractQueryRegularDb
     @has_go_terms = (@dataset.go_terms_status == 'found') ? true : false
     @page_number = '1' if @page_number.blank?
     @show_results = false if @show_results.blank?
+    @results_display_method = 'normal' if @results_display_method.blank?
   end
   
   def record_that_dataset_has_been_queried()
@@ -179,7 +208,11 @@ class AbstractQueryRegularDb
     @order_string = build_order_string()
   end
   
-  def execute_query()
+  def execute_paged_query()
+    raise NotImplementedError, 'Must be implemented in subclass'
+  end
+  
+  def execute_full_query()
     raise NotImplementedError, 'Must be implemented in subclass'
   end
   

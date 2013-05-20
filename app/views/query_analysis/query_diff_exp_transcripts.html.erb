@@ -25,6 +25,8 @@
         <%= qdet.text_field(:transcript_name) %>
     </div>
   </p>
+  <br/>
+  <%= render 'results_display_method', :q => qdet %>
   <p><%= qdet.submit("Query", :disable_with => "Querying...") %></p>
   <!--Section for the query results-->
   <% if @qdet.show_results? %>

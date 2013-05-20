@@ -1,0 +1,99 @@
+<table border="1">
+  <caption>Your Query Settings</caption>
+  <tr><th>Query Type</th><td><%= @query_type %></td></tr>
+  <tr><th>Dataset</th><td><%= @dataset.name %></td></tr>
+  <% if not @sample_name.blank? %>
+    <tr>
+      <th>Sample</th>
+      <td><%= @sample_name %></td>
+    </tr>
+  <% end %>
+  <% if not @sample_cmp_name.blank? %>
+    <tr>
+      <th>Sample Comparison</th>
+      <td><%= @sample_cmp_name %></td>
+    </tr>
+  <% end %>
+  <% if @query_regular_db.respond_to?('cutoff') %>
+    <tr>
+      <th>Cutoff</th>
+      <td>
+        <%= @query_regular_db.fdr_or_p_value %> cutoff of 
+        <%= @query_regular_db.cutoff %>
+      </td>
+    </tr>
+  <% end %>
+  <% if @query_regular_db.has_go_terms == true %>
+    <tr>
+      <th>Filter By GO Terms</th>
+      <td>
+        <% if not @query_regular_db.go_terms.blank? %>
+          <ul>
+            <% @query_regular_db.go_terms.strip().split(';').each do |go_term| %>
+              <li><%= go_term %></li>
+            <% end %>
+          </ul>
+        <% else %>
+          None 
+        <% end %>
+      </td>
+    </tr>
+    <tr>
+      <th>Filter By GO IDs</th>
+      <td>
+        <% if not @query_regular_db.go_ids.blank? %>
+          <ul>
+            <% @query_regular_db.go_ids.strip().split(';').each do |go_id| %>
+              <li><%= go_id %></li>
+            <% end %>
+          </ul>
+        <% else %>
+          None 
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  <% if @query_regular_db.respond_to?('transcript_name') %>
+    <tr>
+      <th>Filter By Transcript Name</th>
+      <td>
+        <% if not @query_regular_db.transcript_name.blank? %>
+          <%= @query_regular_db.transcript_name %>
+        <% else %>
+          None
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  <% if @query_regular_db.respond_to?('gene_name') %>
+    <tr>
+      <th>Filter By Gene Name</th>
+      <td>
+        <% if not @query_regular_db.gene_name.blank? %>
+          <%= @query_regular_db.gene_name %>
+        <% else %>
+          None
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  <% if @query_regular_db.respond_to?('list_selected_class_codes') %>\
+    <tr>
+      <th>Class Codes</th>
+      <td>
+        <% if not @query_regular_db.list_selected_class_codes().empty? %>
+          <%= @query_regular_db.list_selected_class_codes().join(',') %>
+        <% else %>
+          None
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  <% if @query_regular_db.respond_to?('transcript_length_comparison_sign') %>
+    <th>Transcript Length</th>
+    <td>
+      <%= @query_regular_db.transcript_length_comparison_sign %> 
+      <%= @query_regular_db.transcript_length_value %>
+    </td>
+  <% end %>
+</table>

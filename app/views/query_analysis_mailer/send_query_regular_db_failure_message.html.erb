@@ -1,0 +1,15 @@
+<html>
+  <head>
+    <title>Your Query Failed</title>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+    <style></style>
+  </head>
+  <body>
+    <p>Hello <%= @user.name %>,</p>
+    <p>
+      Your query was unsuccessful. If problems persist, contact the administrator at 
+      <a href="<%= @report_issue_url %>"><%= @report_issue_url %></a>.
+    </p>
+    <%= render 'query_regular_db_settings' %>
+  </body>
+</html>

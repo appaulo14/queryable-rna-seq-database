@@ -185,10 +185,17 @@ class QueryAnalysisController < ApplicationController
         #Fill in the inputs from the view
         @qdet.set_attributes_and_defaults(params[:query_diff_exp_transcripts])
         # If valid, query and return results; otherwise return failure
-        @qdet.query() if @qdet.valid?
-#        debugger
-#        render :partial => 'query_diff_exp_transcripts_table_rows', 
-#               :locals => {:object => @qdet}
+        if @qdet.valid?
+          if @qdet.results_display_method == 'email'
+            SuckerPunch::Queue[:query_regular_db_queue].async.perform(@qdet)
+            # Reset the form before rendering
+            dataset = Dataset.find_by_id(@qdet.dataset_id)
+            flash[:notice] = I18n.t(:added_to_query_regular_db_queue,
+                                    :name => dataset.name)
+          else
+            @qdet.query()
+          end
+        end
       end
     end
     
@@ -291,9 +298,17 @@ class QueryAnalysisController < ApplicationController
         #Fill in the inputs from the view
         @qdeg.set_attributes_and_defaults(params[:query_diff_exp_genes])
         # If valid, query and return results; otherwise return failure
-        @qdeg.query() if @qdeg.valid?
-#         render :partial => 'query_diff_exp_genes_table_rows', 
-#                :locals => {:object => @qdeg}
+        if @qdeg.valid?
+          if @qdeg.results_display_method == 'email'
+            SuckerPunch::Queue[:query_regular_db_queue].async.perform(@qdeg)
+            # Reset the form before rendering
+            dataset = Dataset.find_by_id(@qdeg.dataset_id)
+            flash[:notice] = I18n.t(:added_to_query_regular_db_queue,
+                                    :name => dataset.name)
+          else
+            @qdeg.query()
+          end
+        end
       end
     end
     
@@ -327,9 +342,17 @@ class QueryAnalysisController < ApplicationController
         #Fill in the inputs from the view
         @qti.set_attributes_and_defaults(params[:query_transcript_isoforms])
         # If valid, query and return results; otherwise return failure
-        @qti.query() if @qti.valid?
-#         render :partial => 'query_transcript_isoforms_table_rows', 
-#                :locals => {:object => @qti}
+        if @qti.valid?
+          if @qti.results_display_method == 'email'
+            SuckerPunch::Queue[:query_regular_db_queue].async.perform(@qti)
+            # Reset the form before rendering
+            dataset = Dataset.find_by_id(@qti.dataset_id)
+            flash[:notice] = I18n.t(:added_to_query_regular_db_queue,
+                                    :name => dataset.name)
+          else
+            @qti.query()
+          end
+        end
       end
     end
     

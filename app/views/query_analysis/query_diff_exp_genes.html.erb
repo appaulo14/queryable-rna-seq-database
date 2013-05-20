@@ -27,6 +27,8 @@
         <%= help_tip(:gene_name) %>
     </div>
   </p>
+  <br/>
+  <%= render 'results_display_method', :q => qdeg %>
   <p><%= qdeg.submit('Query', :id => :submit_button) %></p>
   <!--Section for the query results-->
   <% if @qdeg.show_results? %>

@@ -27,7 +27,7 @@
   <br/>
   <%= render 'blast_filters_and_masking', :bq => bq %>
   <br/>
-  <%= render 'blast_results_display_method', :bq => bq %>
+  <%= render 'results_display_method', :q => bq %>
   <p>
     <%= button_tag 'Reset', :type => 'reset' %>
     <%= submit_tag("BLAST", :disable_with => "BLASTing...") %>

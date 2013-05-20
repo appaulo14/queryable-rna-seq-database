@@ -10,6 +10,9 @@ en:
   added_to_query_using_blast_queue: Your blast query job for "%{name}" has 
                                     been queued. The results will be emailed to 
                                     you.
+  added_to_query_regular_db_queue: Your query job for "%{name}" has 
+                                   been queued. The results will be emailed to 
+                                   you.
   simple_captcha:
     label: "Please Enter the Letters Above To Confirm You Are Human"
     placeholder: ""

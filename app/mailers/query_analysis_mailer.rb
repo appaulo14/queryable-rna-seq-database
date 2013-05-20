@@ -136,6 +136,65 @@ class QueryAnalysisMailer < ActionMailer::Base
          :subject => subject ).deliver
   end
   
+  def send_query_regular_db_results(query_regular_db, user)
+    # Define some variables to use with the view
+    @query_regular_db = query_regular_db
+    @dataset = Dataset.find_by_id(query_regular_db.dataset_id)
+    @user = user
+    @query_type = query_regular_db.class.get_query_type()
+    if query_regular_db.respond_to?('sample_id')
+      @sample_name = Sample.find_by_id(query_regular_db.sample_id).name
+    end
+    if query_regular_db.respond_to?('sample_comparison_id')
+      sample_cmp = SampleComparison.find_by_id(query_regular_db.sample_comparison_id)
+      sample_1_name = sample_cmp.sample_1.name
+      sample_2_name = sample_cmp.sample_2.name
+      @sample_cmp_name = "#{sample_1_name} vs #{sample_2_name}"
+    end
+    # If there are results, create, compress, and attach the results file
+    if not query_regular_db.results.empty?
+      results_string = query_regular_db.results[0].attributes.keys.join("\t")
+      results_string += "\n"
+      query_regular_db.results.each do |result|
+        results_string += "#{result.attributes.values.join("\t")}\n"
+      end
+      compressed_results_string = ActiveSupport::Gzip.compress(results_string)
+      attachment_name = "#{@query_type}_results_for_" +
+                        "#{@dataset.name}.txt.gz"
+      attachments[attachment_name] = compressed_results_string
+    end
+    # Create the email's subject
+    subject = "#{@query_type.capitalize()} " +
+              "Results for Dataset \"#{@dataset.name}\""
+    # Send the email
+    mail(:to => user.email,
+         :from => mailer_bot_from_field(),
+         :subject => subject ).deliver
+  end
+  
+  def send_query_regular_db_failure_message(query_regular_db, user)
+    @query_regular_db = query_regular_db
+    @dataset = Dataset.find_by_id(query_regular_db.dataset_id)
+    @user = user
+    @query_type = query_regular_db.class.get_query_type()
+    if query_regular_db.respond_to?('sample_id')
+      @sample_name = Sample.find_by_id(query_regular_db.sample_id).name
+    end
+    if query_regular_db.respond_to?('sample_comparison_id')
+      sample_cmp = SampleComparison.find_by_id(query_regular_db.sample_comparison_id)
+      sample_1_name = sample_cmp.sample_1.name
+      sample_2_name = sample_cmp.sample_2.name
+      @sample_cmp_name = "#{sample_1_name} vs #{sample_2_name}"
+    end
+    @report_issue_url = "#{get_base_url()}/home/report_issue"
+    subject = "#{@query_type.capitalize()} " +
+              "for Dataset \"#{@dataset.name}\" Failed"
+    # Send the email
+    mail(:to => user.email,
+         :from => mailer_bot_from_field(),
+         :subject => subject ).deliver
+  end
+  
   private
   
   def get_base_url

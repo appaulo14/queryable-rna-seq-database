@@ -1,0 +1,22 @@
+<html>
+  <head>
+    <title>Your Query Was Successful</title>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+    <style></style>
+  </head>
+  <body>
+    <p>Hello, <%= @user.name %>,</p>
+    <p>
+      <% if not @query_regular_db.results.empty? %>
+        You query was succesful. The zipped results are attached to 
+        this email. If you are a windows user you can use 
+        <a href="http://www.7-zip.org/">7zip</a> to unzip it. For Linux, you 
+        can use gunzip to unzip it. For Mac OS X, you should be able to open it 
+        without having to install anything.
+      <% else %>
+        You query was succesful, but no results were found so no results file 
+        is attached.
+      <% end %>
+    </p>
+    <%= render 'query_regular_db_settings' %>
+</html>

@@ -101,10 +101,18 @@ class QueryTranscriptIsoforms < AbstractQueryRegularDb
   validates :transcript_length_value, :numericality => true
   
   
-  # According to http://railscasts.com/episodes/219-active-model?view=asciicast,
-  # this defines that this view model does not persist in the database.
-  def persisted?
-      return false
+  def list_selected_class_codes
+    class_codes = []
+    CLASS_CODES.each do |key, value|
+      if self.send(key) == '1'
+        class_codes << key
+      end
+    end
+    return class_codes
+  end
+  
+  def self.get_query_type()
+    return 'query_transcript_isoforms'
   end
   
   protected
@@ -237,8 +245,7 @@ class QueryTranscriptIsoforms < AbstractQueryRegularDb
     return where_clauses
   end
   
-  def execute_query()
-    
+  def execute_paged_query()
     if @has_go_terms == true
       @results = Dataset
         .joins(:transcripts => [:transcript_fpkm_tracking_information, 
@@ -264,6 +271,28 @@ class QueryTranscriptIsoforms < AbstractQueryRegularDb
     end
   end
   
+  def execute_full_query()
+    if @has_go_terms == true
+      @results = Dataset
+        .joins(:transcripts => [:transcript_fpkm_tracking_information, 
+                                :gene, :fpkm_samples])
+        .joins(self.class.thgt_left_join_string)
+        .joins(self.class.go_terms_left_join_string)
+        .where(@where_clauses)
+        .group(self.class.group_by_string)
+        .having(@having_string)
+        .select(@select_string)
+        .order(@order_string)
+    else
+      @results = Dataset
+        .joins(:transcripts => [:transcript_fpkm_tracking_information, 
+                                :gene, :fpkm_samples])
+        .where(@where_clauses)
+        .select(@select_string)
+        .order(@order_string)
+    end
+  end
+  
   def count_query_results()
     if @has_go_terms == true
       @results_count = Dataset
@@ -284,7 +313,7 @@ class QueryTranscriptIsoforms < AbstractQueryRegularDb
         .select('count(*)')[0].count.to_i
     end
     if @results_count == 0
-      available_page_numbers = [1]
+      @available_page_numbers = [1]
     else
       @available_page_numbers = (1..(@results_count.to_f/self.class.page_size.to_f).ceil).to_a
     end
@@ -320,9 +349,6 @@ class QueryTranscriptIsoforms < AbstractQueryRegularDb
       tfti_w = tfti_t[:length].lt(@transcript_length_value)
     when '=<'
       tfti_w = tfti_t[:length].lteq(@transcript_length_value)
-    else
-      puts 'x'
-      #???
     end
     return tfti_w
   end

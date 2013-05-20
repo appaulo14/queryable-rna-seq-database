@@ -1,0 +1,7 @@
+<div class='sub-section rounded-corners' style='padding:5px'>
+  <%= q.label(:results_display_method, "How To Display Results:") %>
+  <%= q.radio_button(:results_display_method, :normal) %>
+  <%= q.label(:results_display_method_normal, "Display on this Page") %>
+  <%= q.radio_button(:results_display_method, :email) %>
+  <%= q.label(:results_display_method_email, 'Email Them to Me') %>
+</div>

@@ -1,16 +1,17 @@
 <html>
   <head>
-    <title>Your Data Upload Was Successful</title>
+    <title>Your Blast Was Successful</title>
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
     <style></style>
   </head>
   <body>
     <p>Hello, <%= @user.name %>,</p>
     <p>
-      You blast was succesfully. The zipped blast results are attached to 
+      You blast was succesful. The zipped blast results are attached to 
       this email. If you are a windows user you can use 
       <a href="http://www.7-zip.org/">7zip</a> to unzip it. For Linux, you 
-      can use gunzip to unzip it. For Mac OS X, 
+      can use gunzip to unzip it. For Mac OS X, you should be able to open it 
+      without having to install anything.
     </p>
     <%= render 'blast_settings' %>
 </html>
