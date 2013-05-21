@@ -160,12 +160,11 @@ class QueryTranscriptIsoforms < AbstractQueryRegularDb
   end
   
   def set_sort_defaults()
-    @available_sort_orders = AVAILABLE_SORT_ORDERS.keys
+    super
     @available_sort_columns = ['Transcript','Associated Gene', 
                                 'Class Code', 'Length','Coverage', 
                               'FPKM','FPKM Lower Bound','FPKM Upper Bound',
                               'Status']
-    @sort_order = @available_sort_orders.first if @sort_order.blank?
     @sort_column = @available_sort_columns.first if @sort_column.blank?
   end
   
@@ -223,7 +222,7 @@ class QueryTranscriptIsoforms < AbstractQueryRegularDb
     when 'Status'
       sort_column = 'fpkm_samples.status'
     end
-    return "#{sort_column} #{AVAILABLE_SORT_ORDERS[@sort_order]}"
+    return "#{sort_column} #{@sort_order}"
   end
   
   def generate_where_clauses()
@@ -311,11 +310,6 @@ class QueryTranscriptIsoforms < AbstractQueryRegularDb
                                 :gene, :fpkm_samples])
         .where(@where_clauses)
         .select('count(*)')[0].count.to_i
-    end
-    if @results_count == 0
-      @available_page_numbers = [1]
-    else
-      @available_page_numbers = (1..(@results_count.to_f/self.class.page_size.to_f).ceil).to_a
     end
   end
   

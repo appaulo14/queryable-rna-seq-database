@@ -31,10 +31,10 @@ class TrinityFpkmFileProcessor
       sample_1_name = diff_exp_test.sample_comparison.sample_1.name
       sample_2_name = diff_exp_test.sample_comparison.sample_2.name
       fpkm_line.sample_fpkms.each do |sample_fpkm|
-        if sample_fpkm.sample_name.match(/#{sample_1_name}/)
+        if sample_fpkm.sample_name.match(/#{sample_1_name}/i)
           diff_exp_test.sample_1_fpkm = sample_fpkm.fpkm
           diff_exp_test.save!
-        elsif sample_fpkm.sample_name.match(/#{sample_2_name}/)
+        elsif sample_fpkm.sample_name.match(/#{sample_2_name}/i)
           diff_exp_test.sample_2_fpkm = sample_fpkm.fpkm
           diff_exp_test.save!
         end

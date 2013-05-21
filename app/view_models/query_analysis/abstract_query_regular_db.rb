@@ -24,6 +24,8 @@ class AbstractQueryRegularDb
   attr_accessor :sort_order
   attr_accessor :sort_column
   attr_accessor :results_display_method
+  attr_accessor :is_new_query
+  attr_accessor :results_count
   
   # The name/id pairs of the datasets that can be selected to have their 
   # transcript differential expression tests queried.
@@ -39,7 +41,6 @@ class AbstractQueryRegularDb
   attr_reader   :available_sort_columns
   attr_reader   :available_sort_orders
   attr_reader   :available_page_numbers
-  attr_reader   :results_count
   
   AVAILABLE_SORT_ORDERS = {'ascending' => 'ASC', 'descending' => 'DESC'}
   
@@ -50,8 +51,27 @@ class AbstractQueryRegularDb
                               :greater_than_or_equal => 0 
                           }
   
+  validates :go_ids, :allow_blank => true,
+                     :format => { :with => /\A\s*(GO:\d+;?\s*)+\z/ }
+  
   validates :results_display_method, :presence => true,
                                      :inclusion => {:in => ['normal','email']}
+  
+  validates :page_number, :presence => true,
+                          :numericality => {
+                              :only_integer => true, 
+                              :greater_than_or_equal => 0 
+                          }
+  validates :sort_order, :allow_blank => true,
+                         :inclusion => {:in => AVAILABLE_SORT_ORDERS.values}
+  
+  validates :is_new_query, :presence => true,
+                           :view_model_boolean => true
+  validates :results_count, :allow_blank => true,
+                            :numericality => {
+                              :only_integer => true, 
+                              :greater_than_or_equal => 0 
+                            }
   
   def self.get_query_type()
     raise NotImplementedError, 'Must be implemented in subclass'
@@ -94,7 +114,15 @@ class AbstractQueryRegularDb
         QueryAnalysisMailer.send_query_regular_db_results(self,@current_user)
       else
         execute_paged_query()
-        count_query_results()
+        if @is_new_query == '1'
+          count_query_results()
+          @is_new_query = '0'
+        end
+        if @results_count == 0
+          @available_page_numbers = [1]
+        else
+          @available_page_numbers = (1..(@results_count.to_f/self.class.page_size.to_f).ceil).to_a
+        end
         @show_results = true
       end
     rescue Exception => ex
@@ -160,7 +188,8 @@ class AbstractQueryRegularDb
   end
   
   def set_sort_defaults()
-    raise NotImplementedError, 'Must be implemented in subclass'
+    @available_sort_orders = AVAILABLE_SORT_ORDERS
+    @sort_order = @available_sort_orders.values.first if @sort_order.blank?
   end 
   
   def set_other_defaults()
@@ -169,6 +198,7 @@ class AbstractQueryRegularDb
     @page_number = '1' if @page_number.blank?
     @show_results = false if @show_results.blank?
     @results_display_method = 'normal' if @results_display_method.blank?
+    @is_new_query = '1' if @is_new_query.blank?
   end
   
   def record_that_dataset_has_been_queried()

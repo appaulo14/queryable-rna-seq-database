@@ -136,29 +136,6 @@ class UploadCuffdiff
   
   private
   
-  #Validations
-  def transcripts_fasta_file_is_uploaded_file
-    is_uploaded_file('transcripts_fasta_file')
-  end
-  
-  def transcript_diff_exp_file_is_uploaded_file
-    is_uploaded_file('transcripts_fasta_file')
-  end
-  
-  def gene_diff_exp_file_is_uploaded_file
-    is_uploaded_file('transcripts_fasta_file')
-  end
-  
-  def transcript_isoforms_file_is_uploaded_file
-    is_uploaded_file('transcripts_fasta_file')
-  end
-
-  def is_uploaded_file(attribute)
-    if self.send(attribute).class.to_s != 'ActionDispatch::Http::UploadedFile'
-      errors[attribute] << 'must be an uploaded file'
-    end
-  end
-  
   def process_args_to_create_dataset()
     @dataset = Dataset.new(:user => @current_user,
                           :name => @dataset_name,

@@ -46,7 +46,8 @@ class GoTermFinderAndProcessor
                                      :go_term => go_term)
     end
     go_terms_file.close
-    File.delete(go_terms_file.path)
+    # Clean up the files now that everything is finished
+    cleanup_files()
   end
   
   private
@@ -70,20 +71,23 @@ class GoTermFinderAndProcessor
   
   def run_blast2go
     Rails.logger.info "Running blast2go for dataset: #{@dataset.id}"
-    blast2go_output_file = Tempfile.new('blast2go')
-    blast2go_output_file.close
+    @blast2go_output_file = Tempfile.new('blast2go')
+    @blast2go_output_file.close
     blast2go_dir = "#{Rails.root}/bin/blast2go"
     SystemUtil.system!("java -Xmx2000m " +
                       "-cp *:#{blast2go_dir}/ext/*:#{blast2go_dir}/* " +
                       "es.blast2go.prog.B2GAnnotPipe " +
                       "-in #{@blast_xml_output_file.path} " +
-                      "-out #{blast2go_output_file.path} " +
+                      "-out #{@blast2go_output_file.path} " +
                       "-prop #{blast2go_dir}/b2gPipe.properties -annot")
     Rails.logger.info "Finished blast2go for dataset: #{@dataset.id}"
-    #Delete the temporary files
-    File.delete(@blast_xml_output_file.path)
-    File.delete(blast2go_output_file.path)
     #Return the path of the resulting file containing the go terms
     return "#{blast2go_output_file.path}.annot"
+  end
+  
+  def cleanup_files()
+    File.delete(@blast_xml_output_file.path)
+    File.delete(@go_terms_file_path)
+    File.delete(@blast2go_output_file.path)
   end
 end

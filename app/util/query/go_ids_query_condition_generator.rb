@@ -27,7 +27,6 @@ class GoIdsQueryConditionGenerator
     end
     #Generate and return the query condition
     having_string = ""
-    # string_agg(go_terms.id,';') LIKE '%GO:0070373%' AND string_agg(go_terms.id,';') LIKE '%GO:0010540%'
     go_ids = @go_ids.split(';')
     go_ids.each do |go_id|
       # Strip and quote to help prevent sql injection attacks

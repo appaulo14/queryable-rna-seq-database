@@ -21,8 +21,10 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
-#NOTE: Update the jquery.min file in vendor/assets/javascripts/jquery
-#    to the lastest version when updating this
+#NOTE: Update the jquery.min.js file in vendor/assets/javascripts/jquery
+# to the lastest version when updating this also. This needs to be done
+# because of a strange bug where jquery.min.js takes a long time to load if 
+# I use the version from the jquery-rails gem.
 gem 'jquery-rails', '2.1.3'
 
 
@@ -57,14 +59,6 @@ gem 'execjs'
 # To use ActiveModel has_secure_password
 gem 'bcrypt-ruby', '~> 3.0.0'
 
-# To use Jbuilder templates for JSON
-# gem 'jbuilder'
-
-# Use unicorn as the app server
-# gem 'unicorn'
-
-# Deploy with Capistrano
-# gem 'capistrano'
 
 gem 'devise', '2.2.2'
 

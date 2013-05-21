@@ -98,7 +98,7 @@
   </p>
   <br/>
   <%= render 'results_display_method', :q => qti %>
-  <p><%= qti.submit('Query', :disable_with => 'Querying...', :id => :submit_query) %></p>
+  <%= render 'query_regular_db_query_submission', :q => qti %>
   <!--Section for the query results-->
   <% if @qti.show_results? %>
     <p>

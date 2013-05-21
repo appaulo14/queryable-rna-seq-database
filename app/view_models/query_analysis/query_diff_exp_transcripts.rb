@@ -106,8 +106,8 @@ class QueryDiffExpTranscripts < AbstractQueryRegularDb
   end
   
   def set_sort_defaults()
-    @available_sort_orders = AVAILABLE_SORT_ORDERS.keys
-    if @program_used == 'cuffdiff'
+    super
+    if @dataset.program_used == 'cuffdiff'
       @available_sort_columns = ['Transcript','Associated Gene', 
                                  'Test Statistic', 'P-value','FDR', 
                                 "#{@sample_1_name} FPKM", 
@@ -120,7 +120,6 @@ class QueryDiffExpTranscripts < AbstractQueryRegularDb
                                  "#{@sample_2_name} FPKM",
                                 'Log Fold Change']
     end
-    @sort_order = @available_sort_orders.first if @sort_order.blank?
     @sort_column = @available_sort_columns.first if @sort_column.blank?
   end
   
@@ -174,7 +173,7 @@ class QueryDiffExpTranscripts < AbstractQueryRegularDb
     when 'Test Status'
       sort_column = 'differential_expression_tests.test_status'
     end
-    return "#{sort_column} #{AVAILABLE_SORT_ORDERS[@sort_order]}"
+    return "#{sort_column} #{@sort_order}"
   end
   
   def generate_where_clauses()
@@ -255,11 +254,6 @@ class QueryDiffExpTranscripts < AbstractQueryRegularDb
         .joins(:transcript => [:gene])
         .where(@where_clauses)
         .select('count(*)')[0].count.to_i
-    end
-    if @results_count == 0
-      @available_page_numbers = [1]
-    else
-      @available_page_numbers = (1..(@results_count.to_f/self.class.page_size.to_f).ceil).to_a
     end
   end
 end

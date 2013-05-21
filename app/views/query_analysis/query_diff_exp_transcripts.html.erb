@@ -27,7 +27,7 @@
   </p>
   <br/>
   <%= render 'results_display_method', :q => qdet %>
-  <p><%= qdet.submit("Query", :disable_with => "Querying...") %></p>
+  <%= render 'query_regular_db_query_submission', :q => qdet %>
   <!--Section for the query results-->
   <% if @qdet.show_results? %>
     <p>
@@ -38,9 +38,6 @@
         <%= @qdet.sample_2_name %>
       </b></em>
     </p>
-    <%= button_tag('Download Results As File', 
-                    :type => 'button',
-                    :id => :btn_download_as_file) %>
     <div>
       <%= qdet.label(:sort_column, 'Sort by:') %>
       <%= qdet.select(:sort_column,

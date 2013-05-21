@@ -1,0 +1,10 @@
+<p>
+  <%= q.submit("Query", :id => :submit_query, :disable_with => "Querying...") %>
+  <%= q.hidden_field :is_new_query %>
+  <%= q.hidden_field :results_count %>
+  <script type="text/javascript">
+    jQuery(document).ready(function($) {
+      $('#submit_query').click(function(){$('[id$="is_new_query"]').val('1')});
+    });
+  </script>
+</p>

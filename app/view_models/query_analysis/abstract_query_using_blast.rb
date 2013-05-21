@@ -183,6 +183,7 @@ class AbstractQueryUsingBlast
     f = File.open(@xml_results_file.path)
     xml_string = ''
     while not f.eof?
+      sleep 0.0001 #This sleep helps to prevent thread starvation
       xml_string += f.readline
     end
     f.close()

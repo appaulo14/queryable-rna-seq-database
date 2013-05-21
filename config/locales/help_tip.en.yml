@@ -74,6 +74,12 @@ en:
                      have "comp123" in the name somewhere.</p>
             more_info_link: ""
         query_transcript_isoforms:
+          query_transcript_isoforms:
+            title: Query Transcript Isoforms
+            message: <p>View how the transcripts from your assembled 
+                     are classified in comparison to the transcripts in the 
+                     reference genome.</p>
+            more_info_link: ""
           go_terms:
             title: Filter By Go Terms
             message: <p>Enter one or more GO terms separated by semicolons to find

@@ -1,4 +1,5 @@
 <%= @results[0].attributes.keys.join("\t") %>
 <% @results.each do |result| %>
+<% sleep 0.0000001 %>
 <%= "#{result.attributes.values.join("\t")}" %>
 <% end %>
