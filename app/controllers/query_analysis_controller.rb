@@ -188,10 +188,13 @@ class QueryAnalysisController < ApplicationController
         if @qdet.valid?
           if @qdet.results_display_method == 'email'
             SuckerPunch::Queue[:query_regular_db_queue].async.perform(@qdet)
-            # Reset the form before rendering
+            
             dataset = Dataset.find_by_id(@qdet.dataset_id)
             flash[:notice] = I18n.t(:added_to_query_regular_db_queue,
                                     :name => dataset.name)
+            # Reset the form before rendering
+            @qdet = QueryDiffExpTranscripts.new(current_user)
+            @qdet.set_attributes_and_defaults()
           else
             @qdet.query()
           end
@@ -301,10 +304,13 @@ class QueryAnalysisController < ApplicationController
         if @qdeg.valid?
           if @qdeg.results_display_method == 'email'
             SuckerPunch::Queue[:query_regular_db_queue].async.perform(@qdeg)
-            # Reset the form before rendering
+            
             dataset = Dataset.find_by_id(@qdeg.dataset_id)
             flash[:notice] = I18n.t(:added_to_query_regular_db_queue,
                                     :name => dataset.name)
+            # Reset the form before rendering
+            @qdeg = QueryDiffExpGenes.new(current_user)
+            @qdeg.set_attributes_and_defaults()
           else
             @qdeg.query()
           end
@@ -346,9 +352,11 @@ class QueryAnalysisController < ApplicationController
           if @qti.results_display_method == 'email'
             dataset = Dataset.find_by_id(@qti.dataset_id)
             SuckerPunch::Queue[:query_regular_db_queue].async.perform(@qti)
-            # Reset the form before rendering
             flash[:notice] = I18n.t(:added_to_query_regular_db_queue,
                                     :name => dataset.name)
+            # Reset the form before rendering
+            @qti = QueryTranscriptIsoforms.new(current_user)
+            @qti.set_attributes_and_defaults()
           else
             @qti.query()
           end
@@ -388,9 +396,11 @@ class QueryAnalysisController < ApplicationController
             if @query_using_blastn.results_display_method == 'email'
               q_name = :query_using_blast_queue
               SuckerPunch::Queue[q_name].async.perform(@query_using_blastn)
-              # Reset the form before rendering
               flash[:notice] = I18n.t(:added_to_query_using_blast_queue,
                                       :name => @dataset.name)
+              # Reset the form before rendering
+              @query_using_blastn = QueryUsingBlastn.new(current_user)
+              @query_using_blastn.set_attributes_and_defaults(params[:query_using_blastn])
             else
               #Run the blast query and get the file path of the result
               @blast_report = @query_using_blastn.blast()
@@ -435,9 +445,11 @@ class QueryAnalysisController < ApplicationController
           if @query_using_tblastn.results_display_method == 'email'
             q_name = :query_using_blast_queue
             SuckerPunch::Queue[q_name].async.perform(@query_using_tblastn)
-            # Reset the form before rendering
             flash[:notice] = I18n.t(:added_to_query_using_blast_queue,
                                     :name => @dataset.name)
+            # Reset the form before rendering
+            @query_using_tblastn = QueryUsingTblastn.new(current_user)
+            @query_using_tblastn.set_attributes_and_defaults(params[:query_using_tblastn])
           else
             #Run the blast query and get the file path of the result
             @blast_report = @query_using_tblastn.blast()
@@ -479,9 +491,11 @@ class QueryAnalysisController < ApplicationController
         if @query_using_tblastx.results_display_method == 'email'
           q_name = :query_using_blast_queue
           SuckerPunch::Queue[q_name].async.perform(@query_using_tblastx)
-          # Reset the form before rendering
           flash[:notice] = I18n.t(:added_to_query_using_blast_queue,
                                   :name => @dataset.name)
+          # Reset the form before rendering
+          @query_using_tblastx = QueryUsingTblastx.new(current_user)
+          @query_using_tblastx.set_attributes_and_defaults(params[:query_using_tblastx])
         else
           #Run the blast query and get the file path of the result
           @blast_report = @query_using_tblastx.blast()

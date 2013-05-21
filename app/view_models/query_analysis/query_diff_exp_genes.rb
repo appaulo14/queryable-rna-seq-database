@@ -110,7 +110,9 @@ class QueryDiffExpGenes < AbstractQueryRegularDb
                                 "#{@sample_2_name} FPKM",
                                 'Log Fold Change']
     end
-    @sort_column = @available_sort_columns.first if @sort_column.blank?
+    if @is_new_query == '1' or @sort_column.blank?
+      @sort_column = @available_sort_columns.first 
+    end
   end
   
   def set_other_defaults()

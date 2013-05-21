@@ -108,6 +108,7 @@ class AbstractQueryUsingBlast
       prepare_IO_files()
       #Build the execution string
       blast_execution_string = generate_execution_string()
+      Rails.logger.info(blast_execution_string)
       #Execute blast
       SystemUtil.system!(blast_execution_string)
       #Run the blast query and get the file path of the result

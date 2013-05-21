@@ -95,6 +95,7 @@ class AbstractQueryRegularDb
     attributes.each do |name, value|
         send("#{name}=", value)
     end
+    set_defaults_on_which_others_depend()
     set_available_datasets_and_default_dataset()
     set_sample_related_defaults()
     set_sort_defaults()
@@ -179,6 +180,10 @@ class AbstractQueryRegularDb
     return 50
   end
   
+  def set_defaults_on_which_others_depend()
+    @is_new_query = '1' if @is_new_query.blank?
+  end
+  
   def set_available_datasets_and_default_dataset()
     raise NotImplementedError, 'Must be implemented in subclass'
   end
@@ -189,16 +194,19 @@ class AbstractQueryRegularDb
   
   def set_sort_defaults()
     @available_sort_orders = AVAILABLE_SORT_ORDERS
-    @sort_order = @available_sort_orders.values.first if @sort_order.blank?
+    if @is_new_query == '1' or @sort_order.blank?
+      @sort_order = @available_sort_orders.values.first
+    end
   end 
   
   def set_other_defaults()
     @program_used = @dataset.program_used
     @has_go_terms = (@dataset.go_terms_status == 'found') ? true : false
-    @page_number = '1' if @page_number.blank?
+    if @is_new_query == '1' or @page_number.blank? 
+      @page_number = '1' 
+    end
     @show_results = false if @show_results.blank?
     @results_display_method = 'normal' if @results_display_method.blank?
-    @is_new_query = '1' if @is_new_query.blank?
   end
   
   def record_that_dataset_has_been_queried()

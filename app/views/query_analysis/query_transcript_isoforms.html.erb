@@ -107,9 +107,6 @@
         <%= @qti.sample_name %>
       </b></em>
     </p>
-    <%= button_tag('Download Results As File', 
-                    :type => 'button',
-                    :id => :btn_download_as_file) %>
     <div>
       <%= qti.label(:sort_column, 'Sort by:') %>
       <%= qti.select(:sort_column,
