@@ -481,6 +481,5 @@ describe QueryUsingBlastn do
         end
       end
     end
-    #Analyze the Bio::Blast::Report object
   end
 end

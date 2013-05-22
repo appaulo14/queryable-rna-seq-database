@@ -33,51 +33,6 @@ RSpec.configure do |config|
   # config.mock_with :flexmock
   # config.mock_with :rr
   
-#   Capybara::Server.class_eval do
-#     def find_available_port
-#       @port = 3000
-#     end
-#   end
-  
-  
-#   Capybara.register_driver :ssl_selenium do |app|
-#     profile = Selenium::WebDriver::Firefox::Profile.new
-#     profile.assume_untrusted_certificate_issuer = false
-#     Capybara::Selenium::Driver.new(app, :profile => profile)
-#   end
-#   
-#   Capybara.default_driver = :ssl_selenium
-  
-  #Tell capybara the location of the server on which it will do tests
-  Capybara.run_server = false
-  Capybara.server_port = 3000 
-  Capybara.app_host = "https://0.0.0.0:3000/"
-  
-  #Capybara.javascript_driver = :webkit
-  
-#   Capybara.register_driver :webkit_ignore_ssl do |app|
-#     browser = Capybara::Webkit::Browser.new(Capybara::Webkit::Connection.new).tap do |browser|
-#       browser.ignore_ssl_errors
-#     end
-#     Capybara::Webkit::Driver.new(app, :browser => browser)
-#   end
-#   
-#   Capybara.register_driver :webkit_ignore_ssl do |app|
-#     browser = Capybara::Driver::Webkit::Browser.new(:ignore_ssl_errors => true)
-#     Capybara::Driver::Webkit.new(app, :browser => browser)
-#   end
-#   
-#   Capybara.register_driver :webkit_ignore_ssl do |app|
-#     Capybara::Driver::Webkit.new(app, :ignore_ssl_errors => true)
-#   end
-#   
-#   Capybara.javascript_driver = :webkit_ignore_ssl
-  puts "IMPORTANT NOTE: " +
-       "Before running your selenium-base tests, " +
-       "be sure to start the rails server in test mode " +
-       "using the command 'rails s -e test'."
-  puts 'Otherwise, all your selenium-based tests will fail.'
-  
   def sign_in(user)
     visit new_user_session_path
     fill_in :user_email,    :with => user.email

@@ -41,6 +41,11 @@ end
 ###
 # Represents a single line of an uploaded Trinity fpkm file
 class TrinityFpkmLine
+  def initialize(item, sample_fpkms)
+    @item = item
+    @sample_fpkms = sample_fpkms
+  end
+
   # The Gene or Transcript name for the line of the fpkm file
   attr_accessor :item
   # The SampleFpkm object(s) for the line of the fpkm file

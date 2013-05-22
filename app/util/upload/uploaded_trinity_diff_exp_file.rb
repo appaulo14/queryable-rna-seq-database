@@ -7,7 +7,7 @@ class UploadedTrinityDiffExpFile
   def initialize(uploaded_file)
     @uploaded_file = uploaded_file
     #Skip the header line
-    @uploaded_file.tempfile.readline
+    @uploaded_file.tempfile.readline()
   end
   
   ###
@@ -30,6 +30,13 @@ end
 ###
 # Represents a single line of an uploaded Trinity differential expression file
 class TrinityDiffExpLine
+  def initialize(item,log_fold_change,p_value, fdr)
+    @item = item
+    @log_fold_change = log_fold_change
+    @p_value = p_value
+    @fdr = fdr
+  end
+
   # The Gene or Transcript name for the line of the differential expression file
   attr_accessor :item
   # The log fold change for the line of the differential expression file

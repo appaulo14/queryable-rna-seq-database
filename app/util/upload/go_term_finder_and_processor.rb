@@ -57,9 +57,6 @@ class GoTermFinderAndProcessor
     Rails.logger.info "Running blastx for dataset: #{@dataset.id}"
     @blast_xml_output_file = Tempfile.new('blastx')
     @blast_xml_output_file.close
-#    SystemUtil.system!("#{Rails.root}/bin/blast2go/run_blastx_for_blast2go.pl " +
-#                       "#{@transcripts_fasta_file.path} " +
-#                       "#{@blast_xml_output_file.path}")
     SystemUtil.system!("#{Rails.root}/bin/blast/bin/blastx " +
                         "#{BLAST_CONFIG['is_remote']} " +
                         "-db #{BLAST_CONFIG['db']} " +

@@ -16,6 +16,7 @@ describe FindGoTermsForDataset do
         .any_instance
         .stub(:run_blast2go)
         .and_return("#{@test_files_path}/go_terms.annot")
+    GoTermFinderAndProcessor.any_instance.stub(:cleanup_files)
     @it = FindGoTermsForDataset.new(User.first)
     @it.set_attributes_and_defaults()
   end

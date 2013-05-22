@@ -48,8 +48,7 @@ class UploadFastaSequences
         process_args_to_create_dataset()
         BlastUtil.makeblastdb_without_seqids(@transcripts_fasta_file.tempfile.path,
                                               @dataset)
-        @dataset.finished_uploading = true
-        @dataset.save!
+        finalize_dataset()
         QueryAnalysisMailer.notify_user_of_upload_success(@current_user,
                                                         @dataset)
       end
@@ -88,6 +87,11 @@ class UploadFastaSequences
     @dataset.save!
     @dataset.blast_db_location = 
       "#{Rails.root}/db/blast_databases/#{Rails.env}/#{@dataset.id}"
+    @dataset.save!
+  end
+  
+  def finalize_dataset()
+    @dataset.finished_uploading = true
     @dataset.save!
   end
 end
