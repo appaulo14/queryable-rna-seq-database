@@ -53,8 +53,8 @@ class AdminController < ApplicationController
       @delete_unconfirmed_user = 
           DeleteUnconfirmedUser.new(params[:delete_unconfirmed_user])
       if @delete_unconfirmed_user.valid?
-        @delete_unconfirmed_user.send_rejection_email_and_destroy_user
-        flash[:notice] = 'Email successfully sent and user destroyed'
+        @delete_unconfirmed_user.send_rejection_email_and_delete_user()
+        flash[:notice] = 'Email successfully sent and user deleted'
         redirect_to :action => 'view_unconfirmed_users'
       end
     end

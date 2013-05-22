@@ -1,14 +1,9 @@
 # == Schema Information
 #
-# Table name: term
+# Table name: go_terms
 #
-#  id          :integer          not null, primary key
-#  name        :string(255)      default(""), not null
-#  term_type   :string(55)       not null
-#  acc         :string(255)      not null
-#  is_obsolete :integer          default(0), not null
-#  is_root     :integer          default(0), not null
-#  is_relation :integer          default(0), not null
+#  id   :string(255)      not null, primary key
+#  term :string(255)      not null
 #
 
 require 'spec_helper'
@@ -29,24 +24,24 @@ describe GoTerm do
     end
   end
   
-  describe 'when destroyed', :type => :when_destroyed do
+  describe 'when deleted', :type => :when_deleted do
     before (:each) do @it.save! end
     
-    it 'should destroy any associated transcript_has_go_terms' do
+    it 'should delete any associated transcript_has_go_terms' do
       FactoryGirl.create(:transcript_has_go_term, :go_term => @it)
       FactoryGirl.create(:transcript_has_go_term, :go_term => @it)
       TranscriptHasGoTerm.find_all_by_go_term_id(@it.id).count.should eq(2)
-      @it.destroy
+      @it.delete()
       TranscriptHasGoTerm.find_all_by_go_term_id(@it.id).should be_empty
     end
     
-    it 'should not destroy any associated transcripts' do
+    it 'should not delete any associated transcripts' do
       @it.transcripts << FactoryGirl.create(:transcript)
       @it.transcripts << FactoryGirl.create(:transcript)
       @it.save!
       associated_transcripts = GoTerm.find(@it.id).transcripts
       associated_transcripts.count.should eq(2)
-      @it.destroy
+      @it.delete()
       associated_transcripts.each do |associated_transcript|
         Transcript.find(associated_transcript.id).should_not be_nil
       end
@@ -56,20 +51,6 @@ describe GoTerm do
   describe 'validations', :type => :validations do    
     it 'should save successfully when all fields are valid' do
       @it.save!
-    end
-    
-    it 'should correctly validate all the go terms from the go website' do
-      go_term_file = File.open('lib/tasks/GO.terms_and_ids')
-      #Loop through all the go terms downloaded from the go web site
-      while (not go_term_file.eof?)
-        #Extract the go term and go id
-        line = go_term_file.readline
-        next if line.match(/\AGO/).nil? #skip if line has no term 
-        go_id, go_term = line.split(/\t/)
-        #Confirm that the go term and id are correctly validated
-        go_term = GoTerm.new(:id => go_id, :term => go_term)
-        go_term.should be_valid
-      end
     end
     
     describe 'id' do

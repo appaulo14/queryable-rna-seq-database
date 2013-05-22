@@ -62,6 +62,10 @@ class AddForeignKeys < ActiveRecord::Migration
             'ON UPDATE CASCADE ON DELETE CASCADE;')
     #Transcript Has Go Terms Foreign Keys
     execute('ALTER TABLE transcript_has_go_terms ' +
+            'ADD CONSTRAINT transcript_has_go_terms_go_terms_fk ' + 
+            'FOREIGN KEY (go_term_id) REFERENCES go_terms (id) ' + 
+            'ON UPDATE CASCADE ON DELETE CASCADE;')
+    execute('ALTER TABLE transcript_has_go_terms ' +
             'ADD CONSTRAINT transcript_has_go_terms_transcripts_fk ' + 
             'FOREIGN KEY (transcript_id) REFERENCES transcripts (id) ' + 
             'ON UPDATE CASCADE ON DELETE CASCADE;')

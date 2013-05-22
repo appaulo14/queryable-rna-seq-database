@@ -30,37 +30,37 @@ describe Sample do
     end
   end
   
-  describe 'when destroyed' do
+  describe 'when deleted', :type => :when_deleted do
     before(:each) do 
       @it.save!
     end
     
-    it 'should destroy all associated sample comparison where it is sample 1' do
+    it 'should delete all associated sample comparison where it is sample 1' do
       FactoryGirl.create(:sample_comparison, :sample_1_id => @it.id)
       FactoryGirl.create(:sample_comparison, :sample_1_id => @it.id)
       SampleComparison.find_all_by_sample_1_id(@it.id).count.should eq(2)
-      @it.destroy
+      @it.delete()
       SampleComparison.find_all_by_sample_1_id(@it.id).should be_empty
     end
     
-    it 'should destroy all associated sample comparison where it is sample 2' do
+    it 'should delete all associated sample comparison where it is sample 2' do
       FactoryGirl.create(:sample_comparison, :sample_2_id => @it.id)
       FactoryGirl.create(:sample_comparison, :sample_2_id => @it.id)
       SampleComparison.find_all_by_sample_2_id(@it.id).count.should eq(2)
-      @it.destroy
+      @it.delete()
       SampleComparison.find_all_by_sample_2_id(@it.id).should be_empty
     end
     
-    it 'should destroy all associated fpkm samples' do
+    it 'should delete all associated fpkm samples' do
       FactoryGirl.create(:fpkm_sample, :sample_id => @it.id)
       FactoryGirl.create(:fpkm_sample, :sample_id => @it.id)
       FpkmSample.find_all_by_sample_id(@it.id).count.should eq(2)
-      @it.destroy
+      @it.delete()
       FpkmSample.find_all_by_sample_id(@it.id).should be_empty
     end
     
-    it 'should not destroy the associated dataset' do
-      @it.destroy
+    it 'should not delete the associated dataset' do
+      @it.delete()
       Dataset.find_by_id(@it.dataset_id).should_not be_nil
     end
   end

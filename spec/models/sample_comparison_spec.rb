@@ -26,28 +26,28 @@ describe SampleComparison do
     end
   end
   
-  describe 'when destroyed' do
+  describe 'when deleted', :type => :when_deleted do
     before (:each) do
       @it.save!
     end
     
-    it 'should destroy all associated differential expression tests' do
+    it 'should delete all associated differential expression tests' do
       FactoryGirl.create(:differential_expression_test, 
                          :sample_comparison_id => @it.id)
       FactoryGirl.create(:differential_expression_test, 
                          :sample_comparison_id => @it.id)
       DifferentialExpressionTest.find_all_by_sample_comparison_id(@it.id).count.should eq(2)
-      @it.destroy
+      @it.delete()
       DifferentialExpressionTest.find_all_by_sample_comparison_id(@it.id).should be_empty
     end
     
-    it 'should not destroy the associated sample 1' do
-      @it.destroy
+    it 'should not delete the associated sample 1' do
+      @it.delete()
       Sample.find_by_id(@it.sample_1.id).should_not be_nil
     end
     
-    it 'should not destroy the associated sample 2' do
-      @it.destroy
+    it 'should not delete the associated sample 2' do
+      @it.delete()
       Sample.find_by_id(@it.sample_2.id).should_not be_nil
     end
   end

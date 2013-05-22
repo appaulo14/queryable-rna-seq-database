@@ -1,11 +1,3 @@
-# == Description
-# 
-# Represents a differential expression test for a gene or transcript. 
-# In a differential expression test, the level of expression of a gene or 
-# transcript is compared between two samples to see if the gene or transcript 
-# is more highly expressed in one sample than the other. 
-#
-#
 # == Schema Information
 #
 # Table name: differential_expression_tests
@@ -15,14 +7,22 @@
 #  transcript_id        :integer
 #  sample_comparison_id :integer          not null
 #  test_status          :string(255)
-#  sample_1_fpkm        :string(255)
-#  sample_2_fpkm        :string(255)
-#  log_fold_change      :string(255)      not null
-#  test_statistic       :string(255)
-#  p_value              :string(255)      not null
-#  fdr                  :string(255)      not null
+#  sample_1_fpkm        :float
+#  sample_2_fpkm        :float
+#  log_fold_change      :float            not null
+#  test_statistic       :float
+#  p_value              :float            not null
+#  fdr                  :float            not null
 #
 
+# == Description
+# 
+# Represents a differential expression test for a gene or transcript. 
+# In a differential expression test, the level of expression of a gene or 
+# transcript is compared between two samples to see if the gene or transcript 
+# is more highly expressed in one sample than the other. 
+#
+#
 class DifferentialExpressionTest < ActiveRecord::Base
   attr_accessible  :gene, :transcript, :sample_comparison, :test_status,
                    :sample_1_fpkm, :sample_2_fpkm, :log_fold_change,

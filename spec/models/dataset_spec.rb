@@ -43,37 +43,37 @@ describe Dataset do
     end
   end
   
-  describe 'when destroyed', :type => :when_destroyed do
+  describe 'when deleted', :type => :when_deleted do
     before(:each) do 
       @it.save!
     end
     
-    it 'should destroy all associated transcripts' do
+    it 'should delete all associated transcripts' do
       FactoryGirl.create(:transcript, :dataset_id => @it.id)
       FactoryGirl.create(:transcript, :dataset_id => @it.id)
       Transcript.find_all_by_dataset_id(@it.id).count.should eq(2)
-      @it.destroy
+      @it.delete()
       Transcript.find_all_by_dataset_id(@it.id).should be_empty
     end
     
-    it 'should destroy all associated genes' do
+    it 'should delete all associated genes' do
       FactoryGirl.create(:gene, :dataset_id => @it.id)
       FactoryGirl.create(:gene, :dataset_id => @it.id)
       Gene.find_all_by_dataset_id(@it.id).count.should eq(2)
-      @it.destroy
+      @it.delete()
       Gene.find_all_by_dataset_id(@it.id).should be_empty
     end
     
-    it 'should destroy all associated samples' do
+    it 'should delete all associated samples' do
       FactoryGirl.create(:sample, :dataset_id => @it.id)
       FactoryGirl.create(:sample, :dataset_id => @it.id)
       Sample.find_all_by_dataset_id(@it.id).count.should eq(2)
-      @it.destroy
+      @it.delete()
       Sample.find_all_by_dataset_id(@it.id).should be_empty
     end
     
-    it 'should not destroy the associated user' do
-      @it.destroy
+    it 'should not delete the associated user' do
+      @it.delete()
       User.find(@it.user_id).should_not be_nil
     end
   end

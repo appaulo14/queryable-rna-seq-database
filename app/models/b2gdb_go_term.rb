@@ -25,8 +25,9 @@ class B2gdbGoTerm < ActiveRecord::Base
 
   self.table_name = 'term'
   
-#  has_many :transcript_has_go_terms, :dependent => :destroy
-#  has_many :transcripts, :through => :transcript_has_go_terms
+  def readonly?
+    return true
+  end
   
   ###
   # Overides this method to prevent it from destroying GoTerm records

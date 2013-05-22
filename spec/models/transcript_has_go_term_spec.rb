@@ -25,15 +25,15 @@ describe TranscriptHasGoTerm do
     end
   end
   
-  describe 'when destroyed' do
+  describe 'when deleted', :type => :when_deleted do
     before (:each) do @it.save! end
     
-    it 'should not destroy the associated transcript' do
-      @it.destroy
+    it 'should not delete the associated transcript' do
+      @it.delete()
       Transcript.find(@it.transcript.id).should_not be_nil
     end
-    it 'should not destroy the associated go term' do
-      @it.destroy
+    it 'should not delete the associated go term' do
+      @it.delete()
       GoTerm.find(@it.go_term.id).should_not be_nil
     end
   end

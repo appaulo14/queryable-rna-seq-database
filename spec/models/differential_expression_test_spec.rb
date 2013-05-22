@@ -7,12 +7,12 @@
 #  transcript_id        :integer
 #  sample_comparison_id :integer          not null
 #  test_status          :string(255)
-#  sample_1_fpkm        :string(255)
-#  sample_2_fpkm        :string(255)
-#  log_fold_change      :string(255)      not null
-#  test_statistic       :string(255)
-#  p_value              :string(255)      not null
-#  fdr                  :string(255)      not null
+#  sample_1_fpkm        :float
+#  sample_2_fpkm        :float
+#  log_fold_change      :float            not null
+#  test_statistic       :float
+#  p_value              :float            not null
+#  fdr                  :float            not null
 #
 
 require 'spec_helper'
@@ -35,21 +35,21 @@ describe DifferentialExpressionTest do
     end
   end
   
-  describe 'when destroyed', :type => :when_destroyed do
+  describe 'when deleted', :type => :when_deleted do
     before (:each) do @it.save! end
   
-    it 'should not destroy the associated gene' do
-      @it.destroy
+    it 'should not delete the associated gene' do
+      @it.delete()
       Gene.find(@it.gene.id).should_not be_nil
     end
-    it 'should not destroy the associated transcript' do
+    it 'should not delete the associated transcript' do
       @it.gene = nil
       @it.transcript = FactoryGirl.create(:transcript)
-      @it.destroy
+      @it.delete()
       Transcript.find(@it.transcript.id).should_not be_nil
     end
-    it 'should not destroy the associated sample comparison' do
-      @it.destroy
+    it 'should not delete the associated sample comparison' do
+      @it.delete()
       SampleComparison.find(@it.sample_comparison.id).should_not be_nil
     end
   end

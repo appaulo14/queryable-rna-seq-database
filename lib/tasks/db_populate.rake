@@ -26,7 +26,7 @@ namespace :db do
       password = STDIN.noecho(&:gets).chomp()
       puts 'Enter it again to confirm'
       password_confirmation = STDIN.noecho(&:gets).chomp()
-      if password = password_confirmation
+      if password == password_confirmation
         break
       else
         puts 'Passwords do not match. Try again.'

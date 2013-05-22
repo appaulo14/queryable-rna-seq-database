@@ -22,12 +22,12 @@ describe TranscriptFpkmTrackingInformation do
     end
   end
   
-  describe 'when destroyed' do
+  describe 'when deleted', :type => :when_deleted do
     before (:each) do @it.save! end
   
-    it 'should not destroy the associated transcript' do
+    it 'should not delete the associated transcript' do
       associated_transcript = @it.transcript
-      @it.destroy
+      @it.delete()
       Transcript.find(associated_transcript.id).should_not be_nil
     end
   end

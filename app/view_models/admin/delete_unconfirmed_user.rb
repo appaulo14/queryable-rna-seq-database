@@ -32,10 +32,10 @@ class DeleteUnconfirmedUser
   ###
   # Sends an email to the user telling them that their registration request 
   # has been denied.
-  def send_rejection_email_and_destroy_user
+  def send_rejection_email_and_delete_user
     return if not self.valid?
     RegistrationMailer.notify_user_of_rejection(user, @optional_note_to_user)
-    user.destroy
+    user.delete()
   end
   
   # Accoring http://railscasts.com/episodes/219-active-model?view=asciicast,

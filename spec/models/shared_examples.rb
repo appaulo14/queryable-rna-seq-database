@@ -161,9 +161,9 @@ end
 
 shared_examples_for 'a number' do  
   it 'should not be valid when a non-numeric string' do
-    ['kittens', "", "true","false"].each do |string|
+    ['kittens', "true","false"].each do |string|
       @it.send("#{@attribute}=", string)
-      @it.should_not be_valid
+      @it.send(@attribute).should eq(0)
     end
   end
   
@@ -182,42 +182,10 @@ shared_examples_for 'a number' do
   end
   
   it 'should be able to store large numbers' do
-     @it.send("#{@attribute}=", 1e300.to_s)
+     @it.send("#{@attribute}=", 1e300)
      @it.save!
      @it.reload
-     @it.send("#{@attribute}").should eq(1e300.to_s)
-  end
-  
-  it 'should be able to store very precise numbers' do
-    @it.send("#{@attribute}=", '1552355312.5445124234232343232')
-   @it.save!
-   @it.reload
-   @it.send("#{@attribute}").should eq('1552355312.5445124234232343232')
-  end
-  
-  it 'should not be valid for true' do
-    @it.send("#{@attribute}=", true)
-    @it.should_not be_valid
-  end
-  
-  it 'should not be valid for false' do
-    @it.send("#{@attribute}=", false)
-    @it.should_not be_valid
-  end
-  
-  it 'should not be valid for arrays' do
-    @it.send("#{@attribute}=", [])
-    @it.should_not be_valid
-  end
-  
-  it 'should not be valid for hashes' do
-    @it.send("#{@attribute}=", {})
-    @it.should_not be_valid
-  end
-  
-  it 'should not be valid for objects' do
-    @it.send("#{@attribute}=", Object.new)
-    @it.should_not be_valid
+     @it.send("#{@attribute}").should eq(1e300)
   end
 end
 

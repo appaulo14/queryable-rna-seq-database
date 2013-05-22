@@ -30,26 +30,26 @@ describe Gene do
     end
   end
   
-  describe 'when destroyed' do
+  describe 'when deleted', :type => :when_deleted do
     before (:each) do @it.save! end
   
-    it 'should not destroy the associated dataset' do
-      @it.destroy
+    it 'should not delete the associated dataset' do
+      @it.delete()
       Dataset.find(@it.dataset.id).should_not be_nil
     end
-    it 'should not destroy any associated transcripts' do
+    it 'should not delete any associated transcripts' do
       t1 = FactoryGirl.create(:transcript, :gene_id => @it.id)
       t2 = FactoryGirl.create(:transcript, :gene_id => @it.id)
       Transcript.find_all_by_gene_id(@it.id).count.should eq(2)
-      @it.destroy
+      @it.delete()
       Transcript.find(t1.id).should_not be_nil
       Transcript.find(t2.id).should_not be_nil
     end
-    it 'should destroy any associated differential expression tests' do
+    it 'should delete any associated differential expression tests' do
       FactoryGirl.create(:differential_expression_test, :gene_id => @it.id)
       FactoryGirl.create(:differential_expression_test, :gene_id => @it.id)
       DifferentialExpressionTest.find_all_by_gene_id(@it.id).count.should eq(2)
-      @it.destroy
+      @it.delete()
       DifferentialExpressionTest.find_all_by_gene_id(@it.id).should be_empty
     end
   end

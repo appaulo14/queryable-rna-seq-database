@@ -8,6 +8,23 @@
     <p>Hello <%= @user.name %>,</p>
     
     <p>
+      <b>IMPORTANT NOTE:</b> If you plan to upload Trinity with EdgeR data, 
+      be sure that your differential expression test files have the columns 
+      in the correct order. Otherwise, the wrong data 
+      will be stored. See: 
+      <a href="https://sites.google.com/site/rnaseqanalysispipeline/user-manual/step-4-upload-your-data#TOC-Transcript-Differential-Expression-Files">
+      required transcript differential expression file 
+      format</a> and 
+      <a href="https://sites.google.com/site/rnaseqanalysispipeline/user-manual/step-4-upload-your-data#TOC-Gene-Differential-Expression-Files-">
+      gene differential expression file format</a>. This is needed 
+      because Trinity with EdgeR doesn't seem to have a exact, stable format 
+      for its differential expression output files. 
+      If you have any questions about this, please contact the 
+      administrator using the 
+      <a href="<%= @report_issue_url %>">report issue form</a>.
+    </p>
+    
+    <p>
       You have been approved to use the Queryable RNA-Seq Database. 
       A confirmation email should be arriving shortly to give you access 
       to the system. If it does 

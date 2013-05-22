@@ -38,14 +38,14 @@ describe User do
     end
   end
   
-  describe 'when destroyed' do
+  describe 'when deleted', :type => :when_deleted do
     before (:each) do @it.save! end
     
-    it 'should destroy the dependent datasets' do
+    it 'should delete the dependent datasets' do
       FactoryGirl.create(:dataset, :user => @it)
       FactoryGirl.create(:dataset, :user => @it)
       Dataset.find_all_by_user_id(@it.id).count.should eq(2)
-      @it.destroy
+      @it.delete()
       Dataset.find_all_by_user_id(@it.id).should be_empty
     end
   end

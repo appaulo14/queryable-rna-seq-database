@@ -41,28 +41,28 @@ describe Transcript do
     end
   end
   
-  describe 'when destroyed', :type => :when_destroyed do
+  describe 'when deleted', :type => :when_deleted do
     before (:each) do @it.save! end
     
-    it 'should not destroy the associated dataset' do
-      @it.destroy
+    it 'should not delete the associated dataset' do
+      @it.delete()
       Dataset.find(@it.dataset.id).should_not be_nil
     end
     
-    it 'should not destroy the associated gene' do
+    it 'should not delete the associated gene' do
       @it.gene.should_not be_nil
-      @it.destroy
+      @it.delete()
       Gene.find(@it.gene.id).should_not be_nil
     end
     
-    it 'should destroy the associated transcript_fpkm_tracking_information' do
+    it 'should delete the associated transcript_fpkm_tracking_information' do
       FactoryGirl.create(:transcript_fpkm_tracking_information, :transcript => @it)
       TranscriptFpkmTrackingInformation.find_by_transcript_id(@it.id).should_not be_nil
-      @it.destroy
+      @it.delete()
       TranscriptFpkmTrackingInformation.find_by_transcript_id(@it.id).should be_nil
     end
     
-    it 'should destroy the associated differential_expression_tests' do
+    it 'should delete the associated differential_expression_tests' do
       FactoryGirl.create(:differential_expression_test, 
                           :transcript => @it,
                           :gene => nil)
@@ -70,34 +70,34 @@ describe Transcript do
                           :transcript => @it,
                           :gene => nil)
       DifferentialExpressionTest.find_all_by_transcript_id(@it.id).count.should eq(2)
-      @it.destroy
+      @it.delete()
       DifferentialExpressionTest.find_all_by_transcript_id(@it.id).should be_empty
     end
     
-    it 'should destroy the associated fpkm_samples' do
+    it 'should delete the associated fpkm_samples' do
       FactoryGirl.create(:fpkm_sample, :transcript => @it)
       FactoryGirl.create(:fpkm_sample, :transcript => @it)
       FpkmSample.find_all_by_transcript_id(@it.id).count.should eq(2)
-      @it.destroy
+      @it.delete()
       FpkmSample.find_all_by_transcript_id(@it.id).should be_empty
     end
     
-    it 'should destroy the associated transcript_has_go_terms' do
+    it 'should delete the associated transcript_has_go_terms' do
       FactoryGirl.create(:transcript_has_go_term, :transcript => @it)
       FactoryGirl.create(:transcript_has_go_term, :transcript => @it)
       TranscriptHasGoTerm.find_all_by_transcript_id(@it.id).count.should eq(2)
-      @it.destroy
+      @it.delete()
       TranscriptHasGoTerm.find_all_by_transcript_id(@it.id).should be_empty
     end
     
-    it 'should not destroy the associated go_terms' do
+    it 'should not delete the associated go_terms' do
       Transcript.find(@it.id).go_terms.count.should eq(0)
       @it.go_terms << FactoryGirl.create(:go_term)
       @it.go_terms << FactoryGirl.create(:go_term)
       @it.save!
       associated_go_terms = Transcript.find(@it.id).go_terms
       associated_go_terms.count.should eq(2)
-      @it.destroy
+      @it.delete()
       associated_go_terms.each do |associated_go_term|
         GoTerm.find(associated_go_term.id).should_not be_nil
       end

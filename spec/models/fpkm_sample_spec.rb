@@ -5,9 +5,9 @@
 #  id            :integer          not null, primary key
 #  transcript_id :integer          not null
 #  sample_id     :integer          not null
-#  fpkm          :string(255)      not null
-#  fpkm_hi       :string(255)      not null
-#  fpkm_lo       :string(255)      not null
+#  fpkm          :float            not null
+#  fpkm_hi       :float            not null
+#  fpkm_lo       :float            not null
 #  status        :string(255)      not null
 #
 
@@ -29,16 +29,16 @@ describe FpkmSample do
     end
   end
   
-  describe 'when destroyed', :type => :when_destroyed do
+  describe 'when deleted', :type => :when_deleted do
     before (:each) do @it.save! end
   
-    it 'should not destroy the associated transcript' do
-      @it.destroy
+    it 'should not delete the associated transcript' do
+      @it.delete()
       Transcript.find(@it.transcript.id).should_not be_nil
     end
     
-    it 'should not destroy the associated sample' do
-      @it.destroy
+    it 'should not delete the associated sample' do
+      @it.delete()
       Sample.find(@it.sample.id).should_not be_nil
     end
   end

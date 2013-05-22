@@ -51,6 +51,7 @@ class FindGoTermsForDataset
                                            :go_terms_status => 'in-progress')
   end
   
+  ###
   # Find the GoTerm records for the dataset specified in dataset_id and then 
   # save the associated between them in the database using 
   # TranscriptHasGoTerm records.
@@ -68,7 +69,7 @@ class FindGoTermsForDataset
     rescue Exception => ex
       @dataset.transcripts.each do |transcript|
         transcript.transcript_has_go_terms.each do |transcript_has_go_term|
-          transcript_has_go_term.destroy()
+          transcript_has_go_term.delete()
         end
       end
       @dataset.go_terms_status = 'not-started'

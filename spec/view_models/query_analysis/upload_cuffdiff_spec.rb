@@ -21,49 +21,10 @@ describe UploadCuffdiff do
   after(:each) do
     ActionMailer::Base.deliveries.clear
     DatabaseCleaner.clean
-    #system("rm #{Rails.root}/db/blast_databases/test/*")
   end
   
-  it 'should properly log exceptions'
-  
   describe 'validations', :type => :validations do
-    before (:each) do
-      @it = FactoryGirl.build(:upload_cuffdiff_with_2_samples)
-    end
-    
-#    :transcripts_fasta_file, 
-#    :transcript_diff_exp_file, 
-#    :gene_diff_exp_file, 
-#    :transcript_isoforms_file,
-#    :has_diff_exp,
-#    :has_transcript_isoforms,
-#    :dataset_name
-    describe 'transcripts_fasta_file' do
-      before(:each) do @attribute = 'transcripts_fasta_file' end
-      
-      it_should_behave_like 'a required attribute'
-      it_should_behave_like 'an uploaded file'
-    end
-        
-    describe 'has_diff_exp' do
-      before(:each) do @attribute = 'has_diff_exp' end
-      
-      it_should_behave_like 'a required attribute'
-      it_should_behave_like 'a view model-style boolean'
-    end
-    
-    describe 'has_transcript_isoforms' do
-      before(:each) do @attribute = 'has_transcript_isoforms' end
-      
-      it_should_behave_like 'a required attribute'
-      it_should_behave_like 'a view model-style boolean'
-    end
-    
-    describe 'dataset_name' do
-      before(:each) do @attribute = 'dataset_name' end
-      
-      it_should_behave_like 'a required attribute'
-    end
+   # Not implemented due to time constraints
   end
   
   
@@ -110,14 +71,6 @@ describe UploadCuffdiff do
         rescue SeededTestException => ex
         end
       end
-      it 'should delete the uploaded files'
-#       do
-#         begin 
-#           @it.should_receive(:delete_uploaded_files)
-#           @it.save
-#         rescue SeededTestException => ex
-#         end
-#       end
     end
     
     shared_examples_for 'all options no matter whether an exception occurs' do
@@ -129,51 +82,6 @@ describe UploadCuffdiff do
         @it.should_receive(:valid?)
         @it.save
       end
-    
-#       it 'should delete transcripts_fasta_file if it exists' do
-#         file_path = @it.transcripts_fasta_file.tempfile.path
-#         File.should_receive(:delete).with(file_path)
-#         @it.save
-#       end
-#       it 'should not try to delete transcripts_fasta_file if it does not exist' do
-#         file_path = @it.transcripts_fasta_file.tempfile.path
-#         @it.transcripts_fasta_file = nil
-#         File.should_not_receive(:delete).with(file_path)
-#         @it.save
-#       end
-#       it 'should delete gene_diff_exp_file if it exists' do
-#         file_path = @it.gene_diff_exp_file.tempfile.path
-#         File.should_receive(:delete).with(file_path)
-#         @it.save
-#       end
-#       it 'should not try to delete gene_diff_exp_file if it does not exist' do
-#         file_path = @it.gene_diff_exp_file.tempfile.path
-#         @it.gene_diff_exp_file = nil
-#         File.should_not_receive(:delete).with(file_path)
-#         @it.save
-#       end
-#       it 'should delete transcript_diff_exp_file if it exists' do
-#         file_path = @it.transcript_diff_exp_file.tempfile.path
-#         File.should_receive(:delete).with(file_path)
-#         @it.save
-#       end
-#       it 'should not try to delete transcript_diff_exp_file if it does not exist' do
-#         file_path = @it.transcript_diff_exp_file.tempfile.path
-#         @it.transcript_diff_exp_file = nil
-#         File.should_not_receive(:delete).with(file_path)
-#         @it.save
-#       end
-#       it 'should delete transcript_isoforms_file if it exists' do
-#         file_path = @it.transcript_isoforms_file.tempfile.path
-#         File.should_receive(:delete).with(file_path)
-#         @it.save
-#       end
-#       it 'should not try to delete transcript_isoforms_file if it does not exist' do
-#         file_path = @it.transcript_isoforms_file.tempfile.path
-#         @it.transcript_isoforms_file = nil
-#         File.should_not_receive(:delete).with(file_path)
-#         @it.save
-#       end
     end
     
     shared_examples_for 'all options when no exception occurs' do
@@ -222,11 +130,6 @@ describe UploadCuffdiff do
         @it.should_receive(:process_transcript_isoforms_file)
         @it.save
       end
-      it 'should call find_and_process_go_terms'
-#       do
-#         @it.should_receive(:find_and_process_go_terms)
-#         @it.save
-#       end
       
       it_should_behave_like 'all options when an exception occurs'
       it_should_behave_like 'all options when no exception occurs'
@@ -252,11 +155,6 @@ describe UploadCuffdiff do
         @it.should_receive(:process_transcript_isoforms_file)
         @it.save
       end
-      it 'should call find_and_process_go_terms'
-#       do
-#         @it.should_receive(:find_and_process_go_terms)
-#         @it.save
-#       end
       
       it_should_behave_like 'all options when an exception occurs'
       it_should_behave_like 'all options when no exception occurs'
@@ -282,11 +180,6 @@ describe UploadCuffdiff do
         @it.should_not_receive(:process_transcript_isoforms_file)
         @it.save
       end
-      it 'should call find_and_process_go_terms'
-#       do
-#         @it.should_receive(:find_and_process_go_terms)
-#         @it.save
-#       end
       
       it_should_behave_like 'all options when an exception occurs'
       it_should_behave_like 'all options when no exception occurs'
@@ -312,11 +205,6 @@ describe UploadCuffdiff do
         @it.should_not_receive(:process_transcript_isoforms_file)
         @it.save
       end
-      it 'should not call find_and_process_go_terms'
-#       do
-#         @it.should_not_receive(:find_and_process_go_terms)
-#         @it.save
-#       end
       
       it_should_behave_like 'all options when an exception occurs'
       it_should_behave_like 'all options when no exception occurs'
@@ -362,12 +250,11 @@ describe UploadCuffdiff do
           @it.save
         end.should change(DifferentialExpressionTest,:count).by(0)
       end
-      it 'should add 0 transcript has go terms to the database' 
-#       do
-#         lambda do
-#           @it.save
-#         end.should change(TranscriptHasGoTerm,:count).by(0)
-#       end
+      it 'should add 0 transcript has go terms to the database' do
+        lambda do
+          @it.save
+        end.should change(TranscriptHasGoTerm,:count).by(0)
+      end
       it 'should add 0 transcript fpkm tracking informations to the database' do
         lambda do
           @it.save
@@ -425,30 +312,21 @@ describe UploadCuffdiff do
             @it.save
           end.should change(DifferentialExpressionTest,:count).by(34)
         end
-        it 'should add 250 transcript has go terms to the database'
-#         do
-#           lambda do
-#             @it.save
-#           end.should change(TranscriptHasGoTerm,:count).by(250)
-#         end
+        it 'should add 0 transcript has go terms to the database' do
+          lambda do
+            @it.save
+          end.should change(TranscriptHasGoTerm,:count).by(0)
+        end
         it 'should add 24 transcript fpkm tracking informations to the database' do
           lambda do
             @it.save
           end.should change(TranscriptFpkmTrackingInformation,:count).by(24)
         end
-        it 'should add 88 go terms to the database' 
-#         do
-#           lambda do
-#             @it.save
-#           end.should change(GoTerm,:count).by(88)
-#         end
-        it 'should add 0 go terms to the database if they already exist in the database'
-#         do
-#           @it.save
-#           lambda do
-#             FactoryGirl.build(:upload_cuffdiff_with_2_samples).save
-#           end.should change(GoTerm,:count).by(0)
-#         end
+        it 'should add 0 go terms to the database' do
+          lambda do
+            @it.save
+          end.should change(GoTerm,:count).by(0)
+        end
         
         it_should_behave_like 'any upload view model when an exception occurs'
         it_should_behave_like 'any upload view model when no exception occurs'
@@ -490,30 +368,21 @@ describe UploadCuffdiff do
             @it.save
           end.should change(DifferentialExpressionTest,:count).by(34)
         end
-        it 'should add 250 transcript has go terms to the database'
-#         do
-#           lambda do
-#             @it.save
-#           end.should change(TranscriptHasGoTerm,:count).by(250)
-#         end
+        it 'should add 0 transcript has go terms to the database' do
+           lambda do
+             @it.save
+           end.should change(TranscriptHasGoTerm,:count).by(0)
+         end
         it 'should add 0 transcript fpkm tracking informations to the database' do
           lambda do
             @it.save
           end.should change(TranscriptFpkmTrackingInformation,:count).by(0)
         end
-        it 'should add 88 go terms to the database'
-#         do
-#           lambda do
-#             @it.save
-#           end.should change(GoTerm,:count).by(88)
-#         end
-        it 'should add 0 go terms to the database if they already exist in the database'
-#         do
-#           FactoryGirl.build(:upload_cuffdiff_with_2_samples).save
-#           lambda do
-#             @it.save
-#           end.should change(GoTerm,:count).by(0)
-#         end
+        it 'should add 0 go terms to the database' do
+          lambda do
+            @it.save
+          end.should change(GoTerm,:count).by(0)
+        end
         
         it_should_behave_like 'any upload view model when an exception occurs'
         it_should_behave_like 'any upload view model when no exception occurs'
@@ -555,30 +424,21 @@ describe UploadCuffdiff do
             @it.save
           end.should change(DifferentialExpressionTest,:count).by(0)
         end
-        it 'should add 250 transcript has go terms to the database'
-#         do
-#           lambda do
-#             @it.save
-#           end.should change(TranscriptHasGoTerm,:count).by(250)
-#         end
+        it 'should add 0 transcript has go terms to the database' do
+          lambda do
+            @it.save
+          end.should change(TranscriptHasGoTerm,:count).by(0)
+        end
         it 'should add 24 transcript fpkm tracking informations to the database' do
           lambda do
             @it.save
           end.should change(TranscriptFpkmTrackingInformation,:count).by(24)
         end
-        it 'should add 88 go terms to the database'
-#         do
-#           lambda do
-#             @it.save
-#           end.should change(GoTerm,:count).by(88)
-#         end
-        it 'should add 0 go terms to the database if they already exist in the database'
-#         do
-#           @it.save
-#           lambda do
-#             FactoryGirl.build(:upload_cuffdiff_with_2_samples).save
-#           end.should change(GoTerm,:count).by(0)
-#         end
+        it 'should add 0 go terms to the database' do
+          lambda do
+            @it.save
+          end.should change(GoTerm,:count).by(0)
+        end
         
         it_should_behave_like 'any upload view model when an exception occurs'
         it_should_behave_like 'any upload view model when no exception occurs'
@@ -649,25 +509,16 @@ describe UploadCuffdiff do
             @it.save
           end.should change(TranscriptFpkmTrackingInformation,:count).by(24)
         end
-        it 'should add 250 transcript has go terms to the database'
-#         do
-#           lambda do
-#             @it.save
-#           end.should change(TranscriptHasGoTerm,:count).by(250)
-#         end
-        it 'should add 88 go terms to the database'
-#         do
-#           lambda do
-#             @it.save
-#           end.should change(GoTerm,:count).by(88)
-#         end
-        it 'should add 0 go terms to the database if they already exist in the database'
-#         do
-#           FactoryGirl.build(:upload_cuffdiff_with_3_samples).save
-#           lambda do
-#             @it.save
-#           end.should change(GoTerm,:count).by(0)
-#         end
+        it 'should add 0 transcript has go terms to the database' do
+           lambda do
+             @it.save
+           end.should change(TranscriptHasGoTerm,:count).by(0)
+         end
+        it 'should add 0 go terms to the database' do
+          lambda do
+            @it.save
+          end.should change(GoTerm,:count).by(0)
+        end
         
         it_should_behave_like 'any upload view model when an exception occurs'
         it_should_behave_like 'any upload view model when no exception occurs'
@@ -714,25 +565,16 @@ describe UploadCuffdiff do
             @it.save
           end.should change(TranscriptFpkmTrackingInformation,:count).by(0)
         end
-        it 'should add 250 transcript has go terms to the database'
-#         do
-#           lambda do
-#             @it.save
-#           end.should change(TranscriptHasGoTerm,:count).by(250)
-#         end
-        it 'should add 88 go terms to the database'
-#         do
-#           lambda do
-#             @it.save
-#           end.should change(GoTerm,:count).by(88)
-#         end
-        it 'should add 0 go terms to the database if they already exist in the database'
-#         do
-#           FactoryGirl.build(:upload_cuffdiff_with_3_samples).save
-#           lambda do
-#             @it.save
-#           end.should change(GoTerm,:count).by(0)
-#         end
+        it 'should add 0 transcript has go terms to the database' do
+           lambda do
+             @it.save
+           end.should change(TranscriptHasGoTerm,:count).by(0)
+         end
+        it 'should add 0 go terms to the database' do
+          lambda do
+            @it.save
+          end.should change(GoTerm,:count).by(0)
+        end
         
         it_should_behave_like 'any upload view model when an exception occurs'
         it_should_behave_like 'any upload view model when no exception occurs'
@@ -779,25 +621,16 @@ describe UploadCuffdiff do
             @it.save
           end.should change(TranscriptFpkmTrackingInformation,:count).by(24)
         end
-        it 'should add 250 transcript has go terms to the database'
-#         do
-#           lambda do
-#             @it.save
-#           end.should change(TranscriptHasGoTerm,:count).by(250)
-#         end
-        it 'should add 88 go terms to the database'
-#         do
-#           lambda do
-#             @it.save
-#           end.should change(GoTerm,:count).by(88)
-#         end
-        it 'should add 0 go terms to the database if they already exist in the database'
-#         do
-#           FactoryGirl.build(:upload_cuffdiff_with_3_samples).save
-#           lambda do
-#             @it.save
-#           end.should change(GoTerm,:count).by(0)
-#         end
+        it 'should add 0 transcript has go terms to the database' do
+           lambda do
+             @it.save
+           end.should change(TranscriptHasGoTerm,:count).by(0)
+         end
+        it 'should add 0 go terms to the database' do
+           lambda do
+             @it.save
+           end.should change(GoTerm,:count).by(0)
+         end
         
         it_should_behave_like 'any upload view model when an exception occurs'
         it_should_behave_like 'any upload view model when no exception occurs'
@@ -864,30 +697,21 @@ describe UploadCuffdiff do
             @it.save
           end.should change(DifferentialExpressionTest,:count).by(204)
         end
-        it 'should add 250 transcript has go terms to the database'
-#         do
-#           lambda do
-#             @it.save
-#           end.should change(TranscriptHasGoTerm,:count).by(250)
-#         end
+        it 'should add 0 transcript has go terms to the database' do
+           lambda do
+             @it.save
+           end.should change(TranscriptHasGoTerm,:count).by(0)
+         end
         it 'should add 24 transcript fpkm tracking informations to the database' do
           lambda do
             @it.save
           end.should change(TranscriptFpkmTrackingInformation,:count).by(24)
         end
-        it 'should add 88 go terms to the database'
-#         do
-#           lambda do
-#             @it.save
-#           end.should change(GoTerm,:count).by(88)
-#         end
-        it 'should add 0 go terms to the database if Y already exist in the database'
-#         do
-#           FactoryGirl.build(:upload_cuffdiff_with_4_samples).save
-#           lambda do
-#             @it.save
-#           end.should change(GoTerm,:count).by(0)
-#         end
+        it 'should add 0 go terms to the database' do
+          lambda do
+            @it.save
+          end.should change(GoTerm,:count).by(0)
+        end
         
         it_should_behave_like 'any upload view model when an exception occurs'
         it_should_behave_like 'any upload view model when no exception occurs'
@@ -929,30 +753,21 @@ describe UploadCuffdiff do
             @it.save
           end.should change(DifferentialExpressionTest,:count).by(204)
         end
-        it 'should add 250 transcript has go terms to the database'
-#         do
-#           lambda do
-#             @it.save
-#           end.should change(TranscriptHasGoTerm,:count).by(250)
-#         end
+        it 'should add 0 transcript has go terms to the database' do
+           lambda do
+             @it.save
+           end.should change(TranscriptHasGoTerm,:count).by(0)
+         end
         it 'should add 0 transcript fpkm tracking informations to the database' do
           lambda do
             @it.save
           end.should change(TranscriptFpkmTrackingInformation,:count).by(0)
         end
-        it 'should add 88 go terms to the database'
-#         do
-#           lambda do
-#             @it.save
-#           end.should change(GoTerm,:count).by(88)
-#         end
-        it 'should add 0 go terms to the database if Y already exist in the database'
-#         do
-#           FactoryGirl.build(:upload_cuffdiff_with_4_samples).save
-#           lambda do
-#             @it.save
-#           end.should change(GoTerm,:count).by(0)
-#         end
+        it 'should add 0 go terms to the database' do
+          lambda do
+            @it.save
+          end.should change(GoTerm,:count).by(0)
+        end
         
         it_should_behave_like 'any upload view model when an exception occurs'
         it_should_behave_like 'any upload view model when no exception occurs'
@@ -994,30 +809,21 @@ describe UploadCuffdiff do
             @it.save
           end.should change(DifferentialExpressionTest,:count).by(0)
         end
-        it 'should add 250 transcript has go terms to the database'
-#         do
-#           lambda do
-#             @it.save
-#           end.should change(TranscriptHasGoTerm,:count).by(250)
-#         end
+        it 'should add 0 transcript has go terms to the database' do
+           lambda do
+             @it.save
+           end.should change(TranscriptHasGoTerm,:count).by(0)
+         end
         it 'should add 24 transcript fpkm tracking informations to the database' do
           lambda do
             @it.save
           end.should change(TranscriptFpkmTrackingInformation,:count).by(24)
         end
-        it 'should add 88 go terms to the database'
-#         do
-#           lambda do
-#             @it.save
-#           end.should change(GoTerm,:count).by(88)
-#         end
-        it 'should add 0 go terms to the database if Y already exist in the database'
-#         do
-#           FactoryGirl.build(:upload_cuffdiff_with_4_samples).save
-#           lambda do
-#             @it.save
-#           end.should change(GoTerm,:count).by(0)
-#         end
+        it 'should add 0 go terms to the database' do
+           lambda do
+             @it.save
+           end.should change(GoTerm,:count).by(0)
+         end
         
         it_should_behave_like 'any upload view model when an exception occurs'
         it_should_behave_like 'any upload view model when no exception occurs'
