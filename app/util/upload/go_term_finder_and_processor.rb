@@ -79,7 +79,7 @@ class GoTermFinderAndProcessor
                       "-prop #{blast2go_dir}/b2gPipe.properties -annot")
     Rails.logger.info "Finished blast2go for dataset: #{@dataset.id}"
     #Return the path of the resulting file containing the go terms
-    return "#{blast2go_output_file.path}.annot"
+    return "#{@blast2go_output_file.path}.annot"
   end
   
   def cleanup_files()
