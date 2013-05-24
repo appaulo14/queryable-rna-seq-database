@@ -2,8 +2,9 @@
   No Go Terms found
 <% else %>
   <ul>
-    <% go_terms = go_terms_string.strip.split(';') %>
-    <% go_ids = go_ids_string.strip.split(';') %>
+    <% go_terms = go_terms_string.strip.split(';').uniq() %>
+    <% go_ids = go_ids_string.strip.split(';').uniq() %>
+    <% debugger if go_ids.length != go_terms.length %>
     <% go_ids.length.times do |i| %>
       <li><%= link_to_amigo_web_page_for_term(go_terms[i],go_ids[i]) %></li>
     <% end %>

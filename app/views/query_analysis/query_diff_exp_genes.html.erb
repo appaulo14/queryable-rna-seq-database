@@ -96,7 +96,7 @@
                 </td>
                 <td>
                   <ul class="list_cell">
-                  <% result[:transcript_names].strip.split(';').sort.each do |transcript_name| %>
+                  <% result[:transcript_names].strip.split(';').uniq().sort.each do |transcript_name| %>
                     <li><%= link_to_fasta_sequence_for_transcript(@qdeg.dataset_id,
                               transcript_name) %></li>
                   <% end %>
@@ -104,6 +104,11 @@
                 </td>
                 <% if @qdeg.has_go_terms == true %>
                   <td>
+                    <% if not result[:go_ids].nil? %>
+                      <% go_terms = result[:go_terms].strip.split(';') %>
+                      <% go_ids = result[:go_ids].strip.split(';') %>
+                      <% debugger if go_ids.length != go_terms.length %>
+                    <% end %>
                     <%= render 'list_of_go_terms',
                                :go_ids_string => result[:go_ids],
                                :go_terms_string => result[:go_terms] %>
