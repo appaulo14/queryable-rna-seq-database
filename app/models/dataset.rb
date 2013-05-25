@@ -26,6 +26,8 @@
 #  updated_at              :datetime         not null
 #
 
+require 'system_util.rb'
+
 class Dataset < ActiveRecord::Base
   attr_accessible :user, 
                   :name, 
@@ -62,7 +64,18 @@ class Dataset < ActiveRecord::Base
   has_many :genes, :dependent => :destroy
   has_many :samples, :dependent => :destroy
   
+  def destroy()
+    super
+    SystemUtil.system!("rm #{self.blast_db_location}.*")
+  end
+  
+  def delete()
+    super
+    SystemUtil.system!("rm #{self.blast_db_location}.*")
+  end
+  
   private
+  
   def blast_db_location_pathname_is_valid
     begin
       Pathname.new(self.blast_db_location)
