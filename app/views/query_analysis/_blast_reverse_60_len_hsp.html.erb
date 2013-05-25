@@ -1,9 +1,4 @@
-<% actual_to = from-(60*n) %>
-<% actual_from = from-(60*(n+1))+1 %>
-<% if seq.length < 60 %>
-  <% actual_from = actual_from + (60 - seq.length) %>
-<% end %>
 <td style="white-space:nowrap">
-  <%= (type == :query) ? 'Query' : 'Sbjct' %>: <%= actual_to %>
+  <%= (type == :query) ? 'Query' : 'Sbjct' %>: <%= to %>
 </td>
-<td><%= seq %> <%= actual_from %></td>
+<td><%= seq %> <%= from %></td>

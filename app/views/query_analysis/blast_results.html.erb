@@ -247,8 +247,8 @@
               Gaps</a>=<%= hsp.gaps %>/<%= hsp.align_len %> (<%= percent_gaps %>%)<br/>
             <!-- Display strand or frame info depending on what type of blast this is -->
             <% if @blast_report.program == 'blastn' %>
-              <% query_strand = (hsp.query_frame > 0) ? 'Plus' : 'Minus' %>
-              <% hit_strand = (hsp.hit_frame > 0) ? 'Plus' : 'Minus' %>
+              <% query_strand = (hsp.query_frame >= 0) ? 'Plus' : 'Minus' %>
+              <% hit_strand = (hsp.hit_frame >= 0) ? 'Plus' : 'Minus' %>
               Strand = <%= query_strand %>/<%= hit_strand %><br/>
             <% elsif @blast_report.program == 'tblastx' %>
               Frame = <%= '%+d' % hsp.query_frame %>/<%= '%+d' % hsp.hit_frame %><br/>
@@ -257,6 +257,23 @@
             <% end %>
           </p>
           <!-- Display the alignment for the hsp -->
+          <%
+            current_query_seq = nil
+            current_query_seq_len = nil
+            current_query_from = nil
+            current_query_to = nil
+            previous_query_from = nil
+            previous_query_to = nil
+            previous_query_seq = nil
+            previous_query_seq_len = nil
+            current_hit_seq = nil
+            current_hit_seq_len = nil
+            current_hit_from = nil
+            current_hit_to = nil
+            previous_hit_from = nil
+            previous_hit_to = nil
+            hit_gaps = 0 #TODO: delete
+          %>
           <table style="font-family:monospace">
             <% max_row_count = (hsp.midline.length/60.0).ceil-1 %>
             <% (0..max_row_count).each do |n| %>
@@ -264,20 +281,38 @@
               <!-- Query part of the alignment -->
               <tr>
                 <% if @blast_report.program == 'blastn' or @blast_report.program == 'tblastn' %>
+                  <% current_query_seq = hsp.qseq[seq_range] %>
+                  <% current_query_seq_len = (current_query_seq.length - 1) - current_query_seq.count('-') %>
                   <% if hsp.query_frame >= 0 %>
                     <!-- forward 60 count -->
-                    <%= render 'blast_forward_60_len_hsp', :seq => hsp.qseq[seq_range], 
-                                                           :to => hsp.query_to, 
-                                                           :from => hsp.query_from, 
-                                                           :type => :query,
-                                                           :n => n %>
+                    <% if n == 0 %>
+                      <% current_query_from = hsp.query_from %>
+                    <% else %>
+                      <% previous_query_from = current_query_from %>
+                      <% previous_query_to = current_query_to %>
+                      <% current_query_from = previous_query_to + 1  %>
+                    <% end %>
+                    <% current_query_to = current_query_from + current_query_seq_len %>
+                    <%= render 'blast_forward_60_len_hsp', :seq => current_query_seq, 
+                                                           :to => current_query_to, 
+                                                           :from => current_query_from,
+                                                           :type => :query %>
                   <% else %>
                     <!-- reverse 60 count -->
-                    <%= render 'blast_reverse_60_len_hsp', :seq => hsp.qseq[seq_range], 
-                                                           :to => hsp.query_to, 
-                                                           :from => hsp.query_from,
-                                                           :type => :query,
-                                                           :n => n %>
+                    <% current_query_seq = hsp.qseq[seq_range] %>
+                    <% current_query_seq_len = (current_query_seq.length - 1) - current_query_seq.count('-') %>
+                    <% if n == 0 %>
+                      <% current_query_to = hsp.query_to %>
+                    <% else %>
+                      <% previous_query_from = current_query_from %>
+                      <% previous_query_to = current_query_to %>
+                      <% current_query_to = previous_query_to + 1 %>
+                    <% end %>
+                    <% current_query_from = current_query_to - current_query_seq_len %>
+                    <%= render 'blast_reverse_60_len_hsp', :seq => current_query_seq, 
+                                                           :to => current_query_to, 
+                                                           :from => current_query_from,
+                                                           :type => :query %>
                   <% end %>
                 <% elsif @blast_report.program == 'tblastx' %>
                   <% if hsp.query_frame >= 0 %>
@@ -301,21 +336,28 @@
               <!-- Subject part of the alignment -->
               <tr>
                 <% if @blast_report.program == 'blastn' %>
+                  <% current_hit_seq = hsp.hseq[seq_range] %>
+                  <% current_hit_seq_len = (current_query_seq.length - 1) - current_hit_seq.count('-') %>
+                    <% if n == 0 %>
+                      <% current_hit_from = hsp.hit_from %>
+                    <% else %>
+                      <% previous_hit_from = current_hit_from %>
+                      <% previous_hit_to = current_hit_to %>
+                      <% if hsp.hit_frame >= 0 %>
+                        <% current_hit_from = previous_hit_to + 1  %>
+                      <% else %>
+                        <% current_hit_from = previous_hit_to - 1  %>
+                      <% end %>
+                    <% end %>
                   <% if hsp.hit_frame >= 0 %>
-                    <!-- forward 60 count -->
-                    <%= render 'blast_forward_60_len_hsp', :seq => hsp.hseq[seq_range], 
-                                                           :to => hsp.hit_to, 
-                                                           :from => hsp.hit_from, 
-                                                           :type => :subject,
-                                                           :n => n %>
+                    <% current_hit_to = current_hit_from + current_hit_seq_len %>
                   <% else %>
-                    <!-- reverse 60 count -->
-                    <%= render 'blast_reverse_60_len_hsp', :seq => hsp.hseq[seq_range], 
-                                                           :to => hsp.hit_to, 
-                                                           :from => hsp.hit_from, 
-                                                           :type => :subject,
-                                                           :n => n %>
+                    <% current_hit_to = current_hit_from - current_hit_seq_len %>
                   <% end %>
+                  <%= render 'blast_forward_60_len_hsp', :seq => current_hit_seq, 
+                                                          :to => current_hit_to, 
+                                                          :from => current_hit_from, 
+                                                          :type => :subject %>
                 <% elsif @blast_report.program == 'tblastx' or @blast_report.program == 'tblastn' %>
                   <% if hsp.hit_frame >= 0 %>
                     <!-- forward 180 count -->
