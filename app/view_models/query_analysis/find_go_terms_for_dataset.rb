@@ -39,7 +39,8 @@ class FindGoTermsForDataset
     #Set available datasets
     @names_and_ids_for_available_datasets = []
     available_datasets = Dataset.where(:user_id => @current_user.id, 
-                                        :go_terms_status => 'not-started')
+                                        :go_terms_status => 'not-started',
+                                        :finished_uploading => true)
     available_datasets.each do |ds|
       @names_and_ids_for_available_datasets << [ds.name, ds.id]
     end
@@ -48,7 +49,8 @@ class FindGoTermsForDataset
       @dataset_id = available_datasets.first.id
     end
     @datasets_in_progress = Dataset.where(:user_id => @current_user.id, 
-                                           :go_terms_status => 'in-progress')
+                                          :go_terms_status => 'in-progress', 
+                                          :finished_uploading => true)
   end
   
   ###

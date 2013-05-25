@@ -250,8 +250,10 @@
               <% query_strand = (hsp.query_frame > 0) ? 'Plus' : 'Minus' %>
               <% hit_strand = (hsp.hit_frame > 0) ? 'Plus' : 'Minus' %>
               Strand = <%= query_strand %>/<%= hit_strand %><br/>
-            <% elsif @blast_report.program == 'tblastx' or @blast_report.program == 'tblastn' %>
+            <% elsif @blast_report.program == 'tblastx' %>
               Frame = <%= '%+d' % hsp.query_frame %>/<%= '%+d' % hsp.hit_frame %><br/>
+            <% elsif @blast_report.program == 'tblastn' %>
+              Frame = <%= '%+d' % hsp.hit_frame %><br/>
             <% end %>
           </p>
           <!-- Display the alignment for the hsp -->
