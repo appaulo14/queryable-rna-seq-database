@@ -1,0 +1,6 @@
+<% to_for_line = (seq.length == 60 ) ? from+(60*n)+seq.length-1 : to %>
+<% from_for_line = from+(60*n) %>
+<td style="white-space:nowrap">
+  <%= (type == :query) ? 'Query' : 'Sbjct' %>: <%= from_for_line %>
+</td>
+<td><%= seq %> <%= to_for_line %></td>
