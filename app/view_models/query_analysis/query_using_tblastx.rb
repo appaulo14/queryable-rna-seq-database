@@ -28,7 +28,7 @@ class QueryUsingTblastx < AbstractQueryUsingBlast
     'Standard (1)' => '1',
     'Vertebrate Mitochondrial (2)' => '2',
     'Yeast Mitochondrial (3)' => '3',
-    'Mold Mitochondrial (4)' => 4,
+    'Mold Mitochondrial (4)' => '4',
     'Invertebrate Mitochondrial (5)' => '5',
     'Ciliate Nuclear (6)' => '6',
     'Echinoderm Mitochondrial (9)' => '9',

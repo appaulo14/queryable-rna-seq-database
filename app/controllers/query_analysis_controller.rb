@@ -400,7 +400,7 @@ class QueryAnalysisController < ApplicationController
                                       :name => @dataset.name)
               # Reset the form before rendering
               @query_using_blastn = QueryUsingBlastn.new(current_user)
-              @query_using_blastn.set_attributes_and_defaults(params[:query_using_blastn])
+              @query_using_blastn.set_attributes_and_defaults()
             else
               #Run the blast query and get the file path of the result
               @blast_report = @query_using_blastn.blast()
@@ -449,7 +449,7 @@ class QueryAnalysisController < ApplicationController
                                     :name => @dataset.name)
             # Reset the form before rendering
             @query_using_tblastn = QueryUsingTblastn.new(current_user)
-            @query_using_tblastn.set_attributes_and_defaults(params[:query_using_tblastn])
+            @query_using_tblastn.set_attributes_and_defaults()
           else
             #Run the blast query and get the file path of the result
             @blast_report = @query_using_tblastn.blast()
@@ -495,7 +495,7 @@ class QueryAnalysisController < ApplicationController
                                   :name => @dataset.name)
           # Reset the form before rendering
           @query_using_tblastx = QueryUsingTblastx.new(current_user)
-          @query_using_tblastx.set_attributes_and_defaults(params[:query_using_tblastx])
+          @query_using_tblastx.set_attributes_and_defaults()
         else
           #Run the blast query and get the file path of the result
           @blast_report = @query_using_tblastx.blast()

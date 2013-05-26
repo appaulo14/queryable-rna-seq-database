@@ -134,13 +134,16 @@ class QueryDiffExpTranscripts < AbstractQueryRegularDb
   def build_select_string()
     select_string = 'transcripts.name_from_program as transcript_name, ' +
                     'genes.name_from_program as gene_name,' +
-                    'differential_expression_tests.test_statistic,' +
                     'differential_expression_tests.p_value,' +
                     'differential_expression_tests.fdr,' +
                     'differential_expression_tests.sample_1_fpkm,' +
                     'differential_expression_tests.sample_2_fpkm,' +
-                    'differential_expression_tests.log_fold_change,' +
-                    'differential_expression_tests.test_status '
+                    'differential_expression_tests.log_fold_change'
+    if @program_used == 'cuffdiff'
+      select_string += ', '
+      select_string += 'differential_expression_tests.test_statistic,' +
+      select_string += 'differential_expression_tests.test_status '
+    end
     if @has_go_terms == true
       select_string += ', '
       # Add aggregate select string for the go ids

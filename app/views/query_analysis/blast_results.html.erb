@@ -300,11 +300,6 @@
                   <% else %>
                     <% current_query_to = current_query_from - current_query_seq_len %>
                   <% end %>
-                  <!-- Display the calculated information -->
-                  <%= render 'blast_forward_60_len_hsp', :seq => current_query_seq, 
-                                                         :to => current_query_to, 
-                                                         :from => current_query_from, 
-                                                         :type => :query %>
                 <% elsif @blast_report.program == 'tblastx' %>
                   <% current_query_seq = hsp.qseq[seq_range] %>
                   <% current_query_seq_len = (current_query_seq.length * 3) - 1 - (current_query_seq.count('-')*3) %>
@@ -328,12 +323,12 @@
                   <% else %>
                     <% current_query_to = current_query_from - current_query_seq_len %>
                   <% end %>
-                  <!-- Display the calculated information -->
-                  <%= render 'blast_forward_60_len_hsp', :seq => current_query_seq, 
-                                                         :to => current_query_to, 
-                                                         :from => current_query_from, 
-                                                         :type => :query %>
                 <% end %>
+                <!-- Display the calculated information -->
+                <td style="white-space:nowrap">
+                  Query: <%= current_query_from %>
+                </td>
+                <td><%= current_query_seq %> <%= current_query_to %></td>
               </tr>
               <!-- Midline part of the alignment -->
               <tr><td>&nbsp;</td><td style="white-space:pre"><%= hsp.midline[seq_range] %></pre></td></tr>
@@ -359,13 +354,8 @@
                   <% else %>
                     <% current_hit_to = current_hit_from - current_hit_seq_len %>
                   <% end %>
-                  <!-- Display the calculated information -->
-                  <%= render 'blast_forward_60_len_hsp', :seq => current_hit_seq, 
-                                                          :to => current_hit_to, 
-                                                          :from => current_hit_from, 
-                                                          :type => :subject %>
                 <% elsif @blast_report.program == 'tblastx' or @blast_report.program == 'tblastn' %>
-                  <% current_hit_seq = hsp.qseq[seq_range] %>
+                  <% current_hit_seq = hsp.hseq[seq_range] %>
                   <% current_hit_seq_len = (current_hit_seq.length * 3) - 1 - (current_hit_seq.count('-')*3) %>
                     <% if n == 0 %>
                       <% if hsp.hit_frame >= 0 %>
@@ -387,12 +377,12 @@
                   <% else %>
                     <% current_hit_to = current_hit_from - current_hit_seq_len %>
                   <% end %>
-                  <!-- Display the calculated information -->
-                  <%= render 'blast_forward_60_len_hsp', :seq => current_hit_seq, 
-                                                         :to => current_hit_to, 
-                                                         :from => current_hit_from, 
-                                                         :type => :subject %>
                 <% end %>
+                <!-- Display the calculated information -->
+                <td style="white-space:nowrap">
+                  Sbjct: <%= current_hit_from %>
+                </td>
+                <td><%= current_hit_seq %> <%= current_hit_to %></td>
               </tr>
               <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
             <% end %>

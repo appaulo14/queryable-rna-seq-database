@@ -1,8 +1,0 @@
-<% query_to = hsp.query_to-(180*n) %>
-<% query_from = (hsp.query_to-(180*(n+1))+1) %>
-<% qseq_len = hsp.qseq[seq_range].length %>
-<% if qseq_len < 60 %>
-  <% query_from = query_from + (180 - (qseq_len*3)) %>
-<% end %>
-<td style="white-space:nowrap">Query: <%= query_to %></td>
-<td><%= hsp.qseq[seq_range] %> <%= query_from %></td>
