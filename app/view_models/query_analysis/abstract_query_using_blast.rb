@@ -2,6 +2,8 @@
 # Abstract view model for the view models of all of the blast pages.
 #
 # <b>Associated Controller:</b> QueryAnalysisController
+#
+# <b>Associated Worker:</b> WorkerForQueryUsingBlast
 class AbstractQueryUsingBlast
   include ActiveModel::Validations
   include ActiveModel::Conversion
@@ -26,6 +28,8 @@ class AbstractQueryUsingBlast
   attr_accessor :filter_low_complexity_regions
   # Whether to use lowercase masking
   attr_accessor :use_lowercase_masking
+  # Whether to displays the blast results to the user on the page or email 
+  # the results to the user
   attr_accessor :results_display_method
   
   # The datasets that are available to the user for having their blast 
@@ -65,6 +69,9 @@ class AbstractQueryUsingBlast
   validates :results_display_method, :presence => true,
                                      :inclusion => {:in => ['normal','email']}
   
+  ###
+  # Abstract method to returns the name of the blast program that the 
+  # class provides. 
   def self.get_program_name()
     raise NotImplementedError, 'Must be implemented in subclass'
   end
@@ -146,6 +153,8 @@ class AbstractQueryUsingBlast
   
   protected
   
+  ###
+  # Saves to te Dataset record that it has been queried just now. 
   def record_that_dataset_has_been_queried()
     dataset = Dataset.find_by_id(@dataset_id)
     dataset.when_last_queried = Time.now

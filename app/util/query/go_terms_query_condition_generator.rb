@@ -19,14 +19,13 @@ class GoTermsQueryConditionGenerator
   end
   
   ###
-  # Generates and returns the actual where clause query condition.
+  # Generates and returns the actual having string query condition.
   def generate_having_string()
     #Do some validation
     if not self.valid?
       raise ArgumentError.new(self.errors.full_messages)
     end
     having_string = ""
-    # string_agg(go_terms.id,';') LIKE '%GO:0070373%' AND string_agg(go_terms.id,';') LIKE '%GO:0010540%'
     go_terms = @go_terms.split(';')
     go_terms.each do |go_term|
       # Strip and quote to help prevent sql injection attacks

@@ -428,51 +428,51 @@ class QueryAnalysisController < ApplicationController
       render :partial => 'gap_costs', :locals => {:object => @query_using_blastn}
     end
     
-    ###
-    # Handles both GET and POST requests for the query using tblastn page.
-    #
-    # <b>Associated ViewModel:</b> QueryUsingTblastn
-    def query_using_tblastn
-      @sequence_type = 'amino acid'
-      if request.get?
-        @query_using_tblastn = QueryUsingTblastn.new(current_user)
-        @query_using_tblastn.set_attributes_and_defaults()
-      elsif request.post?
-        @query_using_tblastn = QueryUsingTblastn.new(current_user)
-        @query_using_tblastn.set_attributes_and_defaults(params[:query_using_tblastn])
-        if @query_using_tblastn.valid?
-          @dataset = Dataset.find_by_id(@query_using_tblastn.dataset_id)
-          if @query_using_tblastn.results_display_method == 'email'
-            q_name = :query_using_blast_queue
-            SuckerPunch::Queue[q_name].async.perform(@query_using_tblastn)
-            flash[:notice] = I18n.t(:added_to_query_using_blast_queue,
-                                    :name => @dataset.name)
-            # Reset the form before rendering
-            @query_using_tblastn = QueryUsingTblastn.new(current_user)
-            @query_using_tblastn.set_attributes_and_defaults()
-          else
-            #Run the blast query and get the file path of the result
-            @blast_report = @query_using_tblastn.blast()
-            #Send the result to the user
-            render :file => 'query_analysis/blast_results'
-          end
+  ###
+  # Handles both GET and POST requests for the query using tblastn page.
+  #
+  # <b>Associated ViewModel:</b> QueryUsingTblastn
+  def query_using_tblastn
+    @sequence_type = 'amino acid'
+    if request.get?
+      @query_using_tblastn = QueryUsingTblastn.new(current_user)
+      @query_using_tblastn.set_attributes_and_defaults()
+    elsif request.post?
+      @query_using_tblastn = QueryUsingTblastn.new(current_user)
+      @query_using_tblastn.set_attributes_and_defaults(params[:query_using_tblastn])
+      if @query_using_tblastn.valid?
+        @dataset = Dataset.find_by_id(@query_using_tblastn.dataset_id)
+        if @query_using_tblastn.results_display_method == 'email'
+          q_name = :query_using_blast_queue
+          SuckerPunch::Queue[q_name].async.perform(@query_using_tblastn)
+          flash[:notice] = I18n.t(:added_to_query_using_blast_queue,
+                                  :name => @dataset.name)
+          # Reset the form before rendering
+          @query_using_tblastn = QueryUsingTblastn.new(current_user)
+          @query_using_tblastn.set_attributes_and_defaults()
+        else
+          #Run the blast query and get the file path of the result
+          @blast_report = @query_using_tblastn.blast()
+          #Send the result to the user
+          render :file => 'query_analysis/blast_results'
         end
       end
     end
+  end
     
-    ###
-    # When a new matrix is selected on the query using Tblastn page, 
-    # handles ajax requests to get the gap costs for the newly selected matrix.
-    #
-    # <b>Associated ViewModel:</b> QueryUsingTblastn
-    def get_tblastn_gap_costs_for_matrix
-      #Calculate the new gap costs from the match and mismatch scores 
-      @query_using_tblastn = QueryUsingTblastn.new(current_user)
-      matrix = params[:matrix]
-      @query_using_tblastn.set_attributes_and_defaults(:matrix => matrix)
-      #Render the new gap costs
-      render :partial => 'gap_costs', :locals => {:object => @query_using_tblastn}
-    end
+  ###
+  # When a new matrix is selected on the query using Tblastn page, 
+  # handles ajax requests to get the gap costs for the newly selected matrix.
+  #
+  # <b>Associated ViewModel:</b> QueryUsingTblastn
+  def get_tblastn_gap_costs_for_matrix
+    #Calculate the new gap costs from the match and mismatch scores 
+    @query_using_tblastn = QueryUsingTblastn.new(current_user)
+    matrix = params[:matrix]
+    @query_using_tblastn.set_attributes_and_defaults(:matrix => matrix)
+    #Render the new gap costs
+    render :partial => 'gap_costs', :locals => {:object => @query_using_tblastn}
+  end
   
   ###
   # Handles both GET and POST requests for the query using Tblastx page.

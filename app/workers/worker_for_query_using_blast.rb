@@ -1,3 +1,8 @@
+###
+# Worker class that runs jobs to email blast results to a user as an html file. 
+# It does this in a background queue so that the user 
+# can continue to do other things while the go terms for their dataset 
+# are being found.
 class WorkerForQueryUsingBlast
   include SuckerPunch::Worker
   

@@ -64,7 +64,17 @@
 </nav>
 
     
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
     
+    <li><a href="#method-c-new">::new</a>
+    
+  </ul>
+</nav>
+
   </div>
 
   <div id="project-metadata">
@@ -83,11 +93,15 @@
 
   <ul class="link-list">
   
+    <li><a href="./AbstractQueryRegularDb.html">AbstractQueryRegularDb</a>
+  
     <li><a href="./AbstractQueryUsingBlast.html">AbstractQueryUsingBlast</a>
   
     <li><a href="./AdminController.html">AdminController</a>
   
     <li><a href="./AdminHelper.html">AdminHelper</a>
+  
+    <li><a href="./AggregateStringGenerator.html">AggregateStringGenerator</a>
   
     <li><a href="./ApplicationController.html">ApplicationController</a>
   
@@ -98,6 +112,8 @@
     <li><a href="./ArrayOfUploadedFilesValidator.html">ArrayOfUploadedFilesValidator</a>
   
     <li><a href="./ArrayValidator.html">ArrayValidator</a>
+  
+    <li><a href="./B2gdbGoTerm.html">B2gdbGoTerm</a>
   
     <li><a href="./BlastUtil.html">BlastUtil</a>
   
@@ -126,8 +142,6 @@
     <li><a href="./GetGeneFastas.html">GetGeneFastas</a>
   
     <li><a href="./GetTranscriptFasta.html">GetTranscriptFasta</a>
-  
-    <li><a href="./GoFilterChecker.html">GoFilterChecker</a>
   
     <li><a href="./GoIdsQueryConditionGenerator.html">GoIdsQueryConditionGenerator</a>
   
@@ -237,6 +251,10 @@
   
     <li><a href="./WorkerForFindGoTermsForDataset.html">WorkerForFindGoTermsForDataset</a>
   
+    <li><a href="./WorkerForQueryRegularDb.html">WorkerForQueryRegularDb</a>
+  
+    <li><a href="./WorkerForQueryUsingBlast.html">WorkerForQueryUsingBlast</a>
+  
     <li><a href="./WorkerForUploadCuffdiff.html">WorkerForUploadCuffdiff</a>
   
     <li><a href="./WorkerForUploadFastaSequences.html">WorkerForUploadFastaSequences</a>
@@ -307,6 +325,54 @@ fpkm file</p>
 
     <!-- Methods -->
     
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(item, sample_fpkms)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <dl class="rdoc-list note-list"><dt>parameters
+<dd></dd></dl>
+<ul><li>
+<p><strong><a href="TrinityFpkmLine.html#attribute-i-item">item</a>:</strong>
+the <a href="Gene.html">Gene</a> or <a
+href="Transcript.html">Transcript</a> name for the line of the fpkm file</p>
+</li><li>
+<p><strong><a
+href="TrinityFpkmLine.html#attribute-i-sample_fpkms">sample_fpkms</a>:</strong>
+The <a href="SampleFpkm.html">SampleFpkm</a> object(s) for the line of the
+fpkm file</p>
+</li></ul>
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File app/util/upload/uploaded_trinity_fpkm_file.rb, line 53</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">item</span>, <span class="ruby-identifier">sample_fpkms</span>)
+  <span class="ruby-ivar">@item</span> = <span class="ruby-identifier">item</span>
+  <span class="ruby-ivar">@sample_fpkms</span> = <span class="ruby-identifier">sample_fpkms</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- new-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- new-method -->
+
+    
+    </section><!-- public-class-method-details -->
+  
   </section><!-- 5Buntitled-5D -->
 
 </div><!-- documentation -->

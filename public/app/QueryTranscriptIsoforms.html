@@ -59,40 +59,42 @@
     <nav id="parent-class-section" class="section">
   <h3 class="section-header">Parent</h3>
   
-  <p class="link">Object
+  <p class="link"><a href="AbstractQueryRegularDb.html">AbstractQueryRegularDb</a>
   
 </nav>
 
-    <!-- Included Modules -->
-<nav id="includes-section" class="section">
-  <h3 class="section-header">Included Modules</h3>
-
-  <ul class="link-list">
-  
-  
-    <li><span class="include">ActiveModel::Validations</span>
-  
-  
-  
-    <li><span class="include">ActiveModel::Conversion</span>
-  
-  
-  </ul>
-</nav>
-
+    
     <!-- Method Quickref -->
 <nav id="method-list-section" class="section">
   <h3 class="section-header">Methods</h3>
 
   <ul class="link-list">
     
-    <li><a href="#method-c-new">::new</a>
+    <li><a href="#method-c-get_query_type">::get_query_type</a>
     
-    <li><a href="#method-i-persisted-3F">#persisted?</a>
+    <li><a href="#method-c-group_by_string">::group_by_string</a>
     
-    <li><a href="#method-i-query">#query</a>
+    <li><a href="#method-i-build_order_string">#build_order_string</a>
     
-    <li><a href="#method-i-set_attributes_and_defaults">#set_attributes_and_defaults</a>
+    <li><a href="#method-i-build_select_string">#build_select_string</a>
+    
+    <li><a href="#method-i-count_query_results">#count_query_results</a>
+    
+    <li><a href="#method-i-execute_full_query">#execute_full_query</a>
+    
+    <li><a href="#method-i-execute_paged_query">#execute_paged_query</a>
+    
+    <li><a href="#method-i-generate_where_clauses">#generate_where_clauses</a>
+    
+    <li><a href="#method-i-list_selected_class_codes">#list_selected_class_codes</a>
+    
+    <li><a href="#method-i-set_available_datasets_and_default_dataset">#set_available_datasets_and_default_dataset</a>
+    
+    <li><a href="#method-i-set_other_defaults">#set_other_defaults</a>
+    
+    <li><a href="#method-i-set_sample_related_defaults">#set_sample_related_defaults</a>
+    
+    <li><a href="#method-i-set_sort_defaults">#set_sort_defaults</a>
     
   </ul>
 </nav>
@@ -115,11 +117,15 @@
 
   <ul class="link-list">
   
+    <li><a href="./AbstractQueryRegularDb.html">AbstractQueryRegularDb</a>
+  
     <li><a href="./AbstractQueryUsingBlast.html">AbstractQueryUsingBlast</a>
   
     <li><a href="./AdminController.html">AdminController</a>
   
     <li><a href="./AdminHelper.html">AdminHelper</a>
+  
+    <li><a href="./AggregateStringGenerator.html">AggregateStringGenerator</a>
   
     <li><a href="./ApplicationController.html">ApplicationController</a>
   
@@ -130,6 +136,8 @@
     <li><a href="./ArrayOfUploadedFilesValidator.html">ArrayOfUploadedFilesValidator</a>
   
     <li><a href="./ArrayValidator.html">ArrayValidator</a>
+  
+    <li><a href="./B2gdbGoTerm.html">B2gdbGoTerm</a>
   
     <li><a href="./BlastUtil.html">BlastUtil</a>
   
@@ -158,8 +166,6 @@
     <li><a href="./GetGeneFastas.html">GetGeneFastas</a>
   
     <li><a href="./GetTranscriptFasta.html">GetTranscriptFasta</a>
-  
-    <li><a href="./GoFilterChecker.html">GoFilterChecker</a>
   
     <li><a href="./GoIdsQueryConditionGenerator.html">GoIdsQueryConditionGenerator</a>
   
@@ -269,6 +275,10 @@
   
     <li><a href="./WorkerForFindGoTermsForDataset.html">WorkerForFindGoTermsForDataset</a>
   
+    <li><a href="./WorkerForQueryRegularDb.html">WorkerForQueryRegularDb</a>
+  
+    <li><a href="./WorkerForQueryUsingBlast.html">WorkerForQueryUsingBlast</a>
+  
     <li><a href="./WorkerForUploadCuffdiff.html">WorkerForUploadCuffdiff</a>
   
     <li><a href="./WorkerForUploadFastaSequences.html">WorkerForUploadFastaSequences</a>
@@ -290,6 +300,9 @@
 
 <p><strong>Associated Controller:</strong> <a
 href="QueryAnalysisController.html">QueryAnalysisController</a></p>
+
+<p><strong>Associated Worker:</strong> <a
+href="WorkerForQueryRegularDb.html">WorkerForQueryRegularDb</a></p>
 
   </div><!-- description -->
 
@@ -318,12 +331,6 @@ attribute</p>
         
         <dd class="description"><p>Contains all the possible class codes and is used to build the where 
 clause for the class code filtering options</p>
-        
-      
-        <dt id="PIECE_SIZE">PIECE_SIZE
-        
-        <dd class="description"><p>The number of records in each piece of the query. This is used to 
-determine the values for LIMIT and OFFSET in the query itself.</p>
         
       
       </dl>
@@ -532,101 +539,6 @@ class codes should be displayed in the query results.</p>
         </div>
       </div>
       
-      <div id="attribute-i-dataset_id" class="method-detail">
-        <div class="method-heading attribute-method-heading">
-          <span class="method-name">dataset_id</span><span
-            class="attribute-access-type">[RW]</span>
-        </div>
-
-        <div class="method-description">
-        
-        <p>The id of the dataset whose transcript isoforms will be queried.</p>
-        
-        </div>
-      </div>
-      
-      <div id="attribute-i-go_ids" class="method-detail">
-        <div class="method-heading attribute-method-heading">
-          <span class="method-name">go_ids</span><span
-            class="attribute-access-type">[RW]</span>
-        </div>
-
-        <div class="method-description">
-        
-        <p>Specifies that only the transcript that have all of these go ids 
-(accessions) should be displayed in the query results.</p>
-        
-        </div>
-      </div>
-      
-      <div id="attribute-i-go_terms" class="method-detail">
-        <div class="method-heading attribute-method-heading">
-          <span class="method-name">go_terms</span><span
-            class="attribute-access-type">[RW]</span>
-        </div>
-
-        <div class="method-description">
-        
-        <p>Specifies that only the transcript that have all of these go terms  (names)
-should be displayed in the query results.</p>
-        
-        </div>
-      </div>
-      
-      <div id="attribute-i-go_terms_status" class="method-detail">
-        <div class="method-heading attribute-method-heading">
-          <span class="method-name">go_terms_status</span><span
-            class="attribute-access-type">[R]</span>
-        </div>
-
-        <div class="method-description">
-        
-        <p>The status of the go terms for the selected dataset</p>
-        
-        </div>
-      </div>
-      
-      <div id="attribute-i-names_and_ids_for_available_datasets" class="method-detail">
-        <div class="method-heading attribute-method-heading">
-          <span class="method-name">names_and_ids_for_available_datasets</span><span
-            class="attribute-access-type">[R]</span>
-        </div>
-
-        <div class="method-description">
-        
-        <p>The name/id pairs of the datasets that can be selected to have their 
-transcript isoforms queried.</p>
-        
-        </div>
-      </div>
-      
-      <div id="attribute-i-piece" class="method-detail">
-        <div class="method-heading attribute-method-heading">
-          <span class="method-name">piece</span><span
-            class="attribute-access-type">[RW]</span>
-        </div>
-
-        <div class="method-description">
-        
-        <p>Because the query results are loaded in pieces using LIMIT and OFFSET, 
-this specifies which piece to load.</p>
-        
-        </div>
-      </div>
-      
-      <div id="attribute-i-results" class="method-detail">
-        <div class="method-heading attribute-method-heading">
-          <span class="method-name">results</span><span
-            class="attribute-access-type">[R]</span>
-        </div>
-
-        <div class="method-description">
-        
-        <p>Contains the results from the query</p>
-        
-        </div>
-      </div>
-      
       <div id="attribute-i-sample_id" class="method-detail">
         <div class="method-heading attribute-method-heading">
           <span class="method-name">sample_id</span><span
@@ -702,50 +614,91 @@ in the query results.</p>
       <h3 class="section-header">Public Class Methods</h3>
 
     
-      <div id="method-c-new" class="method-detail ">
+      <div id="method-c-get_query_type" class="method-detail ">
         
         <div class="method-heading">
-          <span class="method-name">new</span><span
-            class="method-args">(current_user)</span>
+          <span class="method-name">get_query_type</span><span
+            class="method-args">()</span>
           <span class="method-click-advice">click to toggle source</span>
         </div>
         
 
         <div class="method-description">
           
-          <dl class="rdoc-list note-list"><dt>parameters
-<dd></dd></dl>
-<ul><li>
-<p><strong>current_user:</strong> The currently logged in user</p>
-</li></ul>
+          <p>Returns the type of query that the class provides</p>
           
 
           
-          <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_transcript_isoforms.rb, line 135</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">current_user</span>)
-  <span class="ruby-ivar">@current_user</span> = <span class="ruby-identifier">current_user</span>
+          <div class="method-source-code" id="get_query_type-source">
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_transcript_isoforms.rb, line 119</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">get_query_type</span>()
+  <span class="ruby-keyword">return</span> <span class="ruby-string">'query_transcript_isoforms'</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- new-source -->
+          </div><!-- get_query_type-source -->
           
         </div>
 
         
 
         
-      </div><!-- new-method -->
+      </div><!-- get_query_type-method -->
 
     
     </section><!-- public-class-method-details -->
+  
+     <section id="protected-class-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Protected Class Methods</h3>
+
+    
+      <div id="method-c-group_by_string" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">group_by_string</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>The string to use for the GROUP BY section of the query. transcripts.id is
+at the end of the string to prevent a strange error  with counting</p>
+          
+
+          
+          <div class="method-source-code" id="group_by_string-source">
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_transcript_isoforms.rb, line 129</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">group_by_string</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-string">'genes.name_from_program,'</span> <span class="ruby-operator">+</span>
+         <span class="ruby-string">'transcript_fpkm_tracking_informations.class_code,'</span> <span class="ruby-operator">+</span>
+         <span class="ruby-string">'transcript_fpkm_tracking_informations.length,'</span> <span class="ruby-operator">+</span>
+         <span class="ruby-string">'transcript_fpkm_tracking_informations.coverage,'</span> <span class="ruby-operator">+</span>
+         <span class="ruby-string">'fpkm_samples.fpkm,'</span> <span class="ruby-operator">+</span>
+         <span class="ruby-string">'fpkm_samples.fpkm_lo,'</span> <span class="ruby-operator">+</span>
+         <span class="ruby-string">'fpkm_samples.fpkm_hi,'</span> <span class="ruby-operator">+</span>
+         <span class="ruby-string">'fpkm_samples.status, '</span> <span class="ruby-operator">+</span>
+         <span class="ruby-string">'transcripts.name_from_program'</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- group_by_string-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- group_by_string-method -->
+
+    
+    </section><!-- protected-class-method-details -->
   
      <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
       <h3 class="section-header">Public Instance Methods</h3>
 
     
-      <div id="method-i-persisted-3F" class="method-detail ">
+      <div id="method-i-list_selected_class_codes" class="method-detail ">
         
         <div class="method-heading">
-          <span class="method-name">persisted?</span><span
+          <span class="method-name">list_selected_class_codes</span><span
             class="method-args">()</span>
           <span class="method-click-advice">click to toggle source</span>
         </div>
@@ -753,31 +706,41 @@ in the query results.</p>
 
         <div class="method-description">
           
-          <p>According to <a
-href="http://railscasts.com/episodes/219-active-model?view=asciicast">railscasts.com/episodes/219-active-model?view=asciicast</a>,
-this defines that this view model does not persist in the database.</p>
+          <p>Returns a list of the class codes that have been selected</p>
           
 
           
-          <div class="method-source-code" id="persisted-3F-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_transcript_isoforms.rb, line 244</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">persisted?</span>
-    <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
+          <div class="method-source-code" id="list_selected_class_codes-source">
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_transcript_isoforms.rb, line 107</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">list_selected_class_codes</span>
+  <span class="ruby-identifier">class_codes</span> = []
+  <span class="ruby-constant">CLASS_CODES</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">key</span>) <span class="ruby-operator">==</span> <span class="ruby-string">'1'</span>
+      <span class="ruby-identifier">class_codes</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">key</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">class_codes</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- persisted-3F-source -->
+          </div><!-- list_selected_class_codes-source -->
           
         </div>
 
         
 
         
-      </div><!-- persisted-3F-method -->
+      </div><!-- list_selected_class_codes-method -->
 
     
-      <div id="method-i-query" class="method-detail ">
+    </section><!-- public-instance-method-details -->
+  
+     <section id="protected-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Protected Instance Methods</h3>
+
+    
+      <div id="method-i-build_order_string" class="method-detail ">
         
         <div class="method-heading">
-          <span class="method-name">query</span><span
+          <span class="method-name">build_order_string</span><span
             class="method-args">()</span>
           <span class="method-click-advice">click to toggle source</span>
         </div>
@@ -785,24 +748,64 @@ this defines that this view model does not persist in the database.</p>
 
         <div class="method-description">
           
-          <p>Execute the query to get the transcript isoforms with the  specified
-filtering options and store them in <a
-href="QueryTranscriptIsoforms.html#attribute-i-results">results</a>.</p>
+          <p>Builds the ORDER BY string to use for the query</p>
           
 
           
-          <div class="method-source-code" id="query-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_transcript_isoforms.rb, line 174</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">query</span>()
-  <span class="ruby-comment">#Don't query if it is not valid</span>
-  <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">valid?</span>
-  <span class="ruby-comment">#Record that the dataset was queried at this time</span>
-  <span class="ruby-ivar">@dataset</span> = <span class="ruby-constant">Dataset</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-ivar">@dataset_id</span>)
-  <span class="ruby-ivar">@dataset</span>.<span class="ruby-identifier">when_last_queried</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
-  <span class="ruby-ivar">@dataset</span>.<span class="ruby-identifier">save!</span>
-  <span class="ruby-comment">#Create and run the query</span>
-  <span class="ruby-identifier">select_string</span> = <span class="ruby-string">'transcripts.id as transcript_id,'</span> <span class="ruby-operator">+</span>
-                  <span class="ruby-string">'transcripts.name_from_program as transcript_name, '</span> <span class="ruby-operator">+</span>
+          <div class="method-source-code" id="build_order_string-source">
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_transcript_isoforms.rb, line 224</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">build_order_string</span>()
+  <span class="ruby-keyword">case</span> <span class="ruby-ivar">@sort_column</span>
+  <span class="ruby-keyword">when</span><span class="ruby-string">'Transcript'</span>
+    <span class="ruby-identifier">sort_column</span> = <span class="ruby-string">'transcripts.name_from_program'</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-string">'Associated Gene'</span>
+    <span class="ruby-identifier">sort_column</span> = <span class="ruby-string">'genes.name_from_program'</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-string">'Class Code'</span>
+    <span class="ruby-identifier">sort_column</span> = <span class="ruby-string">'transcript_fpkm_tracking_informations.class_code'</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-string">'Length'</span>
+    <span class="ruby-identifier">sort_column</span> = <span class="ruby-string">'transcript_fpkm_tracking_informations.length'</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-string">'Coverage'</span>
+    <span class="ruby-identifier">sort_column</span> = <span class="ruby-string">'transcript_fpkm_tracking_informations.coverage'</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-string">'FPKM'</span>
+    <span class="ruby-identifier">sort_column</span> = <span class="ruby-string">'fpkm_samples.fpkm'</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-string">'FPKM Lower Bound'</span>
+    <span class="ruby-identifier">sort_column</span> = <span class="ruby-string">'fpkm_samples.fpkm_lo'</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-string">'FPKM Upper Bound'</span>
+    <span class="ruby-identifier">sort_column</span> = <span class="ruby-string">'fpkm_samples.fpkm_hi'</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-string">'Status'</span>
+    <span class="ruby-identifier">sort_column</span> = <span class="ruby-string">'fpkm_samples.status'</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-node">&quot;#{sort_column} #{@sort_order}&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- build_order_string-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- build_order_string-method -->
+
+    
+      <div id="method-i-build_select_string" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">build_select_string</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Builds the select string to use for the query</p>
+          
+
+          
+          <div class="method-source-code" id="build_select_string-source">
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_transcript_isoforms.rb, line 199</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">build_select_string</span>()
+  <span class="ruby-identifier">select_string</span> = <span class="ruby-string">'transcripts.name_from_program as transcript_name, '</span> <span class="ruby-operator">+</span>
                   <span class="ruby-string">'genes.name_from_program as gene_name,'</span> <span class="ruby-operator">+</span>
                   <span class="ruby-string">'transcript_fpkm_tracking_informations.class_code,'</span> <span class="ruby-operator">+</span>
                   <span class="ruby-string">'transcript_fpkm_tracking_informations.length,'</span> <span class="ruby-operator">+</span>
@@ -811,124 +814,375 @@ href="QueryTranscriptIsoforms.html#attribute-i-results">results</a>.</p>
                   <span class="ruby-string">'fpkm_samples.fpkm_lo,'</span> <span class="ruby-operator">+</span>
                   <span class="ruby-string">'fpkm_samples.fpkm_hi,'</span> <span class="ruby-operator">+</span>
                   <span class="ruby-string">'fpkm_samples.status'</span>
-  <span class="ruby-identifier">ds_t</span> = <span class="ruby-constant">Dataset</span>.<span class="ruby-identifier">arel_table</span>
-  <span class="ruby-identifier">where_clause</span> = <span class="ruby-identifier">ds_t</span>[<span class="ruby-value">:id</span>].<span class="ruby-identifier">eq</span>(<span class="ruby-ivar">@dataset_id</span>)
-  <span class="ruby-identifier">fs_t</span> = <span class="ruby-constant">FpkmSample</span>.<span class="ruby-identifier">arel_table</span>
-  <span class="ruby-identifier">where_clause</span> = <span class="ruby-identifier">where_clause</span>.<span class="ruby-identifier">and</span>(<span class="ruby-identifier">fs_t</span>[<span class="ruby-value">:sample_id</span>].<span class="ruby-identifier">eq</span>(<span class="ruby-ivar">@sample_id</span>))
-  <span class="ruby-identifier">class_codes_where_clause</span> = <span class="ruby-identifier">class_codes_where_clause</span>()
-  <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">class_codes_where_clause</span>.<span class="ruby-identifier">nil?</span>
-    <span class="ruby-identifier">where_clause</span> = <span class="ruby-identifier">where_clause</span>.<span class="ruby-identifier">and</span>(<span class="ruby-identifier">class_codes_where_clause</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@has_go_terms</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">true</span>
+    <span class="ruby-identifier">select_string</span> <span class="ruby-operator">+=</span> <span class="ruby-string">', '</span>
+    <span class="ruby-comment"># Add aggregate select string for the go ids</span>
+    <span class="ruby-identifier">go_ids_agg_str_gen</span> = <span class="ruby-constant">AggregateStringGenerator</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">'go_terms.id'</span>,<span class="ruby-string">'go_ids'</span>)
+    <span class="ruby-identifier">select_string</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot;#{go_ids_agg_str_gen.generate_aggregate_string()}, &quot;</span>
+    <span class="ruby-comment"># Add the aggregate select string for the go terms</span>
+    <span class="ruby-identifier">go_terms_agg_str_gen</span> = <span class="ruby-constant">AggregateStringGenerator</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">'go_terms.term'</span>,
+                                                        <span class="ruby-string">'go_terms'</span>)
+    <span class="ruby-identifier">select_string</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">go_terms_agg_str_gen</span>.<span class="ruby-identifier">generate_aggregate_string</span>()
   <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">where_clause</span> = <span class="ruby-identifier">where_clause</span>.<span class="ruby-identifier">and</span>(<span class="ruby-identifier">transcript_length_query_condition</span>())
-  <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-ivar">@transcript_name</span>.<span class="ruby-identifier">blank?</span>
-    <span class="ruby-identifier">tnqcg</span> = <span class="ruby-constant">TranscriptNameQueryConditionGenerator</span>.<span class="ruby-identifier">new</span>()
-    <span class="ruby-identifier">tnqcg</span>.<span class="ruby-identifier">name</span> = <span class="ruby-ivar">@transcript_name</span>
-    <span class="ruby-identifier">where_clause</span> = <span class="ruby-identifier">where_clause</span>.<span class="ruby-identifier">and</span>(<span class="ruby-identifier">tnqcg</span>.<span class="ruby-identifier">generate_query_condition</span>())
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">query_results</span> = 
-     <span class="ruby-constant">Dataset</span>.<span class="ruby-identifier">joins</span>(
-        <span class="ruby-value">:transcripts</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value">:transcript_fpkm_tracking_information</span>, <span class="ruby-value">:gene</span>, <span class="ruby-value">:fpkm_samples</span>]
-      ).<span class="ruby-identifier">where</span>(<span class="ruby-identifier">where_clause</span>).<span class="ruby-identifier">select</span>(<span class="ruby-identifier">select_string</span>)
-       .<span class="ruby-identifier">limit</span>(<span class="ruby-constant">PIECE_SIZE</span>).<span class="ruby-identifier">offset</span>(<span class="ruby-constant">PIECE_SIZE</span>*<span class="ruby-ivar">@piece</span>.<span class="ruby-identifier">to_i</span>)
-  <span class="ruby-comment">#Extract the query results to form that can be put in the view</span>
-  <span class="ruby-ivar">@sample_name</span> = <span class="ruby-constant">Sample</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-ivar">@sample_id</span>).<span class="ruby-identifier">name</span>
-  <span class="ruby-ivar">@results</span> = []
-  <span class="ruby-identifier">query_results</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">query_result</span><span class="ruby-operator">|</span>
-    <span class="ruby-comment">#Do a few more minor queries to get the data in the needed format</span>
-    <span class="ruby-keyword">if</span> (<span class="ruby-ivar">@dataset</span>.<span class="ruby-identifier">go_terms_status</span> <span class="ruby-operator">==</span> <span class="ruby-string">'found'</span>)
-      <span class="ruby-identifier">go_filter_checker</span> = <span class="ruby-constant">GoFilterChecker</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">query_result</span>.<span class="ruby-identifier">transcript_id</span>,
-                                                <span class="ruby-ivar">@go_ids</span>,
-                                                <span class="ruby-ivar">@go_terms</span>)
-      <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">go_filter_checker</span>.<span class="ruby-identifier">passes_go_filters</span>() <span class="ruby-operator">==</span> <span class="ruby-keyword">false</span>
-    <span class="ruby-keyword">end</span>
-    <span class="ruby-comment">#Fill in the result hash that the view will use to display the data</span>
-    <span class="ruby-identifier">result</span> = {}
-    <span class="ruby-identifier">result</span>[<span class="ruby-value">:transcript_name</span>] = <span class="ruby-identifier">query_result</span>.<span class="ruby-identifier">transcript_name</span>
-    <span class="ruby-identifier">result</span>[<span class="ruby-value">:gene_name</span>] = <span class="ruby-identifier">query_result</span>.<span class="ruby-identifier">gene_name</span>
-    <span class="ruby-keyword">if</span> (<span class="ruby-ivar">@dataset</span>.<span class="ruby-identifier">go_terms_status</span> <span class="ruby-operator">==</span> <span class="ruby-string">'found'</span>)
-      <span class="ruby-identifier">result</span>[<span class="ruby-value">:go_terms</span>] = <span class="ruby-identifier">go_filter_checker</span>.<span class="ruby-identifier">transcript_go_terms</span>
-    <span class="ruby-keyword">else</span>
-      <span class="ruby-identifier">result</span>[<span class="ruby-value">:go_terms</span>] = []
-    <span class="ruby-keyword">end</span>
-    <span class="ruby-identifier">result</span>[<span class="ruby-value">:class_code</span>] = <span class="ruby-identifier">query_result</span>.<span class="ruby-identifier">class_code</span>
-    <span class="ruby-identifier">result</span>[<span class="ruby-value">:transcript_length</span>] = <span class="ruby-identifier">query_result</span>.<span class="ruby-identifier">length</span>
-    <span class="ruby-identifier">result</span>[<span class="ruby-value">:coverage</span>] = <span class="ruby-identifier">query_result</span>.<span class="ruby-identifier">coverage</span>
-    <span class="ruby-identifier">result</span>[<span class="ruby-value">:fpkm</span>] = <span class="ruby-identifier">query_result</span>.<span class="ruby-identifier">fpkm</span>
-    <span class="ruby-identifier">result</span>[<span class="ruby-value">:fpkm_lo</span>] =  <span class="ruby-identifier">query_result</span>.<span class="ruby-identifier">fpkm_lo</span>
-    <span class="ruby-identifier">result</span>[<span class="ruby-value">:fpkm_hi</span>] =  <span class="ruby-identifier">query_result</span>.<span class="ruby-identifier">fpkm_hi</span>
-    <span class="ruby-identifier">result</span>[<span class="ruby-value">:status</span>] = <span class="ruby-identifier">query_result</span>.<span class="ruby-identifier">status</span>
-    <span class="ruby-ivar">@results</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">result</span>
-  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">select_string</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- query-source -->
+          </div><!-- build_select_string-source -->
           
         </div>
 
         
 
         
-      </div><!-- query-method -->
+      </div><!-- build_select_string-method -->
 
     
-      <div id="method-i-set_attributes_and_defaults" class="method-detail ">
+      <div id="method-i-count_query_results" class="method-detail ">
         
         <div class="method-heading">
-          <span class="method-name">set_attributes_and_defaults</span><span
-            class="method-args">(attributes = {})</span>
+          <span class="method-name">count_query_results</span><span
+            class="method-args">()</span>
           <span class="method-click-advice">click to toggle source</span>
         </div>
         
 
         <div class="method-description">
           
-          <p>Set the view model’s attributes or set those attributes to their  default
-values</p>
+          <p>Counts the total number of records found in the query.</p>
           
 
           
-          <div class="method-source-code" id="set_attributes_and_defaults-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_transcript_isoforms.rb, line 141</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-identifier">attributes</span> = {})
-  <span class="ruby-comment">#Load in any values from the form</span>
-  <span class="ruby-identifier">attributes</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">name</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
-      <span class="ruby-identifier">send</span>(<span class="ruby-node">&quot;#{name}=&quot;</span>, <span class="ruby-identifier">value</span>)
+          <div class="method-source-code" id="count_query_results-source">
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_transcript_isoforms.rb, line 325</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">count_query_results</span>()
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@has_go_terms</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">true</span>
+    <span class="ruby-ivar">@results_count</span> = <span class="ruby-constant">Dataset</span>
+      .<span class="ruby-identifier">joins</span>(<span class="ruby-value">:transcripts</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value">:transcript_fpkm_tracking_information</span>, 
+                              <span class="ruby-value">:gene</span>, <span class="ruby-value">:fpkm_samples</span>])
+      .<span class="ruby-identifier">joins</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">thgt_left_join_string</span>)
+      .<span class="ruby-identifier">joins</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">go_terms_left_join_string</span>)
+      .<span class="ruby-identifier">where</span>(<span class="ruby-ivar">@where_clauses</span>)
+      .<span class="ruby-identifier">group</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">group_by_string</span>)
+      .<span class="ruby-identifier">having</span>(<span class="ruby-ivar">@having_string</span>)
+      .<span class="ruby-identifier">select</span>(<span class="ruby-string">'count(*)'</span>)
+      .<span class="ruby-identifier">length</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@results_count</span> = <span class="ruby-constant">Dataset</span>
+      .<span class="ruby-identifier">joins</span>(<span class="ruby-value">:transcripts</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value">:transcript_fpkm_tracking_information</span>, 
+                              <span class="ruby-value">:gene</span>, <span class="ruby-value">:fpkm_samples</span>])
+      .<span class="ruby-identifier">where</span>(<span class="ruby-ivar">@where_clauses</span>)
+      .<span class="ruby-identifier">select</span>(<span class="ruby-string">'count(*)'</span>)[<span class="ruby-value">0</span>].<span class="ruby-identifier">count</span>.<span class="ruby-identifier">to_i</span>
   <span class="ruby-keyword">end</span>
-  <span class="ruby-comment">#Set available datasets</span>
-  <span class="ruby-ivar">@names_and_ids_for_available_datasets</span> = []
-  <span class="ruby-identifier">available_datasets</span> = <span class="ruby-constant">Dataset</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:user_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@current_user</span>.<span class="ruby-identifier">id</span>,
-                                     <span class="ruby-value">:has_transcript_isoforms</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>,
-                                     <span class="ruby-value">:finished_uploading</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>)
-                              .<span class="ruby-identifier">order</span>(<span class="ruby-value">:name</span>)
-  <span class="ruby-identifier">available_datasets</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">ds</span><span class="ruby-operator">|</span>
-    <span class="ruby-ivar">@names_and_ids_for_available_datasets</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">ds</span>.<span class="ruby-identifier">name</span>, <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">id</span>]
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-ivar">@available_transcript_length_comparison_signs</span> =
-    <span class="ruby-constant">AVAILABLE_TRANSCRIPT_LENGTH_COMPARISON_SIGNS</span>
-  <span class="ruby-comment">#Set default values for the relavent blank attributes</span>
-  <span class="ruby-ivar">@dataset_id</span> = <span class="ruby-identifier">available_datasets</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">id</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@dataset_id</span>.<span class="ruby-identifier">blank?</span>
-  <span class="ruby-ivar">@transcript_length_value</span> = <span class="ruby-string">'0'</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">transcript_length_value</span>.<span class="ruby-identifier">blank?</span>
-  <span class="ruby-ivar">@transcript_length_comparison_sign</span> = <span class="ruby-string">'&gt;='</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@transcript_length_comparison_sign</span>.<span class="ruby-identifier">blank?</span>
-  <span class="ruby-comment">#Set available samples for querying</span>
-  <span class="ruby-identifier">ds</span> = <span class="ruby-constant">Dataset</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-ivar">@dataset_id</span>)
-  <span class="ruby-ivar">@available_samples</span> = []
-  <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">samples</span>.<span class="ruby-identifier">sort</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">sample</span><span class="ruby-operator">|</span>
-    <span class="ruby-ivar">@available_samples</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">sample</span>.<span class="ruby-identifier">name</span>, <span class="ruby-identifier">sample</span>.<span class="ruby-identifier">id</span>]
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-ivar">@sample_id</span> = <span class="ruby-ivar">@available_samples</span>[<span class="ruby-value">0</span>][<span class="ruby-value">1</span>] <span class="ruby-keyword">if</span> <span class="ruby-ivar">@sample_id</span>.<span class="ruby-identifier">blank?</span>
-  <span class="ruby-ivar">@piece</span> = <span class="ruby-string">'0'</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@piece</span>.<span class="ruby-identifier">blank?</span>
-  <span class="ruby-ivar">@go_terms_status</span> = <span class="ruby-constant">Dataset</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-ivar">@dataset_id</span>).<span class="ruby-identifier">go_terms_status</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- set_attributes_and_defaults-source -->
+          </div><!-- count_query_results-source -->
           
         </div>
 
         
 
         
-      </div><!-- set_attributes_and_defaults-method -->
+      </div><!-- count_query_results-method -->
 
     
-    </section><!-- public-instance-method-details -->
+      <div id="method-i-execute_full_query" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">execute_full_query</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Runs the full query without pagination. This is used  when emailing the
+results to the user as a text file.</p>
+          
+
+          
+          <div class="method-source-code" id="execute_full_query-source">
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_transcript_isoforms.rb, line 301</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">execute_full_query</span>()
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@has_go_terms</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">true</span>
+    <span class="ruby-ivar">@results</span> = <span class="ruby-constant">Dataset</span>
+      .<span class="ruby-identifier">joins</span>(<span class="ruby-value">:transcripts</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value">:transcript_fpkm_tracking_information</span>, 
+                              <span class="ruby-value">:gene</span>, <span class="ruby-value">:fpkm_samples</span>])
+      .<span class="ruby-identifier">joins</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">thgt_left_join_string</span>)
+      .<span class="ruby-identifier">joins</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">go_terms_left_join_string</span>)
+      .<span class="ruby-identifier">where</span>(<span class="ruby-ivar">@where_clauses</span>)
+      .<span class="ruby-identifier">group</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">group_by_string</span>)
+      .<span class="ruby-identifier">having</span>(<span class="ruby-ivar">@having_string</span>)
+      .<span class="ruby-identifier">select</span>(<span class="ruby-ivar">@select_string</span>)
+      .<span class="ruby-identifier">order</span>(<span class="ruby-ivar">@order_string</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@results</span> = <span class="ruby-constant">Dataset</span>
+      .<span class="ruby-identifier">joins</span>(<span class="ruby-value">:transcripts</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value">:transcript_fpkm_tracking_information</span>, 
+                              <span class="ruby-value">:gene</span>, <span class="ruby-value">:fpkm_samples</span>])
+      .<span class="ruby-identifier">where</span>(<span class="ruby-ivar">@where_clauses</span>)
+      .<span class="ruby-identifier">select</span>(<span class="ruby-ivar">@select_string</span>)
+      .<span class="ruby-identifier">order</span>(<span class="ruby-ivar">@order_string</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- execute_full_query-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- execute_full_query-method -->
+
+    
+      <div id="method-i-execute_paged_query" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">execute_paged_query</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Runs the query in its paginated form. This is used when  displaying the
+results to the user on the page.</p>
+          
+
+          
+          <div class="method-source-code" id="execute_paged_query-source">
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_transcript_isoforms.rb, line 272</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">execute_paged_query</span>()
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@has_go_terms</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">true</span>
+    <span class="ruby-ivar">@results</span> = <span class="ruby-constant">Dataset</span>
+      .<span class="ruby-identifier">joins</span>(<span class="ruby-value">:transcripts</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value">:transcript_fpkm_tracking_information</span>, 
+                              <span class="ruby-value">:gene</span>, <span class="ruby-value">:fpkm_samples</span>])
+      .<span class="ruby-identifier">joins</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">thgt_left_join_string</span>)
+      .<span class="ruby-identifier">joins</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">go_terms_left_join_string</span>)
+      .<span class="ruby-identifier">where</span>(<span class="ruby-ivar">@where_clauses</span>)
+      .<span class="ruby-identifier">group</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">group_by_string</span>)
+      .<span class="ruby-identifier">having</span>(<span class="ruby-ivar">@having_string</span>)
+      .<span class="ruby-identifier">select</span>(<span class="ruby-ivar">@select_string</span>)
+      .<span class="ruby-identifier">order</span>(<span class="ruby-ivar">@order_string</span>)
+      .<span class="ruby-identifier">limit</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">page_size</span>)
+      .<span class="ruby-identifier">offset</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">page_size</span>*(<span class="ruby-ivar">@page_number</span>.<span class="ruby-identifier">to_i</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>))
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@results</span> = <span class="ruby-constant">Dataset</span>
+      .<span class="ruby-identifier">joins</span>(<span class="ruby-value">:transcripts</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value">:transcript_fpkm_tracking_information</span>, 
+                              <span class="ruby-value">:gene</span>, <span class="ruby-value">:fpkm_samples</span>])
+      .<span class="ruby-identifier">where</span>(<span class="ruby-ivar">@where_clauses</span>)
+      .<span class="ruby-identifier">select</span>(<span class="ruby-ivar">@select_string</span>)
+      .<span class="ruby-identifier">order</span>(<span class="ruby-ivar">@order_string</span>)
+      .<span class="ruby-identifier">limit</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">page_size</span>)
+      .<span class="ruby-identifier">offset</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">page_size</span>*(<span class="ruby-ivar">@page_number</span>.<span class="ruby-identifier">to_i</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>))
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- execute_paged_query-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- execute_paged_query-method -->
+
+    
+      <div id="method-i-generate_where_clauses" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">generate_where_clauses</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Generates the where clause(s) to user for the query</p>
+          
+
+          
+          <div class="method-source-code" id="generate_where_clauses-source">
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_transcript_isoforms.rb, line 250</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">generate_where_clauses</span>()
+   <span class="ruby-comment">#Create and run the query</span>
+  <span class="ruby-identifier">ds_t</span> = <span class="ruby-constant">Dataset</span>.<span class="ruby-identifier">arel_table</span>
+  <span class="ruby-identifier">where_clauses</span> = <span class="ruby-identifier">ds_t</span>[<span class="ruby-value">:id</span>].<span class="ruby-identifier">eq</span>(<span class="ruby-ivar">@dataset_id</span>)
+  <span class="ruby-identifier">fs_t</span> = <span class="ruby-constant">FpkmSample</span>.<span class="ruby-identifier">arel_table</span>
+  <span class="ruby-identifier">where_clauses</span> = <span class="ruby-identifier">where_clauses</span>.<span class="ruby-identifier">and</span>(<span class="ruby-identifier">fs_t</span>[<span class="ruby-value">:sample_id</span>].<span class="ruby-identifier">eq</span>(<span class="ruby-ivar">@sample_id</span>))
+  <span class="ruby-identifier">class_codes_where_clause</span> = <span class="ruby-identifier">class_codes_where_clause</span>()
+  <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">class_codes_where_clause</span>.<span class="ruby-identifier">nil?</span>
+    <span class="ruby-identifier">where_clauses</span> = <span class="ruby-identifier">where_clauses</span>.<span class="ruby-identifier">and</span>(<span class="ruby-identifier">class_codes_where_clause</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">where_clauses</span> = <span class="ruby-identifier">where_clauses</span>.<span class="ruby-identifier">and</span>(<span class="ruby-identifier">transcript_length_query_condition</span>())
+  <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-ivar">@transcript_name</span>.<span class="ruby-identifier">blank?</span>
+    <span class="ruby-identifier">tnqcg</span> = <span class="ruby-constant">TranscriptNameQueryConditionGenerator</span>.<span class="ruby-identifier">new</span>()
+    <span class="ruby-identifier">tnqcg</span>.<span class="ruby-identifier">name</span> = <span class="ruby-ivar">@transcript_name</span>
+    <span class="ruby-identifier">where_clauses</span> = <span class="ruby-identifier">where_clauses</span>.<span class="ruby-identifier">and</span>(<span class="ruby-identifier">tnqcg</span>.<span class="ruby-identifier">generate_query_condition</span>())
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">where_clauses</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- generate_where_clauses-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- generate_where_clauses-method -->
+
+    
+      <div id="method-i-set_available_datasets_and_default_dataset" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">set_available_datasets_and_default_dataset</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Sets the available datasets that the user can query and which one of  those
+datasets will be selected by default.</p>
+          
+
+          
+          <div class="method-source-code" id="set_available_datasets_and_default_dataset-source">
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_transcript_isoforms.rb, line 144</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">set_available_datasets_and_default_dataset</span>()
+  <span class="ruby-comment">#Set available datasets</span>
+  <span class="ruby-ivar">@names_and_ids_for_available_datasets</span> = []
+  <span class="ruby-identifier">available_datasets</span> = <span class="ruby-constant">Dataset</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:user_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@current_user</span>.<span class="ruby-identifier">id</span>, 
+                                     <span class="ruby-value">:has_transcript_isoforms</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>,
+                                     <span class="ruby-value">:finished_uploading</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>)
+                              .<span class="ruby-identifier">order</span>(<span class="ruby-value">:name</span>)
+  <span class="ruby-identifier">available_datasets</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">ds</span><span class="ruby-operator">|</span>
+    <span class="ruby-ivar">@names_and_ids_for_available_datasets</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">ds</span>.<span class="ruby-identifier">name</span>, <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">id</span>]
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-comment">#Set default values for the relavent blank attributes</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@dataset_id</span>.<span class="ruby-identifier">blank?</span>
+    <span class="ruby-ivar">@dataset_id</span> = <span class="ruby-identifier">available_datasets</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">id</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-ivar">@dataset</span> = <span class="ruby-constant">Dataset</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-ivar">@dataset_id</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- set_available_datasets_and_default_dataset-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- set_available_datasets_and_default_dataset-method -->
+
+    
+      <div id="method-i-set_other_defaults" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">set_other_defaults</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Set defaults that do not fit into any other categories.</p>
+          
+
+          
+          <div class="method-source-code" id="set_other_defaults-source">
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_transcript_isoforms.rb, line 187</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">set_other_defaults</span>()
+  <span class="ruby-keyword">super</span>
+  <span class="ruby-ivar">@available_transcript_length_comparison_signs</span> = 
+      <span class="ruby-constant">AVAILABLE_TRANSCRIPT_LENGTH_COMPARISON_SIGNS</span>
+  <span class="ruby-ivar">@transcript_length_value</span> = <span class="ruby-string">'0'</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@transcript_length_value</span>.<span class="ruby-identifier">blank?</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@transcript_length_comparison_sign</span>.<span class="ruby-identifier">blank?</span>
+    <span class="ruby-ivar">@transcript_length_comparison_sign</span> = <span class="ruby-string">'&gt;='</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- set_other_defaults-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- set_other_defaults-method -->
+
+    
+      <div id="method-i-set_sample_related_defaults" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">set_sample_related_defaults</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Set any defaults related to the samples and sample comparisons.</p>
+          
+
+          
+          <div class="method-source-code" id="set_sample_related_defaults-source">
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_transcript_isoforms.rb, line 163</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">set_sample_related_defaults</span>()
+  <span class="ruby-ivar">@available_samples</span> = []
+  <span class="ruby-ivar">@dataset</span>.<span class="ruby-identifier">samples</span>.<span class="ruby-identifier">sort</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">sample</span><span class="ruby-operator">|</span>
+    <span class="ruby-ivar">@available_samples</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">sample</span>.<span class="ruby-identifier">name</span>, <span class="ruby-identifier">sample</span>.<span class="ruby-identifier">id</span>]
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-ivar">@sample_id</span> = <span class="ruby-ivar">@available_samples</span>.<span class="ruby-identifier">first</span>[<span class="ruby-value">1</span>]
+  <span class="ruby-ivar">@sample_name</span> = <span class="ruby-ivar">@available_samples</span>.<span class="ruby-identifier">first</span>[<span class="ruby-value">0</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- set_sample_related_defaults-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- set_sample_related_defaults-method -->
+
+    
+      <div id="method-i-set_sort_defaults" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">set_sort_defaults</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Set any defaults related to sorting.</p>
+          
+
+          
+          <div class="method-source-code" id="set_sort_defaults-source">
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_transcript_isoforms.rb, line 174</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">set_sort_defaults</span>()
+  <span class="ruby-keyword">super</span>
+  <span class="ruby-ivar">@available_sort_columns</span> = [<span class="ruby-string">'Transcript'</span>,<span class="ruby-string">'Associated Gene'</span>, 
+                              <span class="ruby-string">'Class Code'</span>, <span class="ruby-string">'Length'</span>,<span class="ruby-string">'Coverage'</span>, 
+                            <span class="ruby-string">'FPKM'</span>,<span class="ruby-string">'FPKM Lower Bound'</span>,<span class="ruby-string">'FPKM Upper Bound'</span>,
+                            <span class="ruby-string">'Status'</span>]
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@is_new_query</span> <span class="ruby-operator">==</span> <span class="ruby-string">'1'</span> <span class="ruby-keyword">or</span> <span class="ruby-ivar">@sort_column</span>.<span class="ruby-identifier">blank?</span>
+    <span class="ruby-ivar">@sort_column</span> = <span class="ruby-ivar">@available_sort_columns</span>.<span class="ruby-identifier">first</span> 
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- set_sort_defaults-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- set_sort_defaults-method -->
+
+    
+    </section><!-- protected-instance-method-details -->
   
   </section><!-- 5Buntitled-5D -->
 

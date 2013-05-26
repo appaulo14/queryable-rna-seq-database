@@ -5,6 +5,8 @@ require 'query_analysis/abstract_query_regular_db.rb'
 # View model for the query differentially expressed transcripts page.
 #
 # <b>Associated Controller:</b> QueryAnalysisController
+#
+# <b>Associated Worker:</b> WorkerForQueryRegularDb
 class QueryDiffExpTranscripts < AbstractQueryRegularDb
  
   # The id of the sample comparison whose transript differential expression tests 
@@ -37,7 +39,8 @@ class QueryDiffExpTranscripts < AbstractQueryRegularDb
   validates :cutoff, :presence => true,
                      :format => { :with => /\A\d*\.?\d*\z/ }
   
-  
+  ###
+  # Returns the type of query that the class provides
   def self.get_query_type()
     return 'query_diff_exp_transcripts'
   end
@@ -60,6 +63,9 @@ class QueryDiffExpTranscripts < AbstractQueryRegularDb
            "transcripts.name_from_program "
   end
   
+  ###
+  # Sets the available datasets that the user can query and which one of 
+  # those datasets will be selected by default.
   def set_available_datasets_and_default_dataset()
     #Set available datasets
     @names_and_ids_for_available_datasets = []
@@ -77,6 +83,8 @@ class QueryDiffExpTranscripts < AbstractQueryRegularDb
     @dataset = Dataset.find_by_id(@dataset_id)
   end
   
+  ###
+  # Set any defaults related to the samples and sample comparisons.
   def set_sample_related_defaults()
     #Set available samples for comparison
     @available_sample_comparisons = []
@@ -105,6 +113,8 @@ class QueryDiffExpTranscripts < AbstractQueryRegularDb
     @sample_2_name = sample_cmp.sample_2.name
   end
   
+  ###
+  # Set any defaults related to sorting.
   def set_sort_defaults()
     super
     if @dataset.program_used == 'cuffdiff'
@@ -125,12 +135,16 @@ class QueryDiffExpTranscripts < AbstractQueryRegularDb
     end
   end
   
+  ###
+  # Set defaults that do not fit into any other categories.
   def set_other_defaults()
     super
     @fdr_or_p_value = 'p_value' if fdr_or_p_value.blank?
     @cutoff = '0.05' if cutoff.blank?
   end
-
+  
+  ###
+  # Builds the select string to use for the query
   def build_select_string()
     select_string = 'transcripts.name_from_program as transcript_name, ' +
                     'genes.name_from_program as gene_name,' +
@@ -157,6 +171,8 @@ class QueryDiffExpTranscripts < AbstractQueryRegularDb
     return select_string
   end
   
+  ###
+  # Builds the ORDER BY string to use for the query
   def build_order_string()
     case @sort_column
     when'Transcript'
@@ -181,6 +197,8 @@ class QueryDiffExpTranscripts < AbstractQueryRegularDb
     return "#{sort_column} #{@sort_order}"
   end
   
+  ###
+  # Generates the where clause(s) to user for the query
   def generate_where_clauses()
     #Require parts of the where clause
     det_t = DifferentialExpressionTest.arel_table
@@ -199,6 +217,9 @@ class QueryDiffExpTranscripts < AbstractQueryRegularDb
     return where_clauses
   end
   
+  ###
+  # Runs the query in its paginated form. This is used when 
+  # displaying the results to the user on the page.
   def execute_paged_query()
     if @has_go_terms == true
       @results = DifferentialExpressionTest
@@ -223,6 +244,9 @@ class QueryDiffExpTranscripts < AbstractQueryRegularDb
     end
   end
   
+  ###
+  # Runs the full query without pagination. This is used 
+  # when emailing the results to the user as a text file.
   def execute_full_query()
     if @has_go_terms == true
       @results = DifferentialExpressionTest
@@ -243,6 +267,8 @@ class QueryDiffExpTranscripts < AbstractQueryRegularDb
     end
   end
   
+  ###
+  # Counts the total number of records found in the query.
   def count_query_results()
     if @has_go_terms == true
       @results_count = DifferentialExpressionTest

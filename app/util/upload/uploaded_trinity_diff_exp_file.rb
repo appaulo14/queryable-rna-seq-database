@@ -30,6 +30,15 @@ end
 ###
 # Represents a single line of an uploaded Trinity differential expression file
 class TrinityDiffExpLine
+  ###
+  # parameters::
+  # * <b>#item:</b> the Gene or Transcript name for the line of the 
+  #   differential expression file
+  # * <b>#log_fold_change:</b> the log fold change for the line of the 
+  #   differential expression file
+  # * <b>#p_value:</b> the p-value for the line of the differential 
+  #   expression file
+  # * <b>#fdr:</b> the fdr for the line of the differential expression file
   def initialize(item,log_fold_change,p_value, fdr)
     @item = item
     @log_fold_change = log_fold_change

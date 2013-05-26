@@ -34,11 +34,12 @@ Utility Classes::
 * General Utility Classes
   * SystemUtil
 * Query Utility Classes
+  * AggregateStringGenerator
   * GeneNameQueryConditionGenerator
-  * GoFilterChecker
   * GoIdsQueryConditionGenerator
   * GoTermsQueryConditionGenerator
   * TranscriptNameQueryConditionGenerator
+  
 * Upload Utility Classes
   * BlastUtil
   * GoTermFinderAndProcessor
@@ -81,6 +82,7 @@ ViewModels::
 * Home
   * ReportIssue
 * QueryAnalysis
+  * AbstractQueryRegularDb
   * AbstractQueryUsingBlast
   * FindGoTermsForDataset
   * GetGeneFastas
@@ -98,6 +100,8 @@ ViewModels::
 
 Workers::
 * WorkerForFindGoTermsForDataset
+* WorkerForQueryRegularDb
+* WorkerForQueryUsingBlast
 * WorkerForUploadCuffdiff
 * WorkerForUploadFastaSequences
 * WorkerForUploadTrinityWithEdger

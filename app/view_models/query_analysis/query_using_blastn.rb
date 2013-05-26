@@ -5,6 +5,8 @@ require 'query_analysis/abstract_query_using_blast.rb'
 # View model for the query using Blastn page.
 #
 # <b>Associated Controller:</b> QueryAnalysisController
+#
+# <b>Associated Worker:</b> WorkerForQueryUsingBlast
 class QueryUsingBlastn < AbstractQueryUsingBlast
   # The word size
   attr_accessor :word_size
@@ -114,6 +116,8 @@ class QueryUsingBlastn < AbstractQueryUsingBlast
   validates :match_and_mismatch_scores, :presence => true,
                 :inclusion => {:in => AVAILABLE_MATCH_AND_MISMATCH_SCORES.keys}
   
+  ###
+  # Returns the name of the blast program that this class provides.
   def self.get_program_name()
     return 'blastn'
   end

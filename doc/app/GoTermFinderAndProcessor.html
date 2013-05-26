@@ -97,11 +97,15 @@
 
   <ul class="link-list">
   
+    <li><a href="./AbstractQueryRegularDb.html">AbstractQueryRegularDb</a>
+  
     <li><a href="./AbstractQueryUsingBlast.html">AbstractQueryUsingBlast</a>
   
     <li><a href="./AdminController.html">AdminController</a>
   
     <li><a href="./AdminHelper.html">AdminHelper</a>
+  
+    <li><a href="./AggregateStringGenerator.html">AggregateStringGenerator</a>
   
     <li><a href="./ApplicationController.html">ApplicationController</a>
   
@@ -112,6 +116,8 @@
     <li><a href="./ArrayOfUploadedFilesValidator.html">ArrayOfUploadedFilesValidator</a>
   
     <li><a href="./ArrayValidator.html">ArrayValidator</a>
+  
+    <li><a href="./B2gdbGoTerm.html">B2gdbGoTerm</a>
   
     <li><a href="./BlastUtil.html">BlastUtil</a>
   
@@ -140,8 +146,6 @@
     <li><a href="./GetGeneFastas.html">GetGeneFastas</a>
   
     <li><a href="./GetTranscriptFasta.html">GetTranscriptFasta</a>
-  
-    <li><a href="./GoFilterChecker.html">GoFilterChecker</a>
   
     <li><a href="./GoIdsQueryConditionGenerator.html">GoIdsQueryConditionGenerator</a>
   
@@ -250,6 +254,10 @@
     <li><a href="./ViewModelBooleanValidator.html">ViewModelBooleanValidator</a>
   
     <li><a href="./WorkerForFindGoTermsForDataset.html">WorkerForFindGoTermsForDataset</a>
+  
+    <li><a href="./WorkerForQueryRegularDb.html">WorkerForQueryRegularDb</a>
+  
+    <li><a href="./WorkerForQueryUsingBlast.html">WorkerForQueryUsingBlast</a>
   
     <li><a href="./WorkerForUploadCuffdiff.html">WorkerForUploadCuffdiff</a>
   
@@ -393,15 +401,23 @@ method to the database</p>
     <span class="ruby-comment">#Remove from the transcript name the &quot;lcl|&quot; part put there by blast</span>
     <span class="ruby-identifier">line</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-regexp">/\Alcl\|/</span>,<span class="ruby-string">''</span>)
     <span class="ruby-identifier">line_regex</span> = <span class="ruby-regexp">/\A(\S+)\s+(\S+)\s+(.+)\z/</span>
-    (<span class="ruby-identifier">transcript_name</span>, <span class="ruby-identifier">go_accession</span>) = <span class="ruby-identifier">line</span>.<span class="ruby-identifier">strip</span>.<span class="ruby-identifier">match</span>(<span class="ruby-identifier">line_regex</span>).<span class="ruby-identifier">captures</span>
-    <span class="ruby-identifier">go_term</span> = <span class="ruby-constant">GoTerm</span>.<span class="ruby-identifier">find_by_acc</span>(<span class="ruby-identifier">go_accession</span>)
+    (<span class="ruby-identifier">transcript_name</span>, <span class="ruby-identifier">go_id</span>) = <span class="ruby-identifier">line</span>.<span class="ruby-identifier">strip</span>.<span class="ruby-identifier">match</span>(<span class="ruby-identifier">line_regex</span>).<span class="ruby-identifier">captures</span>
+    <span class="ruby-identifier">go_term</span> = <span class="ruby-constant">GoTerm</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-identifier">go_id</span>)
+    <span class="ruby-comment"># If the go term doesn't currently exist in the rails database, </span>
+    <span class="ruby-comment"># copy it from the Blast2go database</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">go_term</span>.<span class="ruby-identifier">nil?</span>
+      <span class="ruby-identifier">b2gdb_go_term</span> = <span class="ruby-constant">B2gdbGoTerm</span>.<span class="ruby-identifier">find_by_acc</span>(<span class="ruby-identifier">go_id</span>)
+      <span class="ruby-identifier">go_term</span> = <span class="ruby-constant">GoTerm</span>.<span class="ruby-identifier">create!</span>(<span class="ruby-value">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">b2gdb_go_term</span>.<span class="ruby-identifier">acc</span>,
+                               <span class="ruby-value">:term</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">b2gdb_go_term</span>.<span class="ruby-identifier">name</span>)
+    <span class="ruby-keyword">end</span>
     <span class="ruby-identifier">transcript</span> = <span class="ruby-constant">Transcript</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:dataset_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@dataset</span>.<span class="ruby-identifier">id</span>, 
                                    <span class="ruby-value">:name_from_program</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">transcript_name</span>)[<span class="ruby-value">0</span>]
     <span class="ruby-constant">TranscriptHasGoTerm</span>.<span class="ruby-identifier">create!</span>(<span class="ruby-value">:transcript</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">transcript</span>, 
                                    <span class="ruby-value">:go_term</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">go_term</span>)
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">go_terms_file</span>.<span class="ruby-identifier">close</span>
-  <span class="ruby-constant">File</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">go_terms_file</span>.<span class="ruby-identifier">path</span>)
+  <span class="ruby-comment"># Clean up the files now that everything is finished</span>
+  <span class="ruby-identifier">cleanup_files</span>()
 <span class="ruby-keyword">end</span></pre>
           </div><!-- process_go_terms-source -->
           

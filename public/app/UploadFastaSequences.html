@@ -115,11 +115,15 @@
 
   <ul class="link-list">
   
+    <li><a href="./AbstractQueryRegularDb.html">AbstractQueryRegularDb</a>
+  
     <li><a href="./AbstractQueryUsingBlast.html">AbstractQueryUsingBlast</a>
   
     <li><a href="./AdminController.html">AdminController</a>
   
     <li><a href="./AdminHelper.html">AdminHelper</a>
+  
+    <li><a href="./AggregateStringGenerator.html">AggregateStringGenerator</a>
   
     <li><a href="./ApplicationController.html">ApplicationController</a>
   
@@ -130,6 +134,8 @@
     <li><a href="./ArrayOfUploadedFilesValidator.html">ArrayOfUploadedFilesValidator</a>
   
     <li><a href="./ArrayValidator.html">ArrayValidator</a>
+  
+    <li><a href="./B2gdbGoTerm.html">B2gdbGoTerm</a>
   
     <li><a href="./BlastUtil.html">BlastUtil</a>
   
@@ -158,8 +164,6 @@
     <li><a href="./GetGeneFastas.html">GetGeneFastas</a>
   
     <li><a href="./GetTranscriptFasta.html">GetTranscriptFasta</a>
-  
-    <li><a href="./GoFilterChecker.html">GoFilterChecker</a>
   
     <li><a href="./GoIdsQueryConditionGenerator.html">GoIdsQueryConditionGenerator</a>
   
@@ -268,6 +272,10 @@
     <li><a href="./ViewModelBooleanValidator.html">ViewModelBooleanValidator</a>
   
     <li><a href="./WorkerForFindGoTermsForDataset.html">WorkerForFindGoTermsForDataset</a>
+  
+    <li><a href="./WorkerForQueryRegularDb.html">WorkerForQueryRegularDb</a>
+  
+    <li><a href="./WorkerForQueryUsingBlast.html">WorkerForQueryUsingBlast</a>
   
     <li><a href="./WorkerForUploadCuffdiff.html">WorkerForUploadCuffdiff</a>
   
@@ -406,7 +414,7 @@ this defines that this view model does not persist in the database.</p>
 
           
           <div class="method-source-code" id="persisted-3F-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/upload_fasta_sequences.rb, line 71</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/upload_fasta_sequences.rb, line 70</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">persisted?</span>
     <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
 <span class="ruby-keyword">end</span></pre>
@@ -446,8 +454,7 @@ href="UploadFastaSequences.html#attribute-i-dataset_name">dataset_name</a></p>
       <span class="ruby-identifier">process_args_to_create_dataset</span>()
       <span class="ruby-constant">BlastUtil</span>.<span class="ruby-identifier">makeblastdb_without_seqids</span>(<span class="ruby-ivar">@transcripts_fasta_file</span>.<span class="ruby-identifier">tempfile</span>.<span class="ruby-identifier">path</span>,
                                             <span class="ruby-ivar">@dataset</span>)
-      <span class="ruby-ivar">@dataset</span>.<span class="ruby-identifier">finished_uploading</span> = <span class="ruby-keyword">true</span>
-      <span class="ruby-ivar">@dataset</span>.<span class="ruby-identifier">save!</span>
+      <span class="ruby-identifier">finalize_dataset</span>()
       <span class="ruby-constant">QueryAnalysisMailer</span>.<span class="ruby-identifier">notify_user_of_upload_success</span>(<span class="ruby-ivar">@current_user</span>,
                                                       <span class="ruby-ivar">@dataset</span>)
     <span class="ruby-keyword">end</span>

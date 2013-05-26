@@ -99,11 +99,15 @@
 
   <ul class="link-list">
   
+    <li><a href="./AbstractQueryRegularDb.html">AbstractQueryRegularDb</a>
+  
     <li><a href="./AbstractQueryUsingBlast.html">AbstractQueryUsingBlast</a>
   
     <li><a href="./AdminController.html">AdminController</a>
   
     <li><a href="./AdminHelper.html">AdminHelper</a>
+  
+    <li><a href="./AggregateStringGenerator.html">AggregateStringGenerator</a>
   
     <li><a href="./ApplicationController.html">ApplicationController</a>
   
@@ -114,6 +118,8 @@
     <li><a href="./ArrayOfUploadedFilesValidator.html">ArrayOfUploadedFilesValidator</a>
   
     <li><a href="./ArrayValidator.html">ArrayValidator</a>
+  
+    <li><a href="./B2gdbGoTerm.html">B2gdbGoTerm</a>
   
     <li><a href="./BlastUtil.html">BlastUtil</a>
   
@@ -142,8 +148,6 @@
     <li><a href="./GetGeneFastas.html">GetGeneFastas</a>
   
     <li><a href="./GetTranscriptFasta.html">GetTranscriptFasta</a>
-  
-    <li><a href="./GoFilterChecker.html">GoFilterChecker</a>
   
     <li><a href="./GoIdsQueryConditionGenerator.html">GoIdsQueryConditionGenerator</a>
   
@@ -252,6 +256,10 @@
     <li><a href="./ViewModelBooleanValidator.html">ViewModelBooleanValidator</a>
   
     <li><a href="./WorkerForFindGoTermsForDataset.html">WorkerForFindGoTermsForDataset</a>
+  
+    <li><a href="./WorkerForQueryRegularDb.html">WorkerForQueryRegularDb</a>
+  
+    <li><a href="./WorkerForQueryUsingBlast.html">WorkerForQueryUsingBlast</a>
   
     <li><a href="./WorkerForUploadCuffdiff.html">WorkerForUploadCuffdiff</a>
   
@@ -364,8 +372,8 @@
     <span class="ruby-ivar">@delete_unconfirmed_user</span> = 
         <span class="ruby-constant">DeleteUnconfirmedUser</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:delete_unconfirmed_user</span>])
     <span class="ruby-keyword">if</span> <span class="ruby-ivar">@delete_unconfirmed_user</span>.<span class="ruby-identifier">valid?</span>
-      <span class="ruby-ivar">@delete_unconfirmed_user</span>.<span class="ruby-identifier">send_rejection_email_and_destroy_user</span>
-      <span class="ruby-identifier">flash</span>[<span class="ruby-value">:notice</span>] = <span class="ruby-string">'Email successfully sent and user destroyed'</span>
+      <span class="ruby-ivar">@delete_unconfirmed_user</span>.<span class="ruby-identifier">send_rejection_email_and_delete_user</span>()
+      <span class="ruby-identifier">flash</span>[<span class="ruby-value">:notice</span>] = <span class="ruby-string">'Email successfully sent and user deleted'</span>
       <span class="ruby-identifier">redirect_to</span> <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'view_unconfirmed_users'</span>
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>

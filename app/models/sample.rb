@@ -14,7 +14,6 @@
 #  sample_type :string(255)      not null
 #  dataset_id  :integer          not null
 #
-
 class Sample < ActiveRecord::Base
   attr_accessible :dataset, :name, :sample_type
   

@@ -18,6 +18,8 @@ module QueryAnalysisHelper
     return link_to(gene_name, link_address, :target => '_blank')
   end
   
+  ###
+  # Displays a link to the Amigo page for the given go term/go id.
   def link_to_amigo_web_page_for_term(go_term,go_id)
     go_term = go_term.strip()
     go_id = go_id.strip()

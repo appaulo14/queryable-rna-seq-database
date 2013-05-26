@@ -84,12 +84,6 @@
     
     <li><a href="#method-i-get_if_dataset_has_go_terms">#get_if_dataset_has_go_terms</a>
     
-    <li><a href="#method-i-get_query_diff_exp_genes_header_row">#get_query_diff_exp_genes_header_row</a>
-    
-    <li><a href="#method-i-get_query_diff_exp_transcripts_header_row">#get_query_diff_exp_transcripts_header_row</a>
-    
-    <li><a href="#method-i-get_query_transcript_isoforms_header_row">#get_query_transcript_isoforms_header_row</a>
-    
     <li><a href="#method-i-get_tblastn_gap_costs_for_matrix">#get_tblastn_gap_costs_for_matrix</a>
     
     <li><a href="#method-i-get_transcript_diff_exp_samples_for_dataset">#get_transcript_diff_exp_samples_for_dataset</a>
@@ -137,11 +131,15 @@
 
   <ul class="link-list">
   
+    <li><a href="./AbstractQueryRegularDb.html">AbstractQueryRegularDb</a>
+  
     <li><a href="./AbstractQueryUsingBlast.html">AbstractQueryUsingBlast</a>
   
     <li><a href="./AdminController.html">AdminController</a>
   
     <li><a href="./AdminHelper.html">AdminHelper</a>
+  
+    <li><a href="./AggregateStringGenerator.html">AggregateStringGenerator</a>
   
     <li><a href="./ApplicationController.html">ApplicationController</a>
   
@@ -152,6 +150,8 @@
     <li><a href="./ArrayOfUploadedFilesValidator.html">ArrayOfUploadedFilesValidator</a>
   
     <li><a href="./ArrayValidator.html">ArrayValidator</a>
+  
+    <li><a href="./B2gdbGoTerm.html">B2gdbGoTerm</a>
   
     <li><a href="./BlastUtil.html">BlastUtil</a>
   
@@ -180,8 +180,6 @@
     <li><a href="./GetGeneFastas.html">GetGeneFastas</a>
   
     <li><a href="./GetTranscriptFasta.html">GetTranscriptFasta</a>
-  
-    <li><a href="./GoFilterChecker.html">GoFilterChecker</a>
   
     <li><a href="./GoIdsQueryConditionGenerator.html">GoIdsQueryConditionGenerator</a>
   
@@ -290,6 +288,10 @@
     <li><a href="./ViewModelBooleanValidator.html">ViewModelBooleanValidator</a>
   
     <li><a href="./WorkerForFindGoTermsForDataset.html">WorkerForFindGoTermsForDataset</a>
+  
+    <li><a href="./WorkerForQueryRegularDb.html">WorkerForQueryRegularDb</a>
+  
+    <li><a href="./WorkerForQueryUsingBlast.html">WorkerForQueryUsingBlast</a>
   
     <li><a href="./WorkerForUploadCuffdiff.html">WorkerForUploadCuffdiff</a>
   
@@ -519,7 +521,7 @@ href="QueryDiffExpGenes.html">QueryDiffExpGenes</a></p>
 
           
           <div class="method-source-code" id="get_gene_diff_exp_samples_for_dataset-source">
-            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 319</span>
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 327</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_gene_diff_exp_samples_for_dataset</span>
   <span class="ruby-ivar">@qdeg</span> = <span class="ruby-constant">QueryDiffExpGenes</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
   <span class="ruby-identifier">dataset_id</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:dataset_id</span>]
@@ -559,7 +561,7 @@ href="GetGeneFastas.html">GetGeneFastas</a></p>
 
           
           <div class="method-source-code" id="get_gene_fastas-source">
-            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 254</span>
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 251</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_gene_fastas</span>
   <span class="ruby-comment">#Create/fill in the view model</span>
   <span class="ruby-identifier">get_gene_fastas</span> = <span class="ruby-constant">GetGeneFastas</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
@@ -606,7 +608,7 @@ boolean value or an error message.</p>
 
           
           <div class="method-source-code" id="get_if_dataset_has_go_terms-source">
-            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 277</span>
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 274</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_if_dataset_has_go_terms</span>
   <span class="ruby-identifier">dataset</span> = <span class="ruby-constant">Dataset</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:dataset_id</span>])
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">dataset</span>.<span class="ruby-identifier">user</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">current_user</span>
@@ -631,123 +633,6 @@ boolean value or an error message.</p>
       </div><!-- get_if_dataset_has_go_terms-method -->
 
     
-      <div id="method-i-get_query_diff_exp_genes_header_row" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">get_query_diff_exp_genes_header_row</span><span
-            class="method-args">()</span>
-          <span class="method-click-advice">click to toggle source</span>
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>For the query differentially expressed genes page,  ajax request to add the
-table header row to the query results table.</p>
-
-<p><strong>Associated ViewModel:</strong> <a
-href="QueryDiffExpGenes.html">QueryDiffExpGenes</a></p>
-          
-
-          
-          <div class="method-source-code" id="get_query_diff_exp_genes_header_row-source">
-            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 334</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_query_diff_exp_genes_header_row</span>
-  <span class="ruby-ivar">@qdeg</span> = <span class="ruby-constant">QueryDiffExpGenes</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
-  <span class="ruby-ivar">@qdeg</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:query_diff_exp_genes</span>])
-  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@qdeg</span>.<span class="ruby-identifier">valid?</span>
-    <span class="ruby-identifier">render</span> <span class="ruby-value">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'query_diff_exp_genes_header_row'</span>, 
-           <span class="ruby-value">:locals</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:object</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@qdeg</span>}
-  <span class="ruby-keyword">end</span>
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- get_query_diff_exp_genes_header_row-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- get_query_diff_exp_genes_header_row-method -->
-
-    
-      <div id="method-i-get_query_diff_exp_transcripts_header_row" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">get_query_diff_exp_transcripts_header_row</span><span
-            class="method-args">()</span>
-          <span class="method-click-advice">click to toggle source</span>
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>For the query differentially expressed transcripts page,  ajax request to
-add the table header row to the query results table.</p>
-
-<p><strong>Associated ViewModel:</strong> <a
-href="QueryDiffExpTranscripts.html">QueryDiffExpTranscripts</a></p>
-          
-
-          
-          <div class="method-source-code" id="get_query_diff_exp_transcripts_header_row-source">
-            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 217</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_query_diff_exp_transcripts_header_row</span>
-  <span class="ruby-ivar">@qdet</span> = <span class="ruby-constant">QueryDiffExpTranscripts</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
-  <span class="ruby-ivar">@qdet</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:query_diff_exp_transcripts</span>])
-  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@qdet</span>.<span class="ruby-identifier">valid?</span>
-    <span class="ruby-identifier">render</span> <span class="ruby-value">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'query_diff_exp_transcripts_header_row'</span>, 
-           <span class="ruby-value">:locals</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:object</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@qdet</span>}
-  <span class="ruby-keyword">end</span>
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- get_query_diff_exp_transcripts_header_row-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- get_query_diff_exp_transcripts_header_row-method -->
-
-    
-      <div id="method-i-get_query_transcript_isoforms_header_row" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">get_query_transcript_isoforms_header_row</span><span
-            class="method-args">()</span>
-          <span class="method-click-advice">click to toggle source</span>
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>For the query transcript isoforms page,  ajax request to add the table
-header row to the query results table.</p>
-
-<p><strong>Associated ViewModel:</strong> <a
-href="QueryTranscriptIsoforms.html">QueryTranscriptIsoforms</a></p>
-          
-
-          
-          <div class="method-source-code" id="get_query_transcript_isoforms_header_row-source">
-            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 383</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_query_transcript_isoforms_header_row</span>
-  <span class="ruby-ivar">@qti</span> = <span class="ruby-constant">QueryTranscriptIsoforms</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
-  <span class="ruby-ivar">@qti</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:query_transcript_isoforms</span>])
-  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@qti</span>.<span class="ruby-identifier">valid?</span>
-    <span class="ruby-identifier">render</span> <span class="ruby-value">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'query_transcript_isoforms_header_row'</span>, 
-           <span class="ruby-value">:locals</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:object</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@qti</span>}
-  <span class="ruby-keyword">end</span>
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- get_query_transcript_isoforms_header_row-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- get_query_transcript_isoforms_header_row-method -->
-
-    
       <div id="method-i-get_tblastn_gap_costs_for_matrix" class="method-detail ">
         
         <div class="method-heading">
@@ -768,14 +653,14 @@ href="QueryUsingTblastn.html">QueryUsingTblastn</a></p>
 
           
           <div class="method-source-code" id="get_tblastn_gap_costs_for_matrix-source">
-            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 459</span>
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 468</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_tblastn_gap_costs_for_matrix</span>
   <span class="ruby-comment">#Calculate the new gap costs from the match and mismatch scores </span>
-  <span class="ruby-ivar">@query_using_blastn</span> = <span class="ruby-constant">QueryUsingTblastn</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
+  <span class="ruby-ivar">@query_using_tblastn</span> = <span class="ruby-constant">QueryUsingTblastn</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
   <span class="ruby-identifier">matrix</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:matrix</span>]
-  <span class="ruby-ivar">@query_using_blastn</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-value">:matrix</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">matrix</span>)
+  <span class="ruby-ivar">@query_using_tblastn</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-value">:matrix</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">matrix</span>)
   <span class="ruby-comment">#Render the new gap costs</span>
-  <span class="ruby-identifier">render</span> <span class="ruby-value">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'gap_costs'</span>, <span class="ruby-value">:locals</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:object</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@query_using_blastn</span>}
+  <span class="ruby-identifier">render</span> <span class="ruby-value">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'gap_costs'</span>, <span class="ruby-value">:locals</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:object</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@query_using_tblastn</span>}
 <span class="ruby-keyword">end</span></pre>
           </div><!-- get_tblastn_gap_costs_for_matrix-source -->
           
@@ -808,7 +693,7 @@ href="QueryDiffExpTranscripts.html">QueryDiffExpTranscripts</a></p>
 
           
           <div class="method-source-code" id="get_transcript_diff_exp_samples_for_dataset-source">
-            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 200</span>
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 211</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_transcript_diff_exp_samples_for_dataset</span>
   <span class="ruby-ivar">@qdet</span> = <span class="ruby-constant">QueryDiffExpTranscripts</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
   <span class="ruby-identifier">dataset_id</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:dataset_id</span>]
@@ -849,7 +734,7 @@ href="GetTranscriptFasta.html">GetTranscriptFasta</a></p>
 
           
           <div class="method-source-code" id="get_transcript_fasta-source">
-            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 230</span>
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 227</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_transcript_fasta</span>
   <span class="ruby-comment">#Create/fill in the view model</span>
   <span class="ruby-identifier">get_transcript_fasta</span> = <span class="ruby-constant">GetTranscriptFasta</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
@@ -898,7 +783,7 @@ href="QueryTranscriptIsoforms.html">QueryTranscriptIsoforms</a></p>
 
           
           <div class="method-source-code" id="get_transcript_isoforms_samples_for_dataset-source">
-            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 368</span>
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 372</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_transcript_isoforms_samples_for_dataset</span>
   <span class="ruby-ivar">@qti</span> = <span class="ruby-constant">QueryTranscriptIsoforms</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
   <span class="ruby-identifier">dataset_id</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:dataset_id</span>]
@@ -938,7 +823,7 @@ href="QueryDiffExpGenes.html">QueryDiffExpGenes</a></p>
 
           
           <div class="method-source-code" id="query_diff_exp_genes-source">
-            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 297</span>
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 294</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">query_diff_exp_genes</span>
   <span class="ruby-comment">#Create the view model, giving the current user</span>
   <span class="ruby-ivar">@qdeg</span> = <span class="ruby-constant">QueryDiffExpGenes</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
@@ -949,9 +834,20 @@ href="QueryDiffExpGenes.html">QueryDiffExpGenes</a></p>
     <span class="ruby-comment">#Fill in the inputs from the view</span>
     <span class="ruby-ivar">@qdeg</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:query_diff_exp_genes</span>])
     <span class="ruby-comment"># If valid, query and return results; otherwise return failure</span>
-    <span class="ruby-ivar">@qdeg</span>.<span class="ruby-identifier">query</span>() <span class="ruby-keyword">if</span> <span class="ruby-ivar">@qdeg</span>.<span class="ruby-identifier">valid?</span>
-    <span class="ruby-identifier">render</span> <span class="ruby-value">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'query_diff_exp_genes_table_rows'</span>, 
-           <span class="ruby-value">:locals</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:object</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@qdeg</span>}
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@qdeg</span>.<span class="ruby-identifier">valid?</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-ivar">@qdeg</span>.<span class="ruby-identifier">results_display_method</span> <span class="ruby-operator">==</span> <span class="ruby-string">'email'</span>
+        <span class="ruby-constant">SuckerPunch</span><span class="ruby-operator">::</span><span class="ruby-constant">Queue</span>[<span class="ruby-value">:query_regular_db_queue</span>].<span class="ruby-identifier">async</span>.<span class="ruby-identifier">perform</span>(<span class="ruby-ivar">@qdeg</span>)
+        
+        <span class="ruby-identifier">dataset</span> = <span class="ruby-constant">Dataset</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-ivar">@qdeg</span>.<span class="ruby-identifier">dataset_id</span>)
+        <span class="ruby-identifier">flash</span>[<span class="ruby-value">:notice</span>] = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-value">:added_to_query_regular_db_queue</span>,
+                                <span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">dataset</span>.<span class="ruby-identifier">name</span>)
+        <span class="ruby-comment"># Reset the form before rendering</span>
+        <span class="ruby-ivar">@qdeg</span> = <span class="ruby-constant">QueryDiffExpGenes</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
+        <span class="ruby-ivar">@qdeg</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>()
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-ivar">@qdeg</span>.<span class="ruby-identifier">query</span>()
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- query_diff_exp_genes-source -->
@@ -995,9 +891,20 @@ href="QueryDiffExpTranscripts.html">QueryDiffExpTranscripts</a></p>
     <span class="ruby-comment">#Fill in the inputs from the view</span>
     <span class="ruby-ivar">@qdet</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:query_diff_exp_transcripts</span>])
     <span class="ruby-comment"># If valid, query and return results; otherwise return failure</span>
-    <span class="ruby-ivar">@qdet</span>.<span class="ruby-identifier">query</span>() <span class="ruby-keyword">if</span> <span class="ruby-ivar">@qdet</span>.<span class="ruby-identifier">valid?</span>
-    <span class="ruby-identifier">render</span> <span class="ruby-value">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'query_diff_exp_transcripts_table_rows'</span>, 
-           <span class="ruby-value">:locals</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:object</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@qdet</span>}
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@qdet</span>.<span class="ruby-identifier">valid?</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-ivar">@qdet</span>.<span class="ruby-identifier">results_display_method</span> <span class="ruby-operator">==</span> <span class="ruby-string">'email'</span>
+        <span class="ruby-constant">SuckerPunch</span><span class="ruby-operator">::</span><span class="ruby-constant">Queue</span>[<span class="ruby-value">:query_regular_db_queue</span>].<span class="ruby-identifier">async</span>.<span class="ruby-identifier">perform</span>(<span class="ruby-ivar">@qdet</span>)
+        
+        <span class="ruby-identifier">dataset</span> = <span class="ruby-constant">Dataset</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-ivar">@qdet</span>.<span class="ruby-identifier">dataset_id</span>)
+        <span class="ruby-identifier">flash</span>[<span class="ruby-value">:notice</span>] = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-value">:added_to_query_regular_db_queue</span>,
+                                <span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">dataset</span>.<span class="ruby-identifier">name</span>)
+        <span class="ruby-comment"># Reset the form before rendering</span>
+        <span class="ruby-ivar">@qdet</span> = <span class="ruby-constant">QueryDiffExpTranscripts</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
+        <span class="ruby-ivar">@qdet</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>()
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-ivar">@qdet</span>.<span class="ruby-identifier">query</span>()
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- query_diff_exp_transcripts-source -->
@@ -1029,7 +936,7 @@ href="QueryTranscriptIsoforms.html">QueryTranscriptIsoforms</a></p>
 
           
           <div class="method-source-code" id="query_transcript_isoforms-source">
-            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 347</span>
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 341</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">query_transcript_isoforms</span>
   <span class="ruby-comment">#Create the view model, giving the current user</span>
   <span class="ruby-ivar">@qti</span> = <span class="ruby-constant">QueryTranscriptIsoforms</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
@@ -1040,9 +947,19 @@ href="QueryTranscriptIsoforms.html">QueryTranscriptIsoforms</a></p>
     <span class="ruby-comment">#Fill in the inputs from the view</span>
     <span class="ruby-ivar">@qti</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:query_transcript_isoforms</span>])
     <span class="ruby-comment"># If valid, query and return results; otherwise return failure</span>
-    <span class="ruby-ivar">@qti</span>.<span class="ruby-identifier">query</span>() <span class="ruby-keyword">if</span> <span class="ruby-ivar">@qti</span>.<span class="ruby-identifier">valid?</span>
-    <span class="ruby-identifier">render</span> <span class="ruby-value">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'query_transcript_isoforms_table_rows'</span>, 
-           <span class="ruby-value">:locals</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:object</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@qti</span>}
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@qti</span>.<span class="ruby-identifier">valid?</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-ivar">@qti</span>.<span class="ruby-identifier">results_display_method</span> <span class="ruby-operator">==</span> <span class="ruby-string">'email'</span>
+        <span class="ruby-identifier">dataset</span> = <span class="ruby-constant">Dataset</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-ivar">@qti</span>.<span class="ruby-identifier">dataset_id</span>)
+        <span class="ruby-constant">SuckerPunch</span><span class="ruby-operator">::</span><span class="ruby-constant">Queue</span>[<span class="ruby-value">:query_regular_db_queue</span>].<span class="ruby-identifier">async</span>.<span class="ruby-identifier">perform</span>(<span class="ruby-ivar">@qti</span>)
+        <span class="ruby-identifier">flash</span>[<span class="ruby-value">:notice</span>] = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-value">:added_to_query_regular_db_queue</span>,
+                                <span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">dataset</span>.<span class="ruby-identifier">name</span>)
+        <span class="ruby-comment"># Reset the form before rendering</span>
+        <span class="ruby-ivar">@qti</span> = <span class="ruby-constant">QueryTranscriptIsoforms</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
+        <span class="ruby-ivar">@qti</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>()
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-ivar">@qti</span>.<span class="ruby-identifier">query</span>()
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- query_transcript_isoforms-source -->
@@ -1074,7 +991,7 @@ href="QueryUsingBlastn.html">QueryUsingBlastn</a></p>
 
           
           <div class="method-source-code" id="query_using_blastn-source">
-            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 396</span>
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 386</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">query_using_blastn</span>    <span class="ruby-comment">#Changed after architecture design</span>
   <span class="ruby-ivar">@sequence_type</span> = <span class="ruby-string">'nucleic acid'</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">get?</span>
@@ -1084,11 +1001,21 @@ href="QueryUsingBlastn.html">QueryUsingBlastn</a></p>
     <span class="ruby-ivar">@query_using_blastn</span> = <span class="ruby-constant">QueryUsingBlastn</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
     <span class="ruby-ivar">@query_using_blastn</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:query_using_blastn</span>])
     <span class="ruby-keyword">if</span> <span class="ruby-ivar">@query_using_blastn</span>.<span class="ruby-identifier">valid?</span>
-        <span class="ruby-ivar">@program</span> = <span class="ruby-value">:blastn</span>
-        <span class="ruby-ivar">@blast_report</span> = <span class="ruby-ivar">@query_using_blastn</span>.<span class="ruby-identifier">blast</span>
-        <span class="ruby-comment">#Send the result to the user</span>
         <span class="ruby-ivar">@dataset</span> = <span class="ruby-constant">Dataset</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-ivar">@query_using_blastn</span>.<span class="ruby-identifier">dataset_id</span>)
-        <span class="ruby-identifier">render</span> <span class="ruby-value">:file</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'query_analysis/blast_results'</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-ivar">@query_using_blastn</span>.<span class="ruby-identifier">results_display_method</span> <span class="ruby-operator">==</span> <span class="ruby-string">'email'</span>
+          <span class="ruby-identifier">q_name</span> = <span class="ruby-value">:query_using_blast_queue</span>
+          <span class="ruby-constant">SuckerPunch</span><span class="ruby-operator">::</span><span class="ruby-constant">Queue</span>[<span class="ruby-identifier">q_name</span>].<span class="ruby-identifier">async</span>.<span class="ruby-identifier">perform</span>(<span class="ruby-ivar">@query_using_blastn</span>)
+          <span class="ruby-identifier">flash</span>[<span class="ruby-value">:notice</span>] = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-value">:added_to_query_using_blast_queue</span>,
+                                  <span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@dataset</span>.<span class="ruby-identifier">name</span>)
+          <span class="ruby-comment"># Reset the form before rendering</span>
+          <span class="ruby-ivar">@query_using_blastn</span> = <span class="ruby-constant">QueryUsingBlastn</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
+          <span class="ruby-ivar">@query_using_blastn</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>()
+        <span class="ruby-keyword">else</span>
+          <span class="ruby-comment">#Run the blast query and get the file path of the result</span>
+          <span class="ruby-ivar">@blast_report</span> = <span class="ruby-ivar">@query_using_blastn</span>.<span class="ruby-identifier">blast</span>()
+          <span class="ruby-comment">#Send the result to the user</span>
+          <span class="ruby-identifier">render</span> <span class="ruby-value">:file</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'query_analysis/blast_results'</span>
+        <span class="ruby-keyword">end</span>
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
@@ -1131,12 +1058,21 @@ href="QueryUsingTblastn.html">QueryUsingTblastn</a></p>
     <span class="ruby-ivar">@query_using_tblastn</span> = <span class="ruby-constant">QueryUsingTblastn</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
     <span class="ruby-ivar">@query_using_tblastn</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:query_using_tblastn</span>])
     <span class="ruby-keyword">if</span> <span class="ruby-ivar">@query_using_tblastn</span>.<span class="ruby-identifier">valid?</span>
-      <span class="ruby-ivar">@program</span> = <span class="ruby-value">:tblastn</span>
-      <span class="ruby-comment">#Run the blast query and get the file path of the result</span>
-      <span class="ruby-ivar">@blast_report</span> = <span class="ruby-ivar">@query_using_tblastn</span>.<span class="ruby-identifier">blast</span>()
-      <span class="ruby-comment">#Send the result to the user</span>
       <span class="ruby-ivar">@dataset</span> = <span class="ruby-constant">Dataset</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-ivar">@query_using_tblastn</span>.<span class="ruby-identifier">dataset_id</span>)
-      <span class="ruby-identifier">render</span> <span class="ruby-value">:file</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'query_analysis/blast_results'</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-ivar">@query_using_tblastn</span>.<span class="ruby-identifier">results_display_method</span> <span class="ruby-operator">==</span> <span class="ruby-string">'email'</span>
+        <span class="ruby-identifier">q_name</span> = <span class="ruby-value">:query_using_blast_queue</span>
+        <span class="ruby-constant">SuckerPunch</span><span class="ruby-operator">::</span><span class="ruby-constant">Queue</span>[<span class="ruby-identifier">q_name</span>].<span class="ruby-identifier">async</span>.<span class="ruby-identifier">perform</span>(<span class="ruby-ivar">@query_using_tblastn</span>)
+        <span class="ruby-identifier">flash</span>[<span class="ruby-value">:notice</span>] = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-value">:added_to_query_using_blast_queue</span>,
+                                <span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@dataset</span>.<span class="ruby-identifier">name</span>)
+        <span class="ruby-comment"># Reset the form before rendering</span>
+        <span class="ruby-ivar">@query_using_tblastn</span> = <span class="ruby-constant">QueryUsingTblastn</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
+        <span class="ruby-ivar">@query_using_tblastn</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>()
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-comment">#Run the blast query and get the file path of the result</span>
+        <span class="ruby-ivar">@blast_report</span> = <span class="ruby-ivar">@query_using_tblastn</span>.<span class="ruby-identifier">blast</span>()
+        <span class="ruby-comment">#Send the result to the user</span>
+        <span class="ruby-identifier">render</span> <span class="ruby-value">:file</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'query_analysis/blast_results'</span>
+      <span class="ruby-keyword">end</span>
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
@@ -1169,7 +1105,7 @@ href="QueryUsingTblastx.html">QueryUsingTblastx</a></p>
 
           
           <div class="method-source-code" id="query_using_tblastx-source">
-            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 472</span>
+            <pre><span class="ruby-comment"># File app/controllers/query_analysis_controller.rb, line 481</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">query_using_tblastx</span>
   <span class="ruby-ivar">@sequence_type</span> = <span class="ruby-string">'nucleic acid'</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">get?</span>
@@ -1179,12 +1115,21 @@ href="QueryUsingTblastx.html">QueryUsingTblastx</a></p>
     <span class="ruby-ivar">@query_using_tblastx</span> = <span class="ruby-constant">QueryUsingTblastx</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
     <span class="ruby-ivar">@query_using_tblastx</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:query_using_tblastx</span>])
     <span class="ruby-keyword">if</span> <span class="ruby-ivar">@query_using_tblastx</span>.<span class="ruby-identifier">valid?</span>
-      <span class="ruby-ivar">@program</span> = <span class="ruby-value">:tblastx</span>
-      <span class="ruby-comment">#Run the blast query and get the file path of the result</span>
-      <span class="ruby-ivar">@blast_report</span> = <span class="ruby-ivar">@query_using_tblastx</span>.<span class="ruby-identifier">blast</span>()
-      <span class="ruby-comment">#Send the result to the user</span>
       <span class="ruby-ivar">@dataset</span> = <span class="ruby-constant">Dataset</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-ivar">@query_using_tblastx</span>.<span class="ruby-identifier">dataset_id</span>)
-      <span class="ruby-identifier">render</span> <span class="ruby-value">:file</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'query_analysis/blast_results'</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-ivar">@query_using_tblastx</span>.<span class="ruby-identifier">results_display_method</span> <span class="ruby-operator">==</span> <span class="ruby-string">'email'</span>
+        <span class="ruby-identifier">q_name</span> = <span class="ruby-value">:query_using_blast_queue</span>
+        <span class="ruby-constant">SuckerPunch</span><span class="ruby-operator">::</span><span class="ruby-constant">Queue</span>[<span class="ruby-identifier">q_name</span>].<span class="ruby-identifier">async</span>.<span class="ruby-identifier">perform</span>(<span class="ruby-ivar">@query_using_tblastx</span>)
+        <span class="ruby-identifier">flash</span>[<span class="ruby-value">:notice</span>] = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-value">:added_to_query_using_blast_queue</span>,
+                                <span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@dataset</span>.<span class="ruby-identifier">name</span>)
+        <span class="ruby-comment"># Reset the form before rendering</span>
+        <span class="ruby-ivar">@query_using_tblastx</span> = <span class="ruby-constant">QueryUsingTblastx</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
+        <span class="ruby-ivar">@query_using_tblastx</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>()
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-comment">#Run the blast query and get the file path of the result</span>
+        <span class="ruby-ivar">@blast_report</span> = <span class="ruby-ivar">@query_using_tblastx</span>.<span class="ruby-identifier">blast</span>()
+        <span class="ruby-comment">#Send the result to the user</span>
+        <span class="ruby-identifier">render</span> <span class="ruby-value">:file</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'query_analysis/blast_results'</span>
+      <span class="ruby-keyword">end</span>
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>

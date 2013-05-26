@@ -5,6 +5,8 @@ require 'query_analysis/abstract_query_regular_db.rb'
 # View model for the query transcript isoforms page.
 #
 # <b>Associated Controller:</b> QueryAnalysisController
+#
+# <b>Associated Worker:</b> WorkerForQueryRegularDb
 class QueryTranscriptIsoforms < AbstractQueryRegularDb
   
   # The id of the sample whose isoforms will be queried.
@@ -100,7 +102,8 @@ class QueryTranscriptIsoforms < AbstractQueryRegularDb
      :inclusion => {:in => AVAILABLE_TRANSCRIPT_LENGTH_COMPARISON_SIGNS}
   validates :transcript_length_value, :numericality => true
   
-  
+  ###
+  # Returns a list of the class codes that have been selected
   def list_selected_class_codes
     class_codes = []
     CLASS_CODES.each do |key, value|
@@ -111,6 +114,8 @@ class QueryTranscriptIsoforms < AbstractQueryRegularDb
     return class_codes
   end
   
+  ###
+  # Returns the type of query that the class provides
   def self.get_query_type()
     return 'query_transcript_isoforms'
   end
@@ -133,6 +138,9 @@ class QueryTranscriptIsoforms < AbstractQueryRegularDb
            'transcripts.name_from_program'
   end
   
+  ###
+  # Sets the available datasets that the user can query and which one of 
+  # those datasets will be selected by default.
   def set_available_datasets_and_default_dataset()
     #Set available datasets
     @names_and_ids_for_available_datasets = []
@@ -150,6 +158,8 @@ class QueryTranscriptIsoforms < AbstractQueryRegularDb
     @dataset = Dataset.find_by_id(@dataset_id)
   end
   
+  ###
+  # Set any defaults related to the samples and sample comparisons.
   def set_sample_related_defaults()
     @available_samples = []
     @dataset.samples.sort.each do |sample|
@@ -159,6 +169,8 @@ class QueryTranscriptIsoforms < AbstractQueryRegularDb
     @sample_name = @available_samples.first[0]
   end
   
+  ###
+  # Set any defaults related to sorting.
   def set_sort_defaults()
     super
     @available_sort_columns = ['Transcript','Associated Gene', 
@@ -170,6 +182,8 @@ class QueryTranscriptIsoforms < AbstractQueryRegularDb
     end
   end
   
+  ###
+  # Set defaults that do not fit into any other categories.
   def set_other_defaults()
     super
     @available_transcript_length_comparison_signs = 
@@ -180,6 +194,8 @@ class QueryTranscriptIsoforms < AbstractQueryRegularDb
     end
   end
 
+  ###
+  # Builds the select string to use for the query
   def build_select_string()
     select_string = 'transcripts.name_from_program as transcript_name, ' +
                     'genes.name_from_program as gene_name,' +
@@ -203,6 +219,8 @@ class QueryTranscriptIsoforms < AbstractQueryRegularDb
     return select_string
   end
   
+  ###
+  # Builds the ORDER BY string to use for the query
   def build_order_string()
     case @sort_column
     when'Transcript'
@@ -227,6 +245,8 @@ class QueryTranscriptIsoforms < AbstractQueryRegularDb
     return "#{sort_column} #{@sort_order}"
   end
   
+  ###
+  # Generates the where clause(s) to user for the query
   def generate_where_clauses()
      #Create and run the query
     ds_t = Dataset.arel_table
@@ -246,6 +266,9 @@ class QueryTranscriptIsoforms < AbstractQueryRegularDb
     return where_clauses
   end
   
+  ###
+  # Runs the query in its paginated form. This is used when 
+  # displaying the results to the user on the page.
   def execute_paged_query()
     if @has_go_terms == true
       @results = Dataset
@@ -272,6 +295,9 @@ class QueryTranscriptIsoforms < AbstractQueryRegularDb
     end
   end
   
+  ###
+  # Runs the full query without pagination. This is used 
+  # when emailing the results to the user as a text file.
   def execute_full_query()
     if @has_go_terms == true
       @results = Dataset
@@ -294,6 +320,8 @@ class QueryTranscriptIsoforms < AbstractQueryRegularDb
     end
   end
   
+  ###
+  # Counts the total number of records found in the query.
   def count_query_results()
     if @has_go_terms == true
       @results_count = Dataset

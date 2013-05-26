@@ -70,6 +70,8 @@
 
   <ul class="link-list">
     
+    <li><a href="#method-c-get_program_name">::get_program_name</a>
+    
     <li><a href="#method-c-new">::new</a>
     
     <li><a href="#method-i-set_attributes_and_defaults">#set_attributes_and_defaults</a>
@@ -95,11 +97,15 @@
 
   <ul class="link-list">
   
+    <li><a href="./AbstractQueryRegularDb.html">AbstractQueryRegularDb</a>
+  
     <li><a href="./AbstractQueryUsingBlast.html">AbstractQueryUsingBlast</a>
   
     <li><a href="./AdminController.html">AdminController</a>
   
     <li><a href="./AdminHelper.html">AdminHelper</a>
+  
+    <li><a href="./AggregateStringGenerator.html">AggregateStringGenerator</a>
   
     <li><a href="./ApplicationController.html">ApplicationController</a>
   
@@ -110,6 +116,8 @@
     <li><a href="./ArrayOfUploadedFilesValidator.html">ArrayOfUploadedFilesValidator</a>
   
     <li><a href="./ArrayValidator.html">ArrayValidator</a>
+  
+    <li><a href="./B2gdbGoTerm.html">B2gdbGoTerm</a>
   
     <li><a href="./BlastUtil.html">BlastUtil</a>
   
@@ -138,8 +146,6 @@
     <li><a href="./GetGeneFastas.html">GetGeneFastas</a>
   
     <li><a href="./GetTranscriptFasta.html">GetTranscriptFasta</a>
-  
-    <li><a href="./GoFilterChecker.html">GoFilterChecker</a>
   
     <li><a href="./GoIdsQueryConditionGenerator.html">GoIdsQueryConditionGenerator</a>
   
@@ -249,6 +255,10 @@
   
     <li><a href="./WorkerForFindGoTermsForDataset.html">WorkerForFindGoTermsForDataset</a>
   
+    <li><a href="./WorkerForQueryRegularDb.html">WorkerForQueryRegularDb</a>
+  
+    <li><a href="./WorkerForQueryUsingBlast.html">WorkerForQueryUsingBlast</a>
+  
     <li><a href="./WorkerForUploadCuffdiff.html">WorkerForUploadCuffdiff</a>
   
     <li><a href="./WorkerForUploadFastaSequences.html">WorkerForUploadFastaSequences</a>
@@ -270,6 +280,9 @@
 
 <p><strong>Associated Controller:</strong> <a
 href="QueryAnalysisController.html">QueryAnalysisController</a></p>
+
+<p><strong>Associated Worker:</strong> <a
+href="WorkerForQueryUsingBlast.html">WorkerForQueryUsingBlast</a></p>
 
   </div><!-- description -->
 
@@ -414,6 +427,36 @@ href="QueryUsingBlastn.html#attribute-i-word_size">#word_size</a></p>
       <h3 class="section-header">Public Class Methods</h3>
 
     
+      <div id="method-c-get_program_name" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_program_name</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns the name of the blast program that this class provides.</p>
+          
+
+          
+          <div class="method-source-code" id="get_program_name-source">
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_using_blastn.rb, line 121</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">get_program_name</span>()
+  <span class="ruby-keyword">return</span> <span class="ruby-string">'blastn'</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- get_program_name-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- get_program_name-method -->
+
+    
       <div id="method-c-new" class="method-detail ">
         
         <div class="method-heading">
@@ -434,7 +477,7 @@ href="QueryUsingBlastn.html#attribute-i-word_size">#word_size</a></p>
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_using_blastn.rb, line 120</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_using_blastn.rb, line 128</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">current_user</span>)
   <span class="ruby-keyword">super</span>
   <span class="ruby-comment">#Set the available word sizes</span>
@@ -475,7 +518,7 @@ values</p>
 
           
           <div class="method-source-code" id="set_attributes_and_defaults-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_using_blastn.rb, line 130</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_using_blastn.rb, line 138</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-identifier">attributes</span> = {})
   <span class="ruby-keyword">super</span>
   <span class="ruby-comment">#Set default values for Megablast, which is the only blastn program we will use</span>

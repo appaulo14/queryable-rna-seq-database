@@ -12,7 +12,6 @@
 #  gene_id           :integer
 #  name_from_program :string(255)      not null
 #
-
 class Transcript < ActiveRecord::Base
   attr_accessible :gene, :dataset, :name_from_program
   

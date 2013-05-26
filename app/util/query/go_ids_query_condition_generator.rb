@@ -20,6 +20,8 @@ class GoIdsQueryConditionGenerator
     @go_ids = go_ids_string
   end
   
+  ###
+  # Generates and returns the actual having string query condition.
   def generate_having_string()
     #Do some validation
     if not self.valid?

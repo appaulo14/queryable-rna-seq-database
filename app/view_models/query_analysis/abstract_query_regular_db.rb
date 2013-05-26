@@ -2,6 +2,14 @@ require 'query/go_ids_query_condition_generator.rb'
 require 'query/go_terms_query_condition_generator.rb'
 require 'query/aggregate_string_generator.rb'
 
+###
+# Abstract view model for the view models of all the view models that query 
+# the regular database, namely QueryDiffExpTranscripts, QueryDiffExpGenes, and 
+# QueryTranscriptIsoforms.
+#
+# <b>Associated Controller:</b> QueryAnalysisController
+#
+# <b>Associated Worker:</b> WorkerForQueryRegularDb
 class AbstractQueryRegularDb
   include ActiveModel::Validations
   include ActiveModel::Conversion
@@ -21,10 +29,17 @@ class AbstractQueryRegularDb
   # Because the query results are loaded in pieces using LIMIT and OFFSET, 
   # this specifies which piece to load.
   attr_accessor :page_number
+  # The order in which to sort the query results
   attr_accessor :sort_order
+  # The sort with which to sort the query results by
   attr_accessor :sort_column
+  # Whether to display the query results on the web page or to send them to the 
+  # user as a text file.
   attr_accessor :results_display_method
+  # Whether this query is for a new query or if it is to change pages or 
+  # re-sort an existing query.
   attr_accessor :is_new_query
+  # The total number of records in the query results. 
   attr_accessor :results_count
   
   # The name/id pairs of the datasets that can be selected to have their 
@@ -37,11 +52,20 @@ class AbstractQueryRegularDb
   attr_reader   :program_used
   # Whether the select dataset has go terms
   attr_reader   :has_go_terms
+  # Whether the results should be displayed to the user. This is only false 
+  # when the user has not yet performed a query.
   attr_reader   :show_results
+  # The available valid columns that the user can select to sort by
   attr_reader   :available_sort_columns
+  # The available valid options for the sort order attribute. The keys show 
+  # the display text and the values show the actual value.
   attr_reader   :available_sort_orders
+  # The available page numbers that the user can go to, based on how many 
+  # query results there are. 
   attr_reader   :available_page_numbers
   
+  # The available valid options for the sort order attribute. The keys show 
+  # the display text and the values show the actual value.
   AVAILABLE_SORT_ORDERS = {'ascending' => 'ASC', 'descending' => 'DESC'}
   
   validates :dataset_id, :presence => true,
@@ -73,10 +97,13 @@ class AbstractQueryRegularDb
                               :greater_than_or_equal => 0 
                             }
   
+  ###
+  # Abstract method that returns the type of query that the class provides
   def self.get_query_type()
     raise NotImplementedError, 'Must be implemented in subclass'
   end
   
+  # Convenience method to see whether the query results should be displayed
   def show_results?
     return @show_results
   end
@@ -156,18 +183,24 @@ class AbstractQueryRegularDb
   protected
   
   ###
-  # The string to use for the GROUP BY section of the query.
+  # Returns the string to use for the GROUP BY section of the query.
   # transcripts.id is at the end of the string to prevent a strange error 
-  # with counting
+  # with counting.
   def self.group_by_string
     raise NotImplementedError, 'Must be implemented in subclass'
   end
   
+  ###
+  # Returns the join string to user when connecting the Transcript table to 
+  # the TranscriptHasGoTerm table.
   def self.thgt_left_join_string
     return "LEFT OUTER JOIN transcript_has_go_terms " +
            "ON transcript_has_go_terms.transcript_id = transcripts.id"
   end
   
+  ###
+  # Returns the join string to user when connecting the TranscriptHasGoTerm 
+  # table to the GoTerm table.
   def self.go_terms_left_join_string
     return "LEFT OUTER JOIN go_terms " +
            "ON transcript_has_go_terms.go_term_id = go_terms.id"
@@ -180,18 +213,28 @@ class AbstractQueryRegularDb
     return 50
   end
   
+  ###
+  # Sets defaults for attributes on which other attributes are derrived
   def set_defaults_on_which_others_depend()
     @is_new_query = '1' if @is_new_query.blank?
   end
   
+  ###
+  # Abstract method to set the available datasets that the user can query 
+  # and which one of those datasets will be selected by default.
   def set_available_datasets_and_default_dataset()
     raise NotImplementedError, 'Must be implemented in subclass'
   end
   
+  ###
+  # Abstract method to set any defaults related to samples or sample 
+  # comparisons.
   def set_sample_related_defaults()
     raise NotImplementedError, 'Must be implemented in subclass'
   end
   
+  ###
+  # Set any defaults related to sorting.
   def set_sort_defaults()
     @available_sort_orders = AVAILABLE_SORT_ORDERS
     if @is_new_query == '1' or @sort_order.blank?
@@ -199,6 +242,8 @@ class AbstractQueryRegularDb
     end
   end 
   
+  ###
+  # Set defaults that do not fit into any other categories.
   def set_other_defaults()
     @program_used = @dataset.program_used
     @has_go_terms = (@dataset.go_terms_status == 'found') ? true : false
@@ -209,23 +254,33 @@ class AbstractQueryRegularDb
     @results_display_method = 'normal' if @results_display_method.blank?
   end
   
+  ###
+  # Saves to te Dataset record that it has been queried just now. 
   def record_that_dataset_has_been_queried()
     @dataset.when_last_queried = Time.now
     @dataset.save!
   end
   
+  ###
+  # Abstract method to build the select string to use for the query
   def build_select_string()
     raise NotImplementedError, 'Must be implemented in subclass'
   end
   
+  ### 
+  # Abstract method to build the ORDER BY string to use for the query 
   def build_order_string()
     raise NotImplementedError, 'Must be implemented in subclass'
   end
   
+  ###
+  # Abstract method to generate the where clause(s) to use for the query
   def generate_where_clauses()
     raise NotImplementedError, 'Must be implemented in subclass'
   end
   
+  ###
+  # Generates the having clause(s) for the query
   def generate_having_string()
     return "" if @has_go_terms == false
     having_string = ""
@@ -243,6 +298,8 @@ class AbstractQueryRegularDb
     return having_string
   end
   
+  ###
+  # Build the different parts of the query
   def build_query_parts()
     @select_string = build_select_string()
     @where_clauses = generate_where_clauses()
@@ -250,14 +307,22 @@ class AbstractQueryRegularDb
     @order_string = build_order_string()
   end
   
+  ###
+  # Abstract method to run the query in its paginated form. This is used when 
+  # displaying the results to the user on the page.
   def execute_paged_query()
     raise NotImplementedError, 'Must be implemented in subclass'
   end
   
+  ###
+  # Abstract method to run the full query without pagination. This is used 
+  # when emailing the results to the user as a text file.
   def execute_full_query()
     raise NotImplementedError, 'Must be implemented in subclass'
   end
   
+  ###
+  # Abstract method to count the total number of records found in the query
   def count_query_results()
     raise NotImplementedError, 'Must be implemented in subclass'
   end

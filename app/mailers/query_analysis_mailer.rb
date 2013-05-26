@@ -98,6 +98,9 @@ class QueryAnalysisMailer < ActionMailer::Base
          :subject => 'Finding Your Gene Ontology (GO) Terms Failed').deliver
   end
   
+  ###
+  # Sends an email to the specified user containing the results of their 
+  # blast as an html file.
   def send_blast_report(query_using_blast,blast_report,user)
     # Declare some variables to use with the views
     @bq = query_using_blast
@@ -122,6 +125,8 @@ class QueryAnalysisMailer < ActionMailer::Base
          :subject => subject ).deliver
   end
   
+  ###
+  # Sends an email to the specified user stating that their blast query failed.
   def send_blast_failure_message(query_using_blast,user)
     @bq = query_using_blast
     @dataset = Dataset.find_by_id(query_using_blast.dataset_id)
@@ -136,6 +141,9 @@ class QueryAnalysisMailer < ActionMailer::Base
          :subject => subject ).deliver
   end
   
+  ###
+  # Sends an email to the specified user containing the results as a text file 
+  # of their querying the regular database.
   def send_query_regular_db_results(query_regular_db, user)
     # Define some variables to use with the view
     @query_regular_db = query_regular_db
@@ -171,6 +179,9 @@ class QueryAnalysisMailer < ActionMailer::Base
          :subject => subject ).deliver
   end
   
+  ###
+  # Sends an email to the specified user stating that their regular 
+  # query failed.
   def send_query_regular_db_failure_message(query_regular_db, user)
     @query_regular_db = query_regular_db
     @dataset = Dataset.find_by_id(query_regular_db.dataset_id)

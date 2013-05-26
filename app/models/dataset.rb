@@ -1,3 +1,5 @@
+require 'system_util.rb'
+
 # == Description
 #
 # Represents a set of data from one run of 
@@ -25,9 +27,6 @@
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #
-
-require 'system_util.rb'
-
 class Dataset < ActiveRecord::Base
   attr_accessible :user, 
                   :name, 
@@ -41,14 +40,8 @@ class Dataset < ActiveRecord::Base
   
   #validates :id, :presence => true
   validates :name, :presence => true
-#   validates :has_transcript_diff_exp, 
-#       :allow_nil => false,
   validate :has_transcript_diff_exp_is_boolean
-#   validates :has_transcript_isoforms, 
-#       :allow_nil => false
   validate :has_transcript_isoforms_is_boolean
-#   validates :has_gene_diff_exp, 
-#       :allow_nil => false,
   validate :has_gene_diff_exp_is_boolean
   validates :user, :presence => true
   validates :blast_db_location, :presence => true
@@ -64,11 +57,17 @@ class Dataset < ActiveRecord::Base
   has_many :genes, :dependent => :destroy
   has_many :samples, :dependent => :destroy
   
+  ###
+  # In addition to destroying the database record, also deletes the blast 
+  # database associated with the Dataset.
   def destroy()
     super
     SystemUtil.system!("rm #{self.blast_db_location}.*")
   end
   
+  ###
+  # In addition to deleting the database record, also deletes the blast 
+  # database associated with the Dataset.
   def delete()
     super
     SystemUtil.system!("rm #{self.blast_db_location}.*")

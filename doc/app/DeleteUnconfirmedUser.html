@@ -90,7 +90,7 @@
     
     <li><a href="#method-i-persisted-3F">#persisted?</a>
     
-    <li><a href="#method-i-send_rejection_email_and_destroy_user">#send_rejection_email_and_destroy_user</a>
+    <li><a href="#method-i-send_rejection_email_and_delete_user">#send_rejection_email_and_delete_user</a>
     
   </ul>
 </nav>
@@ -113,11 +113,15 @@
 
   <ul class="link-list">
   
+    <li><a href="./AbstractQueryRegularDb.html">AbstractQueryRegularDb</a>
+  
     <li><a href="./AbstractQueryUsingBlast.html">AbstractQueryUsingBlast</a>
   
     <li><a href="./AdminController.html">AdminController</a>
   
     <li><a href="./AdminHelper.html">AdminHelper</a>
+  
+    <li><a href="./AggregateStringGenerator.html">AggregateStringGenerator</a>
   
     <li><a href="./ApplicationController.html">ApplicationController</a>
   
@@ -128,6 +132,8 @@
     <li><a href="./ArrayOfUploadedFilesValidator.html">ArrayOfUploadedFilesValidator</a>
   
     <li><a href="./ArrayValidator.html">ArrayValidator</a>
+  
+    <li><a href="./B2gdbGoTerm.html">B2gdbGoTerm</a>
   
     <li><a href="./BlastUtil.html">BlastUtil</a>
   
@@ -156,8 +162,6 @@
     <li><a href="./GetGeneFastas.html">GetGeneFastas</a>
   
     <li><a href="./GetTranscriptFasta.html">GetTranscriptFasta</a>
-  
-    <li><a href="./GoFilterChecker.html">GoFilterChecker</a>
   
     <li><a href="./GoIdsQueryConditionGenerator.html">GoIdsQueryConditionGenerator</a>
   
@@ -266,6 +270,10 @@
     <li><a href="./ViewModelBooleanValidator.html">ViewModelBooleanValidator</a>
   
     <li><a href="./WorkerForFindGoTermsForDataset.html">WorkerForFindGoTermsForDataset</a>
+  
+    <li><a href="./WorkerForQueryRegularDb.html">WorkerForQueryRegularDb</a>
+  
+    <li><a href="./WorkerForQueryUsingBlast.html">WorkerForQueryUsingBlast</a>
   
     <li><a href="./WorkerForUploadCuffdiff.html">WorkerForUploadCuffdiff</a>
   
@@ -431,10 +439,10 @@ this defines that this model does not persist in the database.</p>
       </div><!-- persisted-3F-method -->
 
     
-      <div id="method-i-send_rejection_email_and_destroy_user" class="method-detail ">
+      <div id="method-i-send_rejection_email_and_delete_user" class="method-detail ">
         
         <div class="method-heading">
-          <span class="method-name">send_rejection_email_and_destroy_user</span><span
+          <span class="method-name">send_rejection_email_and_delete_user</span><span
             class="method-args">()</span>
           <span class="method-click-advice">click to toggle source</span>
         </div>
@@ -447,21 +455,21 @@ has been denied.</p>
           
 
           
-          <div class="method-source-code" id="send_rejection_email_and_destroy_user-source">
+          <div class="method-source-code" id="send_rejection_email_and_delete_user-source">
             <pre><span class="ruby-comment"># File app/view_models/admin/delete_unconfirmed_user.rb, line 35</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">send_rejection_email_and_destroy_user</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">send_rejection_email_and_delete_user</span>
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">valid?</span>
   <span class="ruby-constant">RegistrationMailer</span>.<span class="ruby-identifier">notify_user_of_rejection</span>(<span class="ruby-identifier">user</span>, <span class="ruby-ivar">@optional_note_to_user</span>)
-  <span class="ruby-identifier">user</span>.<span class="ruby-identifier">destroy</span>
+  <span class="ruby-identifier">user</span>.<span class="ruby-identifier">delete</span>()
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- send_rejection_email_and_destroy_user-source -->
+          </div><!-- send_rejection_email_and_delete_user-source -->
           
         </div>
 
         
 
         
-      </div><!-- send_rejection_email_and_destroy_user-method -->
+      </div><!-- send_rejection_email_and_delete_user-method -->
 
     
     </section><!-- public-instance-method-details -->

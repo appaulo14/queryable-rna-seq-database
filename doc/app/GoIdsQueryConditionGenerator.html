@@ -84,7 +84,7 @@
     
     <li><a href="#method-c-new">::new</a>
     
-    <li><a href="#method-i-generate_query_condition">#generate_query_condition</a>
+    <li><a href="#method-i-generate_having_string">#generate_having_string</a>
     
   </ul>
 </nav>
@@ -107,11 +107,15 @@
 
   <ul class="link-list">
   
+    <li><a href="./AbstractQueryRegularDb.html">AbstractQueryRegularDb</a>
+  
     <li><a href="./AbstractQueryUsingBlast.html">AbstractQueryUsingBlast</a>
   
     <li><a href="./AdminController.html">AdminController</a>
   
     <li><a href="./AdminHelper.html">AdminHelper</a>
+  
+    <li><a href="./AggregateStringGenerator.html">AggregateStringGenerator</a>
   
     <li><a href="./ApplicationController.html">ApplicationController</a>
   
@@ -122,6 +126,8 @@
     <li><a href="./ArrayOfUploadedFilesValidator.html">ArrayOfUploadedFilesValidator</a>
   
     <li><a href="./ArrayValidator.html">ArrayValidator</a>
+  
+    <li><a href="./B2gdbGoTerm.html">B2gdbGoTerm</a>
   
     <li><a href="./BlastUtil.html">BlastUtil</a>
   
@@ -150,8 +156,6 @@
     <li><a href="./GetGeneFastas.html">GetGeneFastas</a>
   
     <li><a href="./GetTranscriptFasta.html">GetTranscriptFasta</a>
-  
-    <li><a href="./GoFilterChecker.html">GoFilterChecker</a>
   
     <li><a href="./GoIdsQueryConditionGenerator.html">GoIdsQueryConditionGenerator</a>
   
@@ -261,6 +265,10 @@
   
     <li><a href="./WorkerForFindGoTermsForDataset.html">WorkerForFindGoTermsForDataset</a>
   
+    <li><a href="./WorkerForQueryRegularDb.html">WorkerForQueryRegularDb</a>
+  
+    <li><a href="./WorkerForQueryUsingBlast.html">WorkerForQueryUsingBlast</a>
+  
     <li><a href="./WorkerForUploadCuffdiff.html">WorkerForUploadCuffdiff</a>
   
     <li><a href="./WorkerForUploadFastaSequences.html">WorkerForUploadFastaSequences</a>
@@ -343,7 +351,7 @@ of  go ids to use when creating the query condition</p>
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File app/util/query/go_ids_query_condition_generator.rb, line 18</span>
+            <pre><span class="ruby-comment"># File app/util/query/go_ids_query_condition_generator.rb, line 19</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">go_ids_string</span>)
   <span class="ruby-ivar">@go_ids</span> = <span class="ruby-identifier">go_ids_string</span>
 <span class="ruby-keyword">end</span></pre>
@@ -363,10 +371,10 @@ of  go ids to use when creating the query condition</p>
       <h3 class="section-header">Public Instance Methods</h3>
 
     
-      <div id="method-i-generate_query_condition" class="method-detail ">
+      <div id="method-i-generate_having_string" class="method-detail ">
         
         <div class="method-heading">
-          <span class="method-name">generate_query_condition</span><span
+          <span class="method-name">generate_having_string</span><span
             class="method-args">()</span>
           <span class="method-click-advice">click to toggle source</span>
         </div>
@@ -374,42 +382,40 @@ of  go ids to use when creating the query condition</p>
 
         <div class="method-description">
           
-          <p>Generates and returns the actual where clause query condition.</p>
+          <p>Generates and returns the actual having string query condition.</p>
           
 
           
-          <div class="method-source-code" id="generate_query_condition-source">
-            <pre><span class="ruby-comment"># File app/util/query/go_ids_query_condition_generator.rb, line 24</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">generate_query_condition</span>
+          <div class="method-source-code" id="generate_having_string-source">
+            <pre><span class="ruby-comment"># File app/util/query/go_ids_query_condition_generator.rb, line 25</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">generate_having_string</span>()
   <span class="ruby-comment">#Do some validation</span>
   <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">valid?</span>
     <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">full_messages</span>)
   <span class="ruby-keyword">end</span>
   <span class="ruby-comment">#Generate and return the query condition</span>
+  <span class="ruby-identifier">having_string</span> = <span class="ruby-string">&quot;&quot;</span>
   <span class="ruby-identifier">go_ids</span> = <span class="ruby-ivar">@go_ids</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">';'</span>)
-  <span class="ruby-identifier">gt_t</span> = <span class="ruby-constant">GoTerm</span>.<span class="ruby-identifier">arel_table</span>
-  <span class="ruby-identifier">where_clauses</span> = []
   <span class="ruby-identifier">go_ids</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">go_id</span><span class="ruby-operator">|</span>
-    <span class="ruby-identifier">where_clauses</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">gt_t</span>[<span class="ruby-value">:acc</span>].<span class="ruby-identifier">eq</span>(<span class="ruby-identifier">go_id</span>.<span class="ruby-identifier">strip</span>)
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">where_clauses</span>.<span class="ruby-identifier">count</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span>
-    <span class="ruby-identifier">combined_where_clause</span> = <span class="ruby-identifier">where_clauses</span>[<span class="ruby-value">0</span>]
-    (<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-identifier">where_clauses</span>.<span class="ruby-identifier">count</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
-      <span class="ruby-identifier">combined_where_clause</span> = <span class="ruby-identifier">combined_where_clause</span>.<span class="ruby-identifier">and</span>(<span class="ruby-identifier">where_clauses</span>[<span class="ruby-identifier">i</span>])
+    <span class="ruby-comment"># Strip and quote to help prevent sql injection attacks</span>
+    <span class="ruby-identifier">go_id</span> =  <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">connection</span>.<span class="ruby-identifier">quote_string</span>(<span class="ruby-identifier">go_id</span>.<span class="ruby-identifier">strip</span>())
+    <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">having_string</span>.<span class="ruby-identifier">strip</span>.<span class="ruby-identifier">blank?</span>
+      <span class="ruby-identifier">having_string</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&quot; AND &quot;</span>
     <span class="ruby-keyword">end</span>
-    <span class="ruby-keyword">return</span> <span class="ruby-identifier">combined_where_clause</span>
-  <span class="ruby-keyword">else</span>
-    <span class="ruby-keyword">return</span> <span class="ruby-identifier">where_clauses</span>[<span class="ruby-value">0</span>]
+    <span class="ruby-identifier">go_ids_agg_str_generator</span> = <span class="ruby-constant">AggregateStringGenerator</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">'go_terms.id'</span>)
+    <span class="ruby-identifier">agg_string</span> = <span class="ruby-identifier">go_ids_agg_str_generator</span>.<span class="ruby-identifier">generate_aggregate_string</span>()
+    <span class="ruby-identifier">having_string</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot;#{agg_string} LIKE '%#{go_id}%' &quot;</span> 
   <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">having_string</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- generate_query_condition-source -->
+          </div><!-- generate_having_string-source -->
           
         </div>
 
         
 
         
-      </div><!-- generate_query_condition-method -->
+      </div><!-- generate_having_string-method -->
 
     
     </section><!-- public-instance-method-details -->

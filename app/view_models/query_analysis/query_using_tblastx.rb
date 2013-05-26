@@ -5,6 +5,8 @@ require 'query_analysis/abstract_query_using_blast.rb'
 # View model for the query using Tblastx page.
 #
 # <b>Associated Controller:</b> QueryAnalysisController
+#
+# <b>Associated Worker:</b> WorkerForQueryUsingBlast
 class QueryUsingTblastx < AbstractQueryUsingBlast
   # The word size
   attr_accessor  :word_size
@@ -53,6 +55,8 @@ class QueryUsingTblastx < AbstractQueryUsingBlast
   validates :matrix, :presence => true,
                      :inclusion => {:in => AVAILABLE_MATRICES}
   
+  ###
+  # Returns the name of the blast program that this class provides.
   def self.get_program_name()
     return 'tblastx'
   end

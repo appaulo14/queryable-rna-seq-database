@@ -1,16 +1,3 @@
-# == Schema Information
-#
-# Table name: fpkm_samples
-#
-#  id            :integer          not null, primary key
-#  transcript_id :integer          not null
-#  sample_id     :integer          not null
-#  fpkm          :float            not null
-#  fpkm_hi       :float            not null
-#  fpkm_lo       :float            not null
-#  status        :string(255)      not null
-#
-
 # == Description
 #
 # Represents an FPKM sample for a given transcript and sample. FPKM is a 
@@ -29,9 +16,9 @@
 #  id            :integer          not null, primary key
 #  transcript_id :integer          not null
 #  sample_id     :integer          not null
-#  fpkm          :string(255)      not null
-#  fpkm_hi       :string(255)      not null
-#  fpkm_lo       :string(255)      not null
+#  fpkm          :float            not null
+#  fpkm_hi       :float            not null
+#  fpkm_lo       :float            not null
 #  status        :string(255)      not null
 #
 class FpkmSample < ActiveRecord::Base

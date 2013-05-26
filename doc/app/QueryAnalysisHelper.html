@@ -64,20 +64,6 @@
 
   <ul class="link-list">
     
-    <li><a href="#method-i-ascending_sort_arrow">#ascending_sort_arrow</a>
-    
-    <li><a href="#method-i-descending_sort_arrow">#descending_sort_arrow</a>
-    
-    <li><a href="#method-i-get_color_for_score">#get_color_for_score</a>
-    
-    <li><a href="#method-i-get_end_width_percent">#get_end_width_percent</a>
-    
-    <li><a href="#method-i-get_start_width_percent">#get_start_width_percent</a>
-    
-    <li><a href="#method-i-get_tooltip">#get_tooltip</a>
-    
-    <li><a href="#method-i-get_unique_hit_id">#get_unique_hit_id</a>
-    
     <li><a href="#method-i-link_to_amigo_web_page_for_term">#link_to_amigo_web_page_for_term</a>
     
     <li><a href="#method-i-link_to_fasta_sequence_for_transcript">#link_to_fasta_sequence_for_transcript</a>
@@ -107,11 +93,15 @@
 
   <ul class="link-list">
   
+    <li><a href="./AbstractQueryRegularDb.html">AbstractQueryRegularDb</a>
+  
     <li><a href="./AbstractQueryUsingBlast.html">AbstractQueryUsingBlast</a>
   
     <li><a href="./AdminController.html">AdminController</a>
   
     <li><a href="./AdminHelper.html">AdminHelper</a>
+  
+    <li><a href="./AggregateStringGenerator.html">AggregateStringGenerator</a>
   
     <li><a href="./ApplicationController.html">ApplicationController</a>
   
@@ -122,6 +112,8 @@
     <li><a href="./ArrayOfUploadedFilesValidator.html">ArrayOfUploadedFilesValidator</a>
   
     <li><a href="./ArrayValidator.html">ArrayValidator</a>
+  
+    <li><a href="./B2gdbGoTerm.html">B2gdbGoTerm</a>
   
     <li><a href="./BlastUtil.html">BlastUtil</a>
   
@@ -150,8 +142,6 @@
     <li><a href="./GetGeneFastas.html">GetGeneFastas</a>
   
     <li><a href="./GetTranscriptFasta.html">GetTranscriptFasta</a>
-  
-    <li><a href="./GoFilterChecker.html">GoFilterChecker</a>
   
     <li><a href="./GoIdsQueryConditionGenerator.html">GoIdsQueryConditionGenerator</a>
   
@@ -261,6 +251,10 @@
   
     <li><a href="./WorkerForFindGoTermsForDataset.html">WorkerForFindGoTermsForDataset</a>
   
+    <li><a href="./WorkerForQueryRegularDb.html">WorkerForQueryRegularDb</a>
+  
+    <li><a href="./WorkerForQueryUsingBlast.html">WorkerForQueryUsingBlast</a>
+  
     <li><a href="./WorkerForUploadCuffdiff.html">WorkerForUploadCuffdiff</a>
   
     <li><a href="./WorkerForUploadFastaSequences.html">WorkerForUploadFastaSequences</a>
@@ -301,252 +295,30 @@ href="QueryAnalysisController.html">QueryAnalysisController</a></p>
       <h3 class="section-header">Public Instance Methods</h3>
 
     
-      <div id="method-i-ascending_sort_arrow" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">ascending_sort_arrow</span><span
-            class="method-args">()</span>
-          <span class="method-click-advice">click to toggle source</span>
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>Displays an ascending sort arrow used for table sorting</p>
-          
-
-          
-          <div class="method-source-code" id="ascending_sort_arrow-source">
-            <pre><span class="ruby-comment"># File app/helpers/query_analysis_helper.rb, line 4</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">ascending_sort_arrow</span>
-  <span class="ruby-keyword">return</span> <span class="ruby-identifier">image_tag</span>(<span class="ruby-string">'ascending_sort_arrow.png'</span>, <span class="ruby-value">:class</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'sort_arrow'</span>)
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- ascending_sort_arrow-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- ascending_sort_arrow-method -->
-
-    
-      <div id="method-i-descending_sort_arrow" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">descending_sort_arrow</span><span
-            class="method-args">()</span>
-          <span class="method-click-advice">click to toggle source</span>
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>Displays a descending sort arrow used for table sorting</p>
-          
-
-          
-          <div class="method-source-code" id="descending_sort_arrow-source">
-            <pre><span class="ruby-comment"># File app/helpers/query_analysis_helper.rb, line 9</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">descending_sort_arrow</span>
-  <span class="ruby-keyword">return</span> <span class="ruby-identifier">image_tag</span>(<span class="ruby-string">'descending_sort_arrow.png'</span>, <span class="ruby-value">:class</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'sort_arrow'</span>)
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- descending_sort_arrow-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- descending_sort_arrow-method -->
-
-    
-      <div id="method-i-get_color_for_score" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">get_color_for_score</span><span
-            class="method-args">(score)</span>
-          <span class="method-click-advice">click to toggle source</span>
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>Returns a color based on the specified blast score</p>
-          
-
-          
-          <div class="method-source-code" id="get_color_for_score-source">
-            <pre><span class="ruby-comment"># File app/helpers/query_analysis_helper.rb, line 47</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_color_for_score</span>(<span class="ruby-identifier">score</span>)
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">score</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">40</span>
-    <span class="ruby-identifier">color</span> = <span class="ruby-string">'black'</span>
-  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">score</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-value">40</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">score</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">50</span>
-    <span class="ruby-identifier">color</span> = <span class="ruby-string">'blue'</span>
-  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">score</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-value">50</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">score</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">80</span>
-    <span class="ruby-identifier">color</span> = <span class="ruby-string">'lime'</span>
-  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">score</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-value">80</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">score</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">200</span>
-    <span class="ruby-identifier">color</span> = <span class="ruby-string">'magenta'</span>
-  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">score</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-value">200</span>
-    <span class="ruby-identifier">color</span> = <span class="ruby-string">'red'</span>
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">return</span> <span class="ruby-identifier">color</span>
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- get_color_for_score-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- get_color_for_score-method -->
-
-    
-      <div id="method-i-get_end_width_percent" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">get_end_width_percent</span><span
-            class="method-args">(hsp)</span>
-          <span class="method-click-advice">click to toggle source</span>
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>Returns the ending width percent page needed for some calculations on  the
-blast results page.</p>
-          
-
-          
-          <div class="method-source-code" id="get_end_width_percent-source">
-            <pre><span class="ruby-comment"># File app/helpers/query_analysis_helper.rb, line 70</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_end_width_percent</span>(<span class="ruby-identifier">hsp</span>)
-  <span class="ruby-keyword">return</span> (<span class="ruby-identifier">hit</span>.<span class="ruby-identifier">query_to</span><span class="ruby-operator">/</span><span class="ruby-identifier">_1_percent</span>) <span class="ruby-operator">-</span> <span class="ruby-identifier">get_start_width_percent</span>(<span class="ruby-identifier">hsp</span>) <span class="ruby-operator">-</span> <span class="ruby-value">1</span>
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- get_end_width_percent-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- get_end_width_percent-method -->
-
-    
-      <div id="method-i-get_start_width_percent" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">get_start_width_percent</span><span
-            class="method-args">(hsp)</span>
-          <span class="method-click-advice">click to toggle source</span>
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>Returns the starting width percent page needed for some calculations on 
-the blast results page.</p>
-          
-
-          
-          <div class="method-source-code" id="get_start_width_percent-source">
-            <pre><span class="ruby-comment"># File app/helpers/query_analysis_helper.rb, line 64</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_start_width_percent</span>(<span class="ruby-identifier">hsp</span>)
-  <span class="ruby-keyword">return</span> (<span class="ruby-identifier">hsp</span>.<span class="ruby-identifier">query_from</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span> ) <span class="ruby-operator">?</span> <span class="ruby-value">0</span> <span class="ruby-operator">:</span> (<span class="ruby-identifier">hsp</span>.<span class="ruby-identifier">query_from</span><span class="ruby-operator">/</span><span class="ruby-identifier">_1_percent</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>)
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- get_start_width_percent-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- get_start_width_percent-method -->
-
-    
-      <div id="method-i-get_tooltip" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">get_tooltip</span><span
-            class="method-args">(hit, hsp)</span>
-          <span class="method-click-advice">click to toggle source</span>
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>Returns a tooltip to use for hsps in the blast graphical summary</p>
-          
-
-          
-          <div class="method-source-code" id="get_tooltip-source">
-            <pre><span class="ruby-comment"># File app/helpers/query_analysis_helper.rb, line 75</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_tooltip</span>(<span class="ruby-identifier">hit</span>, <span class="ruby-identifier">hsp</span>)
-  <span class="ruby-keyword">return</span> <span class="ruby-node">&quot;&gt;#{hit.hit_id} #{hit.target_def}\nBit score=#{hit.bit_score} E-value=#{hit.evalue}&quot;</span>
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- get_tooltip-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- get_tooltip-method -->
-
-    
-      <div id="method-i-get_unique_hit_id" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">get_unique_hit_id</span><span
-            class="method-args">(report,iteration,hit)</span>
-          <span class="method-click-advice">click to toggle source</span>
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>Returns a unique html id for a blast result hit that can be used to link 
-directly to the hit</p>
-          
-
-          
-          <div class="method-source-code" id="get_unique_hit_id-source">
-            <pre><span class="ruby-comment"># File app/helpers/query_analysis_helper.rb, line 81</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_unique_hit_id</span>(<span class="ruby-identifier">report</span>,<span class="ruby-identifier">iteration</span>,<span class="ruby-identifier">hit</span>)
-  <span class="ruby-keyword">return</span> <span class="ruby-node">&quot;Report-#{report.query_id},Iteration-#{iteration.num},Hit-#{hit.num}&quot;</span>
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- get_unique_hit_id-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- get_unique_hit_id-method -->
-
-    
       <div id="method-i-link_to_amigo_web_page_for_term" class="method-detail ">
         
         <div class="method-heading">
           <span class="method-name">link_to_amigo_web_page_for_term</span><span
-            class="method-args">(body,go_id)</span>
+            class="method-args">(go_term,go_id)</span>
           <span class="method-click-advice">click to toggle source</span>
         </div>
         
 
         <div class="method-description">
           
-          <p>Displays a link to the <a href="Gene.html">Gene</a> Onotology website for
-the specified go_id  having the text specified in body.</p>
+          <p>Displays a link to the Amigo page for the given go term/go id.</p>
           
 
           
           <div class="method-source-code" id="link_to_amigo_web_page_for_term-source">
-            <pre><span class="ruby-comment"># File app/helpers/query_analysis_helper.rb, line 33</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">link_to_amigo_web_page_for_term</span>(<span class="ruby-identifier">body</span>,<span class="ruby-identifier">go_id</span>)
-  <span class="ruby-identifier">link_address</span> = <span class="ruby-string">&quot;http://amigo.geneontology.org/&quot;</span> <span class="ruby-operator">+</span>
+            <pre><span class="ruby-comment"># File app/helpers/query_analysis_helper.rb, line 23</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">link_to_amigo_web_page_for_term</span>(<span class="ruby-identifier">go_term</span>,<span class="ruby-identifier">go_id</span>)
+  <span class="ruby-identifier">go_term</span> = <span class="ruby-identifier">go_term</span>.<span class="ruby-identifier">strip</span>()
+  <span class="ruby-identifier">go_id</span> = <span class="ruby-identifier">go_id</span>.<span class="ruby-identifier">strip</span>()
+  <span class="ruby-identifier">body</span> = <span class="ruby-node">&quot;#{go_term} [#{go_id}]&quot;</span>
+  <span class="ruby-identifier">address</span> = <span class="ruby-string">&quot;http://amigo.geneontology.org/&quot;</span> <span class="ruby-operator">+</span>
                  <span class="ruby-node">&quot;cgi-bin/amigo/term_details?term=#{go_id}&quot;</span>
-  <span class="ruby-keyword">return</span> <span class="ruby-identifier">link_to</span>(<span class="ruby-identifier">body</span>, <span class="ruby-identifier">link_address</span>, <span class="ruby-value">:target</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'_blank'</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">link_to</span>(<span class="ruby-identifier">body</span>, <span class="ruby-identifier">address</span>, <span class="ruby-value">:target</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'_blank'</span>)
 <span class="ruby-keyword">end</span></pre>
           </div><!-- link_to_amigo_web_page_for_term-source -->
           
@@ -575,7 +347,7 @@ given dataset.</p>
 
           
           <div class="method-source-code" id="link_to_fasta_sequence_for_transcript-source">
-            <pre><span class="ruby-comment"># File app/helpers/query_analysis_helper.rb, line 15</span>
+            <pre><span class="ruby-comment"># File app/helpers/query_analysis_helper.rb, line 5</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">link_to_fasta_sequence_for_transcript</span>(<span class="ruby-identifier">dataset_id</span>, <span class="ruby-identifier">transcript_name</span>)
   <span class="ruby-identifier">link_address</span> = <span class="ruby-string">&quot;get_transcript_fasta?&quot;</span> <span class="ruby-operator">+</span>
                  <span class="ruby-node">&quot;dataset_id=#{dataset_id}&amp;&quot;</span> <span class="ruby-operator">+</span>
@@ -609,7 +381,7 @@ gene name in a given dataset.</p>
 
           
           <div class="method-source-code" id="link_to_fasta_sequences_for_gene-source">
-            <pre><span class="ruby-comment"># File app/helpers/query_analysis_helper.rb, line 24</span>
+            <pre><span class="ruby-comment"># File app/helpers/query_analysis_helper.rb, line 14</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">link_to_fasta_sequences_for_gene</span>(<span class="ruby-identifier">dataset_id</span>, <span class="ruby-identifier">gene_name</span>)
   <span class="ruby-identifier">link_address</span> = <span class="ruby-string">&quot;get_gene_fastas?&quot;</span> <span class="ruby-operator">+</span>
                  <span class="ruby-node">&quot;dataset_id=#{dataset_id}&amp;&quot;</span> <span class="ruby-operator">+</span>
@@ -642,7 +414,7 @@ gene name in a given dataset.</p>
 
           
           <div class="method-source-code" id="link_to_ncbi_search_for-source">
-            <pre><span class="ruby-comment"># File app/helpers/query_analysis_helper.rb, line 40</span>
+            <pre><span class="ruby-comment"># File app/helpers/query_analysis_helper.rb, line 33</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">link_to_ncbi_search_for</span>(<span class="ruby-identifier">search_term</span>)
   <span class="ruby-identifier">link_address</span> = <span class="ruby-string">&quot;http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?&quot;</span> <span class="ruby-operator">+</span>
                  <span class="ruby-node">&quot;db=nucleotide&amp;cmd=search&amp;term=#{search_term}&quot;</span>

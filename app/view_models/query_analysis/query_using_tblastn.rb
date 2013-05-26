@@ -5,6 +5,8 @@ require 'query_analysis/abstract_query_using_blast.rb'
 # View model for the query using Tblastn page.
 #
 # <b>Associated Controller:</b> QueryAnalysisController
+#
+# <b>Associated Worker:</b> WorkerForQueryUsingBlast
 class QueryUsingTblastn < AbstractQueryUsingBlast
   # The word size 
   attr_accessor :word_size
@@ -161,6 +163,8 @@ class QueryUsingTblastn < AbstractQueryUsingBlast
   validates :matrix, :presence => true,
                      :inclusion => {:in => AVAILABLE_MATRICES}
   
+  ###
+  # Returns the name of the blast program that this class provides.
   def self.get_program_name()
     return 'tblastn'
   end
@@ -232,9 +236,5 @@ class QueryUsingTblastn < AbstractQueryUsingBlast
       tblastn_execution_string += 
         "-comp_based_stats #{@compositional_adjustment} "
       return tblastn_execution_string
-    end
-    
-    def gap_costs_valid_for_selected_matrix
-      #TODO: Implement
     end
 end

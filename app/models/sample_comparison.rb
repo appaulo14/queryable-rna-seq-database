@@ -13,7 +13,6 @@
 #  sample_1_id :integer          not null
 #  sample_2_id :integer          not null
 #
-
 class SampleComparison < ActiveRecord::Base
   attr_accessible :sample_1, :sample_2
   

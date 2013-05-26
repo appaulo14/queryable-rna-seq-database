@@ -1,3 +1,8 @@
+###
+# Worker class that runs jobs to email regular database query results to a 
+# user as a text file. It does this in a background queue so that the user 
+# can continue to do other things while the go terms for their dataset 
+# are being found.
 class WorkerForQueryRegularDb
   include SuckerPunch::Worker
   
