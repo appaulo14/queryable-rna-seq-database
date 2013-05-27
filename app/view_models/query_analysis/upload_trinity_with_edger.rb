@@ -104,32 +104,30 @@ class UploadTrinityWithEdgeR
   def save
     return if not self.valid?
     begin
-      #ActiveRecord::Base.transaction do   #Transactions work with sub-methods
-        process_args_to_create_dataset()
-        Rails.logger.info "Created dataset #{@dataset.id} for #{@dataset_name}"
-        if @has_gene_diff_exp == '1'
-          Rails.logger.info "Starting gene diff exp for dataset: #{@dataset.id}"
-          process_gene_diff_exp_files()
-          Rails.logger.info "Finished gene diff exp for dataset: #{@dataset.id}"
-          Rails.logger.info "Starting gene fpkm for dataset: #{@dataset.id}"
-          process_gene_fpkm_file()
-          Rails.logger.info "Finished gene fpkm exp for dataset: #{@dataset.id}"
-        end
-        Rails.logger.info "Started trans diff exp for dataset: #{@dataset.id}"
-        process_transcript_diff_exp_files()
-        Rails.logger.info "Finished trans diff exp for dataset: #{@dataset.id}"
-        Rails.logger.info "Starting trans fpkm for dataset: #{@dataset.id}"
-        process_transcript_fpkm_file()
-        Rails.logger.info "Finished trans fpkm exp for dataset: #{@dataset.id}"
-        Rails.logger.info "Started blast db creation for dataset: #{@dataset.id}"
-        BlastUtil.makeblastdb_with_seqids(@transcripts_fasta_file.tempfile.path,
-                                           @dataset)
-        Rails.logger.info "Finished blast db creation for dataset: #{@dataset.id}"
-        @dataset.finished_uploading = true
-        @dataset.save!
-        QueryAnalysisMailer.notify_user_of_upload_success(@current_user,
-                                                            @dataset)                                        
-      #end
+      process_args_to_create_dataset()
+      Rails.logger.info "Created dataset #{@dataset.id} for #{@dataset_name}"
+      if @has_gene_diff_exp == '1'
+        Rails.logger.info "Starting gene diff exp for dataset: #{@dataset.id}"
+        process_gene_diff_exp_files()
+        Rails.logger.info "Finished gene diff exp for dataset: #{@dataset.id}"
+        Rails.logger.info "Starting gene fpkm for dataset: #{@dataset.id}"
+        process_gene_fpkm_file()
+        Rails.logger.info "Finished gene fpkm exp for dataset: #{@dataset.id}"
+      end
+      Rails.logger.info "Started trans diff exp for dataset: #{@dataset.id}"
+      process_transcript_diff_exp_files()
+      Rails.logger.info "Finished trans diff exp for dataset: #{@dataset.id}"
+      Rails.logger.info "Starting trans fpkm for dataset: #{@dataset.id}"
+      process_transcript_fpkm_file()
+      Rails.logger.info "Finished trans fpkm exp for dataset: #{@dataset.id}"
+      Rails.logger.info "Started blast db creation for dataset: #{@dataset.id}"
+      BlastUtil.makeblastdb_with_seqids(@transcripts_fasta_file.tempfile.path,
+                                         @dataset)
+      Rails.logger.info "Finished blast db creation for dataset: #{@dataset.id}"
+      @dataset.finished_uploading = true
+      @dataset.save!
+      QueryAnalysisMailer.notify_user_of_upload_success(@current_user,
+                                                          @dataset)                                        
       #If any error occurs, the files won't be deleted and therefore can
       # be examined for problems
       delete_uploaded_files()
