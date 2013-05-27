@@ -53,10 +53,6 @@ FactoryGirl.define do
     end
     
     factory :dataset do
-      after(:build)             {|object| BlastUtil.makeblastdb_with_seqids(
-                                        get_uploaded_trinity_fasta_file.tempfile.path
-                                        object)
-                                }
       name                      {Faker::Name.name}
       program_used              'trinity_with_edger'
       has_transcript_diff_exp   true
