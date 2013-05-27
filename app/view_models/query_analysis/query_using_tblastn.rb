@@ -156,8 +156,7 @@ class QueryUsingTblastn < AbstractQueryUsingBlast
   validates :text_area_fastas, :protein_fasta_sequences => true
   validates :word_size, :presence => true,
                         :inclusion => {:in => AVAILABLE_WORD_SIZES}
-  validates :gap_costs, :presence => true
-  validate  :gap_costs_valid_for_selected_matrix           
+  validates :gap_costs, :presence => true         
   validates :compositional_adjustment, :presence => true,
                 :inclusion => {:in => AVAILABLE_COMPOSITIONAL_ADJUSTMENTS.values}
   validates :matrix, :presence => true,

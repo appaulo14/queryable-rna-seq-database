@@ -1,0 +1,3 @@
+Help tips for the blast pages are in their respective javascript files 
+because I did not take the time to port them into help_tip.en.yml. They 
+can be found there if you need to change them.

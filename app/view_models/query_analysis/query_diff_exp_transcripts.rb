@@ -36,8 +36,7 @@ class QueryDiffExpTranscripts < AbstractQueryRegularDb
                                           :only_integer => true, 
                                           :greater_than_or_equal => 0 
                                    }
-  validates :cutoff, :presence => true,
-                     :format => { :with => /\A\d*\.?\d*\z/ }
+  validates :cutoff, :presence => true, :numericality => true
   
   ###
   # Returns the type of query that the class provides
@@ -282,7 +281,7 @@ class QueryDiffExpTranscripts < AbstractQueryRegularDb
       @results_count = DifferentialExpressionTest
         .joins(:transcript => [:gene])
         .where(@where_clauses)
-        .select('count(*)')[0].count.to_i
+        .select('count(*)')[0]['count(*)'].to_i
     end
   end
 end

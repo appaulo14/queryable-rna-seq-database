@@ -257,7 +257,7 @@ class AbstractQueryRegularDb
   ###
   # Saves to the Dataset record that it has been queried just now. 
   def record_that_dataset_has_been_queried()
-    @dataset.when_last_queried = Time.now
+    @dataset.when_last_queried = Time.now()
     @dataset.save!
   end
   
