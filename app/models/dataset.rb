@@ -57,22 +57,6 @@ class Dataset < ActiveRecord::Base
   has_many :genes, :dependent => :destroy
   has_many :samples, :dependent => :destroy
   
-  ###
-  # In addition to destroying the database record, also deletes the blast 
-  # database associated with the Dataset.
-  def destroy()
-    super
-    SystemUtil.system!("rm #{self.blast_db_location}.*")
-  end
-  
-  ###
-  # In addition to deleting the database record, also deletes the blast 
-  # database associated with the Dataset.
-  def delete()
-    super
-    SystemUtil.system!("rm #{self.blast_db_location}.*")
-  end
-  
   private
   
   def blast_db_location_pathname_is_valid

@@ -64,19 +64,7 @@
 </nav>
 
     
-    <!-- Method Quickref -->
-<nav id="method-list-section" class="section">
-  <h3 class="section-header">Methods</h3>
-
-  <ul class="link-list">
     
-    <li><a href="#method-i-delete">#delete</a>
-    
-    <li><a href="#method-i-destroy">#destroy</a>
-    
-  </ul>
-</nav>
-
   </div>
 
   <div id="project-metadata">
@@ -316,76 +304,6 @@ updated_at              :datetime         not null</pre>
 
     <!-- Methods -->
     
-     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
-      <h3 class="section-header">Public Instance Methods</h3>
-
-    
-      <div id="method-i-delete" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">delete</span><span
-            class="method-args">()</span>
-          <span class="method-click-advice">click to toggle source</span>
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>In addition to deleting the database record, also deletes the blast 
-database associated with the <a href="Dataset.html">Dataset</a>.</p>
-          
-
-          
-          <div class="method-source-code" id="delete-source">
-            <pre><span class="ruby-comment"># File app/models/dataset.rb, line 71</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">delete</span>()
-  <span class="ruby-keyword">super</span>
-  <span class="ruby-constant">SystemUtil</span>.<span class="ruby-identifier">system!</span>(<span class="ruby-node">&quot;rm #{self.blast_db_location}.*&quot;</span>)
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- delete-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- delete-method -->
-
-    
-      <div id="method-i-destroy" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">destroy</span><span
-            class="method-args">()</span>
-          <span class="method-click-advice">click to toggle source</span>
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>In addition to destroying the database record, also deletes the blast 
-database associated with the <a href="Dataset.html">Dataset</a>.</p>
-          
-
-          
-          <div class="method-source-code" id="destroy-source">
-            <pre><span class="ruby-comment"># File app/models/dataset.rb, line 63</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">destroy</span>()
-  <span class="ruby-keyword">super</span>
-  <span class="ruby-constant">SystemUtil</span>.<span class="ruby-identifier">system!</span>(<span class="ruby-node">&quot;rm #{self.blast_db_location}.*&quot;</span>)
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- destroy-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- destroy-method -->
-
-    
-    </section><!-- public-instance-method-details -->
-  
   </section><!-- 5Buntitled-5D -->
 
 </div><!-- documentation -->

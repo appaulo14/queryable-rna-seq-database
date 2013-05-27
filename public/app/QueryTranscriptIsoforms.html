@@ -869,7 +869,7 @@ in the query results.</p>
       .<span class="ruby-identifier">joins</span>(<span class="ruby-value">:transcripts</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value">:transcript_fpkm_tracking_information</span>, 
                               <span class="ruby-value">:gene</span>, <span class="ruby-value">:fpkm_samples</span>])
       .<span class="ruby-identifier">where</span>(<span class="ruby-ivar">@where_clauses</span>)
-      .<span class="ruby-identifier">select</span>(<span class="ruby-string">'count(*)'</span>)[<span class="ruby-value">0</span>].<span class="ruby-identifier">count</span>.<span class="ruby-identifier">to_i</span>
+      .<span class="ruby-identifier">select</span>(<span class="ruby-string">'count(*)'</span>)[<span class="ruby-value">0</span>][<span class="ruby-string">'count(*)'</span>].<span class="ruby-identifier">to_i</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- count_query_results-source -->

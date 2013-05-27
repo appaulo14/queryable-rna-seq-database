@@ -479,7 +479,7 @@ this defines that this view model does not persist in the database.</p>
 
           
           <div class="method-source-code" id="persisted-3F-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/upload_cuffdiff.rb, line 133</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/upload_cuffdiff.rb, line 131</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">persisted?</span>
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
 <span class="ruby-keyword">end</span></pre>
@@ -515,31 +515,29 @@ href="UploadCuffdiff.html#attribute-i-dataset_name">dataset_name</a></p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">save</span>
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">valid?</span>
   <span class="ruby-keyword">begin</span>
-    <span class="ruby-comment">#ActiveRecord::Base.transaction do   #Transactions work with sub-methods</span>
-      <span class="ruby-identifier">process_args_to_create_dataset</span>()
-      <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">info</span> <span class="ruby-node">&quot;Created dataset #{@dataset.id} for #{@dataset_name}&quot;</span>
-      <span class="ruby-keyword">if</span> <span class="ruby-ivar">@has_diff_exp</span> <span class="ruby-operator">==</span> <span class="ruby-string">'1'</span>
-        <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">info</span> <span class="ruby-node">&quot;Starting gene diff exp for dataset: #{@dataset.id}&quot;</span>
-        <span class="ruby-identifier">process_gene_differential_expression_file</span>()
-        <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">info</span> <span class="ruby-node">&quot;Finished gene diff exp for dataset: #{@dataset.id}&quot;</span>
-        <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">info</span> <span class="ruby-node">&quot;Started trans diff exp for dataset: #{@dataset.id}&quot;</span>
-        <span class="ruby-identifier">process_transcript_differential_expression_file</span>()
-        <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">info</span> <span class="ruby-node">&quot;Finished trans diff exp for dataset: #{@dataset.id}&quot;</span>
-      <span class="ruby-keyword">end</span>
-      <span class="ruby-keyword">if</span> <span class="ruby-ivar">@has_transcript_isoforms</span> <span class="ruby-operator">==</span> <span class="ruby-string">'1'</span>
-        <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">info</span> <span class="ruby-node">&quot;Started trans isoforms for dataset: #{@dataset.id}&quot;</span>
-        <span class="ruby-identifier">process_transcript_isoforms_file</span>()
-        <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">info</span> <span class="ruby-node">&quot;Finished trans isoforms for dataset: #{@dataset.id}&quot;</span>
-      <span class="ruby-keyword">end</span>
-      <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">info</span> <span class="ruby-node">&quot;Started blast db creation for dataset: #{@dataset.id}&quot;</span>
-      <span class="ruby-constant">BlastUtil</span>.<span class="ruby-identifier">makeblastdb_with_seqids</span>(<span class="ruby-ivar">@transcripts_fasta_file</span>.<span class="ruby-identifier">tempfile</span>.<span class="ruby-identifier">path</span>,
-                                         <span class="ruby-ivar">@dataset</span>)
-      <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">info</span> <span class="ruby-node">&quot;Finished blast db creation for dataset: #{@dataset.id}&quot;</span>
-      <span class="ruby-ivar">@dataset</span>.<span class="ruby-identifier">finished_uploading</span> = <span class="ruby-keyword">true</span>
-      <span class="ruby-ivar">@dataset</span>.<span class="ruby-identifier">save!</span>
-      <span class="ruby-constant">QueryAnalysisMailer</span>.<span class="ruby-identifier">notify_user_of_upload_success</span>(<span class="ruby-ivar">@current_user</span>,
-                                                          <span class="ruby-ivar">@dataset</span>)
-    <span class="ruby-comment">#end</span>
+    <span class="ruby-identifier">process_args_to_create_dataset</span>()
+    <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">info</span> <span class="ruby-node">&quot;Created dataset #{@dataset.id} for #{@dataset_name}&quot;</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@has_diff_exp</span> <span class="ruby-operator">==</span> <span class="ruby-string">'1'</span>
+      <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">info</span> <span class="ruby-node">&quot;Starting gene diff exp for dataset: #{@dataset.id}&quot;</span>
+      <span class="ruby-identifier">process_gene_differential_expression_file</span>()
+      <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">info</span> <span class="ruby-node">&quot;Finished gene diff exp for dataset: #{@dataset.id}&quot;</span>
+      <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">info</span> <span class="ruby-node">&quot;Started trans diff exp for dataset: #{@dataset.id}&quot;</span>
+      <span class="ruby-identifier">process_transcript_differential_expression_file</span>()
+      <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">info</span> <span class="ruby-node">&quot;Finished trans diff exp for dataset: #{@dataset.id}&quot;</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@has_transcript_isoforms</span> <span class="ruby-operator">==</span> <span class="ruby-string">'1'</span>
+      <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">info</span> <span class="ruby-node">&quot;Started trans isoforms for dataset: #{@dataset.id}&quot;</span>
+      <span class="ruby-identifier">process_transcript_isoforms_file</span>()
+      <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">info</span> <span class="ruby-node">&quot;Finished trans isoforms for dataset: #{@dataset.id}&quot;</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">info</span> <span class="ruby-node">&quot;Started blast db creation for dataset: #{@dataset.id}&quot;</span>
+    <span class="ruby-constant">BlastUtil</span>.<span class="ruby-identifier">makeblastdb_with_seqids</span>(<span class="ruby-ivar">@transcripts_fasta_file</span>.<span class="ruby-identifier">tempfile</span>.<span class="ruby-identifier">path</span>,
+                                       <span class="ruby-ivar">@dataset</span>)
+    <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">info</span> <span class="ruby-node">&quot;Finished blast db creation for dataset: #{@dataset.id}&quot;</span>
+    <span class="ruby-ivar">@dataset</span>.<span class="ruby-identifier">finished_uploading</span> = <span class="ruby-keyword">true</span>
+    <span class="ruby-ivar">@dataset</span>.<span class="ruby-identifier">save!</span>
+    <span class="ruby-constant">QueryAnalysisMailer</span>.<span class="ruby-identifier">notify_user_of_upload_success</span>(<span class="ruby-ivar">@current_user</span>,
+                                                        <span class="ruby-ivar">@dataset</span>)
     <span class="ruby-comment">#If any error occurs, the files won't be deleted and therefore can</span>
     <span class="ruby-comment"># be examined for problems</span>
     <span class="ruby-identifier">delete_uploaded_files</span>()
