@@ -278,15 +278,17 @@
     
 <h2 id="label-Description">Description</h2>
 
-<p>Represents a GO term record from the MySQL blast2go database, which is 
-separate from the database used in the rest of this Ruby on Rails 
+<p>Represents a read-only GO term record from the MySQL blast2go database, 
+which is separate from the database used in the rest of this Ruby on Rails 
 application. As GO terms are found for transcripts, GO terms are copied
 from  this table into the <a href="GoTerm.html">GoTerm</a> table, which
 resides in the same database as the  rest of the tables for this Ruby on
-Rails application.  <a href="GoTerm.html">GoTerm</a> represents a gene
-ontology (GO) term from the website  <a
-href="http://geneontology.org">geneontology.org</a>, which provides a
-structured vocabulary for  talking about genes.</p>
+Rails application. This copying is done  for the purpose of doing table
+joins for easy querying.</p>
+
+<p><a href="GoTerm.html">GoTerm</a> represents a gene ontology (GO) term from
+the website  <a href="http://geneontology.org">geneontology.org</a>, which
+provides a structured vocabulary for  talking about genes.</p>
 
 <h2 id="label-Schema+Information">Schema Information</h2>
 
@@ -339,7 +341,7 @@ should never be destroyed/deleted from here.</p>
 
           
           <div class="method-source-code" id="delete-source">
-            <pre><span class="ruby-comment"># File app/models/b2gdb_go_term.rb, line 49</span>
+            <pre><span class="ruby-comment"># File app/models/b2gdb_go_term.rb, line 51</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">delete</span>()
   <span class="ruby-identifier">raise</span> <span class="ruby-constant">NotImplementedError</span>, <span class="ruby-string">&quot;GO Terms are in a different db and should &quot;</span> <span class="ruby-operator">+</span>
                                 <span class="ruby-string">&quot;not be manipulated from here&quot;</span>
@@ -373,7 +375,7 @@ should never be destroyed/deleted from here.</p>
 
           
           <div class="method-source-code" id="destroy-source">
-            <pre><span class="ruby-comment"># File app/models/b2gdb_go_term.rb, line 40</span>
+            <pre><span class="ruby-comment"># File app/models/b2gdb_go_term.rb, line 42</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">destroy</span>()
   <span class="ruby-identifier">raise</span> <span class="ruby-constant">NotImplementedError</span>, <span class="ruby-string">&quot;GO Terms are in a different db and should &quot;</span> <span class="ruby-operator">+</span>
                                 <span class="ruby-string">&quot;not be manipulated from here&quot;</span>
@@ -404,7 +406,7 @@ should never be destroyed/deleted from here.</p>
 
           
           <div class="method-source-code" id="readonly-3F-source">
-            <pre><span class="ruby-comment"># File app/models/b2gdb_go_term.rb, line 32</span>
+            <pre><span class="ruby-comment"># File app/models/b2gdb_go_term.rb, line 34</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">readonly?</span>
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span>
 <span class="ruby-keyword">end</span></pre>

@@ -18,6 +18,7 @@ Mailers::
 * QueryAnalysisMailer
 
 Models::
+* B2gdbGoTerm
 * Dataset
 * DifferentialExpressionTest
 * FpkmSample

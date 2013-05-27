@@ -191,7 +191,7 @@ class AbstractQueryRegularDb
   end
   
   ###
-  # Returns the join string to user when connecting the Transcript table to 
+  # Returns the join string to use when connecting the Transcript table to 
   # the TranscriptHasGoTerm table.
   def self.thgt_left_join_string
     return "LEFT OUTER JOIN transcript_has_go_terms " +
@@ -199,7 +199,7 @@ class AbstractQueryRegularDb
   end
   
   ###
-  # Returns the join string to user when connecting the TranscriptHasGoTerm 
+  # Returns the join string to use when connecting the TranscriptHasGoTerm 
   # table to the GoTerm table.
   def self.go_terms_left_join_string
     return "LEFT OUTER JOIN go_terms " +
@@ -255,7 +255,7 @@ class AbstractQueryRegularDb
   end
   
   ###
-  # Saves to te Dataset record that it has been queried just now. 
+  # Saves to the Dataset record that it has been queried just now. 
   def record_that_dataset_has_been_queried()
     @dataset.when_last_queried = Time.now
     @dataset.save!

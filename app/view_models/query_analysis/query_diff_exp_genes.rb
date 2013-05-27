@@ -44,8 +44,6 @@ class QueryDiffExpGenes < AbstractQueryRegularDb
   
   ###
   # The string to use for the GROUP BY section of the query.
-  # transcripts.id is at the end of the string to prevent a strange error 
-  # with counting
   def self.group_by_string
     return "test_statistic, " +
            "p_value, " +

@@ -1,10 +1,12 @@
 # == Description
 #
-# Represents a GO term record from the MySQL blast2go database, which is 
-# separate from the database used in the rest of this Ruby on Rails 
+# Represents a read-only GO term record from the MySQL blast2go database, 
+# which is separate from the database used in the rest of this Ruby on Rails 
 # application. As GO terms are found for transcripts, GO terms are copied from 
 # this table into the GoTerm table, which resides in the same database as the 
-# rest of the tables for this Ruby on Rails application. 
+# rest of the tables for this Ruby on Rails application. This copying is done 
+# for the purpose of doing table joins for easy querying.
+# 
 # GoTerm represents a gene ontology (GO) term from the website 
 # http://geneontology.org, which provides a structured vocabulary for 
 # talking about genes. 
