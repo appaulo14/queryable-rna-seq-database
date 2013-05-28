@@ -527,9 +527,9 @@ issue information.</p>
           <div class="method-source-code" id="report_issue-source">
             <pre><span class="ruby-comment"># File app/view_models/home/report_issue.rb, line 86</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">report_issue</span>()
-  <span class="ruby-comment">#Don't query if it is not valid</span>
+  <span class="ruby-comment">#Don't query if it is not valid</span>
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">valid?</span>
-  <span class="ruby-comment">#Send email</span>
+  <span class="ruby-comment">#Send email</span>
   <span class="ruby-constant">HomeMailer</span>.<span class="ruby-identifier">send_report_on_issue</span>(<span class="ruby-keyword">self</span>)
 <span class="ruby-keyword">end</span></pre>
           </div><!-- report_issue-source -->
@@ -571,12 +571,12 @@ values</p>
   <span class="ruby-keyword">else</span>
     <span class="ruby-ivar">@when_issue_occured</span> = <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">now</span>
   <span class="ruby-keyword">end</span>
-  <span class="ruby-comment">#Load in any values from the form</span>
+  <span class="ruby-comment">#Load in any values from the form</span>
   <span class="ruby-identifier">attributes</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">name</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
       <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">name</span>.<span class="ruby-identifier">match</span>(<span class="ruby-regexp">/when_issue_occured/</span>)
       <span class="ruby-identifier">send</span>(<span class="ruby-node">&quot;#{name}=&quot;</span>, <span class="ruby-identifier">value</span>)
   <span class="ruby-keyword">end</span>
-  <span class="ruby-comment">#Set available categories</span>
+  <span class="ruby-comment">#Set available categories</span>
   <span class="ruby-ivar">@available_categories</span> = <span class="ruby-constant">AVAILABLE_CATEGORIES</span>
   <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-ivar">@current_user</span>.<span class="ruby-identifier">nil?</span>
     <span class="ruby-ivar">@name</span> = <span class="ruby-ivar">@current_user</span>.<span class="ruby-identifier">name</span>

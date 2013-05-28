@@ -8,8 +8,6 @@ require 'query_analysis/abstract_query_using_blast.rb'
 #
 # <b>Associated Worker:</b> WorkerForQueryUsingBlast
 class QueryUsingTblastn < AbstractQueryUsingBlast
-  # The word size 
-  attr_accessor :word_size
   # The gap costs
   attr_accessor :gap_costs
   # The matrix
@@ -17,8 +15,6 @@ class QueryUsingTblastn < AbstractQueryUsingBlast
   # The compositional adjustment
   attr_accessor :compositional_adjustment
   
-  # The available valid options for the word_size
-  attr_reader :available_word_sizes
   # The available valid options for the #matrix
   attr_reader :available_matrices
   # The available valid options for the gap_costs
@@ -142,7 +138,7 @@ class QueryUsingTblastn < AbstractQueryUsingBlast
   
   # The available valid options for the #matrix
   AVAILABLE_MATRICES = ['PAM30','PAM70','PAM250','BLOSUM80',
-                           'BLOSUM62','BLOSUM45','BLOSUM90']
+                           'BLOSUM62','BLOSUM45','BLOSUM50','BLOSUM90']
   
   # The available valid options for the compositional_adjustment
   AVAILABLE_COMPOSITIONAL_ADJUSTMENTS = {
@@ -161,6 +157,7 @@ class QueryUsingTblastn < AbstractQueryUsingBlast
                 :inclusion => {:in => AVAILABLE_COMPOSITIONAL_ADJUSTMENTS.values}
   validates :matrix, :presence => true,
                      :inclusion => {:in => AVAILABLE_MATRICES}
+  validate :gap_costs_valid_for_selected_matrix
   
   ###
   # Returns the name of the blast program that this class provides.
@@ -187,7 +184,7 @@ class QueryUsingTblastn < AbstractQueryUsingBlast
     #Defaults taken from http://www.ncbi.nlm.nih.gov/books/NBK1763/#CmdLineAppsManual.Appendix_C_Options_for
     # and http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.blastn_application_o/?report=objectonly
     @word_size = '3' if @word_size.blank?
-    @compositional_adjustment = '2'
+    @compositional_adjustment = '2' if @compositional_adjustment.blank?
     @use_soft_masking = '0' if @use_soft_masking.blank?
     @use_lowercase_masking = '0' if @use_lowercase_masking.blank?
     if @filter_low_complexity_regions.blank?
@@ -198,7 +195,7 @@ class QueryUsingTblastn < AbstractQueryUsingBlast
     end
     #Set available gap costs for the given matrix
     @available_gap_costs = AVAILABLE_GAP_COSTS[@matrix].keys
-    if @gap_costs.blank? or not @available_gap_costs.include?(@gap_costs)
+    if @gap_costs.blank?
       @gap_costs = AVAILABLE_GAP_COST_DEFAULTS[@matrix]
     end
   end
@@ -235,5 +232,17 @@ class QueryUsingTblastn < AbstractQueryUsingBlast
       tblastn_execution_string += 
         "-comp_based_stats #{@compositional_adjustment} "
       return tblastn_execution_string
+    end
+    
+    #### Validation methods ####
+    def gap_costs_valid_for_selected_matrix()
+      return if @gap_costs.blank? or @matrix.blank?
+      if not AVAILABLE_MATRICES.include?(@matrix)
+        return
+      end
+      if AVAILABLE_GAP_COSTS[@matrix][@gap_costs].nil?
+        errors[:gap_costs] << 'must be one of the available gap costs ' +
+          'for the selected matrix'
+      end
     end
 end

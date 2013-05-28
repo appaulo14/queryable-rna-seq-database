@@ -469,7 +469,7 @@ class QueryAnalysisController < ApplicationController
     #Calculate the new gap costs from the match and mismatch scores 
     @query_using_tblastn = QueryUsingTblastn.new(current_user)
     matrix = params[:matrix]
-    @query_using_tblastn.set_attributes_and_defaults(:matrix => matrix)
+    @query_using_tblastn.set_attributes_and_defaults({:matrix => matrix})
     #Render the new gap costs
     render :partial => 'gap_costs', :locals => {:object => @query_using_tblastn}
   end

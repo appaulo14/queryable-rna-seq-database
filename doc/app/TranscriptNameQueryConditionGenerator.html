@@ -351,7 +351,7 @@ specified gene name.</p>
           <div class="method-source-code" id="new-source">
             <pre><span class="ruby-comment"># File app/util/query/transcript_name_query_condition_generator.rb, line 15</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">attributes</span> = {})
-  <span class="ruby-comment">#Load in any values from the form</span>
+  <span class="ruby-comment">#Load in any values from the form</span>
   <span class="ruby-identifier">attributes</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">name</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
       <span class="ruby-identifier">send</span>(<span class="ruby-node">&quot;#{name}=&quot;</span>, <span class="ruby-identifier">value</span>)
   <span class="ruby-keyword">end</span>
@@ -390,11 +390,11 @@ specified gene name.</p>
           <div class="method-source-code" id="generate_query_condition-source">
             <pre><span class="ruby-comment"># File app/util/query/transcript_name_query_condition_generator.rb, line 24</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">generate_query_condition</span>
-  <span class="ruby-comment">#Do some validation</span>
+  <span class="ruby-comment">#Do some validation</span>
   <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">valid?</span>
     <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">full_messages</span>)
   <span class="ruby-keyword">end</span>
-  <span class="ruby-comment">#Generate and return the query condition</span>
+  <span class="ruby-comment">#Generate and return the query condition</span>
   <span class="ruby-identifier">t_t</span> = <span class="ruby-constant">Transcript</span>.<span class="ruby-identifier">arel_table</span>
   <span class="ruby-keyword">return</span> <span class="ruby-identifier">t_t</span>[<span class="ruby-value">:name_from_program</span>].<span class="ruby-identifier">matches</span>(<span class="ruby-node">&quot;%#{@name.strip}%&quot;</span>)
 <span class="ruby-keyword">end</span></pre>

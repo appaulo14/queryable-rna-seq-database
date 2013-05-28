@@ -8,15 +8,11 @@ require 'query_analysis/abstract_query_using_blast.rb'
 #
 # <b>Associated Worker:</b> WorkerForQueryUsingBlast
 class QueryUsingBlastn < AbstractQueryUsingBlast
-  # The word size
-  attr_accessor :word_size
   # The gap costs
   attr_accessor :gap_costs
   # The match/mismatch scores
   attr_accessor :match_and_mismatch_scores
   
-  # The available valid options for the word_size
-  attr_reader :available_word_sizes
   # The available valid options for the match_and_mismatch_scores
   attr_reader :available_match_and_mismatch_scores
   # The available valid options for the gap_costs
@@ -153,7 +149,7 @@ class QueryUsingBlastn < AbstractQueryUsingBlast
     @available_gap_costs = 
       AVAILABLE_GAP_COSTS[@match_and_mismatch_scores].keys
     #Set default gap cost based on available gap costs
-    if @gap_costs.blank? or not @available_gap_costs.include?(@gap_costs)
+    if @gap_costs.blank?
       @gap_costs = AVAILABLE_GAP_COST_DEFAULTS[@match_and_mismatch_scores]
     end
   end
@@ -205,7 +201,7 @@ class QueryUsingBlastn < AbstractQueryUsingBlast
     end
     if AVAILABLE_GAP_COSTS[@match_and_mismatch_scores][@gap_costs].nil?
       errors[:gap_costs] << 'must be one of the available gap costs ' +
-        'for the given match/mismatch scores'
+        'for the selected match/mismatch scores'
     end
   end
 end

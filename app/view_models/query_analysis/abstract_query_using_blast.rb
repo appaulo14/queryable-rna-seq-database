@@ -18,6 +18,8 @@ class AbstractQueryUsingBlast
   attr_accessor :fasta_file
   # The number of alignments to show for the blast query
   attr_accessor :num_alignments
+  # The word size
+  attr_accessor :word_size
   # The e-value
   attr_accessor :evalue
   # Whether to get the query sequences from the html text area or an uploaded file
@@ -37,6 +39,8 @@ class AbstractQueryUsingBlast
   attr_reader   :available_datasets
   # The available valid options for the num_alignments attribute
   attr_reader   :available_num_alignments
+  # The available valid options for the word_size
+  attr_reader    :available_word_sizes
   
   # The available valid options for the num_alignments attribute
   AVAILABLE_NUM_ALIGNMENTS = ['10','50','100','250','500','1000','5000','10000','20000']

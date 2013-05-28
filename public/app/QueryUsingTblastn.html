@@ -328,8 +328,7 @@ href="QueryUsingTblastn.html#attribute-i-matrix">matrix</a></p>
       
         <dt id="AVAILABLE_WORD_SIZES">AVAILABLE_WORD_SIZES
         
-        <dd class="description"><p>The available valid options for the <a
-href="QueryUsingTblastn.html#attribute-i-word_size">#word_size</a></p>
+        <dd class="description"><p>The available valid options for the word_size</p>
         
       
       </dl>
@@ -384,20 +383,6 @@ href="QueryUsingTblastn.html#attribute-i-matrix">matrix</a></p>
         </div>
       </div>
       
-      <div id="attribute-i-available_word_sizes" class="method-detail">
-        <div class="method-heading attribute-method-heading">
-          <span class="method-name">available_word_sizes</span><span
-            class="attribute-access-type">[R]</span>
-        </div>
-
-        <div class="method-description">
-        
-        <p>The available valid options for the <a
-href="QueryUsingTblastn.html#attribute-i-word_size">#word_size</a></p>
-        
-        </div>
-      </div>
-      
       <div id="attribute-i-compositional_adjustment" class="method-detail">
         <div class="method-heading attribute-method-heading">
           <span class="method-name">compositional_adjustment</span><span
@@ -437,19 +422,6 @@ href="QueryUsingTblastn.html#attribute-i-word_size">#word_size</a></p>
         </div>
       </div>
       
-      <div id="attribute-i-word_size" class="method-detail">
-        <div class="method-heading attribute-method-heading">
-          <span class="method-name">word_size</span><span
-            class="attribute-access-type">[RW]</span>
-        </div>
-
-        <div class="method-description">
-        
-        <p>The word size</p>
-        
-        </div>
-      </div>
-      
     </section><!-- attribute-method-details -->
     
 
@@ -475,7 +447,7 @@ href="QueryUsingTblastn.html#attribute-i-word_size">#word_size</a></p>
 
           
           <div class="method-source-code" id="get_program_name-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_using_tblastn.rb, line 167</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_using_tblastn.rb, line 163</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">get_program_name</span>()
   <span class="ruby-keyword">return</span> <span class="ruby-string">'tblastn'</span>
 <span class="ruby-keyword">end</span></pre>
@@ -509,7 +481,7 @@ href="QueryUsingTblastn.html#attribute-i-word_size">#word_size</a></p>
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_using_tblastn.rb, line 174</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_using_tblastn.rb, line 170</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">current_user</span>)
   <span class="ruby-keyword">super</span>
   <span class="ruby-comment">#Set the available options for the number of alignments</span>
@@ -550,7 +522,7 @@ values</p>
 
           
           <div class="method-source-code" id="set_attributes_and_defaults-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_using_tblastn.rb, line 184</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_using_tblastn.rb, line 180</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-identifier">attributes</span> = {})
   <span class="ruby-keyword">super</span>
   <span class="ruby-comment">#Set default values for Megablast, which is the only blastn program we will use</span>

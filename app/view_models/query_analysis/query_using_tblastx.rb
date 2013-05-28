@@ -8,15 +8,11 @@ require 'query_analysis/abstract_query_using_blast.rb'
 #
 # <b>Associated Worker:</b> WorkerForQueryUsingBlast
 class QueryUsingTblastx < AbstractQueryUsingBlast
-  # The word size
-  attr_accessor  :word_size
   # The genetic code
   attr_accessor  :genetic_code
   # The matrix 
   attr_accessor  :matrix
   
-  # The available valid options for the word_size
-  attr_reader    :available_word_sizes
   # The available valid options for the #matrix
   attr_reader    :available_matrices
   # The available valid options for the genetic_code

@@ -314,12 +314,12 @@ nucleotide fasta sequence or group of fasta sequences.</p>
             <pre><span class="ruby-comment"># File app/validators/nucleotide_fasta_sequences_validator.rb, line 7</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">validate_each</span>(<span class="ruby-identifier">record</span>, <span class="ruby-identifier">attribute</span>, <span class="ruby-identifier">value</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">blank?</span>
-  <span class="ruby-comment">#Parse fasta sequence to validate it</span>
+  <span class="ruby-comment">#Parse fasta sequence to validate it</span>
   <span class="ruby-identifier">tmp_sequence</span> = <span class="ruby-identifier">value</span>.<span class="ruby-identifier">clone</span>()
-  <span class="ruby-identifier">tmp_sequence</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-regexp">/^([&gt;].+)$/</span>,<span class="ruby-string">''</span>)    <span class="ruby-comment">#remove description lines</span>
-  <span class="ruby-identifier">tmp_sequence</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-regexp">/\n|\r/</span>,<span class="ruby-string">''</span>) <span class="ruby-comment">#remove the newlines</span>
-  <span class="ruby-comment">#Validate that sequence is a protein sequence if that is what</span>
-  <span class="ruby-comment">#   the blast program expects</span>
+  <span class="ruby-identifier">tmp_sequence</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-regexp">/^([&gt;].+)$/</span>,<span class="ruby-string">''</span>)    <span class="ruby-comment">#remove description lines</span>
+  <span class="ruby-identifier">tmp_sequence</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-regexp">/\n|\r/</span>,<span class="ruby-string">''</span>) <span class="ruby-comment">#remove the newlines</span>
+  <span class="ruby-comment">#Validate that sequence is a protein sequence if that is what</span>
+  <span class="ruby-comment">#   the blast program expects</span>
   <span class="ruby-keyword">if</span> (<span class="ruby-identifier">tmp_sequence</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-keyword">or</span> <span class="ruby-identifier">tmp_sequence</span> <span class="ruby-operator">!~</span> <span class="ruby-regexp">/\A[ACGTNUKSYMWRBDHV\-]+\z/</span>)
     <span class="ruby-identifier">record</span>.<span class="ruby-identifier">errors</span>[<span class="ruby-identifier">attribute</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;must contain one or more nucleotide fasta sequences&quot;</span>
   <span class="ruby-keyword">end</span>

@@ -658,7 +658,7 @@ href="QueryUsingTblastn.html">QueryUsingTblastn</a></p>
   <span class="ruby-comment">#Calculate the new gap costs from the match and mismatch scores </span>
   <span class="ruby-ivar">@query_using_tblastn</span> = <span class="ruby-constant">QueryUsingTblastn</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
   <span class="ruby-identifier">matrix</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:matrix</span>]
-  <span class="ruby-ivar">@query_using_tblastn</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-value">:matrix</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">matrix</span>)
+  <span class="ruby-ivar">@query_using_tblastn</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>({<span class="ruby-value">:matrix</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">matrix</span>})
   <span class="ruby-comment">#Render the new gap costs</span>
   <span class="ruby-identifier">render</span> <span class="ruby-value">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'gap_costs'</span>, <span class="ruby-value">:locals</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:object</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@query_using_tblastn</span>}
 <span class="ruby-keyword">end</span></pre>
@@ -787,7 +787,7 @@ href="QueryTranscriptIsoforms.html">QueryTranscriptIsoforms</a></p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_transcript_isoforms_samples_for_dataset</span>
   <span class="ruby-ivar">@qti</span> = <span class="ruby-constant">QueryTranscriptIsoforms</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">current_user</span>)
   <span class="ruby-identifier">dataset_id</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:dataset_id</span>]
-  <span class="ruby-ivar">@qti</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-value">:dataset_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">dataset_id</span>)
+  <span class="ruby-ivar">@qti</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>({<span class="ruby-value">:dataset_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">dataset_id</span>})
   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@qti</span>.<span class="ruby-identifier">valid?</span>
     <span class="ruby-identifier">render</span> <span class="ruby-value">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'transcript_isoforms_samples_for_dataset'</span>, 
            <span class="ruby-value">:locals</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:object</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@qti</span>}

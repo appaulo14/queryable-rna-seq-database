@@ -3,11 +3,11 @@ jQuery(document).ready(function($) {
   //    of being enabled or disabled by running the change event 
   fasta_input_radio_button_changed();
   //Bind the events for the fasta selection radio buttons.
-  $('#query_using_blastn_use_fasta_sequence_or_file_use_fasta_sequence').change(fasta_input_radio_button_changed);
-  $('#query_using_blastn_use_fasta_sequence_or_file_use_fasta_file').change(fasta_input_radio_button_changed);
+  $('#query_using_tblastn_use_fasta_sequence_or_file_use_fasta_sequence').change(fasta_input_radio_button_changed);
+  $('#query_using_tblastn_use_fasta_sequence_or_file_use_fasta_file').change(fasta_input_radio_button_changed);
   //Bind the event to update the gap costs drop down list 
   //    when match and mismatch scores drop down list changes
-  $('#query_using_blastn_matrix').change(matrix_selection_changed);
+  $('#query_using_tblastn_matrix').change(matrix_selection_changed);
   //Create the text for the help qtips
   create_qtips();
 });
@@ -19,16 +19,16 @@ jQuery(document).ready(function($) {
  */
 function fasta_input_radio_button_changed(){
   fasta_file_radio_button = 
-    $('#query_using_blastn_use_fasta_sequence_or_file_use_fasta_file');
+    $('#query_using_tblastn_use_fasta_sequence_or_file_use_fasta_file');
   fasta_sequence_radio_button = 
-    $('#query_using_blastn_use_fasta_sequence_or_file_use_fasta_sequence');
+    $('#query_using_tblastn_use_fasta_sequence_or_file_use_fasta_sequence');
   if (fasta_sequence_radio_button.is(':checked')){
-    $('#query_using_blastn_fasta_sequence').removeAttr("disabled");
-    $('#query_using_blastn_fasta_file').attr("disabled", "disabled");
+    $('#query_using_tblastn_fasta_sequence').removeAttr("disabled");
+    $('#query_using_tblastn_fasta_file').attr("disabled", "disabled");
   }
   else{
-    $('#query_using_blastn_fasta_sequence').attr("disabled", "disabled");
-    $('#query_using_blastn_fasta_file').removeAttr("disabled");
+    $('#query_using_tblastn_fasta_sequence').attr("disabled", "disabled");
+    $('#query_using_tblastn_fasta_file').removeAttr("disabled");
   }
 }
 
@@ -38,7 +38,7 @@ function fasta_input_radio_button_changed(){
  *      for updating the gap costs drop down list.
  */
 function matrix_selection_changed(){
-  matrix = $('#query_using_blastn_matrix').val();
+  matrix = $('#query_using_tblastn_matrix').val();
   request_string = 'get_tblastn_gap_costs_for_matrix' +
                    '?matrix=' + matrix
   $.get(request_string, replace_gap_costs);
@@ -49,7 +49,7 @@ function matrix_selection_changed(){
  *      match and mismatch scores drop down list changes
  */
 function replace_gap_costs(new_gap_costs){
-   $('#query_using_blastn_gap_costs').parent().html(new_gap_costs);
+   $('#query_using_tblastn_gap_costs').parent().html(new_gap_costs);
 }
 
 function create_qtips(){

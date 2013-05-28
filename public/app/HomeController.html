@@ -321,7 +321,7 @@
   <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">post?</span>
     <span class="ruby-ivar">@ri</span> = <span class="ruby-constant">ReportIssue</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@current_user</span>)
     <span class="ruby-ivar">@ri</span>.<span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:report_issue</span>])
-    <span class="ruby-comment">#Only validate the captcha if the user is not logged in</span>
+    <span class="ruby-comment">#Only validate the captcha if the user is not logged in</span>
     <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">nil?</span>
       <span class="ruby-keyword">if</span> <span class="ruby-ivar">@ri</span>.<span class="ruby-identifier">valid?</span> 
         <span class="ruby-ivar">@ri</span>.<span class="ruby-identifier">report_issue</span>()

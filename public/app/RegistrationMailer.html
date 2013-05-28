@@ -323,7 +323,7 @@ user has requested to register with the system.</p>
     <span class="ruby-identifier">from</span> = <span class="ruby-string">&quot;Queryable RNA-Seq Database Mailer Bot &quot;</span> <span class="ruby-operator">+</span>
            <span class="ruby-node">&quot;&lt;#{MAILER_BOT_CONFIG['email']}&gt;&quot;</span>
     <span class="ruby-identifier">mail</span>(<span class="ruby-value">:to</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">admin</span>.<span class="ruby-identifier">email</span>,
-         <span class="ruby-comment"># Name &lt;email&gt;</span>
+         <span class="ruby-comment"># Name &lt;email&gt;</span>
          <span class="ruby-value">:from</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">from</span>,
          <span class="ruby-value">:reply_to</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">MAILER_BOT_CONFIG</span>[<span class="ruby-string">'email'</span>],
          <span class="ruby-value">:subject</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'New User Registration Request Received'</span>).<span class="ruby-identifier">deliver</span>
@@ -364,7 +364,7 @@ request has been rejected.</p>
             <span class="ruby-string">'Queryable RNA-Seq Database'</span>
   <span class="ruby-identifier">from</span> = <span class="ruby-node">&quot;Queryable RNA-Seq Database Mailer Bot &lt;#{MAILER_BOT_CONFIG['email']}&gt;&quot;</span>
   <span class="ruby-identifier">mail</span>(<span class="ruby-value">:to</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">email</span>,
-       <span class="ruby-comment"># Name &lt;email&gt;</span>
+       <span class="ruby-comment"># Name &lt;email&gt;</span>
        <span class="ruby-value">:from</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">from</span>,
        <span class="ruby-value">:reply_to</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">MAILER_BOT_CONFIG</span>[<span class="ruby-string">'email'</span>],
        <span class="ruby-value">:subject</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">subject</span>).<span class="ruby-identifier">deliver</span>
@@ -405,7 +405,7 @@ to them soon. The confirmation email  itself is sent by the Devise gem.</p>
   <span class="ruby-identifier">subject</span> = <span class="ruby-string">'You Have Been Approved to User the Queryable RNA-Seq Database'</span>
   <span class="ruby-identifier">from</span> = <span class="ruby-node">&quot;Queryable RNA-Seq Database Mailer Bot &lt;#{MAILER_BOT_CONFIG['email']}&gt;&quot;</span>
   <span class="ruby-identifier">mail</span>(<span class="ruby-value">:to</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">email</span>,
-       <span class="ruby-comment"># Name &lt;email&gt;</span>
+       <span class="ruby-comment"># Name &lt;email&gt;</span>
        <span class="ruby-value">:from</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">from</span>,
        <span class="ruby-value">:reply_to</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">MAILER_BOT_CONFIG</span>[<span class="ruby-string">'email'</span>],
        <span class="ruby-value">:subject</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">subject</span>).<span class="ruby-identifier">deliver</span>

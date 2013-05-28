@@ -14,7 +14,7 @@
   </p>
   <div>
       <%= bq.label :word_size, "Word size" %>
-      <%= select_tag(:word_size, 
+      <%= bq.select(:word_size, 
         options_for_select(bq.object.available_word_sizes,
           bq.object.word_size)) %>
       <%= image_tag('question_mark.png', :id=>'word_size_qtip')%>

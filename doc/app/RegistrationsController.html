@@ -318,16 +318,16 @@ for the project.</p>
             <pre><span class="ruby-comment"># File app/controllers/registrations_controller.rb, line 11</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>
   <span class="ruby-identifier">build_resource</span>
-  <span class="ruby-comment">#Mark the user as confirmed already so that a confirmation email </span>
-  <span class="ruby-comment">#   won't be automatically sent when the user is saved</span>
+  <span class="ruby-comment">#Mark the user as confirmed already so that a confirmation email </span>
+  <span class="ruby-comment">#   won't be automatically sent when the user is saved</span>
   <span class="ruby-identifier">resource</span>.<span class="ruby-identifier">skip_confirmation!</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">resource</span>.<span class="ruby-identifier">valid_with_captcha?</span>
     <span class="ruby-identifier">resource</span>.<span class="ruby-identifier">save!</span>
-    <span class="ruby-comment">#Mark the user as unconfirmed so that they can't log in</span>
-    <span class="ruby-comment">#The admin will manually trigger the confirmation email later</span>
+    <span class="ruby-comment">#Mark the user as unconfirmed so that they can't log in</span>
+    <span class="ruby-comment">#The admin will manually trigger the confirmation email later</span>
     <span class="ruby-identifier">resource</span>.<span class="ruby-identifier">confirmed_at</span> = <span class="ruby-keyword">nil</span>
     <span class="ruby-identifier">resource</span>.<span class="ruby-identifier">save!</span>
-    <span class="ruby-comment">#Notify the admin that about the registration request</span>
+    <span class="ruby-comment">#Notify the admin that about the registration request</span>
     <span class="ruby-constant">RegistrationMailer</span>.<span class="ruby-identifier">notify_admin_of_registration_request_email</span>(<span class="ruby-identifier">resource</span>).<span class="ruby-identifier">deliver</span>
     <span class="ruby-identifier">flash</span>[<span class="ruby-value">:notice</span>] = <span class="ruby-string">&quot;The admin has been notified of your request.&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">is_navigational_format?</span>
     <span class="ruby-identifier">expire_session_data_after_sign_in!</span>
@@ -367,7 +367,7 @@ to change the current user in place.</p>
             <pre><span class="ruby-comment"># File app/controllers/registrations_controller.rb, line 37</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">update</span>
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">resource</span> = <span class="ruby-identifier">resource_class</span>.<span class="ruby-identifier">to_adapter</span>.<span class="ruby-identifier">get!</span>(<span class="ruby-identifier">send</span>(<span class="ruby-value">:&quot;current_#{resource_name}&quot;</span>).<span class="ruby-identifier">to_key</span>)
-  <span class="ruby-identifier">resource_params</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-value">:email</span>) <span class="ruby-comment">#Ensure user can't change their email</span>
+  <span class="ruby-identifier">resource_params</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-value">:email</span>) <span class="ruby-comment">#Ensure user can't change their email</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">resource</span>.<span class="ruby-identifier">update_with_password</span>(<span class="ruby-identifier">resource_params</span>)
     <span class="ruby-keyword">if</span> <span class="ruby-identifier">is_navigational_format?</span>
       <span class="ruby-identifier">flash_key</span> = <span class="ruby-value">:updated</span>
