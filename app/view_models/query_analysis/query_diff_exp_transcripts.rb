@@ -281,7 +281,7 @@ class QueryDiffExpTranscripts < AbstractQueryRegularDb
       @results_count = DifferentialExpressionTest
         .joins(:transcript => [:gene])
         .where(@where_clauses)
-        .select('count(*)')[0]['count(*)'].to_i
+        .select('count(*) as count')[0]['count'].to_i
     end
   end
 end

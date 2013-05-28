@@ -337,7 +337,7 @@ class QueryTranscriptIsoforms < AbstractQueryRegularDb
         .joins(:transcripts => [:transcript_fpkm_tracking_information, 
                                 :gene, :fpkm_samples])
         .where(@where_clauses)
-        .select('count(*)')[0]['count(*)'].to_i
+        .select('count(*) as count')[0]['count'].to_i
     end
   end
   
