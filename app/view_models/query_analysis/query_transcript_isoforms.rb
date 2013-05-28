@@ -163,8 +163,8 @@ class QueryTranscriptIsoforms < AbstractQueryRegularDb
     @dataset.samples.sort.each do |sample|
       @available_samples << [sample.name, sample.id]
     end
-    @sample_id = @available_samples.first[1]
-    @sample_name = @available_samples.first[0]
+    @sample_id = @available_samples.first[1] if @sample_id.blank?
+    @sample_name = Sample.find_by_id(@sample_id).name
   end
   
   ###
