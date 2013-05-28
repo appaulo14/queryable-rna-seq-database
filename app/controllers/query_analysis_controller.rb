@@ -372,7 +372,7 @@ class QueryAnalysisController < ApplicationController
     def get_transcript_isoforms_samples_for_dataset
       @qti = QueryTranscriptIsoforms.new(current_user)
       dataset_id = params[:dataset_id]
-      @qti.set_attributes_and_defaults(:dataset_id => dataset_id)
+      @qti.set_attributes_and_defaults({:dataset_id => dataset_id})
       if @qti.valid?
         render :partial => 'transcript_isoforms_samples_for_dataset', 
                :locals => {:object => @qti}

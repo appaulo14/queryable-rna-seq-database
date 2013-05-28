@@ -8,7 +8,7 @@
   <p>
     <%= qti.label :dataset_id, "Dataset to query" %>
     <%= qti.select :dataset_id, options_for_select(@qti.names_and_ids_for_available_datasets, @qti.dataset_id) %><br/>
-    <span id="sample_comparisons_container">
+    <span id="samples_container">
       <%= render 'transcript_isoforms_samples_for_dataset', :object => @qti %>
     </span>
   </p>
@@ -72,18 +72,7 @@
         </tr>
         </table>
     </div>
-    <div>
-        <%= qti.label(:go_terms, "GO Terms, separated by semicolons") %>
-        <%= qti.text_field(:go_terms, :size => 70) %>
-        <%= help_tip(:go_terms) %>
-        <%= link_to('Browse GO Terms','http://amigo.geneontology.org/cgi-bin/amigo/browse.cgi', :target => '_blank') %>
-    </div>
-    <div>
-        <%= qti.label(:go_ids, "GO IDs (a.k.a Accessions), separated by semicolons") %>
-        <%= qti.text_field(:go_ids) %>
-        <%= help_tip(:go_ids) %>
-        <%= link_to('Browse GO Terms','http://amigo.geneontology.org/cgi-bin/amigo/browse.cgi', :target => '_blank') %>
-    </div>
+    <%= render 'go_query_filters', :object => @qti %>
     <div>
         <%= label(:transcript_length, "Transcript length") %>
         <%= qti.select(:transcript_length_comparison_sign, 
