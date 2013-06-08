@@ -103,6 +103,7 @@ class AbstractQueryUsingBlast
         send("#{name}=", value)
     end
     @dataset_id = @available_datasets.first[1] if @dataset_id.blank?
+    @dataset = Dataset.find_by_id(@dataset_id)
     @num_alignments = '100' if @num_alignments.blank?
     @evalue = 10.0 if @evalue.blank?
     @query_input_method = 'text_area' if @query_input_method.blank?
@@ -135,12 +136,12 @@ class AbstractQueryUsingBlast
         begin
           QueryAnalysisMailer.send_blast_failure_message(self,@current_user)
         rescue Exception => ex2
-          Rails.logger.error "For dataset #{dataset.id} with name #{dataset.name}:\n" +
+          Rails.logger.error "For dataset #{@dataset.id} with name #{@dataset.name}:\n" +
                             "#{ex2.message}\n#{ex2.backtrace.join("\n")}"
           raise ex2, ex2.message
         ensure
           #Log the exception manually because Rails doesn't want to in this case
-          Rails.logger.error "For dataset #{dataset.id} with name #{dataset.name}:\n" +
+          Rails.logger.error "For dataset #{@dataset.id} with name #{@dataset.name}:\n" +
                             "#{ex.message}\n#{ex.backtrace.join("\n")}"
         end
       else
