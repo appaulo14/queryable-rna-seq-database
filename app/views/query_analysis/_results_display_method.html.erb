@@ -5,3 +5,17 @@
   <%= q.radio_button(:results_display_method, :email) %>
   <%= q.label(:results_display_method_email, 'Email Them to Me') %>
 </div>
+
+<script type="text/javascript">
+  jQuery(document).ready(function($) {
+    form = $('form');
+    form.submit(function(){
+      if ($('[id$="results_display_method_email"]').attr('checked') == 'checked'){
+        form.attr("action", form.attr('action') + "?results_display_method=email");
+      }
+      else{
+        form.attr("action", form.attr('action') + "?results_display_method=normal");
+      }
+    }); 
+  });
+</script>
