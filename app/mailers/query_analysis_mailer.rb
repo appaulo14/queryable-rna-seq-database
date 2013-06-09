@@ -129,7 +129,7 @@ class QueryAnalysisMailer < ActionMailer::Base
         if i >= 5
           raise
         else
-          sleep (1..10)
+          sleep rand(1..10)
         end
       end
     end
@@ -193,7 +193,7 @@ class QueryAnalysisMailer < ActionMailer::Base
         if i >= 5
           raise
         else
-          sleep (1..10)
+          sleep rand(1..10)
         end
       end
     end
