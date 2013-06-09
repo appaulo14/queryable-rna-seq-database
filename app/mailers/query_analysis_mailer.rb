@@ -119,10 +119,20 @@ class QueryAnalysisMailer < ActionMailer::Base
     # Create the email's subject
     subject = "#{blast_report.program.capitalize()} " +
               "Results for Dataset \"#{@dataset.name}\""
-    # Send the email
-    mail(:to => user.email,
-         :from => mailer_bot_from_field(),
-         :subject => subject ).deliver
+    # Send the email, trying five times before giving up
+    5.times do |i|
+      begin
+        mail(:to => user.email,
+            :from => mailer_bot_from_field(),
+            :subject => subject ).deliver
+      rescue Exception => ex
+        if i >= 5
+          raise
+        else
+          sleep (1..10)
+        end
+      end
+    end
   end
   
   ###
@@ -173,7 +183,7 @@ class QueryAnalysisMailer < ActionMailer::Base
     # Create the email's subject
     subject = "#{@query_type.capitalize()} " +
               "Results for Dataset \"#{@dataset.name}\""
-    # Send the email
+    # Send the email, trying five times before giving up
     5.times do |i|
       begin
         mail(:to => user.email,
