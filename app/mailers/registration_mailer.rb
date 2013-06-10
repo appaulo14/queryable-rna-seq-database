@@ -22,6 +22,7 @@ class RegistrationMailer < ActionMailer::Base
          :from => from,
          :reply_to => MAILER_BOT_CONFIG['email'],
          :subject => 'New User Registration Request Received').deliver
+         break
       rescue Exception => ex
         if i >= NUMBER_OF_EMAIL_ATTEMPTS - 1
           raise
@@ -50,6 +51,7 @@ class RegistrationMailer < ActionMailer::Base
               :from => from,
               :reply_to => MAILER_BOT_CONFIG['email'],
               :subject => subject).deliver
+         break
       rescue Exception => ex
         if i >= NUMBER_OF_EMAIL_ATTEMPTS - 1
           raise
@@ -73,9 +75,10 @@ class RegistrationMailer < ActionMailer::Base
     NUMBER_OF_EMAIL_ATTEMPTS.times do |i|
        begin
          mail(:to => @user.email,
-         :from => from,
-         :reply_to => MAILER_BOT_CONFIG['email'],
-         :subject => subject).deliver
+              :from => from,
+              :reply_to => MAILER_BOT_CONFIG['email'],
+              :subject => subject).deliver
+         break
       rescue Exception => ex
         if i >= NUMBER_OF_EMAIL_ATTEMPTS - 1
           raise

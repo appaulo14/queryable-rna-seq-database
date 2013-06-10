@@ -133,11 +133,11 @@ FactoryGirl.define do
       after(:build)             {|object| object.set_attributes_and_defaults() }
       transcripts_fasta_file    {get_uploaded_trinity_fasta_file()}
       gene_diff_exp_files       {get_trinity_diff_exp_files('gene', 2)}
-      gene_diff_exp_sample_1_names {['ds_gene']}
-      gene_diff_exp_sample_2_names {['hs_gene']}
+      gene_diff_exp_sample_1_names {['DS_GENE']}
+      gene_diff_exp_sample_2_names {['HS_GENE']}
       transcript_diff_exp_files {get_trinity_diff_exp_files('trans', 2)}
-      transcript_diff_exp_sample_1_names {['ds_trans']}
-      transcript_diff_exp_sample_2_names {['hs_trans']}
+      transcript_diff_exp_sample_1_names {['DS_TRANS']}
+      transcript_diff_exp_sample_2_names {['HS_TRANS']}
       gene_fpkm_file            {get_trinity_gene_fpkm_file(2)}
       transcript_fpkm_file      {get_trinity_transcript_fpkm_file(2)}
       has_gene_diff_exp         '1'
@@ -150,11 +150,11 @@ FactoryGirl.define do
       after(:build)             {|object| object.set_attributes_and_defaults() }
       transcripts_fasta_file    {get_uploaded_trinity_fasta_file()}
       gene_diff_exp_files       {get_trinity_diff_exp_files('gene', 3)}
-      gene_diff_exp_sample_1_names {['ds_gene','ds_gene','hs_gene']}
-      gene_diff_exp_sample_2_names {['hs_gene','ms_gene','ms_gene']}
+      gene_diff_exp_sample_1_names {['DS_GENE','DS_GENE','HS_GENE']}
+      gene_diff_exp_sample_2_names {['HS_GENE','MS_GENE','MS_GENE']}
       transcript_diff_exp_files {get_trinity_diff_exp_files('trans', 3)}
-      transcript_diff_exp_sample_1_names {['DS_TRANS','ds_trans','hs_trans']}
-      transcript_diff_exp_sample_2_names {['hs_trans','MS_TRANS','ms_trans']}
+      transcript_diff_exp_sample_1_names {['DS_TRANS','DS_TRANS','HS_TRANS']}
+      transcript_diff_exp_sample_2_names {['HS_TRANS','MS_TRANS','MS_TRANS']}
       gene_fpkm_file            {get_trinity_gene_fpkm_file(3)}
       transcript_fpkm_file      {get_trinity_transcript_fpkm_file(3)}
       has_gene_diff_exp         '1'
@@ -168,17 +168,17 @@ FactoryGirl.define do
       transcripts_fasta_file    {get_uploaded_trinity_fasta_file()}
       gene_diff_exp_files       {get_trinity_diff_exp_files('gene', 4)}
       gene_diff_exp_sample_1_names {
-        ['ds_gene','ds_gene','ds_gene','hs_gene','HS_gene','ms_gene']
+        ['DS_GENE','DS_GENE','DS_GENE','HS_GENE','HS_GENE','MS_GENE']
       }
       gene_diff_exp_sample_2_names {
-        ['hs_gene','ms_gene','qs_gene','ms_gene','Qs_Gene','qs_gene']
+        ['HS_GENE','MS_GENE','QS_GENE','MS_GENE','QS_GENE','QS_GENE']
       }
       transcript_diff_exp_files {get_trinity_diff_exp_files('trans', 4)}
       transcript_diff_exp_sample_1_names {
-        ['DS_TRANS','ds_trans','ds_trans','hs_trans','hs_trans','ms_trans']
+        ['DS_TRANS','DS_TRANS','DS_TRANS','HS_TRANS','HS_TRANS','MS_TRANS']
       }
       transcript_diff_exp_sample_2_names {
-        ['hs_trans','MS_TRANS','qs_trans','ms_trans','qs_trans','qs_trans']
+        ['HS_TRANS','MS_TRANS','QS_TRANS','MS_TRANS','QS_TRANS','QS_TRANS']
       }
       gene_fpkm_file            {get_trinity_gene_fpkm_file(4)}
       transcript_fpkm_file      {get_trinity_transcript_fpkm_file(4)}

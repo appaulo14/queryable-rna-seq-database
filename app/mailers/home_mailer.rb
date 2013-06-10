@@ -21,6 +21,7 @@ class HomeMailer < ActionMailer::Base
          mail(:to => User.where(:admin => true).map(&:email),
           :from => from,
           :subject => 'New issue reported').deliver
+         break
       rescue Exception => ex
         if i >= NUMBER_OF_EMAIL_ATTEMPTS - 1
           raise

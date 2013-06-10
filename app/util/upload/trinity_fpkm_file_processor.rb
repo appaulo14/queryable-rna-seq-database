@@ -43,7 +43,6 @@ class TrinityFpkmFileProcessor
     #Ensure that all the item's differential_expression_tests have fpkms now
     item.differential_expression_tests.each do |diff_exp_test|
       if diff_exp_test.sample_1_fpkm.nil? or diff_exp_test.sample_2_fpkm.nil?
-        debugger
         error_msg = "Dataset #{@dataset.id}, #{@dataset.name} "
         error_msg += "#{item.class.to_s} #{item.name_from_program} "
         error_msg += "is missing require values "

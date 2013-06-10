@@ -52,8 +52,9 @@ class QueryAnalysisMailer < ActionMailer::Base
     NUMBER_OF_EMAIL_ATTEMPTS.times do |i|
       begin
         mail(:to => @user.email,
-         :from => mailer_bot_from_field(),
-         :subject => subject).deliver
+             :from => mailer_bot_from_field(),
+             :subject => subject).deliver
+        break
       rescue Exception => ex
         if i >= NUMBER_OF_EMAIL_ATTEMPTS - 1
           raise
@@ -76,8 +77,9 @@ class QueryAnalysisMailer < ActionMailer::Base
     NUMBER_OF_EMAIL_ATTEMPTS.times do |i|
       begin
         mail(:to => @user.email,
-         :from => mailer_bot_from_field(),
-         :subject => 'Your Data Upload Failed').deliver
+             :from => mailer_bot_from_field(),
+             :subject => 'Your Data Upload Failed').deliver
+        break
       rescue Exception => ex
         if i >= NUMBER_OF_EMAIL_ATTEMPTS - 1
           raise
@@ -102,8 +104,9 @@ class QueryAnalysisMailer < ActionMailer::Base
     NUMBER_OF_EMAIL_ATTEMPTS.times do |i|
       begin
         mail(:to => @user.email,
-         :from => mailer_bot_from_field(),
-         :subject => 'Finding Your Gene Ontology (GO) Terms Was Successful').deliver
+             :from => mailer_bot_from_field(),
+             :subject => 'Finding Your Gene Ontology (GO) Terms Was Successful').deliver
+        break
       rescue Exception => ex
         if i >= NUMBER_OF_EMAIL_ATTEMPTS - 1
           raise
@@ -126,8 +129,9 @@ class QueryAnalysisMailer < ActionMailer::Base
     NUMBER_OF_EMAIL_ATTEMPTS.times do |i|
       begin
         mail(:to => @user.email,
-         :from => mailer_bot_from_field(),
-         :subject => 'Finding Your Gene Ontology (GO) Terms Failed').deliver
+             :from => mailer_bot_from_field(),
+             :subject => 'Finding Your Gene Ontology (GO) Terms Failed').deliver
+        break
       rescue Exception => ex
         if i >= NUMBER_OF_EMAIL_ATTEMPTS - 1
           raise
@@ -163,8 +167,9 @@ class QueryAnalysisMailer < ActionMailer::Base
     NUMBER_OF_EMAIL_ATTEMPTS.times do |i|
       begin
         mail(:to => user.email,
-            :from => mailer_bot_from_field(),
-            :subject => subject ).deliver
+             :from => mailer_bot_from_field(),
+             :subject => subject ).deliver
+        break
       rescue Exception => ex
         if i >= NUMBER_OF_EMAIL_ATTEMPTS - 1
           raise
@@ -189,8 +194,9 @@ class QueryAnalysisMailer < ActionMailer::Base
     NUMBER_OF_EMAIL_ATTEMPTS.times do |i|
       begin
         mail(:to => user.email,
-            :from => mailer_bot_from_field(),
-            :subject => subject ).deliver
+             :from => mailer_bot_from_field(),
+             :subject => subject ).deliver
+        break
       rescue Exception => ex
         if i >= NUMBER_OF_EMAIL_ATTEMPTS - 1
           raise
@@ -237,8 +243,9 @@ class QueryAnalysisMailer < ActionMailer::Base
     NUMBER_OF_EMAIL_ATTEMPTS.times do |i|
       begin
         mail(:to => user.email,
-            :from => mailer_bot_from_field(),
-            :subject => subject ).deliver
+             :from => mailer_bot_from_field(),
+             :subject => subject ).deliver
+        break
       rescue Exception => ex
         if i >= NUMBER_OF_EMAIL_ATTEMPTS - 1
           raise
@@ -273,8 +280,9 @@ class QueryAnalysisMailer < ActionMailer::Base
     NUMBER_OF_EMAIL_ATTEMPTS.times do |i|
       begin
         mail(:to => user.email,
-            :from => mailer_bot_from_field(),
-            :subject => subject ).deliver
+             :from => mailer_bot_from_field(),
+             :subject => subject ).deliver
+        break
       rescue Exception => ex
         if i >= NUMBER_OF_EMAIL_ATTEMPTS - 1
           raise
