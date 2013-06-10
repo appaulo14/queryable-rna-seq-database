@@ -300,6 +300,20 @@ href="QueryAnalysisController.html">QueryAnalysisController</a></p>
     
 
     
+    <!-- Constants -->
+    <section id="constants-list" class="section">
+      <h3 class="section-header">Constants</h3>
+      <dl>
+      
+        <dt id="NUMBER_OF_EMAIL_ATTEMPTS">NUMBER_OF_EMAIL_ATTEMPTS
+        
+        <dd class="description"><p>The number of times to attempt sending an email before giving up and 
+raising an exception.</p>
+        
+      
+      </dl>
+    </section>
+    
 
     
 
@@ -326,7 +340,7 @@ have its go terms found.</p>
 
           
           <div class="method-source-code" id="notify_user_of_blast2go_failure-source">
-            <pre><span class="ruby-comment"># File app/mailers/query_analysis_mailer.rb, line 89</span>
+            <pre><span class="ruby-comment"># File app/mailers/query_analysis_mailer.rb, line 94</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">notify_user_of_blast2go_failure</span>(<span class="ruby-identifier">user</span>, <span class="ruby-identifier">dataset</span>)
   <span class="ruby-ivar">@base_url</span> = <span class="ruby-identifier">get_base_url</span>()
   <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">user</span>
@@ -365,7 +379,7 @@ terms found successfully.</p>
 
           
           <div class="method-source-code" id="notify_user_of_blast2go_success-source">
-            <pre><span class="ruby-comment"># File app/mailers/query_analysis_mailer.rb, line 72</span>
+            <pre><span class="ruby-comment"># File app/mailers/query_analysis_mailer.rb, line 77</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">notify_user_of_blast2go_success</span>(<span class="ruby-identifier">user</span>, <span class="ruby-identifier">dataset</span>)
   <span class="ruby-ivar">@base_url</span> = <span class="ruby-identifier">get_base_url</span>()
   <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">user</span>
@@ -406,7 +420,7 @@ upload successfully.</p>
 
           
           <div class="method-source-code" id="notify_user_of_upload_failure-source">
-            <pre><span class="ruby-comment"># File app/mailers/query_analysis_mailer.rb, line 57</span>
+            <pre><span class="ruby-comment"># File app/mailers/query_analysis_mailer.rb, line 62</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">notify_user_of_upload_failure</span>(<span class="ruby-identifier">user</span>, <span class="ruby-identifier">dataset</span>)
   <span class="ruby-ivar">@base_url</span> = <span class="ruby-identifier">get_base_url</span>()
   <span class="ruby-ivar">@report_issue_url</span> = <span class="ruby-node">&quot;#{@base_url}/home/report_issue&quot;</span>
@@ -445,7 +459,7 @@ successfully uploaded.</p>
 
           
           <div class="method-source-code" id="notify_user_of_upload_success-source">
-            <pre><span class="ruby-comment"># File app/mailers/query_analysis_mailer.rb, line 8</span>
+            <pre><span class="ruby-comment"># File app/mailers/query_analysis_mailer.rb, line 13</span>
  <span class="ruby-keyword">def</span> <span class="ruby-identifier">notify_user_of_upload_success</span>(<span class="ruby-identifier">user</span>, <span class="ruby-identifier">dataset</span>)
   <span class="ruby-ivar">@base_url</span> = <span class="ruby-identifier">get_base_url</span>()
   <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">user</span>
@@ -517,7 +531,7 @@ successfully uploaded.</p>
 
           
           <div class="method-source-code" id="send_blast_failure_message-source">
-            <pre><span class="ruby-comment"># File app/mailers/query_analysis_mailer.rb, line 130</span>
+            <pre><span class="ruby-comment"># File app/mailers/query_analysis_mailer.rb, line 145</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">send_blast_failure_message</span>(<span class="ruby-identifier">query_using_blast</span>,<span class="ruby-identifier">user</span>)
   <span class="ruby-ivar">@bq</span> = <span class="ruby-identifier">query_using_blast</span>
   <span class="ruby-ivar">@dataset</span> = <span class="ruby-constant">Dataset</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-identifier">query_using_blast</span>.<span class="ruby-identifier">dataset_id</span>)
@@ -558,7 +572,7 @@ as an html file.</p>
 
           
           <div class="method-source-code" id="send_blast_report-source">
-            <pre><span class="ruby-comment"># File app/mailers/query_analysis_mailer.rb, line 104</span>
+            <pre><span class="ruby-comment"># File app/mailers/query_analysis_mailer.rb, line 109</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">send_blast_report</span>(<span class="ruby-identifier">query_using_blast</span>,<span class="ruby-identifier">blast_report</span>,<span class="ruby-identifier">user</span>)
   <span class="ruby-comment"># Declare some variables to use with the views</span>
   <span class="ruby-ivar">@bq</span> = <span class="ruby-identifier">query_using_blast</span>
@@ -577,10 +591,20 @@ as an html file.</p>
   <span class="ruby-comment"># Create the email's subject</span>
   <span class="ruby-identifier">subject</span> = <span class="ruby-node">&quot;#{blast_report.program.capitalize()} &quot;</span> <span class="ruby-operator">+</span>
             <span class="ruby-node">&quot;Results for Dataset \&quot;#{@dataset.name}\&quot;&quot;</span>
-  <span class="ruby-comment"># Send the email</span>
-  <span class="ruby-identifier">mail</span>(<span class="ruby-value">:to</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">email</span>,
-       <span class="ruby-value">:from</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">mailer_bot_from_field</span>(),
-       <span class="ruby-value">:subject</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">subject</span> ).<span class="ruby-identifier">deliver</span>
+  <span class="ruby-comment"># Send the email, trying five times before giving up</span>
+  <span class="ruby-value">5</span>.<span class="ruby-identifier">times</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">begin</span>
+      <span class="ruby-identifier">mail</span>(<span class="ruby-value">:to</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">email</span>,
+          <span class="ruby-value">:from</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">mailer_bot_from_field</span>(),
+          <span class="ruby-value">:subject</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">subject</span> ).<span class="ruby-identifier">deliver</span>
+    <span class="ruby-keyword">rescue</span> <span class="ruby-constant">Exception</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">ex</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-value">5</span>
+        <span class="ruby-identifier">raise</span>
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">sleep</span> <span class="ruby-identifier">rand</span>(<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">10</span>)
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- send_blast_report-source -->
           
@@ -609,7 +633,7 @@ failed.</p>
 
           
           <div class="method-source-code" id="send_query_regular_db_failure_message-source">
-            <pre><span class="ruby-comment"># File app/mailers/query_analysis_mailer.rb, line 185</span>
+            <pre><span class="ruby-comment"># File app/mailers/query_analysis_mailer.rb, line 210</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">send_query_regular_db_failure_message</span>(<span class="ruby-identifier">query_regular_db</span>, <span class="ruby-identifier">user</span>)
   <span class="ruby-ivar">@query_regular_db</span> = <span class="ruby-identifier">query_regular_db</span>
   <span class="ruby-ivar">@dataset</span> = <span class="ruby-constant">Dataset</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-identifier">query_regular_db</span>.<span class="ruby-identifier">dataset_id</span>)
@@ -659,7 +683,7 @@ of their querying the regular database.</p>
 
           
           <div class="method-source-code" id="send_query_regular_db_results-source">
-            <pre><span class="ruby-comment"># File app/mailers/query_analysis_mailer.rb, line 147</span>
+            <pre><span class="ruby-comment"># File app/mailers/query_analysis_mailer.rb, line 162</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">send_query_regular_db_results</span>(<span class="ruby-identifier">query_regular_db</span>, <span class="ruby-identifier">user</span>)
   <span class="ruby-comment"># Define some variables to use with the view</span>
   <span class="ruby-ivar">@query_regular_db</span> = <span class="ruby-identifier">query_regular_db</span>
@@ -689,10 +713,20 @@ of their querying the regular database.</p>
   <span class="ruby-comment"># Create the email's subject</span>
   <span class="ruby-identifier">subject</span> = <span class="ruby-node">&quot;#{@query_type.capitalize()} &quot;</span> <span class="ruby-operator">+</span>
             <span class="ruby-node">&quot;Results for Dataset \&quot;#{@dataset.name}\&quot;&quot;</span>
-  <span class="ruby-comment"># Send the email</span>
-  <span class="ruby-identifier">mail</span>(<span class="ruby-value">:to</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">email</span>,
-       <span class="ruby-value">:from</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">mailer_bot_from_field</span>(),
-       <span class="ruby-value">:subject</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">subject</span> ).<span class="ruby-identifier">deliver</span>
+  <span class="ruby-comment"># Send the email, trying five times before giving up</span>
+  <span class="ruby-value">5</span>.<span class="ruby-identifier">times</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">begin</span>
+      <span class="ruby-identifier">mail</span>(<span class="ruby-value">:to</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">email</span>,
+          <span class="ruby-value">:from</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">mailer_bot_from_field</span>(),
+          <span class="ruby-value">:subject</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">subject</span> ).<span class="ruby-identifier">deliver</span>
+    <span class="ruby-keyword">rescue</span> <span class="ruby-constant">Exception</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">ex</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-value">5</span>
+        <span class="ruby-identifier">raise</span>
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">sleep</span> <span class="ruby-identifier">rand</span>(<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">10</span>)
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- send_query_regular_db_results-source -->
           

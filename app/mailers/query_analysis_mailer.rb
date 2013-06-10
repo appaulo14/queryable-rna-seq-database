@@ -1,7 +1,12 @@
 ###
 # Mailer class for emails in the QueryAnalysisController
 class QueryAnalysisMailer < ActionMailer::Base
- 
+    
+  ###
+  # The number of times to attempt sending an email before giving up and 
+  # raising an exception.
+  NUMBER_OF_EMAIL_ATTEMPTS = 5
+  
    ###
    # Sends an email to the specified user that the specified dataset was 
    # successfully uploaded.
@@ -42,13 +47,21 @@ class QueryAnalysisMailer < ActionMailer::Base
     @go_terms_count = TranscriptHasGoTerm.joins(
       :transcript
     ).where('transcripts.dataset_id' => dataset.id).count 
-    mail(:to => @user.email,
-         # Name <email>
+    subject = 'Your Data Upload Was Successful'
+    # Send the email, trying multiple times before giving up
+    NUMBER_OF_EMAIL_ATTEMPTS.times do |i|
+      begin
+        mail(:to => @user.email,
          :from => mailer_bot_from_field(),
-         #:reply_to => MAILER_BOT_CONFIG['email'],
-         :subject => 'Your Data Upload Was Successful').deliver
-    #@url  = "http://example.com/login"
-    #mail(:to => user.email, :subject => "Welcome to My Awesome Site")
+         :subject => subject).deliver
+      rescue Exception => ex
+        if i >= NUMBER_OF_EMAIL_ATTEMPTS - 1
+          raise
+        else
+          sleep rand(1..10)
+        end
+      end
+    end
   end
   
   ###
@@ -59,11 +72,20 @@ class QueryAnalysisMailer < ActionMailer::Base
     @report_issue_url = "#{@base_url}/home/report_issue"
     @user = user
     @dataset = dataset
-    mail(:to => @user.email,
-         # Name <email>
+    # Send the email, trying multiple times before giving up
+    NUMBER_OF_EMAIL_ATTEMPTS.times do |i|
+      begin
+        mail(:to => @user.email,
          :from => mailer_bot_from_field(),
-         #:reply_to => MAILER_BOT_CONFIG['email'],
          :subject => 'Your Data Upload Failed').deliver
+      rescue Exception => ex
+        if i >= NUMBER_OF_EMAIL_ATTEMPTS - 1
+          raise
+        else
+          sleep rand(1..10)
+        end
+      end
+    end
   end
   
   ###
@@ -76,11 +98,20 @@ class QueryAnalysisMailer < ActionMailer::Base
     @go_terms_count = TranscriptHasGoTerm.joins(
       :transcript
     ).where('transcripts.dataset_id' => dataset.id).count 
-    mail(:to => @user.email,
-         # Name <email>
+    # Send the email, trying multiple times before giving up
+    NUMBER_OF_EMAIL_ATTEMPTS.times do |i|
+      begin
+        mail(:to => @user.email,
          :from => mailer_bot_from_field(),
-         #:reply_to => MAILER_BOT_CONFIG['email'],
          :subject => 'Finding Your Gene Ontology (GO) Terms Was Successful').deliver
+      rescue Exception => ex
+        if i >= NUMBER_OF_EMAIL_ATTEMPTS - 1
+          raise
+        else
+          sleep rand(1..10)
+        end
+      end
+    end
   end
   
   ###
@@ -91,11 +122,20 @@ class QueryAnalysisMailer < ActionMailer::Base
     @user = user
     @dataset = dataset
     @report_issue_url = "#{@base_url}/home/report_issue"
-    mail(:to => @user.email,
-         # Name <email>
+    # Send the email, trying multiple times before giving up
+    NUMBER_OF_EMAIL_ATTEMPTS.times do |i|
+      begin
+        mail(:to => @user.email,
          :from => mailer_bot_from_field(),
-         #:reply_to => MAILER_BOT_CONFIG['email'],
          :subject => 'Finding Your Gene Ontology (GO) Terms Failed').deliver
+      rescue Exception => ex
+        if i >= NUMBER_OF_EMAIL_ATTEMPTS - 1
+          raise
+        else
+          sleep rand(1..10)
+        end
+      end
+    end
   end
   
   ###
@@ -119,14 +159,14 @@ class QueryAnalysisMailer < ActionMailer::Base
     # Create the email's subject
     subject = "#{blast_report.program.capitalize()} " +
               "Results for Dataset \"#{@dataset.name}\""
-    # Send the email, trying five times before giving up
-    5.times do |i|
+    # Send the email, trying multiple times before giving up
+    NUMBER_OF_EMAIL_ATTEMPTS.times do |i|
       begin
         mail(:to => user.email,
             :from => mailer_bot_from_field(),
             :subject => subject ).deliver
       rescue Exception => ex
-        if i >= 5
+        if i >= NUMBER_OF_EMAIL_ATTEMPTS - 1
           raise
         else
           sleep rand(1..10)
@@ -145,10 +185,20 @@ class QueryAnalysisMailer < ActionMailer::Base
     @report_issue_url = "#{get_base_url()}/home/report_issue"
     subject = "#{@program.capitalize()} " +
               "for Dataset \"#{@dataset.name}\" Failed"
-    # Send the email
-    mail(:to => user.email,
-         :from => mailer_bot_from_field(),
-         :subject => subject ).deliver
+    # Send the email, trying multiple times before giving up
+    NUMBER_OF_EMAIL_ATTEMPTS.times do |i|
+      begin
+        mail(:to => user.email,
+            :from => mailer_bot_from_field(),
+            :subject => subject ).deliver
+      rescue Exception => ex
+        if i >= NUMBER_OF_EMAIL_ATTEMPTS - 1
+          raise
+        else
+          sleep rand(1..10)
+        end
+      end
+    end
   end
   
   ###
@@ -183,14 +233,14 @@ class QueryAnalysisMailer < ActionMailer::Base
     # Create the email's subject
     subject = "#{@query_type.capitalize()} " +
               "Results for Dataset \"#{@dataset.name}\""
-    # Send the email, trying five times before giving up
-    5.times do |i|
+    # Send the email, trying multiple times before giving up
+    NUMBER_OF_EMAIL_ATTEMPTS.times do |i|
       begin
         mail(:to => user.email,
             :from => mailer_bot_from_field(),
             :subject => subject ).deliver
       rescue Exception => ex
-        if i >= 5
+        if i >= NUMBER_OF_EMAIL_ATTEMPTS - 1
           raise
         else
           sleep rand(1..10)
@@ -219,10 +269,20 @@ class QueryAnalysisMailer < ActionMailer::Base
     @report_issue_url = "#{get_base_url()}/home/report_issue"
     subject = "#{@query_type.capitalize()} " +
               "for Dataset \"#{@dataset.name}\" Failed"
-    # Send the email
-    mail(:to => user.email,
-         :from => mailer_bot_from_field(),
-         :subject => subject ).deliver
+    # Send the email, trying multiple times before giving up
+    NUMBER_OF_EMAIL_ATTEMPTS.times do |i|
+      begin
+        mail(:to => user.email,
+            :from => mailer_bot_from_field(),
+            :subject => subject ).deliver
+      rescue Exception => ex
+        if i >= NUMBER_OF_EMAIL_ATTEMPTS - 1
+          raise
+        else
+          sleep rand(1..10)
+        end
+      end
+    end
   end
   
   private

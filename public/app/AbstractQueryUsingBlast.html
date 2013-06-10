@@ -645,7 +645,7 @@ object.</p>
 
           
           <div class="method-source-code" id="blast-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/abstract_query_using_blast.rb, line 114</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/abstract_query_using_blast.rb, line 115</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">blast</span>()
   <span class="ruby-comment">#Don't query if it is not valid</span>
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">valid?</span>
@@ -670,12 +670,12 @@ object.</p>
       <span class="ruby-keyword">begin</span>
         <span class="ruby-constant">QueryAnalysisMailer</span>.<span class="ruby-identifier">send_blast_failure_message</span>(<span class="ruby-keyword">self</span>,<span class="ruby-ivar">@current_user</span>)
       <span class="ruby-keyword">rescue</span> <span class="ruby-constant">Exception</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">ex2</span>
-        <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">error</span> <span class="ruby-node">&quot;For dataset #{dataset.id} with name #{dataset.name}:\n&quot;</span> <span class="ruby-operator">+</span>
+        <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">error</span> <span class="ruby-node">&quot;For dataset #{@dataset.id} with name #{@dataset.name}:\n&quot;</span> <span class="ruby-operator">+</span>
                           <span class="ruby-node">&quot;#{ex2.message}\n#{ex2.backtrace.join(&quot;\n&quot;)}&quot;</span>
         <span class="ruby-identifier">raise</span> <span class="ruby-identifier">ex2</span>, <span class="ruby-identifier">ex2</span>.<span class="ruby-identifier">message</span>
       <span class="ruby-keyword">ensure</span>
         <span class="ruby-comment">#Log the exception manually because Rails doesn't want to in this case</span>
-        <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">error</span> <span class="ruby-node">&quot;For dataset #{dataset.id} with name #{dataset.name}:\n&quot;</span> <span class="ruby-operator">+</span>
+        <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">error</span> <span class="ruby-node">&quot;For dataset #{@dataset.id} with name #{@dataset.name}:\n&quot;</span> <span class="ruby-operator">+</span>
                           <span class="ruby-node">&quot;#{ex.message}\n#{ex.backtrace.join(&quot;\n&quot;)}&quot;</span>
       <span class="ruby-keyword">end</span>
     <span class="ruby-keyword">else</span>
@@ -711,7 +711,7 @@ this defines that this model does not persist in the database.</p>
 
           
           <div class="method-source-code" id="persisted-3F-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/abstract_query_using_blast.rb, line 154</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/abstract_query_using_blast.rb, line 155</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">persisted?</span>
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
 <span class="ruby-keyword">end</span></pre>
@@ -749,6 +749,7 @@ values</p>
       <span class="ruby-identifier">send</span>(<span class="ruby-node">&quot;#{name}=&quot;</span>, <span class="ruby-identifier">value</span>)
   <span class="ruby-keyword">end</span>
   <span class="ruby-ivar">@dataset_id</span> = <span class="ruby-ivar">@available_datasets</span>.<span class="ruby-identifier">first</span>[<span class="ruby-value">1</span>] <span class="ruby-keyword">if</span> <span class="ruby-ivar">@dataset_id</span>.<span class="ruby-identifier">blank?</span>
+  <span class="ruby-ivar">@dataset</span> = <span class="ruby-constant">Dataset</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-ivar">@dataset_id</span>)
   <span class="ruby-ivar">@num_alignments</span> = <span class="ruby-string">'100'</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@num_alignments</span>.<span class="ruby-identifier">blank?</span>
   <span class="ruby-ivar">@evalue</span> = <span class="ruby-value">10.0</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@evalue</span>.<span class="ruby-identifier">blank?</span>
   <span class="ruby-ivar">@query_input_method</span> = <span class="ruby-string">'text_area'</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@query_input_method</span>.<span class="ruby-identifier">blank?</span>
@@ -786,7 +787,7 @@ values</p>
 
           
           <div class="method-source-code" id="cleanup_files-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/abstract_query_using_blast.rb, line 209</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/abstract_query_using_blast.rb, line 210</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">cleanup_files</span>()
   <span class="ruby-constant">File</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-ivar">@query_input_file</span>.<span class="ruby-identifier">path</span>)
   <span class="ruby-constant">File</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-ivar">@xml_results_file</span>.<span class="ruby-identifier">path</span>)
@@ -819,7 +820,7 @@ object,  and return it</p>
 
           
           <div class="method-source-code" id="generate_blast_report_from_xml_results-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/abstract_query_using_blast.rb, line 195</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/abstract_query_using_blast.rb, line 196</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">generate_blast_report_from_xml_results</span>()
   <span class="ruby-comment">#Parse the xml into Blast reports</span>
   <span class="ruby-identifier">f</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-ivar">@xml_results_file</span>.<span class="ruby-identifier">path</span>)
@@ -859,7 +860,7 @@ generates the execution string used to do the blasting.</p>
 
           
           <div class="method-source-code" id="generate_execution_string-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/abstract_query_using_blast.rb, line 170</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/abstract_query_using_blast.rb, line 171</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">generate_execution_string</span>
   <span class="ruby-comment">#Filter by low complexity and soft masking map to soft masking due to</span>
   <span class="ruby-comment"># http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.blastn_application_o/?report=objectonly</span>
@@ -893,7 +894,7 @@ generates the execution string used to do the blasting.</p>
 
           
           <div class="method-source-code" id="prepare_IO_files-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/abstract_query_using_blast.rb, line 179</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/abstract_query_using_blast.rb, line 180</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">prepare_IO_files</span>()
   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@query_input_method</span> <span class="ruby-operator">==</span> <span class="ruby-string">'text_area'</span>
     <span class="ruby-ivar">@query_input_file</span> = <span class="ruby-constant">Tempfile</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">'query_using_blast'</span>)
@@ -933,7 +934,7 @@ queried just now.</p>
 
           
           <div class="method-source-code" id="record_that_dataset_has_been_queried-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/abstract_query_using_blast.rb, line 162</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/abstract_query_using_blast.rb, line 163</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">record_that_dataset_has_been_queried</span>()
   <span class="ruby-identifier">dataset</span> = <span class="ruby-constant">Dataset</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-ivar">@dataset_id</span>)
   <span class="ruby-identifier">dataset</span>.<span class="ruby-identifier">when_last_queried</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>

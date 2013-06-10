@@ -14,13 +14,15 @@ class RegistrationsController < Devise::RegistrationsController
     #   won't be automatically sent when the user is saved
     resource.skip_confirmation!
     if resource.valid_with_captcha?
-      resource.save!
-      #Mark the user as unconfirmed so that they can't log in
-      #The admin will manually trigger the confirmation email later
-      resource.confirmed_at = nil
-      resource.save!
-      #Notify the admin that about the registration request
-      RegistrationMailer.notify_admin_of_registration_request_email(resource).deliver
+      ActiveRecord::Base.transaction do
+        resource.save!
+        #Mark the user as unconfirmed so that they can't log in
+        #The admin will manually trigger the confirmation email later
+        resource.confirmed_at = nil
+        resource.save!
+        #Notify the admin that about the registration request
+        RegistrationMailer.notify_admin_of_registration_request_email(resource)
+      end
       flash[:notice] = "The admin has been notified of your request." if is_navigational_format?
       expire_session_data_after_sign_in!
       respond_with resource, :location => after_inactive_sign_up_path_for(resource)

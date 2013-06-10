@@ -1,21 +1,34 @@
 ###
 # Mailer class for emails related to user registration.
 class RegistrationMailer < ActionMailer::Base
-   
+  
+  ###
+  # The number of times to attempt sending an email before giving up and 
+  # raising an exception.
+  NUMBER_OF_EMAIL_ATTEMPTS = 5
+  
    ###
    # Sends an email to all of the administrators stating that 
    # the specified user has requested to register with the system.
    def notify_admin_of_registration_request_email(user)
     @base_url = get_base_url
     @user = user
-    User.where(:admin => true).each do |admin|
-      from = "Queryable RNA-Seq Database Mailer Bot " +
-             "<#{MAILER_BOT_CONFIG['email']}>"
-      mail(:to => admin.email,
-           # Name <email>
-           :from => from,
-           :reply_to => MAILER_BOT_CONFIG['email'],
-           :subject => 'New User Registration Request Received').deliver
+    from = "Queryable RNA-Seq Database Mailer Bot " +
+            "<#{MAILER_BOT_CONFIG['email']}>"
+    # Send the email, trying multiple times before giving up
+    NUMBER_OF_EMAIL_ATTEMPTS.times do |i|
+       begin
+         mail(:to => User.where(:admin => true).map(&:email),
+         :from => from,
+         :reply_to => MAILER_BOT_CONFIG['email'],
+         :subject => 'New User Registration Request Received').deliver
+      rescue Exception => ex
+        if i >= NUMBER_OF_EMAIL_ATTEMPTS - 1
+          raise
+        else
+          sleep rand(1..10)
+        end
+      end
     end
   end
   
@@ -30,11 +43,21 @@ class RegistrationMailer < ActionMailer::Base
     @optional_note_to_user = optional_note_to_user
     subject = 'You Have Been Approved to User the Queryable RNA-Seq Database'
     from = "Queryable RNA-Seq Database Mailer Bot <#{MAILER_BOT_CONFIG['email']}>"
-    mail(:to => @user.email,
-         # Name <email>
-         :from => from,
-         :reply_to => MAILER_BOT_CONFIG['email'],
-         :subject => subject).deliver
+    # Send the email, trying multiple times before giving up
+    NUMBER_OF_EMAIL_ATTEMPTS.times do |i|
+       begin
+         mail(:to => @user.email,
+              :from => from,
+              :reply_to => MAILER_BOT_CONFIG['email'],
+              :subject => subject).deliver
+      rescue Exception => ex
+        if i >= NUMBER_OF_EMAIL_ATTEMPTS - 1
+          raise
+        else
+          sleep rand(1..10)
+        end
+      end
+    end
   end
   
   ###
@@ -46,11 +69,21 @@ class RegistrationMailer < ActionMailer::Base
     subject = 'Your Account Has Been Dissaproved For Using the ' +
               'Queryable RNA-Seq Database'
     from = "Queryable RNA-Seq Database Mailer Bot <#{MAILER_BOT_CONFIG['email']}>"
-    mail(:to => @user.email,
-         # Name <email>
+    # Send the email, trying multiple times before giving up
+    NUMBER_OF_EMAIL_ATTEMPTS.times do |i|
+       begin
+         mail(:to => @user.email,
          :from => from,
          :reply_to => MAILER_BOT_CONFIG['email'],
          :subject => subject).deliver
+      rescue Exception => ex
+        if i >= NUMBER_OF_EMAIL_ATTEMPTS - 1
+          raise
+        else
+          sleep rand(1..10)
+        end
+      end
+    end
   end
   
   private

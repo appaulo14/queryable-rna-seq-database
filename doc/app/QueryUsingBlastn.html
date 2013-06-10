@@ -496,7 +496,6 @@ values</p>
   <span class="ruby-comment">#Set default values for Megablast, which is the only blastn program we will use</span>
   <span class="ruby-comment">#Defaults taken from http://www.ncbi.nlm.nih.gov/books/NBK1763/#CmdLineAppsManual.Appendix_C_Options_for</span>
   <span class="ruby-comment"># and http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.blastn_application_o/?report=objectonly</span>
-  <span class="ruby-identifier">debugger</span>
   <span class="ruby-ivar">@word_size</span> = <span class="ruby-string">'28'</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@word_size</span>.<span class="ruby-identifier">blank?</span>
   <span class="ruby-ivar">@use_soft_masking</span> = <span class="ruby-string">'1'</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@use_soft_masking</span>.<span class="ruby-identifier">blank?</span>
   <span class="ruby-ivar">@use_lowercase_masking</span> = <span class="ruby-string">'0'</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@use_lowercase_masking</span>.<span class="ruby-identifier">blank?</span>
@@ -510,7 +509,7 @@ values</p>
   <span class="ruby-ivar">@available_gap_costs</span> = 
     <span class="ruby-constant">AVAILABLE_GAP_COSTS</span>[<span class="ruby-ivar">@match_and_mismatch_scores</span>].<span class="ruby-identifier">keys</span>
   <span class="ruby-comment">#Set default gap cost based on available gap costs</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@gap_costs</span>.<span class="ruby-identifier">blank?</span> <span class="ruby-keyword">or</span> <span class="ruby-keyword">not</span> <span class="ruby-ivar">@available_gap_costs</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-ivar">@gap_costs</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@gap_costs</span>.<span class="ruby-identifier">blank?</span>
     <span class="ruby-ivar">@gap_costs</span> = <span class="ruby-constant">AVAILABLE_GAP_COST_DEFAULTS</span>[<span class="ruby-ivar">@match_and_mismatch_scores</span>]
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>

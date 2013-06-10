@@ -289,6 +289,20 @@
     
 
     
+    <!-- Constants -->
+    <section id="constants-list" class="section">
+      <h3 class="section-header">Constants</h3>
+      <dl>
+      
+        <dt id="NUMBER_OF_EMAIL_ATTEMPTS">NUMBER_OF_EMAIL_ATTEMPTS
+        
+        <dd class="description"><p>The number of times to attempt sending an email before giving up and 
+raising an exception.</p>
+        
+      
+      </dl>
+    </section>
+    
 
     
 
@@ -315,7 +329,7 @@ user has requested to register with the system.</p>
 
           
           <div class="method-source-code" id="notify_admin_of_registration_request_email-source">
-            <pre><span class="ruby-comment"># File app/mailers/registration_mailer.rb, line 8</span>
+            <pre><span class="ruby-comment"># File app/mailers/registration_mailer.rb, line 13</span>
  <span class="ruby-keyword">def</span> <span class="ruby-identifier">notify_admin_of_registration_request_email</span>(<span class="ruby-identifier">user</span>)
   <span class="ruby-ivar">@base_url</span> = <span class="ruby-identifier">get_base_url</span>
   <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">user</span>
@@ -356,7 +370,7 @@ request has been rejected.</p>
 
           
           <div class="method-source-code" id="notify_user_of_rejection-source">
-            <pre><span class="ruby-comment"># File app/mailers/registration_mailer.rb, line 43</span>
+            <pre><span class="ruby-comment"># File app/mailers/registration_mailer.rb, line 48</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">notify_user_of_rejection</span>(<span class="ruby-identifier">user</span>, <span class="ruby-identifier">optional_note_to_user</span>)
   <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">user</span>
   <span class="ruby-ivar">@optional_note_to_user</span> = <span class="ruby-identifier">optional_note_to_user</span>
@@ -397,7 +411,7 @@ to them soon. The confirmation email  itself is sent by the Devise gem.</p>
 
           
           <div class="method-source-code" id="notify_user_that_confirmation_email_will_be_sent-source">
-            <pre><span class="ruby-comment"># File app/mailers/registration_mailer.rb, line 27</span>
+            <pre><span class="ruby-comment"># File app/mailers/registration_mailer.rb, line 32</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">notify_user_that_confirmation_email_will_be_sent</span>(<span class="ruby-identifier">user</span>, <span class="ruby-identifier">optional_note_to_user</span>)
   <span class="ruby-ivar">@report_issue_url</span> = <span class="ruby-node">&quot;#{get_base_url}/home/report_issue&quot;</span>
   <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">user</span>

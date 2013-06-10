@@ -447,7 +447,7 @@ href="QueryUsingTblastn.html#attribute-i-matrix">matrix</a></p>
 
           
           <div class="method-source-code" id="get_program_name-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_using_tblastn.rb, line 163</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_using_tblastn.rb, line 164</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">get_program_name</span>()
   <span class="ruby-keyword">return</span> <span class="ruby-string">'tblastn'</span>
 <span class="ruby-keyword">end</span></pre>
@@ -481,7 +481,7 @@ href="QueryUsingTblastn.html#attribute-i-matrix">matrix</a></p>
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_using_tblastn.rb, line 170</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_using_tblastn.rb, line 171</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">current_user</span>)
   <span class="ruby-keyword">super</span>
   <span class="ruby-comment">#Set the available options for the number of alignments</span>
@@ -522,14 +522,14 @@ values</p>
 
           
           <div class="method-source-code" id="set_attributes_and_defaults-source">
-            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_using_tblastn.rb, line 180</span>
+            <pre><span class="ruby-comment"># File app/view_models/query_analysis/query_using_tblastn.rb, line 181</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">set_attributes_and_defaults</span>(<span class="ruby-identifier">attributes</span> = {})
   <span class="ruby-keyword">super</span>
   <span class="ruby-comment">#Set default values for Megablast, which is the only blastn program we will use</span>
   <span class="ruby-comment">#Defaults taken from http://www.ncbi.nlm.nih.gov/books/NBK1763/#CmdLineAppsManual.Appendix_C_Options_for</span>
   <span class="ruby-comment"># and http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.blastn_application_o/?report=objectonly</span>
   <span class="ruby-ivar">@word_size</span> = <span class="ruby-string">'3'</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@word_size</span>.<span class="ruby-identifier">blank?</span>
-  <span class="ruby-ivar">@compositional_adjustment</span> = <span class="ruby-string">'2'</span>
+  <span class="ruby-ivar">@compositional_adjustment</span> = <span class="ruby-string">'2'</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@compositional_adjustment</span>.<span class="ruby-identifier">blank?</span>
   <span class="ruby-ivar">@use_soft_masking</span> = <span class="ruby-string">'0'</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@use_soft_masking</span>.<span class="ruby-identifier">blank?</span>
   <span class="ruby-ivar">@use_lowercase_masking</span> = <span class="ruby-string">'0'</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@use_lowercase_masking</span>.<span class="ruby-identifier">blank?</span>
   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@filter_low_complexity_regions</span>.<span class="ruby-identifier">blank?</span>
@@ -540,7 +540,7 @@ values</p>
   <span class="ruby-keyword">end</span>
   <span class="ruby-comment">#Set available gap costs for the given matrix</span>
   <span class="ruby-ivar">@available_gap_costs</span> = <span class="ruby-constant">AVAILABLE_GAP_COSTS</span>[<span class="ruby-ivar">@matrix</span>].<span class="ruby-identifier">keys</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@gap_costs</span>.<span class="ruby-identifier">blank?</span> <span class="ruby-keyword">or</span> <span class="ruby-keyword">not</span> <span class="ruby-ivar">@available_gap_costs</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-ivar">@gap_costs</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@gap_costs</span>.<span class="ruby-identifier">blank?</span>
     <span class="ruby-ivar">@gap_costs</span> = <span class="ruby-constant">AVAILABLE_GAP_COST_DEFAULTS</span>[<span class="ruby-ivar">@matrix</span>]
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
