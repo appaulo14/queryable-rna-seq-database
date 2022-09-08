@@ -505,6 +505,36 @@ class QueryAnalysisController < ApplicationController
       end
     end
   end
+
+
+  def query_using_new_method
+    @sequence_type = 'nucleic acid'
+    if request.get?
+      @query_using_tblastx = QueryUsingTblastx.new(current_user)
+      @query_using_tblastx.set_attributes_and_defaults()
+    elsif request.post?
+      @query_using_tblastx = QueryUsingTblastx.new(current_user)
+      @query_using_tblastx.set_attributes_and_defaults(params[:query_using_tblastx])
+      if @query_using_tblastx.valid?
+        @dataset = Dataset.find_by_id(@query_using_tblastx.dataset_id)
+        if @query_using_tblastx.results_display_method == 'email'
+          q_name = :query_using_blast_queue
+          SuckerPunch::Queue[q_name].async.perform(@query_using_tblastx)
+          flash[:notice] = I18n.t(:added_to_query_using_blast_queue,
+                                  :name => @dataset.name)
+          # Reset the form before rendering
+          @query_using_tblastx = QueryUsingTblastx.new(current_user) 
+          @query_using_tblastx.set_attributes_and_defaults()
+        else
+          #Run the blast query and get the file path of the result
+          @blast_report = @query_using_tblastx.blast()
+          #Send the result to the user
+          render :file => 'query_analysis/blast_results'
+        end
+      end
+    end
+  end 
+
   
   private 
   
